@@ -1,0 +1,74 @@
+[
+    {
+      "setting": "medieval museum",
+      "background": "/src/castle.jpg",
+      "description": "Hai ricevuto un invito che ti chiede di recarti al British Castle; le indicazioni sull'invito dicevano solo di arrivare da solo, non far caso ad altri ospiti presenti nel castello e cercare di raggiungere la stanza ?? (qui il biglietto era accidentalmente o, con più probabilità, volontariamente rovinato), il più silenziosamente possibile, cercando di passare insosservati. Avvertiva, infine, di prestare attenzione ad eventuali enigmi e sfide incontrabili lungo la strada. Il misterioso autore sosteneva di essere in grado di fornirti un antico libro risalente al tardo medioevo, che da tempo cercavi invano di procurarti. Una ricerca a dir poco disperata di un'opera che avrebbe potuto cambiare l'interpretazione di teorie filosofiche millenarie...<br>Fortunatamente hai portato il tuo walkie talkie con te. Nei avrai bisogno per poter affrontare le diverse sfide che ti troverai dinnanzi e per tutte le comunicazioni che il misterioso ospite vorrà fornirti. Afferralo ed inizia la tua avventura. <br> Buona fortuna! ",
+      "pocketItem": "walkie talkie", 
+      "introduction": "Caro amico, sono felice che tu sia venuto. Purtroppo non posso accoglierti personalmente, ma confido che riuscirai ugualmente a trovare ciò che cerchi, a meno che qualcun altro non ci arrivi prima di te. ",
+      "activities": [
+        {
+            "type": "scelta multipla",
+            "where": "Recati nella stanza 40",
+            "instructions": "Nella stanza sono presenti tre bassorilievi, il tuo compito è riconoscere il bassorilievo che presenta un motivo geometrico riconoscibile. Premi la freccia in basso a sinistra per rispondere.",
+            "correctAns": ["Quello a sinistra", "Quello centrale"],
+            "incorrectAns": ["Quello a destra"]
+        },
+        {
+          "type": "domanda aperta",
+          "where": "Ultima stanza ala ovest",
+          "instructions": "Tra queste stesse mura soggiornò uno dei più importanti cavalieri della tavola rotonda. In una delle teche qui presenti potrai trovare una delle sue armature e scoprire chi era.",
+          "definition": "nome del cavaliere",
+          "correctAns": "lancillotto"
+        },
+        {
+          "type": "figurativa",
+          "where": "Ti imbatti in una serie di corridoi senza via d'uscita, solo uno di essi termina in una porta chiusa da un lucchetto. In alto un'iscrizione:  <br> 4x + 7 = 487",
+          "html": "/#/lock",
+          "background": "/src/lock.jpg",
+          "quesito": "4x + 7 = 487",
+          "risposta": "120",
+          "result": "La porta si apre e riesci ad entrare proprio prima di udire dei rumori alle tue spalle"        
+        },
+        {
+          "type": "domanda aperta",
+          "where": "In quest'ala l'illuminazione scarseggia cerchi di camminare rasente alle parenti per orientarti, facendo attenzione ad aggirare qualsiasi oggetto presente",
+          "instructions": "Chissà perchè non si erano preoccupati di illuminare a sufficienza questo posto; cerchi di ricordare da quanto tempo si faccia uso di lampadine.<br> Cerchi di trovare la risposta a questa domanda usando il tuo dispositivo",
+          "definition": "anno: YYYY",
+          "correctAns": "1854"
+        },
+        {
+          "type": "domanda aperta",
+          "where": "Recati nella stanza 78",
+          "instructions": "E' giunto il momento di metterla alla prova caro amico: se vuole il libro dovrò riscontrare in lei determinate capacità.<br>La collezione di statue che si trova davanti risale al V-VI sec a.C., le chiedo di riconoscerne la più antica e comunicarmi il soggetto rappresentato",
+          "definition": "misterioso personaggio",
+          "correctAns": "atena"
+        },
+        {
+          "type": "figurativa",
+          "where": "La porta della stanza nella quale ti trovi si richiude alle tue spalle, bloccandoti al suo interno. Un signore ti comunica da dietro la porta di essere il guardiano e di non poter lasciare girovagare estranei all'interno del castello. Se desideri essere liberato dovrai comunicargli una parola segreta.",
+          "html": "/#/door",
+          "background": "/src/door.jpg",
+          "definition": "Scrivi qui",
+          "instructions": "Ovviamente non sai di cosa stia parlando, sei stato invitato a recarti in questo luogo terribile! <br>Cerchi di ricordarti possibili istruzioni ricevute che possano tirarti fuori di lì...<br>Improvvisamente ricordi un dettaglio nell'invito, a pie' di pagina era scritto in piccolo: 'PS:... <br>Trascina il foglio verso l'alto per passarlo sotto la porta",
+          "risposta": "x",
+          "result": "L'uomo ti passa la chiave da sotto la porta e riesci ad uscire"        
+        }
+        ],
+        "facilities": [
+          "Vari ospiti si ritirano nelle loro stanze, ora potrai agire più indisturbato.", 
+          "La strada risulta libera per il momento, puoi anche permetterti di fermarti ad ammirare il fascino spettrale del castello",
+          "Camminando scorgi una libreria, ti fermi ad osservarne le scansie forse le speranze di trovare il famoso libro non sono così vane, prosegui determinato a trovarlo.",
+          "Tutto tranquillo",
+          "Tutto tranquillo"
+        ],
+        "difficulties": [
+          "Qualcuno ti ha sentito aggirarti nell'ombra, fai più attenzione!",
+          "Un asse del pavimento cede sotto il tuo peso, fai attenzione a non passarci di nuovo!",
+          "Cercando di evitare diversi ospiti, hai finito per perderti, cerca di recuperare il cammino che stavi seguendo.",
+          "Qualcuno ti sta seguendo da diverso tempo, cerca di fargli perdere le tue tracce.",
+          "Imprevisto",
+          "Imprevisto"
+        ],
+        "conclusion": "conclusione"
+    }
+  ]
