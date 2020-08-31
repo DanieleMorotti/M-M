@@ -62,24 +62,12 @@ export default {
 		},
 		next() {
 			type = activities[currentAct].type;
-			if(type == "scelta multipla") {
-				render.render1();
-				$('#check').attr('disabled', false);
-			}
-			else if(type == "domanda aperta") {
-				render.render2();
-				$('#check').attr('disabled', false);
-			}
-			else {
-				render.render3();
-				$('#play').attr('disabled', false);
-			}
+			render.renderAct(type);
 			$('#next').attr('disabled', true);
-			
 		},
 		check() {
 			if(type == "scelta multipla") {
-				var risp = document.getElementsByClassName('highlight')[0];
+				var risp = $('.highlight')[0];
 				if(risp.classList.contains('incorrectAns')) {
 					displayDifficulties();
 				}
@@ -88,9 +76,9 @@ export default {
 				}
 			}
 			else if(type == "domanda aperta") {
-				var risp = document.getElementsByTagName("input")[0].value;
+				var risp = $("input")[0].value;
 				if(risp.toLowerCase() != activities[currentAct].correctAns) {
-					document.getElementsByTagName("input")[0].value = "";
+					$("input")[0].value = "";
 					return;
 				}
 				else

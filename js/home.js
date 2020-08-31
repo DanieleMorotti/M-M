@@ -19,13 +19,13 @@ export default {
             $('#toDevice').prop("disabled", false);
             $('#description').html("");
             $('#btnDev').html(story[0].pocketItem);
-            window.location.href = "/#/device";
+            $('#toDevice').click();
         },
         render() {
             story = JSON.parse(localStorage.getItem("story"));
             $('#storyDiv').css('background-image', 'url('+story[0].background+')');
             $('#description').html(story[0].description);
-            $('#btnDev').html("Prendi il" +story[0].pocketItem);
+            $('#btnDev').html("Prendi il " +story[0].pocketItem);
         }
     }
 }
