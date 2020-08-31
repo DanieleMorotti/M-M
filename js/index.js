@@ -12,7 +12,6 @@ request.onload = function() {
 
 request.send();
 
-
 /*
 $.ajax({
     url: './data.json',
@@ -29,7 +28,7 @@ const router = new VueRouter({
   routes: Routes,
 })
 
-
+//function that is executed before every routing change
 router.beforeEach((to, from, next) => {
   if(to.path === '/device') {
     document.getElementById('stylesheetComp').href = 'device.css';
@@ -50,9 +49,6 @@ router.beforeEach((to, from, next) => {
 
   next();
 })
-
-
-
 
 
 new Vue({

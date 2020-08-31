@@ -8,8 +8,7 @@ var usedDifficulties = [];
 function renderActivity(type) {
 
     current = localStorage.getItem("current");
-    var l1;
-    var l2;
+    var l1,l2;
     var string = activities[current].instructions;
     if(type == "scelta multipla"){
         l1 = activities[current].correctAns.length;
@@ -40,25 +39,27 @@ function renderActivity(type) {
         document.addEventListener("keydown", function(event){
             switch(event.keyCode){
                 case 38: // Up arrow    
-                listItems[i].classList.remove("highlight");
-                
-                current = i > 0 ? --i : 0;          
-                listItems[i].classList.add("highlight"); // Highlight the new element
-                break;
+                    listItems[i].classList.remove("highlight");
+                    
+                    current = i > 0 ? --i : 0;          
+                    listItems[i].classList.add("highlight"); // Highlight the new element
+                    break;
                 case 40: // Down arrow
-                listItems[i].classList.remove("highlight");
-                
-                i = i < listItems.length-1 ? ++i : listItems.length-1;  
-                listItems[i].classList.add("highlight");       // Highlight the new element
-                break;    
+                    listItems[i].classList.remove("highlight");
+                    
+                    i = i < listItems.length-1 ? ++i : listItems.length-1;  
+                    listItems[i].classList.add("highlight");       // Highlight the new element
+                    break;    
             }
         });
         $('#check').attr('disabled', false);
+
     }else if(type == "domanda aperta"){
         l1 = activities[current].correctAns.length;
         string += `<br><br><input type="text" placeholder="`+ activities[current].definition +`"><br>`;
         $('#text').html(string);
         $('#check').attr('disabled', false);
+        
     }else{
         window.location.href = activities[current].html;
         $('#text').html(activities[current].result);

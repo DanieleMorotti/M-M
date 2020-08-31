@@ -7,7 +7,6 @@ export default {
             step: 4,
         }
     },
-    story: 'ciao',
     template: `
         <div id="storyDiv" style="text-align: center">
             <p id="description"> {{step}} </p>
@@ -19,6 +18,7 @@ export default {
             $('#toDevice').prop("disabled", false);
             $('#description').html("");
             $('#btnDev').html(story[0].pocketItem);
+            //simulate the click on the router-link that show the device
             $('#toDevice').click();
         },
         render() {
