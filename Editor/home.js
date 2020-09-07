@@ -1,31 +1,32 @@
-var story ;
 
 export default {
     name: 'home',
     data() {
-        return {
-            step: 4,
+        return{
+            currentStory: 0,
+            storiesList:[{name:"pinocchio",data:0},{name:"mulan",data:0}]
         }
     },
     template: `
-        <div id="storyDiv" style="text-align: center">
-            <p id="description"> {{step}} </p>
-            <button id="btnDev" @click="grab"></button>
+        <div id="storySection" class="container-fluid">
+            <p id="info">Seleziona la storia che vuoi modificare,copiare o eliminare</p>
+            <div id="menu">
+                <button>Nuova storia <i class="fas fa-plus"></i></button>
+                <button>Carica storia <i class="fas fa-upload"></i></button>
+            </div>
+            <div id="stories">
+                <span v-if="storiesList.length == 0">Nessuna storia presente</span>
+                <div id="stories-list" class="list-group" v-else>
+                    <button v-for="(story,index) in storiesList" :key="index" type="button" class="list-group-item list-group-item-action" 
+                    @click="changeActive(index)"> {{story.name}} <span id="icon-group"><i tabindex="0" class="fas fa-file-upload"></i>&nbsp;&nbsp;
+                    <i tabindex="0" class="fas fa-qrcode"></i>&nbsp;&nbsp;<i tabindex="0" class="fas fa-trash-alt"></i></span></button>
+                </div>
+            </div>
         </div> 
     `,
     methods: {
-        grab: function() {
-            $('#toDevice').prop("disabled", false);
-            $('#description').html("");
-            $('#btnDev').html(story[0].pocketItem);
-            //simulate the click on the router-link that show the device
-            $('#toDevice').click();
-        },
-        render() {
-            story = JSON.parse(localStorage.getItem("story"));
-            $('#storyDiv').css('background-image', 'url('+story[0].background+')');
-            $('#description').html(story[0].description);
-            $('#btnDev').html("Prendi il " +story[0].pocketItem);
+        changeActive(index){
+            this.currentStory = index;
         }
     }
 }

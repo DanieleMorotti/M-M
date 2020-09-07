@@ -1,0 +1,25 @@
+
+html,body{
+    height: 100%;
+}
+
+#stories-list{
+    font-size:1.5rem;
+}
+
+#info{
+    font-size:1.2rem;
+    margin:1rem;
+}
+
+#icon-group{
+    float: right;
+}
+
+i.fas{
+    cursor:grab;
+}
+
+#stories-list > button:focus{
+    background-color: rgb(131, 244, 248);
+}
