@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="it">
+	<head>
+		<title>Editor</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+        crossorigin="anonymous"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>	
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+		<script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
+		<link rel="stylesheet" id="stylesheetComp" href="home.css">
+	</head>
+
+	<body>
+		<div id="app">
+			<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+				  <span class="navbar-toggler-icon"></span>
+				</button>
+		  
+				<div class="collapse navbar-collapse" id="navbarsExample03">
+					<router-link type="button" class="btn btn-dark mr-1" to="/" >Home</router-link>
+					<router-link id="toDevice" tag="button" class="btn btn-dark mr-1"  to="/editor" :disabled="true">Editor</router-link>
+				</div>
+			  </nav>
+			
+			<keep-alive>
+				<router-view></router-view>
+			</keep-alive>
+		</div>
+		<script type="module" src="./js/index.js"></script>
+		<script type="module" id="scriptComp" src="./js/index.js"></script>
+	</body>
+</html>
