@@ -1,8 +1,8 @@
 //each object is a route
 import storyComp from './home.js'
-import activityComp from './edit.js'
+import editComp from './edit.js'
 
 export default [
     { path: '/', component: storyComp},
-    { path: '/activities', component: activityComp}
+    { path: '/editMenu', component: editComp}
 ]

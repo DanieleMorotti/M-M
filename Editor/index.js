@@ -6,7 +6,7 @@ const router = new VueRouter({
 
 //function that is executed before every routing change
 router.beforeEach((to, from, next) => {
-  if(to.path === '/activities') {
+  if(to.path === '/editMenu') {
     document.getElementById('stylesheetComp').href = './edit.css';
     document.getElementById('scriptComp').src = './edit.js';
   }else {

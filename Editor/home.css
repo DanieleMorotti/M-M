@@ -3,13 +3,25 @@ html,body{
     height: 100%;
 }
 
+#info{
+    font-size:1.2rem;
+    margin:1rem;
+}
+
+#littleMenu{
+    margin-left:2rem;
+}
+
+#stories{
+    margin:2rem;
+}
+
 #stories-list{
     font-size:1.5rem;
 }
 
-#info{
-    font-size:1.2rem;
-    margin:1rem;
+#stories-list > button:focus{
+    background-color: rgb(131, 244, 248);
 }
 
 #icon-group{
@@ -20,6 +32,3 @@ i.fas{
     cursor:grab;
 }
 
-#stories-list > button:focus{
-    background-color: rgb(131, 244, 248);
-}
