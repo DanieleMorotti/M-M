@@ -7,11 +7,11 @@ const router = new VueRouter({
 //function that is executed before every routing change
 router.beforeEach((to, from, next) => {
   if(to.path === '/editMenu') {
-    document.getElementById('stylesheetComp').href = './edit.css';
-    document.getElementById('scriptComp').src = './edit.js';
+    $('#stylesheetComp').attr('href','./edit.css');
+    //document.getElementById('scriptComp').src = 'js/edit.js';
   }else {
-    document.getElementById('stylesheetComp').href ='./home.css';  
-    document.getElementById('scriptComp').src = './home.js';
+    $('#stylesheetComp').attr('href','./home.css');  
+    //document.getElementById('scriptComp').src = 'js/home.js';
   }
 
   next();

@@ -1,1 +1,30 @@
+html,body{
+    height: 100%;
+}
 
+#editMenu{
+    font-size:1.2rem;
+    margin-left:2rem;
+    margin-top:2rem;
+    margin-bottom: 2rem;
+}
+
+#editStoryForm{
+    margin-top:2rem;
+    margin-left:2rem;
+    border:solid 2px blue;
+    padding:1rem;
+}
+
+#editStoryForm textarea{
+    resize: none;
+    margin-top:1rem;
+}
+
+#editStoryForm li > input,h5{
+    margin-top:1rem;
+}
+
+#activitiesList{
+    list-style: none;
+}
