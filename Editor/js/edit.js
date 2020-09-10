@@ -4,7 +4,8 @@ export default {
     data() {
         return{
             //i save the menu to create a new activity 'template' and simply append this to the ul
-            newActivityMenu: null
+            newActivityMenu: null,
+            lastActivity:1
         }
     },
     template: `
@@ -38,7 +39,7 @@ export default {
                             </li>
                             <li>
                                 <label for="inpObjJs">Aggiungi un file JS</label>
-                                <input type="file" name="pocketItemJs" id="inpObjJs" accept="application/x-javascript" />
+                                <input type="file" name="pocketItemJs" id="inpObjJs" accept=".js" />
                             </li>
                         </ul>
                     </li>
@@ -48,15 +49,15 @@ export default {
                     </li>
                     <li>
                         <ul id="activitiesList">
-                            <h2>Attività</h2>
+                            <h2>Attività </h2>
                             <li>
                                 <h5>Scegli il tipo dell'attività : </h5>
-                                <input type="radio" name="activityTypeGroup" value="scelta multipla" />
-                                <label for="chooseType">Scelta multipla</label>
-                                <input type="radio" name="activityTypeGroup" value="domanda aperta" />
-                                <label for="chooseType">Domanda aperta</label>
-                                <input type="radio" name="activityTypeGroup" value="figurativa" />
-                                <label for="chooseType">Figurativa</label>
+                                <input id="multipleChoice" type="radio" name="activityTypeGroup" value="scelta multipla" checked />
+                                <label for="multipleChoice">Scelta multipla</label>
+                                <input id="openQuest" type="radio" name="activityTypeGroup" value="domanda aperta" />
+                                <label for="openQuest">Domanda aperta</label>
+                                <input id="figur" type="radio" name="activityTypeGroup" value="figurativa" />
+                                <label for="figur">Figurativa</label>
 
                                 <h5>Dove si svolge l'attività?(ambientazione)</h5>
                                 <input type="text" name="where" />
@@ -75,16 +76,36 @@ export default {
     `,
     methods: {
         newActivity(){
+            this.lastActivity++;
+            //if there aren't activities i remove the informative message
             if($('#activitiesList > p'))$('#activitiesList > p').remove();
             $('#activitiesList').append(this.newActivityMenu);
+
+            //change the id to id+'activity number'
+            var changeId = $('#activitiesList > li:nth-child('+this.lastActivity+') [id]');
+            for(let i=0;i<changeId.length;i++){
+                changeId[i].id += this.lastActivity;
+            }
+            //change the for attribute to id+'activity number'
+            var changeId = $('#activitiesList > li:nth-child('+this.lastActivity+') [for]');
+            for(let i=0;i<changeId.length;i++){
+                changeId[i].htmlFor += this.lastActivity;
+            }
+            //change the name attribute to name+'activity number'
+            var changeId = $('#activitiesList > li:nth-child('+this.lastActivity+') [name]');
+            for(let i=0;i<changeId.length;i++){
+                changeId[i].name += this.lastActivity;
+            }
         },
         deleteActivity(){
+            //if there's more than one story
             if($('#activitiesList > li').length != 1){
                 $('#activitiesList > li:last-child').remove();
                 $('#activitiesList > h2:last-child').remove();
             }else{
                 $('#activitiesList').html('<p>Nessuna attività per questa storia</p>');
             }
+            if(this.lastActivity-- != -1) this.lastActivity--;
         }
     },
     mounted(){
