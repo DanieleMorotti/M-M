@@ -1,33 +1,53 @@
+
 const express = require('express');
 const path = require('path');
-const body_pars = require('body-parser');
-const fs = require('fs');
+const bodyParser = require('body-parser');
+var fs = require('fs');
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-//to manage the request body
-var urlEncodedPars = body_pars.urlencoded({ extended: false });
 
-app.use(express.static(path.join(__dirname,'..')));
+app.post('/story', function(req, res) {
+	res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+	console.log(req.body);
 
-app.get("/", (req,res) => {
-	res.status(200);
-	res.sendFile(path.join(__dirname,"..","index.html"));
+	fs.writeFile('./Server-side/stories/'+req.body.title+'.json', JSON.stringify(req.body, null, 2), function (err) {
+		if (err) throw err;
+		console.log('Saved!');
+	});
+
 });
 
-app.post("/stories", urlEncodedPars, (req,res) => {
 
-	//TODO:ciclare su questi dati per creare un file json della storia e salvarlo server side
+const data = require('./stories/storia1.json');
 
-	for (var [key, value] of Object.entries(req.body)) {
-		//printing the data i receive from the form
-		console.log(key, value);
-	}
-	//coming back before the submit action
-	res.redirect('back');
-});
+// when someone ask for a story 
+app.get('/stories',(req, res) => {
+	res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+	res.json( data);
+})
 
+app.get('/titles',(req, res) => {
+	res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+	const dir = './Server-side/stories';
+	var names = [] ;
+
+	fs.readdir(dir, (err, files) => {
+        files.forEach(file => {
+			names.push(file.slice(0, -5));
+		});
+		console.log(names);
+		res.json(names);
+	});
+	
+})
 
 app.listen(8080, () => {
   console.log('server is ready');
 });
+
+
+
+ 

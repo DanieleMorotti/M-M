@@ -1,29 +1,18 @@
 import Routes from './routes.js'
 
+
 var request = new XMLHttpRequest();
 
-request.open('GET', './data.json');
+request.open('GET', 'http://localhost:8080/stories', true);
 
-request.onload = function() {
+request.onload = function(data) {
     localStorage.setItem("story", request.responseText);
     Routes[0].component.methods.render();
     Routes[1].component.methods.render();
 };
 
-request.send();
+request.send(null);
 
-/*
-$.ajax({
-    url: './data.json',
-    success: function(data) {
-      $('.result').html(data);
-      alert('Caricamento effettuato');
-    },
-    error: function(data) {
-      alert('Caricamento impossibile');
-    }
-})
-*/
 const router = new VueRouter({
   routes: Routes,
 })

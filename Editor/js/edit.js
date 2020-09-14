@@ -1,21 +1,21 @@
-
 export default {
     name: 'editMenu',
     data() {
         return{
             //i save the menu to create a new activity 'template' and simply append this to the ul
             newActivityMenu: null,
-            lastActivity:1
+            lastActivity:1,
+            activities: []
         }
-    },
+    }, //action="/stories" method="POST"
     template: `
         <div id="editMenu" class="container">
             <p>Inserisci i dati per creare la tua nuova storia </p>
-            <form action="/stories" method="POST" id="editStoryForm">
+            <form @submit="checkForm"  id="editStoryForm">
                 <ul>
                     <li>
                         <label for="inpTitle">Inserisci il titolo: </label>
-                        <input type="text" name="title" id="inpTitle" />
+                        <input type="text" name="title" id="inpTitle"/>
                     </li>
                     <li>
                         <label for="inpSett">Inserisci l'ambientazione:</label>
@@ -47,12 +47,15 @@ export default {
                         <label for="inpIntr">Inserisci l'introduzione della tua storia:</label><br>
                         <textarea id="inpDescr" name="introduction" rows="3" cols="40"></textarea>
                     </li>
-                    <li>
+                    <input type="submit" value="Finito" />
+                </form>
+                <form>
+                   
+                        <h2>Attività</h2>
                         <ul id="activitiesList">
-                            <h2>Attività </h2>
                             <li>
                                 <h5>Scegli il tipo dell'attività : </h5>
-                                <input id="multipleChoice" type="radio" name="activityTypeGroup" value="scelta multipla" checked />
+                                <input id="multipleChoice" type="radio" name="activityTypeGroup" value="scelta multipla" />
                                 <label for="multipleChoice">Scelta multipla</label>
                                 <input id="openQuest" type="radio" name="activityTypeGroup" value="domanda aperta" />
                                 <label for="openQuest">Domanda aperta</label>
@@ -66,36 +69,20 @@ export default {
                                 <textarea name="instructions" rows="3" cols="40"></textarea>
                             </li>
                         </ul>
-                        <input type="button" @click="newActivity" value="Nuova attività" />
+                        <input type="button" @click="addActivity" value="Aggiungi attività" />
                         <input type="button" @click="deleteActivity" value="Rimuovi attività" />
-                    </li>
+                    
                 </ul>
+                
                 <input type="submit" value="Finito" />
             </form>
         </div> 
     `,
     methods: {
-        newActivity(){
+        newActivity(){   
             this.lastActivity++;
             //if there aren't activities i remove the informative message
             if($('#activitiesList > p'))$('#activitiesList > p').remove();
-            $('#activitiesList').append(this.newActivityMenu);
-
-            //change the id to id+'activity number'
-            var changeId = $('#activitiesList > li:nth-child('+this.lastActivity+') [id]');
-            for(let i=0;i<changeId.length;i++){
-                changeId[i].id += this.lastActivity;
-            }
-            //change the for attribute to id+'activity number'
-            var changeId = $('#activitiesList > li:nth-child('+this.lastActivity+') [for]');
-            for(let i=0;i<changeId.length;i++){
-                changeId[i].htmlFor += this.lastActivity;
-            }
-            //change the name attribute to name+'activity number'
-            var changeId = $('#activitiesList > li:nth-child('+this.lastActivity+') [name]');
-            for(let i=0;i<changeId.length;i++){
-                changeId[i].name += this.lastActivity;
-            }
         },
         deleteActivity(){
             //if there's more than one story
@@ -106,9 +93,34 @@ export default {
                 $('#activitiesList').html('<p>Nessuna attività per questa storia</p>');
             }
             if(this.lastActivity-- != -1) this.lastActivity--;
+        },
+        addActivity(event) {             
+            
+            let activity = {
+                type: $("#activitiesList li input:checked").val(),
+                setting:  $("#activitiesList li input[name='where']").val(),
+                instructions: $("#activitiesList li textarea[name='instructions']").val()
+            }
+            this.activities.push(activity);
+            
+            $('form')[1].reset();
+        },
+        checkForm: function(e) {
+            e.preventDefault();
+            var array = $('form').serializeArray();
+            var obj = {};
+            $.map(array, function(n){
+                obj[n['name']] = n['value'];
+            });
+     
+            obj.activities = this.activities;
+            
+            $.post( "http://localhost:8080/story", obj, function(response) {
+            });
+
         }
     },
     mounted(){
         this.newActivityMenu = $('#activitiesList').html();
-    }
+    }   
 }

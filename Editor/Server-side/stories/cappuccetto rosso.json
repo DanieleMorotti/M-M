@@ -1,0 +1,16 @@
+{
+  "title": "cappuccetto rosso",
+  "setting": "bosco",
+  "description": "la mamma manda...",
+  "pocketItem": "cestino",
+  "introduction": "c'era una volta..",
+  "where": "",
+  "instructions": "",
+  "activities": [
+    {
+      "type": "scelta multipla",
+      "setting": "casa nonna",
+      "instructions": "..."
+    }
+  ]
+}

@@ -4,7 +4,7 @@ export default {
     data() {
         return{
             currentStory: 0,
-            storiesList:[{name:"pinocchio",data:0},{name:"mulan",data:0}]
+            storiesList:2
         }
     },
     template: `
@@ -38,6 +38,15 @@ export default {
         deleteStory(index){
             this.storiesList.splice(index,1);
             this.currentStory = this.storiesList.length != 0 ? 0 : null;
+        },
+        displayStories(response) {
+            console.log(this.storiesList);
         }
+    },
+    mounted() {
+       $.get( "http://localhost:8080/titles", function(response) {
+           console.log(response);
+           //in response ci sono i nomi delle storie presenti nella cartella stories
+        });
     }
 }
