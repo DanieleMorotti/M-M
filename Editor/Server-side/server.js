@@ -2,43 +2,80 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-var fs = require('fs');
+const formidable = require('formidable')
+const fs = require('fs');
 
 const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(express.static(`${__dirname}/..`));
 
-app.post('/story', function(req, res) {
-	res.header("Access-Control-Allow-Origin", "http://localhost:5000");
-	console.log(req.body);
+app.post('/story', (req, res) => {
+	//res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+	/*console.log(req.body);
+	if(req.body.title){
+		/*fs.writeFile('./stories/'+req.body.title+'.json', JSON.stringify(req.body, null, 2), function (err) {
+			if (err) throw err;
+			console.log('Saved!');
+		});
+	}
+	res.status(200).end();*/
+	var form = new formidable.IncomingForm();
+	var jsonFile = {};
 
-	fs.writeFile('./Server-side/stories/'+req.body.title+'.json', JSON.stringify(req.body, null, 2), function (err) {
-		if (err) throw err;
-		console.log('Saved!');
-	});
+	form.parse(req);
+	form.on('field', (name, field) => {
+			jsonFile[name] = field;
+			console.log(jsonFile);
+		})
+		.on('fileBegin', function (name, file){
+			if(file.name != "")file.path = __dirname + '/stories/files/' + file.name;
+		})
+		.on('file', (name, file) => {
+			if(file.name != "")jsonFile[name] = file.name;
+		})
+		.on('error', (err) => {
+			console.error('Error', err);
+			throw err;
+		})
+		.on('end',()=>{
+			let json = JSON.stringify(jsonFile,null,2);
 
+			fs.writeFile('./stories/'+ jsonFile['title'] +'.json', json, function (err) {
+				if (err) throw err;
+				console.log('Saved!');
+			});
+			res.status(200).end();
+		});
 });
 
 
 const data = require('./stories/storia1.json');
 
+app.get('/',(req,res) =>{
+	res.status(200);
+	res.sendFile(path.join(__dirname,"..","index.html"));
+})
+
 // when someone ask for a story 
 app.get('/stories',(req, res) => {
-	res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+	//res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+	res.status(200);
 	res.json( data);
 })
 
+//return the list of titles of the stories stored in the server
 app.get('/titles',(req, res) => {
-	res.header("Access-Control-Allow-Origin", "http://localhost:5000");
-	const dir = './Server-side/stories';
+	//res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+	const dir = './stories';
 	var names = [] ;
 
 	fs.readdir(dir, (err, files) => {
+		if(err)console.log(err);
         files.forEach(file => {
-			names.push(file.slice(0, -5));
+			if (path.extname(file) == ".json") names.push(file.slice(0, -5));
 		});
 		console.log(names);
+		res.status(200);
 		res.json(names);
 	});
 	
@@ -49,5 +86,7 @@ app.listen(8080, () => {
 });
 
 
+
+ 
 
  

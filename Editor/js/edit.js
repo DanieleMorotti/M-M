@@ -2,8 +2,6 @@ export default {
     name: 'editMenu',
     data() {
         return{
-            //i save the menu to create a new activity 'template' and simply append this to the ul
-            newActivityMenu: null,
             lastActivity:1,
             activities: []
         }
@@ -11,7 +9,7 @@ export default {
     template: `
         <div id="editMenu" class="container">
             <p>Inserisci i dati per creare la tua nuova storia </p>
-            <form @submit="checkForm"  id="editStoryForm">
+            <form id="editStoryForm">
                 <ul>
                     <li>
                         <label for="inpTitle">Inserisci il titolo: </label>
@@ -47,55 +45,60 @@ export default {
                         <label for="inpIntr">Inserisci l'introduzione della tua storia:</label><br>
                         <textarea id="inpDescr" name="introduction" rows="3" cols="40"></textarea>
                     </li>
-                    <input type="submit" value="Finito" />
-                </form>
-                <form>
-                   
+                    <li>    
                         <h2>Attività</h2>
-                        <ul id="activitiesList">
-                            <li>
-                                <h5>Scegli il tipo dell'attività : </h5>
-                                <input id="multipleChoice" type="radio" name="activityTypeGroup" value="scelta multipla" />
-                                <label for="multipleChoice">Scelta multipla</label>
-                                <input id="openQuest" type="radio" name="activityTypeGroup" value="domanda aperta" />
-                                <label for="openQuest">Domanda aperta</label>
-                                <input id="figur" type="radio" name="activityTypeGroup" value="figurativa" />
-                                <label for="figur">Figurativa</label>
-
-                                <h5>Dove si svolge l'attività?(ambientazione)</h5>
-                                <input type="text" name="where" />
-
-                                <h5>Spiegazione per lo svolgimento dell'attività:</h5>
-                                <textarea name="instructions" rows="3" cols="40"></textarea>
-                            </li>
+                        <ul id="activitiesSaved">
+                            <p> Nessuna attività per questa storia </p>
                         </ul>
-                        <input type="button" @click="addActivity" value="Aggiungi attività" />
+
                         <input type="button" @click="deleteActivity" value="Rimuovi attività" />
-                    
+
+                    </li>
                 </ul>
-                
-                <input type="submit" value="Finito" />
             </form>
+
+            <form id="activitiesForm" @submit="addActivity">
+                <h2>Attività</h2>
+                <ul id="activitiesList">
+                    <li>
+                        <h5>Scegli il tipo dell'attività : </h5>
+                        <input id="multipleChoice" type="radio" name="activityTypeGroup" value="scelta multipla" checked />
+                        <label for="multipleChoice">Scelta multipla</label>
+                        <input id="openQuest" type="radio" name="activityTypeGroup" value="domanda aperta" />
+                        <label for="openQuest">Domanda aperta</label>
+                        <input id="figur" type="radio" name="activityTypeGroup" value="figurativa" />
+                        <label for="figur">Figurativa</label>
+
+                        <h5>Dove si svolge l'attività?(ambientazione)</h5>
+                        <input type="text" name="where" />
+
+                        <h5>Spiegazione per lo svolgimento dell'attività:</h5>
+                        <textarea name="instructions" rows="3" cols="40"></textarea>
+                    </li>
+                </ul>
+                <input type="submit" value="Salva attività" />
+            </form>
+            <button @click="checkForm">FINITO</button>
         </div> 
     `,
     methods: {
-        newActivity(){   
-            this.lastActivity++;
-            //if there aren't activities i remove the informative message
-            if($('#activitiesList > p'))$('#activitiesList > p').remove();
-        },
         deleteActivity(){
             //if there's more than one story
-            if($('#activitiesList > li').length != 1){
-                $('#activitiesList > li:last-child').remove();
-                $('#activitiesList > h2:last-child').remove();
+            if($('#activitiesSaved > li').length != 1){
+                $('#activitiesSaved > li:last-child').remove();
             }else{
-                $('#activitiesList').html('<p>Nessuna attività per questa storia</p>');
+                $('#activitiesSaved').html('<p>Nessuna attività per questa storia</p>');
             }
-            if(this.lastActivity-- != -1) this.lastActivity--;
+            /*TODO
+            se mettiamo un cestino(icona) per eliminare una determinata attività dobbiamo vedere il suo indice ed eliminarla da activities
+            se no la eliminiamo dalla lista visibile e non dal json
+            */
+
+            //the min value can be 1, because the first activity is the number 1
+            if((this.lastActivity - 1) > 0) this.lastActivity--;
         },
-        addActivity(event) {             
-            
+        addActivity(e) {             
+            e.preventDefault();
             let activity = {
                 type: $("#activitiesList li input:checked").val(),
                 setting:  $("#activitiesList li input[name='where']").val(),
@@ -103,24 +106,53 @@ export default {
             }
             this.activities.push(activity);
             
-            $('form')[1].reset();
+            //if there were 0 stories, i need to remove the informative message,then i push to the list the activity that i saved
+            if($('#activitiesSaved > p'))$('#activitiesSaved > p').remove();
+            $('#activitiesSaved').append('<li>Attività '+ this.lastActivity +'</li>');
+            this.lastActivity++;
+
+            $('#activitiesForm')[0].reset();
         },
-        checkForm: function(e) {
-            e.preventDefault();
-            var array = $('form').serializeArray();
+        checkForm: function() {
+            var data = new FormData($('#editStoryForm')[0]);// $('#editStoryForm').serializeArray();
+            
+            /*
             var obj = {};
             $.map(array, function(n){
                 obj[n['name']] = n['value'];
             });
-     
-            obj.activities = this.activities;
             
-            $.post( "http://localhost:8080/story", obj, function(response) {
-            });
+            for(let [name, value] of array) {
+                obj[name] = value; 
+                console.log(name,value);
+            }
+            obj.activities = this.activities;
 
+            $('#editStoryForm')[0].reset();
+            this.activities = [];
+
+            $.post( "/story", JSON.stringify(obj), function(res) {
+                console.log("post con successo");
+            });*/
+            //data.append('activities',this.activities);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "/story",
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log("success");
+                },
+                error: function (e) {
+                    console.log("error");
+                }
+            });
+            $('#toHome').click();
         }
     },
     mounted(){
-        this.newActivityMenu = $('#activitiesList').html();
+        
     }   
 }

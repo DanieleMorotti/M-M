@@ -4,7 +4,7 @@ export default {
     data() {
         return{
             currentStory: 0,
-            storiesList:2
+            storiesList: []
         }
     },
     template: `
@@ -18,7 +18,7 @@ export default {
                 <span v-if="storiesList.length == 0">Nessuna storia presente</span>
                 <div id="stories-list" class="list-group" v-else>
                     <button v-for="(story,index) in storiesList" :key="index" type="button" class="list-group-item list-group-item-action" 
-                    @click="changeActive(index)"> {{story.name}} <span id="icon-group"><i tabindex="0" class="fas fa-file-upload"></i>&nbsp;&nbsp;
+                    @click="changeActive(index)"> {{story}} <span id="icon-group"><i tabindex="0" class="fas fa-file-upload"></i>&nbsp;&nbsp;
                     <i tabindex="0" class="fas fa-qrcode"></i>&nbsp;&nbsp;<i tabindex="0" class="fas fa-trash-alt" @click="deleteStory(index)"></i></span></button>
                 </div>
             </div>
@@ -38,15 +38,15 @@ export default {
         deleteStory(index){
             this.storiesList.splice(index,1);
             this.currentStory = this.storiesList.length != 0 ? 0 : null;
-        },
-        displayStories(response) {
-            console.log(this.storiesList);
         }
     },
     mounted() {
-       $.get( "http://localhost:8080/titles", function(response) {
-           console.log(response);
-           //in response ci sono i nomi delle storie presenti nella cartella stories
+        console.log(this.storiesList);
+
+        $.get( "/titles", (res) => {
+            for(let i=0; i < res.length;i++){
+                this.storiesList.push(res[i]);
+            }
         });
     }
 }
