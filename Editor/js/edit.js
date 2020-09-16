@@ -100,16 +100,10 @@ export default {
                 this.activities.push(activity);
                 this.lastActivity++;
             }     
-        
-            //if there were 0 stories, i need to remove the informative message,then i push to the list the activity that i saved
-      //      if($('#activitiesSaved > p')) 
-            //        $('#activitiesSaved > p').remove();
 
             $('#activitiesForm')[0].reset();
         },
         editActivity(index){
-            if(this.activities[index]) {
-                console.log(this.activities[index].type);
                 $("#activitiesList li input[value='"+this.activities[index].type+"']").prop('checked', true);
                 $("#activitiesList li input[name='where']").val(this.activities[index].setting);
                 $("#activitiesList li textarea[name='instructions']").val(this.activities[index].instructions);
@@ -117,22 +111,9 @@ export default {
                 $('#activitiesForm h2').text(`Modifica l'attività ${index +1}`)
                 $('#saveActivity').prop("value", "Salva modifiche");
                 this.currentActivity = index;
-            }
         },
         deleteActivity(index) {
-            if($(`#activitiesSaved > li:nth-child(${index})`)) {
-                $(`#activitiesSaved > li:nth-child(${index})`).remove();
-            }
-
-            if($('#activitiesSaved > li').length == 1){
-                $('#activitiesSaved').html('<p>Nessuna attività per questa storia</p>');
-            }
-
-            //the min value can be 1, because the first activity is the number 1
-            if((this.lastActivity - 1) > 0) this.lastActivity--;
-
-
-            this.activities.splice(index,1);
+             this.activities.splice(index,1);
         },
         checkForm: function() {
             var data = new FormData($('#editStoryForm')[0]);// $('#editStoryForm').serializeArray();

@@ -31,9 +31,7 @@ export default {
             this.currentStory = index;
         },
         newStory(){
-            $('#toEditMenu').click();
-            var newSt;
-            
+            $('#toEditMenu').click();            
         },
         deleteStory(index){
             this.storiesList.splice(index,1);
