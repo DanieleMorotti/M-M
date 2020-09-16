@@ -24,14 +24,19 @@ app.post('/story', (req, res) => {
 
 	form.parse(req);
 	form.on('field', (name, field) => {
-			jsonFile[name] = field;
-			console.log(jsonFile);
+			//because activities field is already a json,so i need to convert it to a js object to push into jsonfile
+			if(name === "activities"){
+				let tempObj = JSON.parse(field);
+				jsonFile[name] = tempObj;
+			}else{
+				jsonFile[name] = field;
+			}
 		})
 		.on('fileBegin', function (name, file){
 			if(file.name != "")file.path = __dirname + '/stories/files/' + file.name;
 		})
 		.on('file', (name, file) => {
-			if(file.name != "")jsonFile[name] = file.name;
+			jsonFile[name] = file.name;
 		})
 		.on('error', (err) => {
 			console.error('Error', err);

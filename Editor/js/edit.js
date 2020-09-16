@@ -134,7 +134,8 @@ export default {
             $.post( "/story", JSON.stringify(obj), function(res) {
                 console.log("post con successo");
             });*/
-            //data.append('activities',this.activities);
+
+            data.append('activities',JSON.stringify(this.activities));
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
