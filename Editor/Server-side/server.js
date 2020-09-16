@@ -70,13 +70,17 @@ app.get('/titles',(req, res) => {
 	var names = [] ;
 
 	fs.readdir(dir, (err, files) => {
-		if(err)console.log(err);
-        files.forEach(file => {
-			if (path.extname(file) == ".json") names.push(file.slice(0, -5));
-		});
-		console.log(names);
-		res.status(200);
-		res.json(names);
+		if(err) {
+			console.log(err);
+		}
+		else {
+			files.forEach(file => {
+				if (path.extname(file) == ".json") names.push(file.slice(0, -5));
+			});
+			console.log(names);
+			res.status(200);
+			res.json(names);
+		}	
 	});
 	
 })

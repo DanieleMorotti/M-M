@@ -34,3 +34,11 @@ form textarea{
 #activitiesList{
     list-style: none;
 }
+
+#icon-group{
+    margin-left: 3em;
+}
+
+i.fas{
+    cursor:grab;
+}

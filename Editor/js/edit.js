@@ -3,7 +3,8 @@ export default {
     data() {
         return{
             lastActivity:1,
-            activities: []
+            activities: [],
+            currentActivity: 0,
         }
     }, //action="/stories" method="POST"
     template: `
@@ -47,22 +48,21 @@ export default {
                     </li>
                     <li>    
                         <h2>Attività</h2>
-                        <ul id="activitiesSaved">
-                            <p> Nessuna attività per questa storia </p>
+                        <p v-if="this.activities.length==0"> Nessuna attività per questa storia </p>
+                        <ul v-else id="activitiesSaved">
+                            <li v-for="(activity,index) in activities" :key="index">Attività {{index+1}} <span id="icon-group"><i class="fas fa-edit" @click="editActivity(index)"></i>&nbsp;&nbsp;
+                    <i  class="fas fa-trash-alt" @click="deleteActivity(index)"></i></span></li>
                         </ul>
-
-                        <input type="button" @click="deleteActivity" value="Rimuovi attività" />
-
                     </li>
                 </ul>
             </form>
 
             <form id="activitiesForm" @submit="addActivity">
-                <h2>Attività</h2>
+                <h2>Nuova attività</h2>
                 <ul id="activitiesList">
                     <li>
                         <h5>Scegli il tipo dell'attività : </h5>
-                        <input id="multipleChoice" type="radio" name="activityTypeGroup" value="scelta multipla" checked />
+                        <input id="multipleChoice" type="radio" name="activityTypeGroup" value="scelta multipla" checked/>
                         <label for="multipleChoice">Scelta multipla</label>
                         <input id="openQuest" type="radio" name="activityTypeGroup" value="domanda aperta" />
                         <label for="openQuest">Domanda aperta</label>
@@ -76,42 +76,63 @@ export default {
                         <textarea name="instructions" rows="3" cols="40"></textarea>
                     </li>
                 </ul>
-                <input type="submit" value="Salva attività" />
+                <input id="saveActivity" type="submit" value="Salva attività" />
             </form>
             <button @click="checkForm">FINITO</button>
         </div> 
     `,
     methods: {
-        deleteActivity(){
-            //if there's more than one story
-            if($('#activitiesSaved > li').length != 1){
-                $('#activitiesSaved > li:last-child').remove();
-            }else{
-                $('#activitiesSaved').html('<p>Nessuna attività per questa storia</p>');
-            }
-            /*TODO
-            se mettiamo un cestino(icona) per eliminare una determinata attività dobbiamo vedere il suo indice ed eliminarla da activities
-            se no la eliminiamo dalla lista visibile e non dal json
-            */
-
-            //the min value can be 1, because the first activity is the number 1
-            if((this.lastActivity - 1) > 0) this.lastActivity--;
-        },
-        addActivity(e) {             
+        addActivity(e) {   
             e.preventDefault();
+            
             let activity = {
                 type: $("#activitiesList li input:checked").val(),
                 setting:  $("#activitiesList li input[name='where']").val(),
                 instructions: $("#activitiesList li textarea[name='instructions']").val()
             }
-            this.activities.push(activity);
-            
+
+            if($('#saveActivity').val() == "Salva modifiche"){
+                console.log(this.currentActivity);
+                this.activities[this.currentActivity] = activity;
+                $('#activitiesForm h2').text(`Nuova attività`)
+                $('#saveActivity').prop("value", "Salva attività");
+            }
+            else {
+                this.activities.push(activity);
+                this.lastActivity++;
+            }     
+        
             //if there were 0 stories, i need to remove the informative message,then i push to the list the activity that i saved
-            if($('#activitiesSaved > p'))$('#activitiesSaved > p').remove();
-            $('#activitiesSaved').append('<li>Attività '+ this.lastActivity +'</li>');
-            this.lastActivity++;
+      //      if($('#activitiesSaved > p')) 
+            //        $('#activitiesSaved > p').remove();
 
             $('#activitiesForm')[0].reset();
+        },
+        editActivity(index){
+            if(this.activities[index]) {
+                $("#activitiesList li input[value='"+this.activities[index].type+"']").attr('checked', 'checked');
+                $("#activitiesList li input[name='where']").val(this.activities[index].setting);
+                $("#activitiesList li textarea[name='instructions']").val(this.activities[index].instructions);
+                
+                $('#activitiesForm h2').text(`Modifica l'attività ${index +1}`)
+                $('#saveActivity').prop("value", "Salva modifiche");
+                this.currentActivity = index;
+            }
+        },
+        deleteActivity(index) {
+            if($(`#activitiesSaved > li:nth-child(${index})`)) {
+                $(`#activitiesSaved > li:nth-child(${index})`).remove();
+            }
+
+            if($('#activitiesSaved > li').length == 1){
+                $('#activitiesSaved').html('<p>Nessuna attività per questa storia</p>');
+            }
+
+            //the min value can be 1, because the first activity is the number 1
+            if((this.lastActivity - 1) > 0) this.lastActivity--;
+
+
+            this.activities.splice(index,1);
         },
         checkForm: function() {
             var data = new FormData($('#editStoryForm')[0]);// $('#editStoryForm').serializeArray();
@@ -152,7 +173,6 @@ export default {
             $('#toHome').click();
         }
     },
-    mounted(){
-        
-    }   
+    
+
 }
