@@ -92,7 +92,6 @@ export default {
             }
 
             if($('#saveActivity').val() == "Salva modifiche"){
-                console.log(this.currentActivity);
                 this.activities[this.currentActivity] = activity;
                 $('#activitiesForm h2').text(`Nuova attività`)
                 $('#saveActivity').prop("value", "Salva attività");
@@ -110,7 +109,8 @@ export default {
         },
         editActivity(index){
             if(this.activities[index]) {
-                $("#activitiesList li input[value='"+this.activities[index].type+"']").attr('checked', 'checked');
+                console.log(this.activities[index].type);
+                $("#activitiesList li input[value='"+this.activities[index].type+"']").prop('checked', true);
                 $("#activitiesList li input[name='where']").val(this.activities[index].setting);
                 $("#activitiesList li textarea[name='instructions']").val(this.activities[index].instructions);
                 
