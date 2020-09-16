@@ -102,11 +102,8 @@ export default {
                     instructions: $("#activitiesList li textarea[name='instructions']").val()
                 }
                 this.activities.push(activity);
-<<<<<<< HEAD
                 this.currentActivity++;
               //  console.log( this.currentActivity);
-=======
->>>>>>> 1a7f776fbfc16bd112378ea94e8b6357c9b1fd9f
             }     
 
             $('#activitiesForm')[0].reset();
