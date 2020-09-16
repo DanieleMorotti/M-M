@@ -46,5 +46,10 @@ export default {
                 this.storiesList.push(res[i]);
             }
         });
+        
+        //listening for updateStories event
+		  this.$root.$on('updateStories',(title) => {
+            this.storiesList.push(title);
+        });
     }
 }

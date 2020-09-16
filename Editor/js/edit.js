@@ -2,11 +2,10 @@ export default {
     name: 'editMenu',
     data() {
         return{
-            lastActivity:1,
             activities: [],
             currentActivity: 0,
         }
-    }, //action="/stories" method="POST"
+    }, 
     template: `
         <div id="editMenu" class="container">
             <p>Inserisci i dati per creare la tua nuova storia </p>
@@ -103,8 +102,11 @@ export default {
                     instructions: $("#activitiesList li textarea[name='instructions']").val()
                 }
                 this.activities.push(activity);
+<<<<<<< HEAD
                 this.currentActivity++;
               //  console.log( this.currentActivity);
+=======
+>>>>>>> 1a7f776fbfc16bd112378ea94e8b6357c9b1fd9f
             }     
 
             $('#activitiesForm')[0].reset();
@@ -130,25 +132,6 @@ export default {
         checkForm: function() {
             var data = new FormData($('#editStoryForm')[0]);// $('#editStoryForm').serializeArray();
             
-            /*
-            var obj = {};
-            $.map(array, function(n){
-                obj[n['name']] = n['value'];
-            });
-            
-            for(let [name, value] of array) {
-                obj[name] = value; 
-                console.log(name,value);
-            }
-            obj.activities = this.activities;
-
-            $('#editStoryForm')[0].reset();
-            this.activities = [];
-
-            $.post( "/story", JSON.stringify(obj), function(res) {
-                console.log("post con successo");
-            });*/
-
             data.append('activities',JSON.stringify(this.activities));
             $.ajax({
                 type: "POST",
@@ -164,6 +147,9 @@ export default {
                     console.log("error");
                 }
             });
+            //emit event to update the home component stories list
+            this.$root.$emit('updateStories',$('#inpTitle').val());
+            $('#editStoryForm')[0].reset();
             $('#toHome').click();
         }
     },
