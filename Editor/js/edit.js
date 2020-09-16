@@ -50,7 +50,7 @@ export default {
                         <h2>Attività</h2>
                         <p v-if="this.activities.length==0"> Nessuna attività per questa storia </p>
                         <ul v-else id="activitiesSaved">
-                            <li v-for="(activity,index) in activities" :key="index">Attività {{index+1}} <span id="icon-group"><i class="fas fa-edit" @click="editActivity(index)"></i>&nbsp;&nbsp;
+                            <li v-for="(activity,index) in activities" :key="index">Attività {{activity.number +1}} <span id="icon-group"><i class="fas fa-edit" @click="editActivity(index)"></i>&nbsp;&nbsp;
                     <i  class="fas fa-trash-alt" @click="deleteActivity(index)"></i></span></li>
                         </ul>
                     </li>
@@ -84,21 +84,27 @@ export default {
     methods: {
         addActivity(e) {   
             e.preventDefault();
-            
-            let activity = {
-                type: $("#activitiesList li input:checked").val(),
-                setting:  $("#activitiesList li input[name='where']").val(),
-                instructions: $("#activitiesList li textarea[name='instructions']").val()
-            }
 
             if($('#saveActivity').val() == "Salva modifiche"){
-                this.activities[this.currentActivity] = activity;
+                this.activities[this.currentActivity].type =  $("#activitiesList li input:checked").val();
+                this.activities[this.currentActivity].setting = $("#activitiesList li input[name='where']").val();
+                this.activities[this.currentActivity].instructions = $("#activitiesList li textarea[name='instructions']").val();
+
                 $('#activitiesForm h2').text(`Nuova attività`)
                 $('#saveActivity').prop("value", "Salva attività");
+                this.currentActivity = this.activities[this.activities.length - 1].number +1;
+               // console.log( this.currentActivity);
             }
             else {
+                let activity = {
+                    number: this.currentActivity,
+                    type: $("#activitiesList li input:checked").val(),
+                    setting:  $("#activitiesList li input[name='where']").val(),
+                    instructions: $("#activitiesList li textarea[name='instructions']").val()
+                }
                 this.activities.push(activity);
-                this.lastActivity++;
+                this.currentActivity++;
+              //  console.log( this.currentActivity);
             }     
 
             $('#activitiesForm')[0].reset();
@@ -108,12 +114,18 @@ export default {
                 $("#activitiesList li input[name='where']").val(this.activities[index].setting);
                 $("#activitiesList li textarea[name='instructions']").val(this.activities[index].instructions);
                 
-                $('#activitiesForm h2').text(`Modifica l'attività ${index +1}`)
+                $('#activitiesForm h2').text("Modifica l'attività "+ (this.activities[index].number + 1))
                 $('#saveActivity').prop("value", "Salva modifiche");
                 this.currentActivity = index;
+             //   console.log( this.currentActivity);
         },
         deleteActivity(index) {
              this.activities.splice(index,1);
+             $('#activitiesForm')[0].reset();
+             $('#activitiesForm h2').text(`Nuova attività`)
+             $('#saveActivity').prop("value", "Salva attività");
+             this.currentActivity = this.activities[this.activities.length - 1].number +1;
+          //   console.log( this.currentActivity);
         },
         checkForm: function() {
             var data = new FormData($('#editStoryForm')[0]);// $('#editStoryForm').serializeArray();
