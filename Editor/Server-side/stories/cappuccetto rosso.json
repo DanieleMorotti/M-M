@@ -1,7 +1,7 @@
 {
   "title": "cappuccetto rosso",
   "setting": "bosco",
-  "description": "bla bla bla ..",
+  "description": "prova modifica",
   "pocketItem": "cestino",
   "introduction": "Questa e' l'introduzione..",
   "activities": [
@@ -10,15 +10,9 @@
       "type": "scelta multipla",
       "setting": "prima",
       "instructions": "spiegazione1"
-    },
-    {
-      "number": 1,
-      "type": "domanda aperta",
-      "setting": "seconda",
-      "instructions": "spiegazione2"
     }
   ],
-  "background": "IMG_7931.JPG",
+  "background": "",
   "pocketItemCss": "",
   "pocketItemJs": ""
 }

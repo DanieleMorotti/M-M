@@ -66,7 +66,7 @@ app.get('/stories',(req, res) => {
 	console.log(req.query.story);
 	const data = require('./stories/'+req.query.story+'.json');
 
-	res.json( data);
+	res.json(data);
 })
 
 //return the list of titles of the stories stored in the server

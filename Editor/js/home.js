@@ -21,7 +21,7 @@ export default {
                 <span v-if="storiesList.length == 0">Nessuna storia presente</span>
                 <div id="stories-list" class="list-group" v-else>
                     <button v-for="(story,index) in storiesList" :key="index" type="button" class="list-group-item list-group-item-action" 
-                    @click="changeActive(index)"> {{story}} <span id="icon-group"><i class="fas fa-edit" @click="editStory(index)"><i tabindex="0" class="fas fa-file-upload"></i>&nbsp;&nbsp;
+                    @click="changeActive(index)"> {{story}} <span id="icon-group"><i class="fas fa-edit" @click="editStory(index)"></i>&nbsp;&nbsp;<i tabindex="0" class="fas fa-file-upload"></i>&nbsp;&nbsp;
                     <i tabindex="0" class="fas fa-qrcode"></i>&nbsp;&nbsp;<i tabindex="0" class="fas fa-trash-alt" @click="deleteStory(index)"></i></span></button>
                 </div>
             </div>
@@ -46,8 +46,8 @@ export default {
             $('#toEditMenu').click();     
             const promise = new Promise((succ, err) => {
                 bus.$on('ready',(title) => {
-                console.log(title);
-                succ('ok');
+                    console.log(title);
+                    succ('ok');
                 });
             });
             

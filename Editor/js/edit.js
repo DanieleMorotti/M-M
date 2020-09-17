@@ -94,7 +94,6 @@ export default {
                 $('#activitiesForm h2').text(`Nuova attività`)
                 $('#saveActivity').prop("value", "Salva attività");
                 this.currentActivity = this.activities[this.activities.length - 1].number +1;
-               // console.log( this.currentActivity);
             }
             else {
                 let activity = {
@@ -105,7 +104,6 @@ export default {
                 }
                 this.activities.push(activity);
                 this.currentActivity++;
-              //  console.log( this.currentActivity);
             }     
 
             $('#activitiesForm')[0].reset();
@@ -118,18 +116,16 @@ export default {
                 $('#activitiesForm h2').text("Modifica l'attività "+ (this.activities[index].number + 1))
                 $('#saveActivity').prop("value", "Salva modifiche");
                 this.currentActivity = index;
-             //   console.log( this.currentActivity);
         },
         deleteActivity(index) {
              this.activities.splice(index,1);
              $('#activitiesForm')[0].reset();
              $('#activitiesForm h2').text(`Nuova attività`)
              $('#saveActivity').prop("value", "Salva attività");
-             this.currentActivity = this.activities[this.activities.length - 1].number +1;
-          //   console.log( this.currentActivity);
+             this.currentActivity = (this.activities.length != 0)?this.activities[this.activities.length - 1].number +1: null;
         },
         checkForm: function() {
-            var data = new FormData($('#editStoryForm')[0]);// $('#editStoryForm').serializeArray();
+            var data = new FormData($('#editStoryForm')[0]);
             
             data.append('activities',JSON.stringify(this.activities));
             $.ajax({
@@ -139,24 +135,27 @@ export default {
                 data: data,
                 processData: false,
                 contentType: false,
-                success: function (data) {
+                success: (data) =>{
+                    //emit event to update the home component stories list
+                    this.$root.$emit('updateStories',$('#inpTitle').val());
+                    $('#editStoryForm')[0].reset();
+                    $('#activitiesForm')[0].reset();
+                    this.activities = [];
+                    $('#toHome').click();
                     console.log("success");
                 },
                 error: function (e) {
                     console.log("error");
                 }
             });
-            //emit event to update the home component stories list
-            this.$root.$emit('updateStories',$('#inpTitle').val());
-            $('#editStoryForm')[0].reset();
-            $('#activitiesForm')[0].reset();
-            $('#toHome').click();
+            
         },
         showData(data) {
             Object.entries(data).map(item => {
-                if(item[0] == "background") {
-                    $("*[name ='"+item[0]+"'").hide();
-                    $("label[for='inpBack']").append("<p>" + item[1] + "</p>")
+                if(item[0] == "background" || item[0] == "pocketItemCss" || item[0] == "pocketItemJs") {
+                    let id = $(`[name=${item[0]}`).eq(0).attr('id');
+                    //$("*[name ='"+item[0]+"'").hide();
+                    $(`#${id}`).after("<p>" + item[1] + "</p>");
                 }
                 else if(item[0] == "activities") {
                     for(var i = 0; i < item[1].length; i++) {
@@ -168,10 +167,9 @@ export default {
                 }
                // console.log(item[0]) 
               //  console.log(item[1])
-              })
+            })
         }
     },
-    
     mounted() {
         bus.$emit('ready','pronto'); 
         
@@ -179,7 +177,7 @@ export default {
             this.currentStory = data;
             $.ajax({
                 type: "GET",
-                enctype: 'multipart/form-data',
+                dataType: "json",
                 url: "/stories?story="+this.currentStory,
                 success: (data) =>{
                     //fill form with json's fields
