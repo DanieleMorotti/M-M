@@ -44,7 +44,7 @@ app.post('/story', (req, res) => {
 		.on('end',()=>{
 			let json = JSON.stringify(jsonFile,null,2);
 
-			fs.writeFile('./stories/'+ jsonFile['title'] +'.json', json, function (err) {
+			fs.writeFile('./stories/'+ jsonFile['title'].trim() +'.json', json, function (err) {
 				if (err) throw err;
 				console.log('Saved!');
 			});
@@ -89,6 +89,16 @@ app.get('/titles',(req, res) => {
 		}	
 	});
 	
+})
+
+
+app.delete('/story/:title', (req, res) => {
+	console.log(req.params.title);
+	fs.unlink('./stories/'+ req.params.title +'.json', function (err) {
+		if (err) throw err;
+		console.log('Deleted');
+		res.status(200).end();
+	});
 })
 
 app.listen(8080, () => {

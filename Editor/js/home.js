@@ -34,15 +34,26 @@ export default {
             this.currentStory = index;
         },
         newStory(){
-            $('#toEditMenu').click();            
+            $('#toEditMenu').click();  
+            bus.$emit('story','')          
         },
         deleteStory(index){
+            var title = this.storiesList[index];
             this.storiesList.splice(index,1);
             this.currentStory = this.storiesList.length != 0 ? 0 : null;
+
+            $.ajax({
+                url: '/story/'+title,
+                type: 'DELETE',
+                success: () =>{
+                    console.log('story deleted')
+                },
+                error: () =>{
+                    console.log('error')
+                }
+            });
         },
         editStory(index) {
-          
-            //console.log(this.storiesList[index]);
             $('#toEditMenu').click();     
             const promise = new Promise((succ, err) => {
                 bus.$on('ready',(title) => {

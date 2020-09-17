@@ -6,10 +6,10 @@
   "introduction": "Questa e' l'introduzione..",
   "activities": [
     {
-      "number": 0,
-      "type": "scelta multipla",
-      "setting": "prima",
-      "instructions": "spiegazione1"
+      "number": 1,
+      "type": "domanda aperta",
+      "setting": "nuova",
+      "instructions": "2"
     }
   ],
   "background": "",

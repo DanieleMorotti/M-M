@@ -160,6 +160,7 @@ export default {
                 else if(item[0] == "activities") {
                     for(var i = 0; i < item[1].length; i++) {
                         this.activities.push(item[1][i]);
+                        this.currentActivity++;
                     }
                 }
                 else {
@@ -170,23 +171,29 @@ export default {
             })
         }
     },
-    mounted() {
+    activated() {
+        $('#editStoryForm')[0].reset();
+        $('#activitiesForm')[0].reset();
         bus.$emit('ready','pronto'); 
         
         bus.$on('story',(data) =>{
             this.currentStory = data;
-            $.ajax({
-                type: "GET",
-                dataType: "json",
-                url: "/stories?story="+this.currentStory,
-                success: (data) =>{
-                    //fill form with json's fields
-                    this.showData(data);
-                },
-                error: function (e) {
-                    console.log("error");
-                }
-            });
+            console.log(this.currentStory);
+
+            if(this.currentStory) {
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: "/stories?story="+this.currentStory,
+                    success: (data) =>{
+                        //fill form with json's fields
+                            this.showData(data);
+                    },
+                    error: function (e) {
+                        console.log("error");
+                    }
+                });
+            }
         })
     }
 }
