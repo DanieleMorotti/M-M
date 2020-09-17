@@ -1,14 +1,17 @@
+import { bus } from './index.js';
+
 export default {
     name: 'editMenu',
     data() {
         return{
             activities: [],
             currentActivity: 0,
+            currentStory: ""
         }
     }, 
     template: `
         <div id="editMenu" class="container">
-            <p>Inserisci i dati per creare la tua nuova storia </p>
+            <p id="title">Inserisci i dati per creare la tua nuova storia </p>
             <form id="editStoryForm">
                 <ul>
                     <li>
@@ -83,7 +86,6 @@ export default {
     methods: {
         addActivity(e) {   
             e.preventDefault();
-
             if($('#saveActivity').val() == "Salva modifiche"){
                 this.activities[this.currentActivity].type =  $("#activitiesList li input:checked").val();
                 this.activities[this.currentActivity].setting = $("#activitiesList li input[name='where']").val();
@@ -147,9 +149,46 @@ export default {
             //emit event to update the home component stories list
             this.$root.$emit('updateStories',$('#inpTitle').val());
             $('#editStoryForm')[0].reset();
+            $('#activitiesForm')[0].reset();
             $('#toHome').click();
+        },
+        showData(data) {
+            Object.entries(data).map(item => {
+                if(item[0] == "background") {
+                    $("*[name ='"+item[0]+"'").hide();
+                    $("label[for='inpBack']").append("<p>" + item[1] + "</p>")
+                }
+                else if(item[0] == "activities") {
+                    for(var i = 0; i < item[1].length; i++) {
+                        this.activities.push(item[1][i]);
+                    }
+                }
+                else {
+                    $("*[name ='"+item[0]+"'").val(item[1]);
+                }
+               // console.log(item[0]) 
+              //  console.log(item[1])
+              })
         }
     },
     
-
+    mounted() {
+        bus.$emit('ready','pronto'); 
+        
+        bus.$on('story',(data) =>{
+            this.currentStory = data;
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                url: "/stories?story="+this.currentStory,
+                success: (data) =>{
+                    //fill form with json's fields
+                    this.showData(data);
+                },
+                error: function (e) {
+                    console.log("error");
+                }
+            });
+        })
+    }
 }

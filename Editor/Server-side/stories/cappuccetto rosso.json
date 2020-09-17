@@ -1,16 +1,24 @@
 {
   "title": "cappuccetto rosso",
   "setting": "bosco",
-  "description": "la mamma manda...",
+  "description": "bla bla bla ..",
   "pocketItem": "cestino",
-  "introduction": "c'era una volta..",
-  "where": "",
-  "instructions": "",
+  "introduction": "Questa e' l'introduzione..",
   "activities": [
     {
+      "number": 0,
       "type": "scelta multipla",
-      "setting": "casa nonna",
-      "instructions": "..."
+      "setting": "prima",
+      "instructions": "spiegazione1"
+    },
+    {
+      "number": 1,
+      "type": "domanda aperta",
+      "setting": "seconda",
+      "instructions": "spiegazione2"
     }
-  ]
+  ],
+  "background": "IMG_7931.JPG",
+  "pocketItemCss": "",
+  "pocketItemJs": ""
 }

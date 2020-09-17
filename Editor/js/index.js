@@ -1,5 +1,7 @@
 import Routes from './routes.js'
 
+export const bus = new Vue();
+
 const router = new VueRouter({
   routes: Routes,
 })

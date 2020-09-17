@@ -1,22 +1,24 @@
 {
   "title": "biancaneve",
   "setting": "bosco",
-  "description": "bla bla bla..",
-  "pocketItem": "boh",
-  "introduction": "c'era una volta..",
+  "description": "bla bla ..",
+  "pocketItem": "boh ",
+  "introduction": "Questa e' l'introduzione..",
   "activities": [
     {
+      "number": 0,
       "type": "scelta multipla",
-      "setting": "prima",
-      "instructions": "1"
+      "setting": "ambintazione 1",
+      "instructions": ""
     },
     {
-      "type": "domanda aperta",
-      "setting": "seconda",
-      "instructions": "2"
+      "number": 1,
+      "type": "figurativa",
+      "setting": "ambientazione 2",
+      "instructions": ""
     }
   ],
-  "background": "IMG_7930.JPG",
+  "background": "",
   "pocketItemCss": "",
   "pocketItemJs": ""
 }

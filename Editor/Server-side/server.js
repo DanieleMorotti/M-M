@@ -53,7 +53,6 @@ app.post('/story', (req, res) => {
 });
 
 
-const data = require('./stories/storia1.json');
 
 app.get('/',(req,res) =>{
 	res.status(200);
@@ -64,6 +63,9 @@ app.get('/',(req,res) =>{
 app.get('/stories',(req, res) => {
 	//res.header("Access-Control-Allow-Origin", "http://localhost:5000");
 	res.status(200);
+	console.log(req.query.story);
+	const data = require('./stories/'+req.query.story+'.json');
+
 	res.json( data);
 })
 
