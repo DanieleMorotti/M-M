@@ -38,14 +38,14 @@ app.post('/story', (req, res) => {
 			let json = JSON.stringify(jsonFile,null,2);
 			let original = jsonFile['originalTitle'];
 
+			//delete the old file if the title is changed
 			if(original && original != jsonFile['title']) {
 				fs.unlink('./stories/'+ jsonFile['originalTitle'] +'.json', function (err) {
 					if (err) throw err;
 					console.log('deleted');
 				});
 			}
-			
-			console.log('./stories/'+ jsonFile['title'] +'.json');
+			//saved the new json file
 			fs.writeFile('./stories/'+ jsonFile['title'] +'.json', json, function (err) {
 				if (err) throw err;
 				console.log('Saved! ' + json);
@@ -53,7 +53,6 @@ app.post('/story', (req, res) => {
 			res.status(200).end();
 		});
 });
-
 
 
 app.get('/',(req,res) =>{

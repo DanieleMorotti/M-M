@@ -131,12 +131,22 @@ export default {
             var data = new FormData($('#editStoryForm')[0]);
 
             var originTitle = this.currentStory;
+            var verifyInput = $('input[type=file]');
             var titleChanged = ($("#inpTitle").val() != originTitle && (originTitle != '')) ? true : false;
 
             data.append('activities',JSON.stringify(this.activities));
            
             data.append('originalTitle',JSON.stringify(originTitle));
             
+            //verify if the files have been entered, if not i need to keep the old file name
+            for(let i=0; i< verifyInput.length;i++){
+                if(verifyInput.eq(i).val())console.log("Nuovo file inserito per",verifyInput.eq(i).attr('name'));
+                else{
+                    //removing the field as file and insert it as text
+                    data.delete(verifyInput.eq(i).attr('name'));
+                    data.append(verifyInput.eq(i).attr('name'),$(`#${verifyInput.eq(i).attr('id')} + p`).text());
+                }   
+            }
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
@@ -165,7 +175,7 @@ export default {
             Object.entries(data).map(item => {
                 if(item[0] == "background" || item[0] == "pocketItemCss" || item[0] == "pocketItemJs") {
                     let id = $(`[name=${item[0]}`).eq(0).attr('id');
-                    $(`#${id} + p`).text( item[1] );
+                    $(`#${id} + p`).text("File presente:"+item[1] );
                 }
                 else if(item[0] == "activities") {
                     this.activities = [];
