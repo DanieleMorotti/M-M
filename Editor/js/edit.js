@@ -25,6 +25,7 @@ export default {
                     <li>
                         <label for="inpBack">Inserisci lo sfondo:</label>
                         <input type="file" name="background" id="inpBack" accept="image/*" />
+                        <p class="infoForFile"></p>
                     </li>
                     <li>
                         <label for="inpDescr">Inserisci una breve descrizione iniziale alla storia:</label><br>
@@ -37,10 +38,12 @@ export default {
                             <li>
                                 <label for="inpObjCss">Aggiungi un file CSS</label>
                                 <input type="file" name="pocketItemCss" id="inpObjCss" accept="text/css" />
+                                <p class="infoForFile"></p>
                             </li>
                             <li>
                                 <label for="inpObjJs">Aggiungi un file JS</label>
                                 <input type="file" name="pocketItemJs" id="inpObjJs" accept=".js" />
+                                <p class="infoForFile"></p>
                             </li>
                         </ul>
                     </li>
@@ -148,6 +151,7 @@ export default {
                     console.log("success");
                     $('#editStoryForm')[0].reset();
                     $('#activitiesForm')[0].reset();
+                    $('.infoForFile').text("");
                     $('#toHome').click();
                 },
                 error: function (e) {
@@ -160,8 +164,7 @@ export default {
             Object.entries(data).map(item => {
                 if(item[0] == "background" || item[0] == "pocketItemCss" || item[0] == "pocketItemJs") {
                     let id = $(`[name=${item[0]}`).eq(0).attr('id');
-                    //$("*[name ='"+item[0]+"'").hide();
-                    $(`#${id}`).after("<p>" + item[1] + "</p>");
+                    $(`#${id} + p`).text( item[1] );
                 }
                 else if(item[0] == "activities") {
                     this.activities = [];
