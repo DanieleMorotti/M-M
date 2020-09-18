@@ -6,7 +6,7 @@ export default {
     components: editComp,
     data() {
         return{
-            currentStory: 0,
+            currentStory: -1,
             storiesList: []
         }
     },
@@ -15,13 +15,13 @@ export default {
             <p id="info">Seleziona la storia che vuoi modificare,copiare o eliminare</p>
             <div id="littleMenu">
                 <button @click="newStory">Nuova storia <i class="fas fa-plus"></i></button>
-                <button>Carica storia <i class="fas fa-upload"></i></button>
+                <button @click="loadStory">Carica storia <i class="fas fa-upload"></i></button>
             </div>
             <div id="stories">
                 <span v-if="storiesList.length == 0">Nessuna storia presente</span>
                 <div id="stories-list" class="list-group" v-else>
                     <button v-for="(story,index) in storiesList" :key="index" type="button" class="list-group-item list-group-item-action" 
-                    @click="changeActive(index)"> {{story}} <span id="icon-group"><i class="fas fa-edit" @click="editStory(index)"></i>&nbsp;&nbsp;<i tabindex="0" class="fas fa-file-upload"></i>&nbsp;&nbsp;
+                    @click="changeActive(index)"> {{story}} <span id="icon-group"><i class="fas fa-edit" @click="editStory(index)"></i>&nbsp;&nbsp;<i class="far fa-copy"  @click="duplicateStory(index)"></i>&nbsp;&nbsp;<i tabindex="0" class="fas fa-file-upload"></i>&nbsp;&nbsp;
                     <i tabindex="0" class="fas fa-qrcode"></i>&nbsp;&nbsp;<i tabindex="0" class="fas fa-trash-alt" @click="deleteStory(index)"></i></span></button>
                 </div>
             </div>
@@ -47,13 +47,31 @@ export default {
                 bus.$emit('story','')
             }); 
         },
+        loadStory() {
+            if(this.currentStory >= 0) {
+                let current = this.currentStory;
+                //console.log(this.storiesList[this.currentStory]);
+                $.ajax({
+                    url: '/saveStory/' + this.storiesList[current],
+                    type: 'PUT',
+                    success: (response) =>{
+                      console.log('ok');
+                    },
+                    error: function (e) {
+                        console.log('error');
+                    }
+                 });
+                this.currentStory = -1;
+            }
+            
+        },
         deleteStory(index){
             var title = this.storiesList[index];
             this.storiesList.splice(index,1);
-            this.currentStory = this.storiesList.length != 0 ? 0 : null;
+         //   this.currentStory = this.storiesList.length != 0 ? 0 : null;
 
             $.ajax({
-                url: '/story/'+title,
+                url: '/deleteStory/'+title,
                 type: 'DELETE',
                 success: () =>{
                     console.log('story deleted')
@@ -76,6 +94,18 @@ export default {
                 console.log('emit');
                 bus.$emit('story',this.storiesList[index])
             });
+        },
+        duplicateStory(index) {
+            $.ajax({
+                url: '/copyStory/' + this.storiesList[index],
+                type: 'PUT',
+                success: (response) =>{
+                  this.storiesList.push(response.title);
+                },
+                error: function (e) {
+                    console.log(e.message);
+                }
+             });
         }
     },
   

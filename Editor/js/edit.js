@@ -159,7 +159,6 @@ export default {
                     //emit event to update the home component stories list
                     var story = JSON.stringify({title: $('#inpTitle').val(), original: originTitle, changed: titleChanged});
                     this.$root.$emit('updateStories',story);
-                    console.log("success");
                     $('#editStoryForm')[0].reset();
                     $('#activitiesForm')[0].reset();
                     $('.infoForFile').text("");
@@ -188,8 +187,6 @@ export default {
                 else {
                     $("*[name ='"+item[0]+"'").val(item[1]);
                 }
-               // console.log(item[0]) 
-              //  console.log(item[1])
             })
         }
     },
@@ -207,8 +204,7 @@ export default {
                     cache: false,
                     url: "/stories?story="+this.currentStory,
                     success: (data) =>{
-                        //fill form with json's fields
-                        console.log('received: '+ JSON.stringify(data))
+                     // fill form with json's fields
                         this.showData(data);
                     },
                     error: function (e) {

@@ -8,8 +8,13 @@ const app = express();
 
 app.use(express.static(`${__dirname}/..`));
 
-app.post('/story', (req, res) => {
+app.get('/',(req,res) =>{
+	res.status(200);
+	res.sendFile(path.join(__dirname,"..","index.html"));
+})
 
+/* create a new story */
+app.post('/story', (req, res) => {
 	var form = new formidable.IncomingForm();
 	var jsonFile = {};
 
@@ -40,13 +45,13 @@ app.post('/story', (req, res) => {
 
 			//delete the old file if the title is changed
 			if(original && original != jsonFile['title']) {
-				fs.unlink('./stories/'+ jsonFile['originalTitle'] +'.json', function (err) {
+				fs.unlink('./stories/public/'+ jsonFile['originalTitle'] +'.json', function (err) {
 					if (err) throw err;
 					console.log('deleted');
 				});
 			}
 			//saved the new json file
-			fs.writeFile('./stories/'+ jsonFile['title'] +'.json', json, function (err) {
+			fs.writeFile('./stories/public/'+ jsonFile['title'] +'.json', json, function (err) {
 				if (err) throw err;
 				console.log('Saved! ' + json);
 			});
@@ -55,28 +60,19 @@ app.post('/story', (req, res) => {
 });
 
 
-app.get('/',(req,res) =>{
-	res.status(200);
-	res.sendFile(path.join(__dirname,"..","index.html"));
-})
-
-// when someone ask for a story 
+/* require a story */ 
 app.get('/stories',(req, res) => {
-	//res.header("Access-Control-Allow-Origin", "http://localhost:5000");
-	console.log('./stories/'+req.query.story+'.json');
-	fs.readFile('./stories/'+req.query.story+'.json', 'utf8', (err, data) => {  
-	 
+	fs.readFile('./stories/public/'+req.query.story+'.json', 'utf8', (err, data) => {  
 		res.set('Content-Type', 'application/json');
-		console.log('requested: ' + data);
+		//console.log('requested: ' + data);
 		res.send(data)
 		res.status(200);
-	  })
+	})
 })
 
-//return the list of titles of the stories stored in the server
+/* return the list of titles of the stories stored in the server */
 app.get('/titles',(req, res) => {
-	//res.header("Access-Control-Allow-Origin", "http://localhost:5000");
-	const dir = './stories';
+	const dir = './stories/public';
 	var names = [] ;
 
 	fs.readdir(dir, (err, files) => {
@@ -94,14 +90,51 @@ app.get('/titles',(req, res) => {
 	
 })
 
-
-app.delete('/story/:title', (req, res) => {
-	console.log('./stories/'+ req.params.title +'.json')
-	fs.unlink('./stories/'+ req.params.title +'.json', function (err) {
+/* delete a story */
+app.delete('/deleteStory/:title', (req, res) => {
+	//console.log('./stories/'+ req.params.title +'.json')
+	fs.unlink('./stories/public/'+ req.params.title +'.json', function (err) {
 		if (err) throw err;
 		console.log('Deleted');
 		res.status(200).end();
 	});
+})
+
+/* duplicate a story */
+app.put('/copyStory/:title', (req, res) => {
+	
+	fs.readFile('./stories/public/'+req.params.title+'.json', 'utf8', (err, data) => {  
+		res.set('Content-Type', 'application/json');
+		let story = JSON.parse(data);
+		story.title = story.title + ' - copy';
+		story.originalTitle = story.title;
+		let json = JSON.stringify(story,null,2);
+
+		fs.writeFile('./stories/public/'+ story.title +'.json', json, (err) => {
+			if (err) throw err;
+			console.log('Saved!');
+			res.send({title: story.title});
+			res.status(200);
+		});
+
+	})
+
+})
+
+/* public a story */
+app.put('/saveStory/:title', (req, res) => {
+	fs.readFile('./stories/public/'+req.params.title+'.json', 'utf8', (err, data) => {  
+		res.set('Content-Type', 'application/json');
+		let story = JSON.parse(data);
+		let json = JSON.stringify(story,null,2);
+
+		fs.writeFile('./stories/private/'+ story.title +'.json', json, (err) => {
+			if (err) throw err;
+			res.send({title: story.title});
+			res.status(200);
+		});
+
+	})
 })
 
 app.listen(8080, () => {

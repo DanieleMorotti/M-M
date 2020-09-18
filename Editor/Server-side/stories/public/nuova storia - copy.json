@@ -1,0 +1,25 @@
+{
+  "title": "nuova storia - copy",
+  "setting": "setting",
+  "description": "descrizione",
+  "pocketItem": "",
+  "introduction": "",
+  "activities": [
+    {
+      "number": 0,
+      "type": "scelta multipla",
+      "setting": "prima",
+      "instructions": ""
+    },
+    {
+      "number": 1,
+      "type": "domanda aperta",
+      "setting": "seconda",
+      "instructions": ""
+    }
+  ],
+  "originalTitle": "nuova storia - copy",
+  "background": "File presente:File presente:File presente:File presente:File presente:File presente:",
+  "pocketItemCss": "File presente:File presente:File presente:File presente:new.css",
+  "pocketItemJs": "File presente:File presente:File presente:File presente:File presente:new.js"
+}
