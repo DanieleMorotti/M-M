@@ -6,7 +6,7 @@ export default {
         return{
             activities: [],
             currentActivity: 0,
-            currentStory: ""
+            currentStory: ''
         }
     }, 
     template: `
@@ -122,12 +122,17 @@ export default {
              $('#activitiesForm')[0].reset();
              $('#activitiesForm h2').text(`Nuova attività`)
              $('#saveActivity').prop("value", "Salva attività");
-             this.currentActivity = (this.activities.length != 0)?this.activities[this.activities.length - 1].number +1: null;
+             this.currentActivity = (this.activities.length != 0)?this.activities[this.activities.length - 1].number +1: 0;
         },
         checkForm: function() {
             var data = new FormData($('#editStoryForm')[0]);
-            
+
+            var originTitle = this.currentStory;
+            var titleChanged = ($("#inpTitle").val() != originTitle && (originTitle != '')) ? true : false;
+
             data.append('activities',JSON.stringify(this.activities));
+            data.append('originalTitle',JSON.stringify(originTitle));
+
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
@@ -135,14 +140,15 @@ export default {
                 data: data,
                 processData: false,
                 contentType: false,
+                cache: false,
                 success: (data) =>{
                     //emit event to update the home component stories list
-                    this.$root.$emit('updateStories',$('#inpTitle').val());
+                    var story = JSON.stringify({title: $('#inpTitle').val(), original: originTitle, changed: titleChanged});
+                    this.$root.$emit('updateStories',story);
+                    console.log("success");
                     $('#editStoryForm')[0].reset();
                     $('#activitiesForm')[0].reset();
-                    this.activities = [];
                     $('#toHome').click();
-                    console.log("success");
                 },
                 error: function (e) {
                     console.log("error");
@@ -158,10 +164,12 @@ export default {
                     $(`#${id}`).after("<p>" + item[1] + "</p>");
                 }
                 else if(item[0] == "activities") {
+                    this.activities = [];
+                    this.currentActivity = 0;
                     for(var i = 0; i < item[1].length; i++) {
                         this.activities.push(item[1][i]);
-                        this.currentActivity++;
                     }
+                    this.currentActivity = (item[1].length != 0) ? item[1][item[1].length - 1].number +1: 0;
                 }
                 else {
                     $("*[name ='"+item[0]+"'").val(item[1]);
@@ -174,20 +182,21 @@ export default {
     activated() {
         $('#editStoryForm')[0].reset();
         $('#activitiesForm')[0].reset();
+        this.currentStory = '';
         bus.$emit('ready','pronto'); 
         
-        bus.$on('story',(data) =>{
-            this.currentStory = data;
-            console.log(this.currentStory);
-
+        bus.$on('story',(story) =>{
+            this.currentStory = story;
             if(this.currentStory) {
                 $.ajax({
                     type: "GET",
                     dataType: "json",
+                    cache: false,
                     url: "/stories?story="+this.currentStory,
                     success: (data) =>{
                         //fill form with json's fields
-                            this.showData(data);
+                        //console.log('received: '+ JSON.stringify(data))
+                        this.showData(data);
                     },
                     error: function (e) {
                         console.log("error");

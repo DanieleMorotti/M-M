@@ -68,9 +68,7 @@ export default {
         }
     },
   
-    mounted() {
-     //   console.log(this.storiesList);
-        
+    mounted() {        
         $.get( "/titles", (res) => {
             for(let i=0; i < res.length;i++){
                 this.storiesList.push(res[i]);
@@ -78,8 +76,16 @@ export default {
         });
         
         //listening for updateStories event
-		this.$root.$on('updateStories',(title) => {
-            this.storiesList.push(title);
+		this.$root.$on('updateStories',(story) => {
+            var current = JSON.parse(story);
+            if(!current.changed) {
+                if(!this.storiesList.includes(current.title))
+                     this.storiesList.push(current.title);
+            }
+            else {
+                var index = this.storiesList.indexOf(current.original);
+                this.storiesList.splice(index, 1, current.title); 
+            }             
         });
       
     }

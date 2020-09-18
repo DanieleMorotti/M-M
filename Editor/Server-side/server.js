@@ -7,17 +7,13 @@ const fs = require('fs');
 const app = express();
 
 app.use(express.static(`${__dirname}/..`));
+const nocache = require('nocache');
+
+
+app.use(nocache());
 
 app.post('/story', (req, res) => {
-	//res.header("Access-Control-Allow-Origin", "http://localhost:5000");
-	/*console.log(req.body);
-	if(req.body.title){
-		/*fs.writeFile('./stories/'+req.body.title+'.json', JSON.stringify(req.body, null, 2), function (err) {
-			if (err) throw err;
-			console.log('Saved!');
-		});
-	}
-	res.status(200).end();*/
+
 	var form = new formidable.IncomingForm();
 	var jsonFile = {};
 
@@ -41,12 +37,19 @@ app.post('/story', (req, res) => {
 			console.error('Error', err);
 			throw err;
 		})
-		.on('end',()=>{
+		.on('end',() => {
 			let json = JSON.stringify(jsonFile,null,2);
 
-			fs.writeFile('./stories/'+ jsonFile['title'].trim() +'.json', json, function (err) {
+			if(JSON.parse(jsonFile['originalTitle'])) {
+				fs.unlink('./stories/'+ JSON.parse(jsonFile['originalTitle']) +'.json', function (err) {
+					if (err) throw err;
+					console.log('deleted');
+				});
+			}
+
+			fs.writeFile('./stories/'+ jsonFile['title'] +'.json', json, function (err) {
 				if (err) throw err;
-				console.log('Saved!');
+				console.log('Saved! ' + json);
 			});
 			res.status(200).end();
 		});
@@ -62,11 +65,13 @@ app.get('/',(req,res) =>{
 // when someone ask for a story 
 app.get('/stories',(req, res) => {
 	//res.header("Access-Control-Allow-Origin", "http://localhost:5000");
-	res.status(200);
-	console.log(req.query.story);
-	const data = require('./stories/'+req.query.story+'.json');
-
-	res.json(data);
+	fs.readFile('./stories/'+req.query.story+'.json', 'utf8', (err, data) => {  
+	 
+		res.set('Content-Type', 'application/json');
+	//	console.log('requested: ' + data);
+		res.send(data)
+		res.status(200);
+	  })
 })
 
 //return the list of titles of the stories stored in the server
@@ -83,7 +88,6 @@ app.get('/titles',(req, res) => {
 			files.forEach(file => {
 				if (path.extname(file) == ".json") names.push(file.slice(0, -5));
 			});
-			console.log(names);
 			res.status(200);
 			res.json(names);
 		}	
@@ -93,7 +97,6 @@ app.get('/titles',(req, res) => {
 
 
 app.delete('/story/:title', (req, res) => {
-	console.log(req.params.title);
 	fs.unlink('./stories/'+ req.params.title +'.json', function (err) {
 		if (err) throw err;
 		console.log('Deleted');
