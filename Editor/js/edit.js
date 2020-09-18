@@ -184,8 +184,7 @@ export default {
         $('#activitiesForm')[0].reset();
         this.currentStory = '';
         bus.$emit('ready','pronto'); 
-        
-        bus.$on('story',(story) =>{
+        bus.$once('story',(story) =>{
             this.currentStory = story;
             if(this.currentStory) {
                 $.ajax({
@@ -195,7 +194,7 @@ export default {
                     url: "/stories?story="+this.currentStory,
                     success: (data) =>{
                         //fill form with json's fields
-                        //console.log('received: '+ JSON.stringify(data))
+                        console.log('received: '+ JSON.stringify(data))
                         this.showData(data);
                     },
                     error: function (e) {
@@ -204,5 +203,6 @@ export default {
                 });
             }
         })
+        
     }
 }
