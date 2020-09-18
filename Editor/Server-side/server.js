@@ -53,7 +53,7 @@ app.post('/story', (req, res) => {
 			//saved the new json file
 			fs.writeFile('./stories/public/'+ jsonFile['title'] +'.json', json, function (err) {
 				if (err) throw err;
-				console.log('Saved! ' + json);
+				console.log('Saved!');
 			});
 			res.status(200).end();
 		});
@@ -105,6 +105,7 @@ app.put('/copyStory/:title', (req, res) => {
 	
 	fs.readFile('./stories/public/'+req.params.title+'.json', 'utf8', (err, data) => {  
 		res.set('Content-Type', 'application/json');
+		console.log('copy' +data);
 		let story = JSON.parse(data);
 		story.title = story.title + ' - copy';
 		story.originalTitle = story.title;

@@ -1,0 +1,19 @@
+{
+  "title": "nuova - copy",
+  "setting": "",
+  "description": "",
+  "pocketItem": "",
+  "introduction": "",
+  "activities": [
+    {
+      "number": 0,
+      "type": "scelta multipla",
+      "setting": "prima",
+      "instructions": ""
+    }
+  ],
+  "originalTitle": "nuova - copy",
+  "background": "",
+  "pocketItemCss": "new.css",
+  "pocketItemJs": "new.js"
+}

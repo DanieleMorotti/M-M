@@ -174,7 +174,7 @@ export default {
             Object.entries(data).map(item => {
                 if(item[0] == "background" || item[0] == "pocketItemCss" || item[0] == "pocketItemJs") {
                     let id = $(`[name=${item[0]}`).eq(0).attr('id');
-                    $(`#${id} + p`).text("File presente:"+item[1] );
+                    $(`#${id} + p`).text(item[1] );
                 }
                 else if(item[0] == "activities") {
                     this.activities = [];
