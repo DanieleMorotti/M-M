@@ -7,10 +7,6 @@ const fs = require('fs');
 const app = express();
 
 app.use(express.static(`${__dirname}/..`));
-const nocache = require('nocache');
-
-
-app.use(nocache());
 
 app.post('/story', (req, res) => {
 
@@ -39,14 +35,16 @@ app.post('/story', (req, res) => {
 		})
 		.on('end',() => {
 			let json = JSON.stringify(jsonFile,null,2);
+			let original = JSON.parse(jsonFile['originalTitle']);
 
-			if(JSON.parse(jsonFile['originalTitle'])) {
+			if(original && original != jsonFile['title']) {
 				fs.unlink('./stories/'+ JSON.parse(jsonFile['originalTitle']) +'.json', function (err) {
 					if (err) throw err;
 					console.log('deleted');
 				});
 			}
-
+			
+			console.log('./stories/'+ jsonFile['title'] +'.json');
 			fs.writeFile('./stories/'+ jsonFile['title'] +'.json', json, function (err) {
 				if (err) throw err;
 				console.log('Saved! ' + json);
@@ -65,10 +63,11 @@ app.get('/',(req,res) =>{
 // when someone ask for a story 
 app.get('/stories',(req, res) => {
 	//res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+	console.log('./stories/'+req.query.story+'.json');
 	fs.readFile('./stories/'+req.query.story+'.json', 'utf8', (err, data) => {  
 	 
 		res.set('Content-Type', 'application/json');
-	//	console.log('requested: ' + data);
+		console.log('requested: ' + data);
 		res.send(data)
 		res.status(200);
 	  })
@@ -97,6 +96,7 @@ app.get('/titles',(req, res) => {
 
 
 app.delete('/story/:title', (req, res) => {
+	console.log('./stories/'+ req.params.title +'.json')
 	fs.unlink('./stories/'+ req.params.title +'.json', function (err) {
 		if (err) throw err;
 		console.log('Deleted');
