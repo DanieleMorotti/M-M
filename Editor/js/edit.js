@@ -131,8 +131,9 @@ export default {
             var titleChanged = ($("#inpTitle").val() != originTitle && (originTitle != '')) ? true : false;
 
             data.append('activities',JSON.stringify(this.activities));
+           
             data.append('originalTitle',JSON.stringify(originTitle));
-
+            
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
@@ -160,7 +161,6 @@ export default {
             Object.entries(data).map(item => {
                 if(item[0] == "background" || item[0] == "pocketItemCss" || item[0] == "pocketItemJs") {
                     let id = $(`[name=${item[0]}`).eq(0).attr('id');
-                    //$("*[name ='"+item[0]+"'").hide();
                     $(`#${id}`).after("<p>" + item[1] + "</p>");
                 }
                 else if(item[0] == "activities") {

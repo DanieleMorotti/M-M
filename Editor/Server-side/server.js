@@ -16,10 +16,11 @@ app.post('/story', (req, res) => {
 	form.parse(req);
 	form.on('field', (name, field) => {
 			//because activities field is already a json,so i need to convert it to a js object to push into jsonfile
-			if(name === "activities"){
+			if(name === "activities" || name === "originalTitle"){
 				let tempObj = JSON.parse(field);
 				jsonFile[name] = tempObj;
-			}else{
+			}
+			else{
 				jsonFile[name] = field;
 			}
 		})
@@ -35,10 +36,10 @@ app.post('/story', (req, res) => {
 		})
 		.on('end',() => {
 			let json = JSON.stringify(jsonFile,null,2);
-			let original = JSON.parse(jsonFile['originalTitle']);
+			let original = jsonFile['originalTitle'];
 
 			if(original && original != jsonFile['title']) {
-				fs.unlink('./stories/'+ JSON.parse(jsonFile['originalTitle']) +'.json', function (err) {
+				fs.unlink('./stories/'+ jsonFile['originalTitle'] +'.json', function (err) {
 					if (err) throw err;
 					console.log('deleted');
 				});
