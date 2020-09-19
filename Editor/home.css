@@ -29,7 +29,7 @@ html,body{
     margin-right: 3em;
 }
 
-i.fas{
+#icon-group i.fas{
     cursor:grab;
 }
 

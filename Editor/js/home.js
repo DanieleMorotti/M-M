@@ -15,7 +15,6 @@ export default {
             <p id="info">Seleziona la storia che vuoi modificare,copiare o eliminare</p>
             <div id="littleMenu">
                 <button @click="newStory">Nuova storia <i class="fas fa-plus"></i></button>
-                <button @click="loadStory">Carica storia <i class="fas fa-upload"></i></button>
             </div>
             <div id="stories">
                 <span v-if="storiesList.length == 0">Nessuna storia presente</span>
@@ -23,9 +22,9 @@ export default {
                     <button v-for="(story,index) in storiesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index)">
                         {{story}} 
                         <span id="icon-group">
-                            <i class="fas fa-edit" @click="editStory(index)" ></i>&nbsp;&nbsp;
-                            <i class="far fa-copy"  @click="duplicateStory(index)">&nbsp;&nbsp;
-                            <i tabindex="0" class="fas fa-file-upload"></i>&nbsp;&nbsp;
+                            <i tabindex="0" class="fas fa-edit" @click="editStory(index)" ></i>&nbsp;&nbsp;
+                            <i tabindex="0" class="fas fa-copy"  @click="duplicateStory(index)"></i>&nbsp;&nbsp;
+                            <i tabindex="0" class="fas fa-file-upload" @click="loadStory(index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-qrcode" @click="createQRCode(index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-trash-alt" @click="deleteStory(index)"></i>
                         </span>
