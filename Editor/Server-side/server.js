@@ -17,7 +17,33 @@ app.get('/',(req,res) =>{
 app.post('/saveStory', (req, res) => {
 	var form = new formidable.IncomingForm();
 	var jsonFile = {};
-	var jsonTitle;
+	var jsonTitle = req.query.title;
+	var jsonOriginTitle = (req.query.originalTitle);
+	console.log(jsonTitle,jsonOriginTitle);
+
+	//if the originalTitle is empty the story doesn't exist
+	if(jsonOriginTitle === ""){
+		fs.mkdir( __dirname + '/stories/private/' + jsonTitle, (err) => { 
+			if (err) throw err;
+			console.log('Directory created successfully!'); 
+		}); 
+		fs.mkdir( __dirname + '/stories/private/' + jsonTitle +'/files', (err) => { 
+			if (err) console.log(err);
+			console.log('Directory \"files\" created successfully!'); 
+		}); 
+	}
+	else if(jsonTitle !== jsonOriginTitle){
+		fs.rename(__dirname + '/stories/public/' + jsonOriginTitle, __dirname + '/stories/public/' + jsonTitle, function(err) {
+			if (err) {
+			  console.log(err);
+			} else {
+			  console.log("Successfully renamed the directory.");
+			}
+		});
+	}
+	else{
+		console.log("non creo cartella");
+	}
 
 	form.parse(req);
 	form.on('field', (name, field) => {
@@ -25,31 +51,6 @@ app.post('/saveStory', (req, res) => {
 			if(name === "activities" || name === "originalTitle"){
 				let tempObj = JSON.parse(field);
 				jsonFile[name] = tempObj;
-				if(name === "originalTitle") {
-					console.log(tempObj);
-					if(!tempObj) {
-						console.log(jsonTitle);
-						fs.mkdir( __dirname + '/stories/public/' + jsonTitle, (err) => { 
-							if (err) throw err;
-							console.log('Directory created successfully!'); 
-						}); 
-						fs.mkdir( __dirname + '/stories/public/' + jsonTitle +'/files', (err) => { 
-							if (err) console.log(err);
-							console.log('Directory created successfully!'); 
-						}); 
-					}
-					else if(!tempObj && tempObj != jsonTitle) { 
-						/* if title is changed rename directory */
-						fs.rename(__dirname + '/stories/public/' + tempObj, __dirname + '/stories/public/' + jsonTitle, function(err) {
-							if (err) {
-							  console.log(err)
-							} else {
-							  console.log("Successfully renamed the directory.")
-							}
-						}) 
-					}
-					
-				}
 			}
 			else{
 				if(name === "title")
@@ -58,7 +59,7 @@ app.post('/saveStory', (req, res) => {
 			}
 		})
 		.on('fileBegin', function (name, file){
-			if(file.name != "") file.path = __dirname + '/stories/public/'+ jsonTitle +'/files/' + file.name;
+			if(file.name != "") file.path = __dirname + '/stories/private/'+ jsonTitle +'/files/' + file.name;
 		})
 		.on('file', (name, file) => {
 			jsonFile[name] = file.name;
@@ -69,20 +70,9 @@ app.post('/saveStory', (req, res) => {
 		})
 		.on('end',() => {
 			let json = JSON.stringify(jsonFile,null,2);
-			let original = jsonFile['originalTitle'];
-
-			/*
-			//delete the old file if the title is changed
-			if(original && original != jsonFile['title']) {
-				fs.unlink('./stories/public/'+ jsonFile['originalTitle'] +'.json', function (err) {
-					if (err) throw err;
-					console.log('deleted');
-				});
-			}
-			*/
 
 			//save the new json file	
-			fs.writeFile('./stories/public/'+ jsonTitle +'/file.json', json, function (err) {
+			fs.writeFile('./stories/private/'+ jsonTitle +'/file.json', json, function (err) {
 				if (err) throw err;
 				console.log('Saved!');
 			});
@@ -103,7 +93,7 @@ app.get('/stories',(req, res) => {
 
 /* return the list of titles of the stories stored in the server */
 app.get('/titles',(req, res) => {
-	const dir = './stories/public';
+	const dir = './stories/private';
 	var names = [] ;
 
 	fs.readdir(dir, (err, files) => {
@@ -169,19 +159,14 @@ app.put('/copyStory/:title', (req, res) => {
 
 /* public a story */
 app.put('/publicStory/:title', (req, res) => {
-	fs.readFile('./stories/public/'+req.params.title+'.json', 'utf8', (err, data) => {  
-		res.set('Content-Type', 'application/json');
-		let story = JSON.parse(data);
-		let json = JSON.stringify(story,null,2);
-
-		fs.writeFile('./stories/private/'+ story.title +'.json', json, (err) => {
-			if (err) throw err;
-			res.send({title: story.title});
-			res.status(200);
-		});
-
-	})
-})
+	fs.rename('./stories/private/'+req.params.title, './stories/public/'+ req.params.title, err => {
+		if (err) {
+		  throw err;
+		}
+	});
+	res.status(200);
+		//res.send({title: req.params.title});
+});
 
 app.listen(8080, () => {
   console.log('server is ready');

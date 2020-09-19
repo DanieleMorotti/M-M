@@ -149,7 +149,7 @@ export default {
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
-                url: "/saveStory",
+                url: "/saveStory?title="+$("#inpTitle").val()+"&originalTitle="+originTitle,
                 data: data,
                 processData: false,
                 contentType: false,
@@ -207,7 +207,7 @@ export default {
                         this.showData(data);
                     },
                     error: function (e) {
-                        console.log("error");
+                        console.log("error in get story");
                     }
                 });
             }

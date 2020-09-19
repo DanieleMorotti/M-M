@@ -58,15 +58,14 @@ export default {
                 bus.$emit('story','')
             }); 
         },
-        loadStory() {
+        loadStory(index) {
             if(this.currentStory >= 0) {
-                let current = this.currentStory;
                 //console.log(this.storiesList[this.currentStory]);
                 $.ajax({
-                    url: '/publicStory/' + this.storiesList[current],
+                    url: '/publicStory/' + this.storiesList[index],
                     type: 'PUT',
                     success: (response) =>{
-                      console.log('ok');
+                      console.log("Storia resa pubblica");
                     },
                     error: function (e) {
                         console.log('error');
@@ -120,6 +119,8 @@ export default {
         },
         createQRCode(index){
             let story = this.storiesList[index];
+            //delete the current qr code
+            $('#qrcode').html("");
             new QRCode('qrcode', {
                 text: "http://site192001.tw.cs.unibo.it/stories?story="+story,
                 width: 128,
@@ -137,8 +138,6 @@ export default {
         },
         hideMenu(){
             $('#qrcodeMenu').hide();
-            //delete the current qr code
-            $('#qrcode').html("");
         }
     },
     mounted() {        
