@@ -64,7 +64,7 @@ export default {
                 let current = this.currentStory;
                 //console.log(this.storiesList[this.currentStory]);
                 $.ajax({
-                    url: '/saveStory/' + this.storiesList[current],
+                    url: '/publicStory/' + this.storiesList[current],
                     type: 'PUT',
                     success: (response) =>{
                       console.log('ok');

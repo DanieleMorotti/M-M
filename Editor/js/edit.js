@@ -134,8 +134,7 @@ export default {
             var verifyInput = $('input[type=file]');
             var titleChanged = ($("#inpTitle").val() != originTitle && (originTitle != '')) ? true : false;
 
-            data.append('activities',JSON.stringify(this.activities));
-           
+            data.append('activities',JSON.stringify(this.activities));     
             data.append('originalTitle',JSON.stringify(originTitle));
             
             //verify if the files have been entered, if not i need to keep the old file name
@@ -150,7 +149,7 @@ export default {
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
-                url: "/story",
+                url: "/saveStory",
                 data: data,
                 processData: false,
                 contentType: false,

@@ -13,10 +13,11 @@ app.get('/',(req,res) =>{
 	res.sendFile(path.join(__dirname,"..","index.html"));
 })
 
-/* create a new story */
-app.post('/story', (req, res) => {
+/* save a new story */
+app.post('/saveStory', (req, res) => {
 	var form = new formidable.IncomingForm();
 	var jsonFile = {};
+	var jsonTitle;
 
 	form.parse(req);
 	form.on('field', (name, field) => {
@@ -24,13 +25,40 @@ app.post('/story', (req, res) => {
 			if(name === "activities" || name === "originalTitle"){
 				let tempObj = JSON.parse(field);
 				jsonFile[name] = tempObj;
+				if(name === "originalTitle") {
+					console.log(tempObj);
+					if(!tempObj) {
+						console.log(jsonTitle);
+						fs.mkdir( __dirname + '/stories/public/' + jsonTitle, (err) => { 
+							if (err) throw err;
+							console.log('Directory created successfully!'); 
+						}); 
+						fs.mkdir( __dirname + '/stories/public/' + jsonTitle +'/files', (err) => { 
+							if (err) console.log(err);
+							console.log('Directory created successfully!'); 
+						}); 
+					}
+					else if(!tempObj && tempObj != jsonTitle) { 
+						/* if title is changed rename directory */
+						fs.rename(__dirname + '/stories/public/' + tempObj, __dirname + '/stories/public/' + jsonTitle, function(err) {
+							if (err) {
+							  console.log(err)
+							} else {
+							  console.log("Successfully renamed the directory.")
+							}
+						}) 
+					}
+					
+				}
 			}
 			else{
+				if(name === "title")
+					jsonTitle = field;
 				jsonFile[name] = field;
 			}
 		})
 		.on('fileBegin', function (name, file){
-			if(file.name != "")file.path = __dirname + '/stories/files/' + file.name;
+			if(file.name != "") file.path = __dirname + '/stories/public/'+ jsonTitle +'/files/' + file.name;
 		})
 		.on('file', (name, file) => {
 			jsonFile[name] = file.name;
@@ -43,6 +71,7 @@ app.post('/story', (req, res) => {
 			let json = JSON.stringify(jsonFile,null,2);
 			let original = jsonFile['originalTitle'];
 
+			/*
 			//delete the old file if the title is changed
 			if(original && original != jsonFile['title']) {
 				fs.unlink('./stories/public/'+ jsonFile['originalTitle'] +'.json', function (err) {
@@ -50,8 +79,10 @@ app.post('/story', (req, res) => {
 					console.log('deleted');
 				});
 			}
-			//saved the new json file
-			fs.writeFile('./stories/public/'+ jsonFile['title'] +'.json', json, function (err) {
+			*/
+
+			//save the new json file	
+			fs.writeFile('./stories/public/'+ jsonTitle +'/file.json', json, function (err) {
 				if (err) throw err;
 				console.log('Saved!');
 			});
@@ -60,9 +91,9 @@ app.post('/story', (req, res) => {
 });
 
 
-/* require a story */ 
+/* require a story which already exists */ 
 app.get('/stories',(req, res) => {
-	fs.readFile('./stories/public/'+req.query.story+'.json', 'utf8', (err, data) => {  
+	fs.readFile('./stories/public/'+req.query.story+'/file.json', 'utf8', (err, data) => {  
 		res.set('Content-Type', 'application/json');
 		//console.log('requested: ' + data);
 		res.send(data)
@@ -80,9 +111,14 @@ app.get('/titles',(req, res) => {
 			console.log(err);
 		}
 		else {
-			files.forEach(file => {
-				if (path.extname(file) == ".json") names.push(file.slice(0, -5));
+			// add control to verify if file is a directory !!!
+			files.map(function(f) {
+				names.push(f);
 			});
+			/*
+			files.forEach(file => {
+				//if (path.extname(file) == ".json") names.push(file.slice(0, -5));
+			}); */
 			res.status(200);
 			res.json(names);
 		}	
@@ -92,15 +128,24 @@ app.get('/titles',(req, res) => {
 
 /* delete a story */
 app.delete('/deleteStory/:title', (req, res) => {
-	//console.log('./stories/'+ req.params.title +'.json')
-	fs.unlink('./stories/public/'+ req.params.title +'.json', function (err) {
+	let dir = './stories/public/'+ req.params.title ;
+	console.log(dir);
+	fs.rmdir(dir, { recursive: true }, (err) => {
+		if (err) {
+			throw err;
+		}
+	
+		console.log(`${dir} is deleted!`);
+	})
+	/*fs.unlink('./stories/public/'+ req.params.title +'.json', function (err) {
 		if (err) throw err;
 		console.log('Deleted');
 		res.status(200).end();
-	});
+	});*/
+	res.status(200).end();
 })
 
-/* duplicate a story */
+/* duplicate a story 
 app.put('/copyStory/:title', (req, res) => {
 	
 	fs.readFile('./stories/public/'+req.params.title+'.json', 'utf8', (err, data) => {  
@@ -120,10 +165,10 @@ app.put('/copyStory/:title', (req, res) => {
 
 	})
 
-})
+})*/
 
 /* public a story */
-app.put('/saveStory/:title', (req, res) => {
+app.put('/publicStory/:title', (req, res) => {
 	fs.readFile('./stories/public/'+req.params.title+'.json', 'utf8', (err, data) => {  
 		res.set('Content-Type', 'application/json');
 		let story = JSON.parse(data);
