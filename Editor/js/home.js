@@ -19,15 +19,15 @@ export default {
                 <div id="public-list" class="list-group" v-else>
                     <button v-for="(story,index) in publicStoriesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index)">
                         {{story}} 
-                        <span id="icon-group">
+                        <span class="icon-group">
                             <i tabindex="0" class="fas fa-file-download" @click="downloadStory(index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-qrcode" @click="createQRCode(index)"></i>&nbsp;&nbsp;
-                            <i tabindex="0" class="fas fa-trash-alt" @click="deleteStory(index)"></i>
+                            <i tabindex="0" class="fas fa-trash-alt" data-toggle="modal" data-target="#deletePublicModal" @click="deleteStory(index)"></i>
                         </span>
                     </button>
                 </div>
             </div>
-            <p class="info">Seleziona la storia che vuoi modificare,copiare o eliminare</p>
+            <p class="info">Seleziona la storia che vuoi modificare,copiare,eliminare o pubblicare.</p>
             <div id="littleMenu">
                 <button @click="newStory">Nuova storia <i class="fas fa-plus"></i></button>
             </div>
@@ -36,12 +36,11 @@ export default {
                 <div id="stories-list" class="list-group" v-else>
                     <button v-for="(story,index) in storiesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index)">
                         {{story}} 
-                        <span id="icon-group">
+                        <span class="icon-group">
                             <i tabindex="0" class="fas fa-edit" @click="editStory(index)" ></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-copy"  @click="duplicateStory(index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-file-upload" @click="loadStory(index)"></i>&nbsp;&nbsp;
-                            <i tabindex="0" class="fas fa-qrcode" @click="createQRCode(index)"></i>&nbsp;&nbsp;
-                            <i tabindex="0" class="fas fa-trash-alt" @click="deleteStory(index)"></i>
+                            <i tabindex="0" class="fas fa-trash-alt" data-toggle="modal" data-target="#deletePrivateModal"></i>
                         </span>
                     </button>
                 </div>
@@ -50,6 +49,46 @@ export default {
                 <div id="qrcode"></div>
                 <p></p>
                 <button @click="hideMenu">CHIUDI FINESTRA</button>
+            </div>
+
+            <div class="modal fade" id="deletePrivateModal" tabindex="-1" role="dialog" aria-labelledby="deletePrivateModal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" >Avviso eliminazione</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Se elimini questo file lo perderai in maniera definitiva.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button" class="btn btn-primary" @click="deleteStory(currentStory)">Elimina</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="deletePublicModal" tabindex="-1" role="dialog" aria-labelledby="deletePublicModal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" >Avviso eliminazione</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Se elimini questo file lo perderai definitivamente.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button" class="btn btn-primary" @click="deleteStory(currentStory)">Elimina</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div> 
     `,
@@ -193,6 +232,6 @@ export default {
                 this.storiesList.splice(index, 1, current.title); 
             }             
         });
-      
+        
     }
 }
