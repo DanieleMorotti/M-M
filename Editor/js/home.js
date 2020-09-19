@@ -7,12 +7,27 @@ export default {
     data() {
         return{
             currentStory: -1,
-            storiesList: []
+            storiesList: [],
+            publicStoriesList: []
         }
     },
     template: `
         <div id="storySection" class="container-fluid">
-            <p id="info">Seleziona la storia che vuoi modificare,copiare o eliminare</p>
+            <p class="info">Storie pubblicate</p>
+            <div id="publicStories">
+                <span v-if="publicStoriesList.length == 0">Nessuna storia pubblicata</span>
+                <div id="public-list" class="list-group" v-else>
+                    <button v-for="(story,index) in publicStoriesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index)">
+                        {{story}} 
+                        <span id="icon-group">
+                            <i tabindex="0" class="fas fa-file-download" @click="downloadStory(index)"></i>&nbsp;&nbsp;
+                            <i tabindex="0" class="fas fa-qrcode" @click="createQRCode(index)"></i>&nbsp;&nbsp;
+                            <i tabindex="0" class="fas fa-trash-alt" @click="deleteStory(index)"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <p class="info">Seleziona la storia che vuoi modificare,copiare o eliminare</p>
             <div id="littleMenu">
                 <button @click="newStory">Nuova storia <i class="fas fa-plus"></i></button>
             </div>
@@ -59,21 +74,33 @@ export default {
             }); 
         },
         loadStory(index) {
-            if(this.currentStory >= 0) {
-                //console.log(this.storiesList[this.currentStory]);
                 $.ajax({
                     url: '/publicStory/' + this.storiesList[index],
                     type: 'PUT',
                     success: (response) =>{
-                      console.log("Storia resa pubblica");
+                       console.log("Storia resa pubblica");
+                       this.publicStoriesList.push(this.storiesList[index]);
+                       this.storiesList.splice(index,1);
                     },
                     error: function (e) {
                         console.log('error');
                     }
-                 });
-                this.currentStory = -1;
-            }
+                 });        
             
+        },
+        downloadStory(index) {
+            $.ajax({
+                url: '/privateStory/' + this.publicStoriesList[index],
+                type: 'PUT',
+                success: (response) =>{
+                   console.log("Storia resa privata");
+                   this.storiesList.push(this.publicStoriesList[index]);
+                   this.publicStoriesList.splice(index,1);
+                },
+                error: function (e) {
+                    console.log('error');
+                }
+             }); 
         },
         deleteStory(index){
             var title = this.storiesList[index];
@@ -106,6 +133,7 @@ export default {
             });
         },
         duplicateStory(index) {
+            console.log(this.storiesList[index]);
             $.ajax({
                 url: '/copyStory/' + this.storiesList[index],
                 type: 'PUT',
@@ -144,6 +172,12 @@ export default {
         $.get( "/titles", (res) => {
             for(let i=0; i < res.length;i++){
                 this.storiesList.push(res[i]);
+            }
+        });
+
+        $.get( "/publicTitles", (res) => {
+            for(let i=0; i < res.length;i++){
+                this.publicStoriesList.push(res[i]);
             }
         });
         

@@ -3,7 +3,7 @@ html,body{
     height: 100%;
 }
 
-#info{
+.info{
     font-size:1.2rem;
     margin:1rem;
 }
@@ -12,12 +12,16 @@ html,body{
     margin-left:2rem;
 }
 
-#stories{
+#stories, #publicStories{
     margin:2rem;
 }
 
-#stories-list{
+#stories-list, #public-list{
     font-size:1.5rem;
+}
+
+#public-list > button {
+    background-color: lightcoral;
 }
 
 #stories-list > button:focus{

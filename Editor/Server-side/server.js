@@ -2,7 +2,7 @@
 const express = require('express');
 const path = require('path');
 const formidable = require('formidable');
-const fs = require('fs');
+const fs = require('fs-extra');
 
 const app = express();
 
@@ -33,7 +33,7 @@ app.post('/saveStory', (req, res) => {
 		}); 
 	}
 	else if(jsonTitle !== jsonOriginTitle){
-		fs.rename(__dirname + '/stories/public/' + jsonOriginTitle, __dirname + '/stories/public/' + jsonTitle, function(err) {
+		fs.rename(__dirname + '/stories/private/' + jsonOriginTitle, __dirname + '/stories/private/' + jsonTitle, function(err) {
 			if (err) {
 			  console.log(err);
 			} else {
@@ -83,7 +83,7 @@ app.post('/saveStory', (req, res) => {
 
 /* require a story which already exists */ 
 app.get('/stories',(req, res) => {
-	fs.readFile('./stories/public/'+req.query.story+'/file.json', 'utf8', (err, data) => {  
+	fs.readFile('./stories/private/'+req.query.story+'/file.json', 'utf8', (err, data) => {  
 		res.set('Content-Type', 'application/json');
 		//console.log('requested: ' + data);
 		res.send(data)
@@ -105,10 +105,26 @@ app.get('/titles',(req, res) => {
 			files.map(function(f) {
 				names.push(f);
 			});
-			/*
-			files.forEach(file => {
-				//if (path.extname(file) == ".json") names.push(file.slice(0, -5));
-			}); */
+			res.status(200);
+			res.json(names);
+		}	
+	});
+	
+})
+
+app.get('/publicTitles',(req, res) => {
+	const dir = './stories/public';
+	var names = [] ;
+
+	fs.readdir(dir, (err, files) => {
+		if(err) {
+			console.log(err);
+		}
+		else {
+			// add control to verify if file is a directory !!!
+			files.map(function(f) {
+				names.push(f);
+			});
 			res.status(200);
 			res.json(names);
 		}	
@@ -118,7 +134,7 @@ app.get('/titles',(req, res) => {
 
 /* delete a story */
 app.delete('/deleteStory/:title', (req, res) => {
-	let dir = './stories/public/'+ req.params.title ;
+	let dir = './stories/private/'+ req.params.title ;
 	console.log(dir);
 	fs.rmdir(dir, { recursive: true }, (err) => {
 		if (err) {
@@ -127,45 +143,50 @@ app.delete('/deleteStory/:title', (req, res) => {
 	
 		console.log(`${dir} is deleted!`);
 	})
-	/*fs.unlink('./stories/public/'+ req.params.title +'.json', function (err) {
-		if (err) throw err;
-		console.log('Deleted');
-		res.status(200).end();
-	});*/
 	res.status(200).end();
 })
 
-/* duplicate a story 
+/* duplicate a story */
 app.put('/copyStory/:title', (req, res) => {
-	
-	fs.readFile('./stories/public/'+req.params.title+'.json', 'utf8', (err, data) => {  
-		res.set('Content-Type', 'application/json');
-		console.log('copy' +data);
-		let story = JSON.parse(data);
-		story.title = story.title + ' - copy';
-		story.originalTitle = story.title;
-		let json = JSON.stringify(story,null,2);
+	let dir = './stories/private/'+ req.params.title ;
+	let copy = dir + ' - copy';
+	fs.copy(dir, copy , err =>{
+		if(err) return console.error(err);
+		console.log('success!');
+		res.send({title:  req.params.title+' - copy'});
+		res.status(200);
+	});
 
-		fs.writeFile('./stories/public/'+ story.title +'.json', json, (err) => {
-			if (err) throw err;
-			console.log('Saved!');
-			res.send({title: story.title});
-			res.status(200);
-		});
+})
 
-	})
 
-})*/
 
-/* public a story */
+/* make a story public */
 app.put('/publicStory/:title', (req, res) => {
-	fs.rename('./stories/private/'+req.params.title, './stories/public/'+ req.params.title, err => {
+	let dir = './stories/private/'+ req.params.title ;
+	let toDir = './stories/public/'+ req.params.title;
+	fs.rename(dir, toDir, err => {
 		if (err) {
 		  throw err;
 		}
 	});
 	res.status(200);
-		//res.send({title: req.params.title});
+	res.send({title: req.params.title});
+
+});
+
+/* make a story private */
+app.put('/privateStory/:title', (req, res) => {
+	let dir = './stories/public/'+req.params.title;
+	let toDir = './stories/private/'+ req.params.title;
+	fs.rename(dir, toDir, err => {
+		if (err) {
+		  throw err;
+		}
+	});
+	res.status(200);
+	res.send({title: req.params.title});
+
 });
 
 app.listen(8080, () => {
