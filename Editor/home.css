@@ -28,12 +28,12 @@ html,body{
     background-color: rgb(131, 244, 248);
 }
 
-#icon-group{
+.icon-group{
     float: right;
     margin-right: 3em;
 }
 
-#icon-group i.fas{
+.icon-group i.fas{
     cursor:grab;
 }
 
