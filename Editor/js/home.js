@@ -7,6 +7,7 @@ export default {
     data() {
         return{
             currentStory: -1,
+            currentList:"",
             storiesList: [],
             publicStoriesList: []
         }
@@ -17,12 +18,12 @@ export default {
             <div id="publicStories">
                 <span v-if="publicStoriesList.length == 0">Nessuna storia pubblicata</span>
                 <div id="public-list" class="list-group" v-else>
-                    <button v-for="(story,index) in publicStoriesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index)">
+                    <button v-for="(story,index) in publicStoriesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index,'public')">
                         {{story}} 
                         <span class="icon-group">
                             <i tabindex="0" class="fas fa-file-download" @click="downloadStory(index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-qrcode" @click="createQRCode(index)"></i>&nbsp;&nbsp;
-                            <i tabindex="0" class="fas fa-trash-alt" data-toggle="modal" data-target="#deletePublicModal" @click="deleteStory(index)"></i>
+                            <i tabindex="0" class="fas fa-trash-alt" data-toggle="modal" data-target="#deleteModal"></i>
                         </span>
                     </button>
                 </div>
@@ -34,13 +35,13 @@ export default {
             <div id="stories">
                 <span v-if="storiesList.length == 0">Nessuna storia presente</span>
                 <div id="stories-list" class="list-group" v-else>
-                    <button v-for="(story,index) in storiesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index)">
+                    <button v-for="(story,index) in storiesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index,'private')">
                         {{story}} 
                         <span class="icon-group">
                             <i tabindex="0" class="fas fa-edit" @click="editStory(index)" ></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-copy"  @click="duplicateStory(index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-file-upload" @click="loadStory(index)"></i>&nbsp;&nbsp;
-                            <i tabindex="0" class="fas fa-trash-alt" data-toggle="modal" data-target="#deletePrivateModal"></i>
+                            <i tabindex="0" class="fas fa-trash-alt" data-toggle="modal" data-target="#deleteModal"></i>
                         </span>
                     </button>
                 </div>
@@ -51,7 +52,7 @@ export default {
                 <button @click="hideMenu">CHIUDI FINESTRA</button>
             </div>
 
-            <div class="modal fade" id="deletePrivateModal" tabindex="-1" role="dialog" aria-labelledby="deletePrivateModal" aria-hidden="true">
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -70,33 +71,14 @@ export default {
                     </div>
                 </div>
             </div>
-
-            <div class="modal fade" id="deletePublicModal" tabindex="-1" role="dialog" aria-labelledby="deletePublicModal" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" >Avviso eliminazione</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            Se elimini questo file lo perderai definitivamente.
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                            <button type="button" class="btn btn-primary" @click="deleteStory(currentStory)">Elimina</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div> 
     `,
     methods: {
         //ogni volta che clicco su un bottone per svolgere attività sulla storia viene eseguita anche questa perchè i bottoni piccoli sono dentro
         //a quello grande, in questa maniera so da quale storia è stato premuto il bottone per eseguire modifiche
-        changeActive(index){
+        changeActive(index,list){
             this.currentStory = index;
+            this.currentList= list;
         },
         newStory(){
             $('#toEditMenu').click(); 
@@ -142,12 +124,18 @@ export default {
              }); 
         },
         deleteStory(index){
-            var title = this.storiesList[index];
-            this.storiesList.splice(index,1);
-         //   this.currentStory = this.storiesList.length != 0 ? 0 : null;
-
+            let title;
+            console.log(this.currentList);
+            if(this.currentList === "private"){
+                title= this.storiesList[index];
+                this.storiesList.splice(index,1);
+            }
+            else{
+                title = this.publicStoriesList[index];
+                this.publicStoriesList.splice(index,1);
+            }
             $.ajax({
-                url: '/deleteStory/'+title,
+                url: '/deleteStory?title='+title+'&group='+this.currentList,
                 type: 'DELETE',
                 success: () =>{
                     console.log('story deleted')
@@ -156,6 +144,7 @@ export default {
                     console.log('error')
                 }
             });
+            $("#deleteModal").modal('hide');
         },
         editStory(index) {
             $('#toEditMenu').click();     
@@ -185,7 +174,7 @@ export default {
              });
         },
         createQRCode(index){
-            let story = this.storiesList[index];
+            let story = this.publicStoriesList[index];
             //delete the current qr code
             $('#qrcode').html("");
             new QRCode('qrcode', {

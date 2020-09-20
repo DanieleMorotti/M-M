@@ -133,8 +133,9 @@ app.get('/publicTitles',(req, res) => {
 })
 
 /* delete a story */
-app.delete('/deleteStory/:title', (req, res) => {
-	let dir = './stories/private/'+ req.params.title ;
+app.delete('/deleteStory', (req, res) => {
+	let where = req.query.group;
+	let dir = './stories/'+where+'/'+ req.query.title ;
 	console.log(dir);
 	fs.rmdir(dir, { recursive: true }, (err) => {
 		if (err) {
@@ -158,8 +159,6 @@ app.put('/copyStory/:title', (req, res) => {
 	});
 
 })
-
-
 
 /* make a story public */
 app.put('/publicStory/:title', (req, res) => {
