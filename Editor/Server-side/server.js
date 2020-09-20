@@ -150,12 +150,34 @@ app.delete('/deleteStory', (req, res) => {
 /* duplicate a story */
 app.put('/copyStory/:title', (req, res) => {
 	let dir = './stories/private/'+ req.params.title ;
-	let copy = dir + ' - copy';
-	fs.copy(dir, copy , err =>{
-		if(err) return console.error(err);
-		console.log('success!');
-		res.send({title:  req.params.title+' - copy'});
-		res.status(200);
+	var names = [] ;
+
+	fs.readdir('./stories/private/', (err, files) => {
+		if(err) throw err;
+		else {
+			// add control to verify if file is a directory !!!
+			files.map(function(f) {
+				names.push(f);
+			});
+
+			let copy = dir + ' - copy';
+			let title = copy.substring(copy.lastIndexOf('/') + 1);
+			let i = 0;
+			names.find((element) => {
+				if(element.substr(0, title.length) === title) i++;
+			});
+			if(i > 0) {
+				copy += '('+(i)+')';
+				title += '('+(i)+')';
+			}
+			fs.copy(dir, copy , err =>{
+				if(err) return console.error(err);
+				console.log('success!');
+			});
+			
+			res.send({title: title});
+			res.status(200);
+		}	
 	});
 
 })

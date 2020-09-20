@@ -37,13 +37,8 @@ export default {
                 <div id="stories-list" class="list-group" v-else>
                     <button v-for="(story,index) in storiesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index,'private')">
                         {{story}} 
-<<<<<<< HEAD
-                        <span id="icon-group">
-                            <i tabindex="0" title="edit" class="fas fa-edit" @click="editStory(index)" ></i>&nbsp;&nbsp;
-=======
                         <span class="icon-group">
                             <i tabindex="0" class="fas fa-edit" @click="editStory(index)" ></i>&nbsp;&nbsp;
->>>>>>> 4ec09b589c633a46a1d1cb48f2283910a2a3f8e6
                             <i tabindex="0" class="fas fa-copy"  @click="duplicateStory(index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-file-upload" @click="loadStory(index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-trash-alt" data-toggle="modal" data-target="#deleteModal"></i>
