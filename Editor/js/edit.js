@@ -6,7 +6,9 @@ export default {
         return{
             activities: [],
             currentActivity: 0,
-            currentStory: ''
+            currentStory: '',
+            titles: [],
+            invalid: false
         }
     }, 
     template: `
@@ -16,7 +18,8 @@ export default {
                 <ul>
                     <li>
                         <label for="inpTitle">Inserisci il titolo: </label>
-                        <input type="text" name="title" id="inpTitle"/>
+                        <input type="text" name="title" id="inpTitle" v-on:keyup="checkTitle"/>
+                        <p id="titleInfo"> Una storia con questo titolo esiste già</p>
                     </li>
                     <li>
                         <label for="inpSett">Inserisci l'ambientazione:</label>
@@ -127,7 +130,23 @@ export default {
              $('#saveActivity').prop("value", "Salva attività");
              this.currentActivity = (this.activities.length != 0)?this.activities[this.activities.length - 1].number +1: 0;
         },
+        checkTitle() {
+            if(this.titles.includes($("#inpTitle").val())) {
+                $("#inpTitle").css("background-color", "red");
+                $("#inpTitle").addClass('error');
+                $("#titleInfo").show();
+                setTimeout(function() {
+                    $("#inpTitle").removeClass('error');
+                }, 3000);    
+                this.invalid = true;               
+            }
+            else {
+                $("#inpTitle").css("background-color", "white");
+                $("#titleInfo").hide();
+            }
+        },
         checkForm: function() {
+            if(this.invalid) return;
             var data = new FormData($('#editStoryForm')[0]);
 
             var originTitle = this.currentStory;
@@ -212,6 +231,6 @@ export default {
                 });
             }
         })
-        
+        bus.$on('titles', (response) => { this.titles = response});
     }
 }

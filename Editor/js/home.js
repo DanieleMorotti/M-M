@@ -37,7 +37,7 @@ export default {
                     <button v-for="(story,index) in storiesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index)">
                         {{story}} 
                         <span id="icon-group">
-                            <i tabindex="0" class="fas fa-edit" @click="editStory(index)" ></i>&nbsp;&nbsp;
+                            <i tabindex="0" title="edit" class="fas fa-edit" @click="editStory(index)" ></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-copy"  @click="duplicateStory(index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-file-upload" @click="loadStory(index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-qrcode" @click="createQRCode(index)"></i>&nbsp;&nbsp;
@@ -70,7 +70,8 @@ export default {
             
             promise.then(() => {
                 console.log('emit');
-                bus.$emit('story','')
+                bus.$emit('story','');
+                bus.$emit('titles', this.storiesList.concat(this.publicStoriesList));
             }); 
         },
         loadStory(index) {
@@ -129,6 +130,7 @@ export default {
             
             promise.then(() => {
                 console.log('emit');
+                bus.$emit('titles', this.storiesList.concat(this.publicStoriesList));
                 bus.$emit('story',this.storiesList[index])
             });
         },
@@ -146,7 +148,8 @@ export default {
              });
         },
         createQRCode(index){
-            let story = this.storiesList[index];
+            console.log('here');
+            let story = this.publicStoriesList[index];
             //delete the current qr code
             $('#qrcode').html("");
             new QRCode('qrcode', {
@@ -193,6 +196,10 @@ export default {
                 this.storiesList.splice(index, 1, current.title); 
             }             
         });
+
+       // bus.$on('reqTitles', () => {
+            bus.$emit('titles', this.storiesList.concat(this.publicStoriesList));
+      //  })
       
     }
 }
