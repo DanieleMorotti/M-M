@@ -1,0 +1,25 @@
+{
+  "title": "biancaneve - copy",
+  "setting": "bosco",
+  "description": "bla bla bla",
+  "pocketItem": "..",
+  "introduction": "questa e' l'introduzione alla storia",
+  "activities": [
+    {
+      "number": 0,
+      "type": "domanda aperta",
+      "setting": "prima attivita'",
+      "instructions": ""
+    },
+    {
+      "number": 1,
+      "type": "figurativa",
+      "setting": "seconda",
+      "instructions": ""
+    }
+  ],
+  "originalTitle": "biancaneve - copy",
+  "background": "IMG_7931.JPG",
+  "pocketItemCss": "edit.css",
+  "pocketItemJs": "server.js"
+}

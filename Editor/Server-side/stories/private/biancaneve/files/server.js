@@ -173,16 +173,6 @@ app.put('/copyStory/:title', (req, res) => {
 			fs.copy(dir, copy , err =>{
 				if(err) return console.error(err);
 				console.log('success!');
-				fs.readFile(copy + '/file.json', 'utf8', (err, data) => {  
-					if (err) throw err;
-					let story = JSON.parse(data);
-					story.title = title;
-					story.originalTitle = title;
-					fs.writeFile(copy + '/file.json', JSON.stringify(story,null,2), function (err) {
-						if (err) throw err;
-						console.log('Saved!');
-					});
-				})
 			});
 			
 			res.send({title: title});
