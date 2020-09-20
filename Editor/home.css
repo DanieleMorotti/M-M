@@ -12,20 +12,20 @@ html,body{
     margin-left:2rem;
 }
 
-#stories, #publicStories{
+#privateStories, #publicStories{
     margin:2rem;
 }
 
-#stories-list, #public-list{
+#private-list, #public-list{
     font-size:1.5rem;
 }
 
 #public-list > button {
-    background-color: lightcoral;
+    background-color:#facbc8;
 }
 
-#stories-list > button:focus{
-    background-color: rgb(131, 244, 248);
+#private-list > button:focus{
+    background-color:#d1fff2;
 }
 
 .icon-group{

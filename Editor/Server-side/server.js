@@ -82,8 +82,8 @@ app.post('/saveStory', (req, res) => {
 
 
 /* require a story which already exists */ 
-app.get('/stories',(req, res) => {
-	fs.readFile('./stories/private/'+req.query.story+'/file.json', 'utf8', (err, data) => {  
+app.get('/getStory',(req, res) => {
+	fs.readFile('./stories/'+req.query.group+'/'+req.query.title+'/file.json', 'utf8', (err, data) => {  
 		res.set('Content-Type', 'application/json');
 		//console.log('requested: ' + data);
 		res.send(data)
@@ -93,20 +93,28 @@ app.get('/stories',(req, res) => {
 
 /* return the list of titles of the stories stored in the server */
 app.get('/titles',(req, res) => {
-	const dir = './stories/private';
-	var names = [] ;
+	const private = './stories/private';
+	const public = './stories/public';
+	var obj = { private: [], public: []} ;
 
-	fs.readdir(dir, (err, files) => {
-		if(err) {
-			console.log(err);
-		}
+	fs.readdir(private, (err, files) => {
+		if(err) throw err;
 		else {
 			// add control to verify if file is a directory !!!
 			files.map(function(f) {
-				names.push(f);
+				obj.private.push(f);
 			});
-			res.status(200);
-			res.json(names);
+			fs.readdir(public, (err, files) => {
+				if(err) throw err;
+				else {
+					// add control to verify if file is a directory !!!
+					files.map(function(f) {
+						obj.public.push(f);
+					});
+					res.status(200);
+					res.json(obj);
+				}	
+			});
 		}	
 	});
 	

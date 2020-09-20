@@ -8,7 +8,7 @@ export default {
         return{
             currentStory: -1,
             currentList:"",
-            storiesList: [],
+            privateStoriesList: [],
             publicStoriesList: []
         }
     },
@@ -25,6 +25,7 @@ export default {
                             <i tabindex="0" class="fas fa-qrcode" @click="createQRCode(index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-trash-alt" data-toggle="modal" data-target="#deleteModal"></i>
                         </span>
+                        <div class="content" style="display:none"></div>
                     </button>
                 </div>
             </div>
@@ -32,10 +33,10 @@ export default {
             <div id="littleMenu">
                 <button @click="newStory">Nuova storia <i class="fas fa-plus"></i></button>
             </div>
-            <div id="stories">
-                <span v-if="storiesList.length == 0">Nessuna storia presente</span>
-                <div id="stories-list" class="list-group" v-else>
-                    <button v-for="(story,index) in storiesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index,'private')">
+            <div id="privateStories">
+                <span v-if="privateStoriesList.length == 0">Nessuna storia presente</span>
+                <div id="private-list" class="list-group" v-else>
+                    <button v-for="(story,index) in privateStoriesList" :key="index" type="button" class="list-group-item list-group-item-action " @click="changeActive(index,'private')">
                         {{story}} 
                         <span class="icon-group">
                             <i tabindex="0" class="fas fa-edit" @click="editStory(index)" ></i>&nbsp;&nbsp;
@@ -43,6 +44,7 @@ export default {
                             <i tabindex="0" class="fas fa-file-upload" @click="loadStory(index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-trash-alt" data-toggle="modal" data-target="#deleteModal"></i>
                         </span>
+                        <div class="content" style="display:none"></div>
                     </button>
                 </div>
             </div>
@@ -78,9 +80,32 @@ export default {
         //a quello grande, in questa maniera so da quale storia è stato premuto il bottone per eseguire modifiche
         changeActive(index,list){
             this.currentStory = index;
-            this.currentList= list;
+            this.currentList = list;
+            let current = list + '-list';
+            let title;
+            if(list == 'private'){
+                title = this.privateStoriesList[index];
+            } else title = this.publicStoriesList[index];
+            if($(`#${current} div:eq(${index})`).css("display") == "block")
+                $(`#${current} div:eq(${index})`).css("display", "none");
+            else {
+                $.ajax({
+                    url: '/getStory?title='+title+'&group='+list,
+                    type: 'GET',
+                    success: (data) =>{    
+                        console.log(JSON.stringify(data,null,2));                   
+                        $(`#${current} div:eq(${index})`).html("<hr><pre>"+JSON.stringify(data,null,2)+"</pre>");
+                        $(`#${current} div:eq(${index})`).css("display", "block");
+      
+                    },
+                    error: () =>{
+                        console.log('error')
+                    }
+                });
+            }
         },
         newStory(){
+            $('.content').css("display", "none");
             $('#toEditMenu').click(); 
             const promise = new Promise((succ, err) => {
                 bus.$on('ready',(msg) => {
@@ -92,17 +117,17 @@ export default {
             promise.then(() => {
                 console.log('emit');
                 bus.$emit('story','');
-                bus.$emit('titles', this.storiesList.concat(this.publicStoriesList));
+                bus.$emit('titles', this.privateStoriesList.concat(this.publicStoriesList));
             }); 
         },
         loadStory(index) {
                 $.ajax({
-                    url: '/publicStory/' + this.storiesList[index],
+                    url: '/publicStory/' + this.privateStoriesList[index],
                     type: 'PUT',
                     success: (response) =>{
                        console.log("Storia resa pubblica");
-                       this.publicStoriesList.push(this.storiesList[index]);
-                       this.storiesList.splice(index,1);
+                       this.publicStoriesList.push(this.privatestoriesList[index]);
+                       this.privateStoriesList.splice(index,1);
                     },
                     error: function (e) {
                         console.log('error');
@@ -116,7 +141,7 @@ export default {
                 type: 'PUT',
                 success: (response) =>{
                    console.log("Storia resa privata");
-                   this.storiesList.push(this.publicStoriesList[index]);
+                   this.privateStoriesList.push(this.publicStoriesList[index]);
                    this.publicStoriesList.splice(index,1);
                 },
                 error: function (e) {
@@ -128,8 +153,8 @@ export default {
             let title;
             console.log(this.currentList);
             if(this.currentList === "private"){
-                title= this.storiesList[index];
-                this.storiesList.splice(index,1);
+                title= this.privateStoriesList[index];
+                this.privateStoriesList.splice(index,1);
             }
             else{
                 title = this.publicStoriesList[index];
@@ -148,6 +173,7 @@ export default {
             $("#deleteModal").modal('hide');
         },
         editStory(index) {
+            $('.content').css("display", "none");
             $('#toEditMenu').click();     
             const promise = new Promise((succ, err) => {
                 bus.$on('ready',(title) => {
@@ -158,17 +184,17 @@ export default {
             
             promise.then(() => {
                 console.log('emit');
-                bus.$emit('titles', this.storiesList.concat(this.publicStoriesList));
-                bus.$emit('story',this.storiesList[index])
+                bus.$emit('titles', this.privateStoriesList.concat(this.publicStoriesList));
+                bus.$emit('story',this.privateStoriesList[index])
             });
         },
         duplicateStory(index) {
-            console.log(this.storiesList[index]);
+            console.log(this.privateStoriesList[index]);
             $.ajax({
-                url: '/copyStory/' + this.storiesList[index],
+                url: '/copyStory/' + this.privateStoriesList[index],
                 type: 'PUT',
                 success: (response) =>{
-                  this.storiesList.push(response.title);
+                  this.privateStoriesList.push(response.title);
                 },
                 error: function (e) {
                     console.log(e.message);
@@ -200,31 +226,34 @@ export default {
     },
     mounted() {        
         $.get( "/titles", (res) => {
-            for(let i=0; i < res.length;i++){
-                this.storiesList.push(res[i]);
+            for(let i=0; i < res.private.length;i++){
+                this.privateStoriesList.push(res.private[i]);
+            }
+            for(let i=0; i < res.public.length;i++){
+                this.publicStoriesList.push(res.public[i]);
             }
         });
-
+/*
         $.get( "/publicTitles", (res) => {
             for(let i=0; i < res.length;i++){
                 this.publicStoriesList.push(res[i]);
             }
-        });
+        });*/
         
         //listening for updateStories event
 		this.$root.$on('updateStories',(story) => {
             var current = JSON.parse(story);
             if(!current.changed) {
-                if(!this.storiesList.includes(current.title))
-                     this.storiesList.push(current.title);
+                if(!this.privateStoriesList.includes(current.title))
+                     this.privateStoriesList.push(current.title);
             }
             else {
-                var index = this.storiesList.indexOf(current.original);
-                this.storiesList.splice(index, 1, current.title); 
+                var index = this.privateStoriesList.indexOf(current.original);
+                this.privateStoriesList.splice(index, 1, current.title); 
             }             
         });
 
-        bus.$emit('titles', this.storiesList.concat(this.publicStoriesList));
+        bus.$emit('titles', this.privateStoriesList.concat(this.publicStoriesList));
  
     }
 }
