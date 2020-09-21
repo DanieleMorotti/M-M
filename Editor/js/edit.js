@@ -63,6 +63,7 @@ export default {
                                 <span id="icon-group">
                                     <i class="fas fa-edit" @click="editActivity(index)"></i>&nbsp;&nbsp;
                                     <i class="fas fa-cut" @click="currentActivity = index" data-toggle="modal" data-target="#moveModal"></i>&nbsp;&nbsp;
+                                    <i class="fas fa-clone"  @click="currentActivity = index" data-toggle="modal" data-target="#copyModal"></i>&nbsp;&nbsp;
                                     <i  class="fas fa-trash-alt" @click="deleteActivity(index)"></i>
                                 </span>
                             </li>
@@ -82,11 +83,31 @@ export default {
                             </button>
                         </div>
                         <div class="modal-body">
-                            <label>In quale storia vuoi spostare l'attività?<input type="text" id="moveActivityTo" required /></label>
+                            <label>In quale storia vuoi spostare l'attività?</label><input type="text" id="moveActivityTo" required />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                            <button type="button" class="btn btn-primary" @click="moveActivity(currentActivity)">Sposta</button>
+                            <button type="button" class="btn btn-primary" @click="moveActivity(currentActivity)">SPOSTA</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="copyModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Copia di un'attività</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <label>In quale storia vuoi copiare l'attività?</label><input type="text" id="copyActivityTo" required />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button" id="modalBtn" class="btn btn-primary" @click="copyActivity(currentActivity)">COPIA</button>
                         </div>
                     </div>
                 </div>
@@ -151,6 +172,12 @@ export default {
                 this.currentActivity = index;
         },
         moveActivity(index){
+            this.copyActivity(index,$('#moveActivityTo').val());
+
+            this.activities.splice(index,1);
+            this.currentActivity = (this.activities.length != 0)?this.activities[this.activities.length - 1].number +1: 0;
+        },
+        copyActivity(index,moveStory){
             let number,type,where,instr;
             let obj = {};
             //copying all the data of the activity
@@ -162,8 +189,8 @@ export default {
             obj["setting"] = where;
             instr = this.activities[index].instructions;
             obj["instructions"] = instr;
-            
-            let toStory = $('#moveActivityTo').val();
+
+            let toStory = (moveStory)?moveStory: $('#copyActivityTo').val();
             $.ajax({
                 type: "POST",
                 url: "/copyActivity?toStory="+toStory,
@@ -171,15 +198,13 @@ export default {
                 cache: false,
                 success: (data) =>{
                     //emit event to update the home component stories list
-                    $('#moveModal').modal('hide');
+                    if(moveStory)$('#moveModal').modal('hide');
+                    else $('#copyModal').modal('hide');
                 },
                 error: function (e) {
                     console.log("error",e);
                 }
             });
-
-            this.activities.splice(index,1);
-            this.currentActivity = (this.activities.length != 0)?this.activities[this.activities.length - 1].number +1: 0;
         },
         deleteActivity(index) {
              this.activities.splice(index,1);
@@ -269,6 +294,8 @@ export default {
     activated() {
         $('#editStoryForm')[0].reset();
         $('#activitiesForm')[0].reset();
+        this.activities = [];
+        this.currentActivity = 0;
         this.currentStory = '';
         bus.$emit('ready','pronto'); 
         bus.$once('story',(story) =>{

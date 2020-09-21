@@ -6,16 +6,10 @@
   "introduction": "questa e' l'introduzione alla storia",
   "activities": [
     {
-      "number": 0,
+      "number": 2,
       "type": "domanda aperta",
-      "setting": "prima attivita'",
-      "instructions": ""
-    },
-    {
-      "number": 1,
-      "type": "figurativa",
-      "setting": "seconda",
-      "instructions": ""
+      "setting": "montagna",
+      "instructions": "lllalall"
     }
   ],
   "originalTitle": "biancaneve - copy",

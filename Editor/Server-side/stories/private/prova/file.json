@@ -1,5 +1,5 @@
 {
-  "title": "nuova",
+  "title": "prova",
   "setting": "",
   "description": "",
   "pocketItem": "",
@@ -7,12 +7,12 @@
   "activities": [
     {
       "number": 1,
-      "type": "domanda aperta",
-      "setting": "prima attivita'",
+      "type": "figurativa",
+      "setting": "seconda",
       "instructions": ""
     }
   ],
-  "originalTitle": "",
+  "originalTitle": "prova",
   "background": "",
   "pocketItemCss": "",
   "pocketItemJs": ""

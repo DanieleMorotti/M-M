@@ -10,6 +10,12 @@
       "type": "figurativa",
       "setting": "seconda",
       "instructions": ""
+    },
+    {
+      "number": 2,
+      "type": "scelta multipla",
+      "setting": "mre",
+      "instructions": "dsdas"
     }
   ],
   "originalTitle": "biancaneve",
