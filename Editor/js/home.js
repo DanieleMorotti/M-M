@@ -53,8 +53,8 @@ export default {
                 <p></p>
                 <button @click="hideMenu">CHIUDI FINESTRA</button>
             </div>
-
-            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+            <!-- Modal for confirming the elimination -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">

@@ -18,7 +18,7 @@ export default {
                 <ul>
                     <li>
                         <label for="inpTitle">Inserisci il titolo: </label>
-                        <input type="text" name="title" id="inpTitle" v-on:keyup="checkTitle"/>
+                        <input type="text" name="title" id="inpTitle" v-on:keyup="checkTitle" required/>
                         <p id="titleInfo"> Una storia con questo titolo esiste già</p>
                     </li>
                     <li>
@@ -52,19 +52,46 @@ export default {
                     </li>
                     <li>
                         <label for="inpIntr">Inserisci l'introduzione della tua storia:</label><br>
-                        <textarea id="inpDescr" name="introduction" rows="3" cols="40"></textarea>
+                        <textarea id="inpIntr" name="introduction" rows="3" cols="40"></textarea>
                     </li>
                     <li>    
                         <h2>Attività</h2>
                         <p v-if="this.activities.length==0"> Nessuna attività per questa storia </p>
                         <ul v-else id="activitiesSaved">
-                            <li v-for="(activity,index) in activities" :key="index">Attività {{activity.number +1}} <span id="icon-group"><i class="fas fa-edit" @click="editActivity(index)"></i>&nbsp;&nbsp;
-                    <i  class="fas fa-trash-alt" @click="deleteActivity(index)"></i></span></li>
+                            <li v-for="(activity,index) in activities" :key="index">
+                                Attività {{activity.number +1}} 
+                                <span id="icon-group">
+                                    <i class="fas fa-edit" @click="editActivity(index)"></i>&nbsp;&nbsp;
+                                    <i class="fas fa-cut" @click="currentActivity = index" data-toggle="modal" data-target="#moveModal"></i>&nbsp;&nbsp;
+                                    <i  class="fas fa-trash-alt" @click="deleteActivity(index)"></i>
+                                </span>
+                            </li>
                         </ul>
                     </li>
                 </ul>
             </form>
 
+            <!-- Modals for copy or move an activity -->
+            <div class="modal fade" id="moveModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Spostamento attività</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <label>In quale storia vuoi spostare l'attività?<input type="text" id="moveActivityTo" required /></label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button" class="btn btn-primary" @click="moveActivity(currentActivity)">Sposta</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <form id="activitiesForm" @submit="addActivity">
                 <h2>Nuova attività</h2>
                 <ul id="activitiesList">
@@ -122,6 +149,37 @@ export default {
                 $('#activitiesForm h2').text("Modifica l'attività "+ (this.activities[index].number + 1))
                 $('#saveActivity').prop("value", "Salva modifiche");
                 this.currentActivity = index;
+        },
+        moveActivity(index){
+            let number,type,where,instr;
+            let obj = {};
+            //copying all the data of the activity
+            number = this.activities[index].number + 1;
+            obj["number"] = number;
+            type =  this.activities[index].type;
+            obj["type"] = type;
+            where = this.activities[index].setting;
+            obj["setting"] = where;
+            instr = this.activities[index].instructions;
+            obj["instructions"] = instr;
+            
+            let toStory = $('#moveActivityTo').val();
+            $.ajax({
+                type: "POST",
+                url: "/copyActivity?toStory="+toStory,
+                data: obj,
+                cache: false,
+                success: (data) =>{
+                    //emit event to update the home component stories list
+                    $('#moveModal').modal('hide');
+                },
+                error: function (e) {
+                    console.log("error",e);
+                }
+            });
+
+            this.activities.splice(index,1);
+            this.currentActivity = (this.activities.length != 0)?this.activities[this.activities.length - 1].number +1: 0;
         },
         deleteActivity(index) {
              this.activities.splice(index,1);
@@ -220,13 +278,13 @@ export default {
                     type: "GET",
                     dataType: "json",
                     cache: false,
-                    url: "/getStory?title="+this.currentStory,
+                    url: "/getStory?title="+this.currentStory+"&group=private",
                     success: (data) =>{
                      // fill form with json's fields
                         this.showData(data);
                     },
                     error: function (e) {
-                        console.log("error in get story");
+                        console.log("error in get story",e);
                     }
                 });
             }

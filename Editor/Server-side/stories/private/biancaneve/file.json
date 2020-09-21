@@ -6,12 +6,6 @@
   "introduction": "questa e' l'introduzione alla storia",
   "activities": [
     {
-      "number": 0,
-      "type": "domanda aperta",
-      "setting": "prima attivita'",
-      "instructions": ""
-    },
-    {
       "number": 1,
       "type": "figurativa",
       "setting": "seconda",

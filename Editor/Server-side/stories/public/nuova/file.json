@@ -4,7 +4,14 @@
   "description": "",
   "pocketItem": "",
   "introduction": "",
-  "activities": [],
+  "activities": [
+    {
+      "number": 1,
+      "type": "domanda aperta",
+      "setting": "prima attivita'",
+      "instructions": ""
+    }
+  ],
   "originalTitle": "",
   "background": "",
   "pocketItemCss": "",
