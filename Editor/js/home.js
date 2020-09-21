@@ -21,8 +21,8 @@ export default {
                     <button v-for="(story,index) in publicStoriesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index,'public')">
                         {{story}} 
                         <span class="icon-group">
-                            <i tabindex="0" class="fas fa-file-download" @click="downloadStory(index)"></i>&nbsp;&nbsp;
-                            <i tabindex="0" class="fas fa-qrcode" @click="createQRCode(index)"></i>&nbsp;&nbsp;
+                            <i tabindex="0" class="fas fa-file-download" @click="downloadStory(event,index)"></i>&nbsp;&nbsp;
+                            <i tabindex="0" class="fas fa-qrcode" @click="createQRCode(event, index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-trash-alt" data-toggle="modal" data-target="#deleteModal"></i>
                         </span>
                         <div class="content" style="display:none"></div>
@@ -39,9 +39,9 @@ export default {
                     <button v-for="(story,index) in privateStoriesList" :key="index" type="button" class="list-group-item list-group-item-action " @click="changeActive(index,'private')">
                         {{story}} 
                         <span class="icon-group">
-                            <i tabindex="0" class="fas fa-edit" @click="editStory(index)" ></i>&nbsp;&nbsp;
-                            <i tabindex="0" class="fas fa-copy"  @click="duplicateStory(index)"></i>&nbsp;&nbsp;
-                            <i tabindex="0" class="fas fa-file-upload" @click="loadStory(index)"></i>&nbsp;&nbsp;
+                            <i tabindex="0" class="fas fa-edit" @click="editStory(event, index)" ></i>&nbsp;&nbsp;
+                            <i tabindex="0" class="fas fa-copy"  @click="duplicateStory(event,index)"></i>&nbsp;&nbsp;
+                            <i tabindex="0" class="fas fa-file-upload" @click="loadStory(event,index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-trash-alt" data-toggle="modal" data-target="#deleteModal"></i>
                         </span>
                         <div class="content" style="display:none"></div>
@@ -68,7 +68,7 @@ export default {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                            <button type="button" class="btn btn-primary" @click="deleteStory(currentStory)">Elimina</button>
+                            <button type="button" class="btn btn-primary" @click="deleteStory(event,currentStory)">Elimina</button>
                         </div>
                     </div>
                 </div>
@@ -120,13 +120,14 @@ export default {
                 bus.$emit('titles', this.privateStoriesList.concat(this.publicStoriesList));
             }); 
         },
-        loadStory(index) {
+        loadStory(event, index) {
+            event.stopPropagation();
                 $.ajax({
                     url: '/publicStory/' + this.privateStoriesList[index],
                     type: 'PUT',
                     success: (response) =>{
                        console.log("Storia resa pubblica");
-                       this.publicStoriesList.push(this.privatestoriesList[index]);
+                       this.publicStoriesList.push(this.privateStoriesList[index]);
                        this.privateStoriesList.splice(index,1);
                     },
                     error: function (e) {
@@ -135,7 +136,8 @@ export default {
                  });        
             
         },
-        downloadStory(index) {
+        downloadStory(event,index) {
+            event.stopPropagation();
             $.ajax({
                 url: '/privateStory/' + this.publicStoriesList[index],
                 type: 'PUT',
@@ -149,7 +151,8 @@ export default {
                 }
              }); 
         },
-        deleteStory(index){
+        deleteStory(event, index){
+            event.stopPropagation();
             let title;
             console.log(this.currentList);
             if(this.currentList === "private"){
@@ -172,7 +175,8 @@ export default {
             });
             $("#deleteModal").modal('hide');
         },
-        editStory(index) {
+        editStory(event, index) {
+            event.stopPropagation();
             $('.content').css("display", "none");
             $('#toEditMenu').click();     
             const promise = new Promise((succ, err) => {
@@ -188,8 +192,8 @@ export default {
                 bus.$emit('story',this.privateStoriesList[index])
             });
         },
-        duplicateStory(index) {
-            console.log(this.privateStoriesList[index]);
+        duplicateStory(event, index) {
+            event.stopPropagation();
             $.ajax({
                 url: '/copyStory/' + this.privateStoriesList[index],
                 type: 'PUT',
@@ -201,7 +205,8 @@ export default {
                 }
              });
         },
-        createQRCode(index){
+        createQRCode(event, index){
+            event.stopPropagation();
             let story = this.publicStoriesList[index];
             //delete the current qr code
             $('#qrcode').html("");
@@ -233,12 +238,6 @@ export default {
                 this.publicStoriesList.push(res.public[i]);
             }
         });
-/*
-        $.get( "/publicTitles", (res) => {
-            for(let i=0; i < res.length;i++){
-                this.publicStoriesList.push(res[i]);
-            }
-        });*/
         
         //listening for updateStories event
 		this.$root.$on('updateStories',(story) => {

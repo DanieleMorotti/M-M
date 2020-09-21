@@ -220,7 +220,7 @@ export default {
                     type: "GET",
                     dataType: "json",
                     cache: false,
-                    url: "/getStories?title="+this.currentStory,
+                    url: "/getStory?title="+this.currentStory,
                     success: (data) =>{
                      // fill form with json's fields
                         this.showData(data);
