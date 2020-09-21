@@ -3,10 +3,12 @@ const express = require('express');
 const path = require('path');
 const formidable = require('formidable');
 const fs = require('fs-extra');
+const bodyParser = require('body-parser');
 
 const app = express();
 
 app.use(express.static(`${__dirname}/..`));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/',(req,res) =>{
 	res.status(200);
@@ -137,6 +139,40 @@ app.get('/publicTitles',(req, res) => {
 			res.json(names);
 		}	
 	});
+	
+})
+
+/*copy an activity i received to a story*/
+app.post('/copyActivity',(req,res) => {
+	let toStory = req.query.toStory;
+	let path = './stories/private';
+	let find = false;
+	let activity = req.body;
+	console.log(JSON.stringify(activity,null,2));
+	//get the directory of the story(public or private)
+	fs.readdir(path, (err, files) => {
+		if(err)console.log(err);
+		else {
+			files.map((f) => {
+				if(toStory === f){
+					find = true;
+				}
+			});
+		}	
+	});
+	
+	fs.readFile(path + '/'+toStory + '/file.json', 'utf8', (err, data) => {  
+		if (err) throw err;
+		let story = JSON.parse(data);
+		//set the new activity number to the last old activity +1
+		activity.number = (story.activities.length != 0)?story.activities[story.activities.length - 1].number +1:1;
+		story.activities.push(activity);
+		fs.writeFile(path + '/'+toStory + '/file.json', JSON.stringify(story,null,2), function (err) {
+			if (err) throw err;
+			console.log('Added a new activity to '+ toStory);
+		});
+	})
+	res.status(200).end();
 	
 })
 
