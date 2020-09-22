@@ -21,7 +21,7 @@ export default {
                 <ul>
                     <li>
                         <label for="inpTitle">Inserisci il titolo: </label>
-                        <input type="text" name="title" id="inpTitle" v-on:keyup="checkTitle" required/>
+                        <input type="text" name="title" id="inpTitle" v-on:keyup="checkName('title')" required/>
                         <p id="titleInfo"> Una storia con questo titolo esiste già</p>
                     </li>
                     <li>
@@ -74,6 +74,7 @@ export default {
                     </li>
                 </ul>
             </form>
+            <button @click="checkForm">FINITO</button>
 
         <!-- Modals for copy or move an activity -->
             <div class="modal fade" id="moveModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -169,7 +170,26 @@ export default {
                 </ul>
                 <input id="saveActivity" type="submit" value="Salva attività" />
             </form>
-            <button @click="checkForm">FINITO</button>
+            <form id="widgetsForm" @submit="addWidget">
+                <h2>Nuovo widget</h2>
+                <ul>
+                    <li>
+                        <h5>Crea un nuovo widget: </h5>
+                        <label for="inpWidgetName">Nome del widget:</label>
+                        <input type="text" id="inpWidgetName" name="name" v-on:keyup="checkName('widget')" required/>
+                        <p id="widgetInfo"> Un widget con questo nome esiste già</p>
+                    </li>
+                    <li>
+                        <label for="inpWidgetCss">Aggiungi un file CSS</label>
+                        <input type="file" name="widgetCss" id="inpWidgetCss" accept="text/css" required/>
+                    </li>
+                    <li>
+                        <label for="inpWidgetJs">Aggiungi un file JS</label>
+                        <input type="file" name="widgetJs" id="inpWidgetJs" accept=".js" required/>
+                    </li>
+                </ul>
+                <input id="saveWidget" type="submit" value="Salva widget" />
+            </form>
         </div> 
     `,
     methods: {
@@ -272,24 +292,59 @@ export default {
             $("#infoWidget").text("Hai scelto il widget: " + this.widgets[this.currentWidget]);
             $("#infoWidget").css("display", "inline");
         },
-        checkTitle() {
-            if(this.titles.privateList.includes($("#inpTitle").val()) || this.titles.publicList.includes($("#inpTitle").val())) {
-                $("#inpTitle").css("background-color", "red");
-                $("#inpTitle").addClass('error');
-                $("#titleInfo").show();
+        addWidget(e) {
+            e.preventDefault();
+            let data = new FormData($('#widgetsForm')[0]);
+            let widgetName = $("#inpWidgetName").val()
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "/saveWidget?name="+widgetName,
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: (data) =>{
+                    //emit event to update the home component stories list
+                    $('#widgetsForm')[0].reset();
+                    this.widgets.push(widgetName);
+                },
+                error: function (e) {
+                    console.log("error");
+                }
+            });
+        },
+        checkName(type) {
+            let list, value, input, info;
+            if(type == 'widget') {
+                list = this.widgets;
+                input = $("#inpWidgetName");
+                value = $("#inpWidgetName").val();
+                info =  $("#widgetInfo");
+            } 
+            else if(type == 'title') {
+                list = this.titles.privateList.concat(this.titles.publicList);
+                input = $("#inpTitle");
+                value = $("#inpTitle").val();
+                info =  $("#titleInfo");
+            }
+            if(list.includes(value)) {
+                input.css("background-color", "red");
+                input.addClass('error');
+                info.css("display", "inline");
                 setTimeout(function() {
-                    $("#inpTitle").removeClass('error');
+                    input.removeClass('error');
                 }, 3000);    
                 this.invalid = true;               
             }
             else {
-                $("#inpTitle").css("background-color", "white");
-                $("#titleInfo").hide();
+                input.css("background-color", "white");
+                info.css("display", "none");
             }
         },
         checkForm: function() {
             if(this.invalid) return;
-            var data = new FormData($('#editStoryForm')[0]);
+            let data = new FormData($('#editStoryForm')[0]);
 
             var originTitle = this.currentStory;
             var verifyInput = $('input[type=file]');

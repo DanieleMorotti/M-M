@@ -53,10 +53,6 @@ i.fas{
     display: none;
 }
 
-#widgetInfo {
-    display: none;
-}
-
 .error {
     position: relative;
     animation: shake .1s linear;
