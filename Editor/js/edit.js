@@ -8,6 +8,8 @@ export default {
             currentActivity: 0,
             currentStory: '',
             titles: [],
+            widgets: [],
+            currentWidget: -1,
             invalid: false
         }
     }, 
@@ -72,7 +74,7 @@ export default {
                 </ul>
             </form>
 
-            <!-- Modals for copy or move an activity -->
+        <!-- Modals for copy or move an activity -->
             <div class="modal fade" id="moveModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -112,7 +114,29 @@ export default {
                     </div>
                 </div>
             </div>
-            
+
+            <div class="modal fade" id="widgetModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Scegli un widget</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                        <button v-for="(title,index) in widgets" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeWidget(index)">
+                        {{title}} </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button"  class="btn btn-primary" @click="chooseWidget(event,currentWidget)">Scegli</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!--  -->
+
             <form id="activitiesForm" @submit="addActivity">
                 <h2>Nuova attività</h2>
                 <ul id="activitiesList">
@@ -130,6 +154,10 @@ export default {
 
                         <h5>Spiegazione per lo svolgimento dell'attività:</h5>
                         <textarea name="instructions" rows="3" cols="40"></textarea>
+
+                        <h5>Scegli un widget per questa attività</h5>
+                        <input type="button" id="buttonWidget" data-toggle="modal" data-target="#widgetModal" value="Scegli"/>
+                        <p id="infoWidget" style="display:none"> </p>
                     </li>
                 </ul>
                 <input id="saveActivity" type="submit" value="Salva attività" />
@@ -141,26 +169,36 @@ export default {
         addActivity(e) {   
             e.preventDefault();
             if($('#saveActivity').val() == "Salva modifiche"){
+                let widgetValue = "";
+                if(this.currentWidget >= 0) widgetValue = this.widgets[this.currentWidget];
                 this.activities[this.currentActivity].type =  $("#activitiesList li input:checked").val();
                 this.activities[this.currentActivity].setting = $("#activitiesList li input[name='where']").val();
                 this.activities[this.currentActivity].instructions = $("#activitiesList li textarea[name='instructions']").val();
+                this.activities[this.currentActivity].widget = widgetValue;
 
                 $('#activitiesForm h2').text(`Nuova attività`)
                 $('#saveActivity').prop("value", "Salva attività");
                 this.currentActivity = this.activities[this.activities.length - 1].number +1;
             }
             else {
+                let widgetValue = "";
+                if(this.currentWidget >= 0) widgetValue = this.widgets[this.currentWidget];
                 let activity = {
                     number: this.currentActivity,
                     type: $("#activitiesList li input:checked").val(),
                     setting:  $("#activitiesList li input[name='where']").val(),
-                    instructions: $("#activitiesList li textarea[name='instructions']").val()
+                    instructions: $("#activitiesList li textarea[name='instructions']").val(),
+                    widget: widgetValue
                 }
                 this.activities.push(activity);
                 this.currentActivity++;
+                this.currentWidget = -1;
             }     
 
             $('#activitiesForm')[0].reset();
+            $("#buttonWidget").prop("value","Scegli");
+            $("#infoWidget").text("");
+            $("#infoWidget").css("display", "none");
         },
         editActivity(index){
                 $("#activitiesList li input[value='"+this.activities[index].type+"']").prop('checked', true);
@@ -169,6 +207,15 @@ export default {
                 
                 $('#activitiesForm h2').text("Modifica l'attività "+ (this.activities[index].number + 1))
                 $('#saveActivity').prop("value", "Salva modifiche");
+                console.log( 'WIDGET:' +this.activities[index].widget);
+                if(this.activities[index].widget) {
+                    $("#buttonWidget").prop("value","Cambia");
+                    console.log( 'WIDGET:' +this.activities[index].widget);
+                    $("#infoWidget").text("Hai scelto il widget: " + this.activities[index].widget);
+                    $("#infoWidget").css("display", "inline");
+                    this.currentWidget = this.widgets.indexOf(this.activities[index].widget);
+                }
+                
                 this.currentActivity = index;
         },
         moveActivity(index){
@@ -181,14 +228,9 @@ export default {
             let number,type,where,instr;
             let obj = {};
             //copying all the data of the activity
+            obj = this.activities[index];
             number = this.activities[index].number + 1;
             obj["number"] = number;
-            type =  this.activities[index].type;
-            obj["type"] = type;
-            where = this.activities[index].setting;
-            obj["setting"] = where;
-            instr = this.activities[index].instructions;
-            obj["instructions"] = instr;
 
             let toStory = (moveStory)?moveStory: $('#copyActivityTo').val();
             $.ajax({
@@ -211,7 +253,19 @@ export default {
              $('#activitiesForm')[0].reset();
              $('#activitiesForm h2').text(`Nuova attività`)
              $('#saveActivity').prop("value", "Salva attività");
+             $("#buttonWidget").prop("value","Scegli");
+             $("#infoWidget").text("");
+             $("#infoWidget").css("display", "none");
              this.currentActivity = (this.activities.length != 0)?this.activities[this.activities.length - 1].number +1: 0;
+        },
+        changeWidget(index) {
+            this.currentWidget = index;
+        },
+        chooseWidget() {
+            $('#widgetModal').modal('hide');
+            $("#buttonWidget").prop("value", "Cambia");
+            $("#infoWidget").text("Hai scelto il widget: " + this.widgets[this.currentWidget]);
+            $("#infoWidget").css("display", "inline");
         },
         checkTitle() {
             if(this.titles.includes($("#inpTitle").val())) {
@@ -317,5 +371,19 @@ export default {
             }
         })
         bus.$on('titles', (response) => { this.titles = response});
+    },
+    created() {
+        /* retrieve widgets' names */
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/getWidgets",
+            success: (data) =>{
+                this.widgets = data;
+            },
+            error: function (e) {
+                console.log("error in get widgets names",e);
+            }
+        });
     }
 }

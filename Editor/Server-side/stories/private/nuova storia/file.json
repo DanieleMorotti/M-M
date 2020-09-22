@@ -1,0 +1,27 @@
+{
+  "title": "nuova storia",
+  "setting": "setting",
+  "description": "",
+  "pocketItem": "device",
+  "introduction": "...",
+  "activities": [
+    {
+      "number": 0,
+      "type": "scelta multipla",
+      "setting": "prima",
+      "instructions": "",
+      "widget": "lock"
+    },
+    {
+      "number": 1,
+      "type": "domanda aperta",
+      "setting": "seconda",
+      "instructions": "",
+      "widget": "letter"
+    }
+  ],
+  "originalTitle": "",
+  "background": "",
+  "pocketItemCss": "",
+  "pocketItemJs": ""
+}

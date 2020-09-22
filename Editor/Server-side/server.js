@@ -93,6 +93,23 @@ app.get('/getStory',(req, res) => {
 	})
 })
 
+/* require widgets names */
+app.get('/getWidgets',(req, res) => {
+	let names = [];
+	fs.readdir('./widgets', (err, files) => {
+		if(err) throw err;
+		else {
+			// add control to verify if file is a directory !!!
+			files.map(function(f) {
+				names.push(f);
+			});
+			res.status(200);
+			res.json(names);
+		}	
+	});
+})
+
+
 /* return the list of titles of the stories stored in the server */
 app.get('/titles',(req, res) => {
 	const private = './stories/private';
