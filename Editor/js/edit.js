@@ -252,12 +252,10 @@ export default {
             this.currentActivity = (this.activities.length != 0)?this.activities[this.activities.length - 1].number +1: 0;
         },
         copyActivity(index,moveStory){
-            //let number;
             let obj = {};
             //copying all the data of the activity
             obj = this.activities[index];
-            //number = this.activities[index].number + 1;
-            //obj["number"] = number;
+
             let toStory = (moveStory)?moveStory: this.storyWhereIcopy;
             $.ajax({
                 type: "POST",

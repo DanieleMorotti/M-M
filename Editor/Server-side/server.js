@@ -202,7 +202,7 @@ app.post('/copyActivity',(req,res) => {
 		if (err) throw err;
 		let story = JSON.parse(data);
 		//set the new activity number to the last old activity +1
-		activity.number = (story.activities.length != 0)?story.activities[story.activities.length - 1].number +1:1;
+		activity.number = (story.activities.length != 0)?story.activities[story.activities.length - 1].number +1:0;
 		story.activities.push(activity);
 		fs.writeFile(path + '/'+toStory + '/file.json', JSON.stringify(story,null,2), function (err) {
 			if (err) throw err;
