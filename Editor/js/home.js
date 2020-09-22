@@ -117,7 +117,7 @@ export default {
             promise.then(() => {
                 console.log('emit');
                 bus.$emit('story','');
-                bus.$emit('titles', this.privateStoriesList.concat(this.publicStoriesList));
+                bus.$emit('titles', {privateList:this.privateStoriesList,publicList:this.publicStoriesList});
             }); 
         },
         loadStory(event, index) {
@@ -188,7 +188,7 @@ export default {
             
             promise.then(() => {
                 console.log('emit');
-                bus.$emit('titles', this.privateStoriesList.concat(this.publicStoriesList));
+                bus.$emit('titles', {privateList:this.privateStoriesList,publicList:this.publicStoriesList});
                 bus.$emit('story',this.privateStoriesList[index])
             });
         },
@@ -251,8 +251,8 @@ export default {
                 this.privateStoriesList.splice(index, 1, current.title); 
             }             
         });
-
-        bus.$emit('titles', this.privateStoriesList.concat(this.publicStoriesList));
- 
+        
+        bus.$emit('titles', {privateList:this.privateStoriesList,publicList:this.publicStoriesList});
+        
     }
 }

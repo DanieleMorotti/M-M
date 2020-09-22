@@ -7,6 +7,7 @@ export default {
             activities: [],
             currentActivity: 0,
             currentStory: '',
+            storyWhereIcopy:'',
             titles: [],
             widgets: [],
             currentWidget: -1,
@@ -85,7 +86,10 @@ export default {
                             </button>
                         </div>
                         <div class="modal-body">
-                            <label>In quale storia vuoi spostare l'attività?</label><input type="text" id="moveActivityTo" required />
+                            <span>Scegli in quale storia spostare l'attività </span>
+                            <button v-for="(title,index) in titles.privateList" :key="index" type="button" @click="storyWhereIcopy=title" class="list-group-item list-group-item-action">
+                                {{title}} 
+                            </button>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
@@ -105,11 +109,14 @@ export default {
                             </button>
                         </div>
                         <div class="modal-body">
-                            <label>In quale storia vuoi copiare l'attività?</label><input type="text" id="copyActivityTo" required />
+                            <span>Scegli in quale storia copiare l'attività </span>
+                            <button v-for="(title,index) in titles.privateList" :key="index" type="button" @click="storyWhereIcopy=title" class="list-group-item list-group-item-action">
+                                {{title}} 
+                            </button>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                            <button type="button" id="modalBtn" class="btn btn-primary" @click="copyActivity(currentActivity)">COPIA</button>
+                            <button type="button" class="btn btn-primary" @click="copyActivity(currentActivity)">COPIA</button>
                         </div>
                     </div>
                 </div>
@@ -219,27 +226,25 @@ export default {
                 this.currentActivity = index;
         },
         moveActivity(index){
-            this.copyActivity(index,$('#moveActivityTo').val());
+            this.copyActivity(index,this.storyWhereIcopy);
 
             this.activities.splice(index,1);
             this.currentActivity = (this.activities.length != 0)?this.activities[this.activities.length - 1].number +1: 0;
         },
         copyActivity(index,moveStory){
-            let number,type,where,instr;
+            //let number;
             let obj = {};
             //copying all the data of the activity
             obj = this.activities[index];
-            number = this.activities[index].number + 1;
-            obj["number"] = number;
-
-            let toStory = (moveStory)?moveStory: $('#copyActivityTo').val();
+            //number = this.activities[index].number + 1;
+            //obj["number"] = number;
+            let toStory = (moveStory)?moveStory: this.storyWhereIcopy;
             $.ajax({
                 type: "POST",
                 url: "/copyActivity?toStory="+toStory,
                 data: obj,
                 cache: false,
                 success: (data) =>{
-                    //emit event to update the home component stories list
                     if(moveStory)$('#moveModal').modal('hide');
                     else $('#copyModal').modal('hide');
                 },
@@ -268,7 +273,7 @@ export default {
             $("#infoWidget").css("display", "inline");
         },
         checkTitle() {
-            if(this.titles.includes($("#inpTitle").val())) {
+            if(this.titles.privateList.includes($("#inpTitle").val()) || this.titles.publicList.includes($("#inpTitle").val())) {
                 $("#inpTitle").css("background-color", "red");
                 $("#inpTitle").addClass('error');
                 $("#titleInfo").show();

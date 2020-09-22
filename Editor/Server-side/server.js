@@ -165,7 +165,6 @@ app.post('/copyActivity',(req,res) => {
 	let path = './stories/private';
 	let find = false;
 	let activity = req.body;
-	console.log(JSON.stringify(activity,null,2));
 	//get the directory of the story(public or private)
 	fs.readdir(path, (err, files) => {
 		if(err)console.log(err);
