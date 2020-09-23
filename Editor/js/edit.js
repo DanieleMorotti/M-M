@@ -62,7 +62,7 @@ export default {
                         <p v-if="this.activities.length==0"> Nessuna attività per questa storia </p>
                         <ul v-else id="activitiesSaved">
                             <li v-for="(activity,index) in activities" :key="index">
-                                Attività {{activity.number +1}} 
+                                Attività {{activity.number + 1}} 
                                 <span id="icon-group">
                                     <i class="fas fa-edit" @click="editActivity(index)"></i>&nbsp;&nbsp;
                                     <i class="fas fa-cut" @click="currentActivity = index" data-toggle="modal" data-target="#moveModal"></i>&nbsp;&nbsp;
@@ -117,7 +117,7 @@ export default {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                            <button type="button" class="btn btn-primary" @click="copyActivity(currentActivity)">COPIA</button>
+                            <button type="button" class="btn btn-primary" @click="copyActivity(currentActivity,'copy')">COPIA</button>
                         </div>
                     </div>
                 </div>
@@ -234,10 +234,9 @@ export default {
                 
                 $('#activitiesForm h2').text("Modifica l'attività "+ (this.activities[index].number + 1))
                 $('#saveActivity').prop("value", "Salva modifiche");
-                console.log( 'WIDGET:' +this.activities[index].widget);
+
                 if(this.activities[index].widget) {
                     $("#buttonWidget").prop("value","Cambia");
-                    console.log( 'WIDGET:' +this.activities[index].widget);
                     $("#infoWidget").text("Hai scelto il widget: " + this.activities[index].widget);
                     $("#infoWidget").css("display", "inline");
                     this.currentWidget = this.widgets.indexOf(this.activities[index].widget);
@@ -246,25 +245,29 @@ export default {
                 this.currentActivity = index;
         },
         moveActivity(index){
-            this.copyActivity(index,this.storyWhereIcopy);
+            this.copyActivity(index);
 
             this.activities.splice(index,1);
             this.currentActivity = (this.activities.length != 0)?this.activities[this.activities.length - 1].number +1: 0;
         },
-        copyActivity(index,moveStory){
-            let obj = {};
+        copyActivity(index, value){
+            var obj = Object.assign({}, this.activities[index]);
             //copying all the data of the activity
-            obj = this.activities[index];
-
-            let toStory = (moveStory)?moveStory: this.storyWhereIcopy;
+            let toStory = this.storyWhereIcopy;
+            if(value) {
+                obj.number = this.activities.length;
+                this.activities.push(obj);
+                this.currentActivity = this.activities.length + 1;
+                toStory="";
+            }
             $.ajax({
                 type: "POST",
                 url: "/copyActivity?toStory="+toStory,
                 data: obj,
                 cache: false,
                 success: (data) =>{
-                    if(moveStory)$('#moveModal').modal('hide');
-                    else $('#copyModal').modal('hide');
+                    $('#moveModal').modal('hide');
+                    $('#copyModal').modal('hide');
                 },
                 error: function (e) {
                     console.log("error",e);
@@ -396,6 +399,7 @@ export default {
                         this.activities.push(item[1][i]);
                     }
                     this.currentActivity = (item[1].length != 0) ? item[1][item[1].length - 1].number +1: 0;
+                    console.log(this.currentActivity);
                 }
                 else {
                     $("*[name ='"+item[0]+"'").val(item[1]);

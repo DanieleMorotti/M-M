@@ -4,7 +4,15 @@
   "description": "",
   "pocketItem": "",
   "introduction": "",
-  "activities": [],
+  "activities": [
+    {
+      "number": 0,
+      "type": "scelta multipla",
+      "setting": "prima",
+      "instructions": "",
+      "widget": "lock"
+    }
+  ],
   "originalTitle": "prova",
   "background": "",
   "pocketItemCss": "",

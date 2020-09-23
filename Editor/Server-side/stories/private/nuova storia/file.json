@@ -13,15 +13,31 @@
       "widget": "lock"
     },
     {
-      "number": 1,
+      "number": 2,
+      "type": "domanda aperta",
+      "setting": "seconda",
+      "instructions": "",
+      "widget": "letter"
+    },
+    {
+      "number": 2,
+      "type": "domanda aperta",
+      "setting": "seconda",
+      "instructions": "",
+      "widget": "letter"
+    },
+    {
+      "number": 2,
       "type": "domanda aperta",
       "setting": "seconda",
       "instructions": "",
       "widget": "letter"
     }
   ],
-  "originalTitle": "",
+  "originalTitle": "nuova storia",
   "background": "",
   "pocketItemCss": "",
-  "pocketItemJs": ""
+  "pocketItemJs": "",
+  "widgetCss": "",
+  "widgetJs": ""
 }

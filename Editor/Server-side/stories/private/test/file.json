@@ -1,0 +1,36 @@
+{
+  "title": "test",
+  "setting": "",
+  "description": "",
+  "pocketItem": "",
+  "introduction": "",
+  "activities": [
+    {
+      "number": 0,
+      "type": "scelta multipla",
+      "setting": "prima",
+      "instructions": "",
+      "widget": ""
+    },
+    {
+      "number": 1,
+      "type": "scelta multipla",
+      "setting": "prima",
+      "instructions": "",
+      "widget": ""
+    },
+    {
+      "number": 2,
+      "type": "scelta multipla",
+      "setting": "prima",
+      "instructions": "",
+      "widget": ""
+    }
+  ],
+  "originalTitle": "test",
+  "background": "",
+  "pocketItemCss": "",
+  "pocketItemJs": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}

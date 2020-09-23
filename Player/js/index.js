@@ -3,7 +3,7 @@ import Routes from './routes.js'
 
 var request = new XMLHttpRequest();
 
-request.open('GET', 'http://localhost:8080/stories', true);
+request.open('GET', '../data.json', true);
 
 request.onload = function(data) {
     localStorage.setItem("story", request.responseText);
