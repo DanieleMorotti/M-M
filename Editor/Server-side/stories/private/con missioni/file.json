@@ -1,0 +1,42 @@
+{
+  "title": "con missioni",
+  "setting": "",
+  "description": "",
+  "pocketItem": "",
+  "introduction": "",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "mare",
+          "instructions": "asbregafioi",
+          "widget": ""
+        },
+        {
+          "number": 1,
+          "type": "scelta multipla",
+          "setting": "fsdfd",
+          "instructions": "",
+          "widget": ""
+        }
+      ]
+    },
+    {
+      "name": "Missione 2",
+      "activities": [
+        {
+          "number": 0
+        }
+      ]
+    }
+  ],
+  "originalTitle": "con missioni",
+  "background": "",
+  "pocketItemCss": "",
+  "pocketItemJs": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}
