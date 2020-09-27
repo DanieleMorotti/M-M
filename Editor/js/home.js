@@ -109,13 +109,11 @@ export default {
             $('#toEditMenu').click(); 
             const promise = new Promise((succ, err) => {
                 bus.$on('ready',(msg) => {
-                    console.log(msg);
                     succ('ok');
                 });
             });
             
             promise.then(() => {
-                console.log('emit');
                 bus.$emit('story','');
                 bus.$emit('titles', {privateList:this.privateStoriesList,publicList:this.publicStoriesList});
             }); 

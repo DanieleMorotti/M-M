@@ -11,6 +11,8 @@ export default {
             titles: [],
             widgets: [],
             currentWidget: -1,
+            devices: [],
+            currentDevice: -1,
             invalid: false
         }
     }, 
@@ -38,20 +40,9 @@ export default {
                         <textarea id="inpDescr" name="description" rows="3" cols="40"></textarea>
                     </li>
                     <li>
-                        <label for="inpObj">Inserisci il nome dell'oggetto che il cellulare rappresenterà:</label>
-                        <input type="text" name="pocketItem" id="inpObj" />
-                        <ul>
-                            <li>
-                                <label for="inpObjCss">Aggiungi un file CSS</label>
-                                <input type="file" name="pocketItemCss" id="inpObjCss" accept="text/css" />
-                                <p class="infoForFile"></p>
-                            </li>
-                            <li>
-                                <label for="inpObjJs">Aggiungi un file JS</label>
-                                <input type="file" name="pocketItemJs" id="inpObjJs" accept=".js" />
-                                <p class="infoForFile"></p>
-                            </li>
-                        </ul>
+                        <h5>Scegli il dispositivo che il cellulare rappresenterà:</h5>
+                        <input type="button" id="buttonDevice" data-toggle="modal" data-target="#deviceModal" value="Scegli"/>
+                        <p id="infoDevice" style="display:none"> </p>
                     </li>
                     <li>
                         <label for="inpIntr">Inserisci l'introduzione della tua storia:</label><br>
@@ -138,7 +129,28 @@ export default {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                            <button type="button"  class="btn btn-primary" @click="chooseWidget(event,currentWidget)">Scegli</button>
+                            <button type="button"  class="btn btn-primary" @click="chooseWidget()">Scegli</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="deviceModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Scegli un device</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                        <button v-for="(name,index) in devices" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeDevice(index)">
+                        {{name}} </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button"  class="btn btn-primary" @click="chooseDevice()">Scegli</button>
                         </div>
                     </div>
                 </div>
@@ -293,6 +305,15 @@ export default {
             $("#infoWidget").text("Hai scelto il widget: " + this.widgets[this.currentWidget]);
             $("#infoWidget").css("display", "inline");
         },
+        changeDevice(index) {
+            this.currentDevice = index;
+        },
+        chooseDevice() {
+            $('#deviceModal').modal('hide');
+            $("#buttonDevice").prop("value", "Cambia");
+            $("#infoDevice").text("Hai scelto il device: " + this.devices[this.currentDevice]);
+            $("#infoDevice").css("display", "inline");
+        },
         addWidget(e) {
             e.preventDefault();
             let data = new FormData($('#widgetsForm')[0]);
@@ -353,7 +374,9 @@ export default {
 
             data.append('activities',JSON.stringify(this.activities));     
             data.append('originalTitle',JSON.stringify(originTitle));
-            
+            if(this.currentDevice > -1) 
+                data.append('device',JSON.stringify(this.devices[this.currentDevice]));
+
             //verify if the files have been entered, if not i need to keep the old file name
             for(let i=0; i< verifyInput.length;i++){
                 if(verifyInput.eq(i).val())console.log("Nuovo file inserito per",verifyInput.eq(i).attr('name'));
@@ -441,7 +464,8 @@ export default {
             dataType: "json",
             url: "/getWidgets",
             success: (data) =>{
-                this.widgets = data;
+                this.widgets = data.widgets;
+                this.devices = data.devices;
             },
             error: function (e) {
                 console.log("error in get widgets names",e);

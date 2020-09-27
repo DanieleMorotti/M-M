@@ -50,7 +50,7 @@ app.post('/saveStory', (req, res) => {
 	form.parse(req);
 	form.on('field', (name, field) => {
 			//because activities field is already a json,so i need to convert it to a js object to push into jsonfile
-			if(name === "activities" || name === "originalTitle"){
+			if(name === "activities" || name === "originalTitle" || name === "device"){
 				let tempObj = JSON.parse(field);
 				jsonFile[name] = tempObj;
 			}
@@ -85,26 +85,46 @@ app.post('/saveStory', (req, res) => {
 
 /* require a story which already exists */ 
 app.get('/getStory',(req, res) => {
+	res.header("Access-Control-Allow-Origin", "http://localhost:5000");
 	fs.readFile('./stories/'+req.query.group+'/'+req.query.title+'/file.json', 'utf8', (err, data) => {  
 		res.set('Content-Type', 'application/json');
-		//console.log('requested: ' + data);
 		res.send(data)
 		res.status(200);
 	})
 })
 
+/* require device's css */
+app.get('/getDeviceCss',(req, res) => {
+	res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+	res.sendFile(path.join(__dirname,".",'./devices/'+req.query.name+'/device.css'));
+})
+app.get('/getDeviceJs',(req, res) => {
+	res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+	res.sendFile(path.join(__dirname,".",'./devices/'+req.query.name+'/device.js'));
+})
+
 /* require widgets names */
 app.get('/getWidgets',(req, res) => {
-	let names = [];
+	let names = { widgets: [], devices: []};
 	fs.readdir('./widgets', (err, files) => {
 		if(err) throw err;
 		else {
 			// add control to verify if file is a directory !!!
 			files.map(function(f) {
-				names.push(f);
+				names.widgets.push(f);
 			});
-			res.status(200);
-			res.json(names);
+			fs.readdir('./devices', (err, files) => {
+				if(err) throw err;
+				else {
+					// add control to verify if file is a directory !!!
+					files.map(function(f) {
+						names.devices.push(f);
+					});
+					
+					res.status(200);
+					res.json(names);
+				}	
+			});
 		}	
 	});
 })

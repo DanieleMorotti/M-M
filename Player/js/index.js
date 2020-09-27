@@ -1,17 +1,36 @@
 import Routes from './routes.js'
 
-
+/*
 var request = new XMLHttpRequest();
 
-request.open('GET', '../data.json', true);
+request.open('GET', 'http://localhost:8080/getStory?title="cappuccetto rosso"&group="public"', true);
 
 request.onload = function(data) {
     localStorage.setItem("story", request.responseText);
     Routes[0].component.methods.render();
-    Routes[1].component.methods.render();
+    Routes[1].component.methods.render(); 
+    console.log('here');
+    console.log(data);
 };
 
-request.send(null);
+request.send(null); */
+
+$.ajax({
+  type: "GET",
+  dataType: "json",
+  cache: false,
+  url: '/getStory?title=cappuccetto rosso&group=private',
+  success: (data) =>{
+   // fill form with json's fields
+      console.log(data);
+      localStorage.setItem("story", JSON.stringify(data));
+      Routes[0].component.methods.render();
+  },
+  error: function (e) {
+      console.log("error in get story",e);
+  }
+});
+
 
 const router = new VueRouter({
   routes: Routes,

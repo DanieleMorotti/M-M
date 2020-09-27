@@ -1,0 +1,20 @@
+{
+  "title": "cappuccetto rosso",
+  "setting": "bosco",
+  "description": "bla bla bla",
+  "introduction": "",
+  "activities": [
+    {
+      "number": 0,
+      "type": "scelta multipla",
+      "setting": "prima",
+      "instructions": "",
+      "widget": "lock"
+    }
+  ],
+  "originalTitle": "cappuccetto rosso",
+  "device": "walkie-talkie",
+  "background": "NROF3200.JPG",
+  "widgetCss": "",
+  "widgetJs": ""
+}
