@@ -4,6 +4,7 @@ const path = require('path');
 const formidable = require('formidable');
 const fs = require('fs-extra');
 const bodyParser = require('body-parser');
+const { readdir } = require('fs');
 
 const app = express();
 
@@ -83,10 +84,12 @@ app.post('/saveStory', (req, res) => {
 });
 
 
+let story, device;
 /* require a story which already exists */ 
 app.get('/getStory',(req, res) => {
-	res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+	story = req.query.title;
 	fs.readFile('./stories/'+req.query.group+'/'+req.query.title+'/file.json', 'utf8', (err, data) => {  
+		device = JSON.parse(data).device;
 		res.set('Content-Type', 'application/json');
 		res.send(data)
 		res.status(200);
@@ -151,45 +154,61 @@ app.post('/saveWidget', (req, res) => {
 		});
 })
 
+/* CODICE TITLES */
+var obj = { private: [], public: []} ;
+
+function readDir(path) {
+	return new Promise( (succ, err) => {
+		fs.readdir(path, (err, files) => {
+			if(err) throw err;
+				succ(files);
+		})
+	})
+}
+
+
+
+function readFiles(dir, f) {
+	return new Promise((succ, err) => {
+		fs.readFile(dir + '/'+ f + '/file.json', 'utf8', (err, data) => {  
+			if (err) throw err;
+			else {
+				let file = JSON.parse(data);
+				let missions = [];
+				file.missions.map( x => {
+					missions.push(x.name);
+				})
+				dirName = dir.substring(dir.lastIndexOf('/') + 1);
+				obj[`${dirName}`].push({title:f,missionsList:missions});
+				succ(data);
+			}
+		})
+	})
+}
+
+async function addFiles(dir1, dir2,res) {
+	const files1 = await readDir(dir1);
+	await Promise.all(files1.map(async (f) => {
+		await readFiles(dir1, f);
+		console.log(obj);
+	}))
+	const files2 = await readDir(dir2);
+	await Promise.all(files2.map(async (f) => {
+		await readFiles(dir2, f);
+		console.log(obj);
+	}))
+	res.json(obj);
+}
+
 /* return the list of titles and the missions of the stories stored in the server */
 app.get('/titles',(req, res) => {
 	const private = './stories/private';
 	const public = './stories/public';
-	var obj = { private: [], public: []} ;
-
-	fs.readdir(private, (err, files) => {
-		if(err) throw err;
-		else {
-			files.map(function(f) {
-				fs.readFile(private + '/'+ f + '/file.json', 'utf8', (err, data) => {  
-					if (err) throw err;
-					let file = JSON.parse(data);
-					let missions =[];
-					file.missions.map( x => {
-						missions.push(x.name);
-					})
-					obj.private.push({title:f,missionsList:missions});
-					res.json(obj);
-					fs.readdir(public, (err, files) => {
-						files.map(function(g) {
-							fs.readFile(public + '/'+ g + '/file.json', 'utf8', (err, data) => {  
-								if (err) throw err;
-								let file = JSON.parse(data);
-								let missions =[];
-								file.missions.map( x => {
-									missions.push(x.name);
-								})
-								obj.public.push({title:g,missionsList:missions});
-							})
-						});
-					});
-				})
-			});
-		}	
-	});
+	addFiles(private, public, res);
 	
 })
 
+/*************************** FINE  */
 
 /* copy an activity i received to a story */
 app.post('/copyActivity',(req,res) => {
@@ -298,8 +317,35 @@ app.put('/privateStory/:title', (req, res) => {
 	});
 	res.status(200);
 	res.send({title: req.params.title});
-
 });
+
+
+/*****************
+ * GESTIONE PLAYER
+ *****************/
+
+app.get('/Player',(req,res) =>{
+	res.status(200);
+	res.sendFile(path.join(__dirname,"../../Player/index.html"));
+})
+
+app.get('/getImage',(req,res) =>{
+	res.status(200);
+	res.sendFile(path.join(__dirname,"/stories/public/"+ req.query.title +"/files/"+req.query.name));
+})
+
+app.get('/getDeviceJs',(req,res) =>{
+	res.status(200);
+	res.sendFile(path.join(__dirname,"/devices/"+ device +"/device.js"));
+})
+
+app.get('/getDeviceCss',(req,res) =>{
+	res.status(200);
+	res.sendFile(path.join(__dirname,"/devices/"+ device +"/device.css"));
+})
+
+
+/*****************************/
 
 app.listen(8080, () => {
   console.log('server is ready');

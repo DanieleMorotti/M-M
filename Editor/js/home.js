@@ -245,7 +245,7 @@ export default {
             if(!current.changed) {
                 //users.some(user => user.name = newUser.name);
                 if(!this.privateStoriesList.some(obj => obj.title === current.titleMission.title))
-                     this.privateStoriesList.push(current.titleMission.title);
+                     this.privateStoriesList.push({title:current.titleMission.title, missionsList: current.titleMission.missionsList});
             }
             else {
                 let index,i=0;

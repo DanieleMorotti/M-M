@@ -1,0 +1,16 @@
+{
+  "title": "new story",
+  "setting": "",
+  "description": "",
+  "introduction": "",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": []
+    }
+  ],
+  "originalTitle": "",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}

@@ -21,11 +21,14 @@ export default {
             //simulate the click on the router-link that show the device
             $('#toDevice').click();
         },
-        render() {
-            story = JSON.parse(localStorage.getItem("story"));
-            $('#storyDiv').css('background-image', 'url('+story.background+')');
-            $('#description').html(story.description);
-            $('#btnDev').html("Prendi il " +story.pocketItem);
-        }
+        
+    },
+    activated() {
+        story = JSON.parse(localStorage.getItem("story"));
+        console.log('story ' + story.title);
+        $('#storyDiv').css('background-image', 'url("/getImage?title='+story.title+'&name='+story.background+'")');
+        $('#description').html(story.description);
+        console.log(story.description);
+        $('#btnDev').html("Prendi il " +story.device);
     }
 }

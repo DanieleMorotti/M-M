@@ -1,36 +1,7 @@
 import Routes from './routes.js'
+//request.open('GET', '../data.json', true);
 
-/*
-var request = new XMLHttpRequest();
-
-request.open('GET', 'http://localhost:8080/getStory?title="cappuccetto rosso"&group="public"', true);
-
-request.onload = function(data) {
-    localStorage.setItem("story", request.responseText);
-    Routes[0].component.methods.render();
-    Routes[1].component.methods.render(); 
-    console.log('here');
-    console.log(data);
-};
-
-request.send(null); */
-
-$.ajax({
-  type: "GET",
-  dataType: "json",
-  cache: false,
-  url: '/getStory?title=cappuccetto rosso&group=private',
-  success: (data) =>{
-   // fill form with json's fields
-      console.log(data);
-      localStorage.setItem("story", JSON.stringify(data));
-      Routes[0].component.methods.render();
-  },
-  error: function (e) {
-      console.log("error in get story",e);
-  }
-});
-
+let story = JSON.parse(localStorage.getItem("story"));
 
 const router = new VueRouter({
   routes: Routes,
@@ -39,8 +10,8 @@ const router = new VueRouter({
 //function that is executed before every routing change
 router.beforeEach((to, from, next) => {
   if(to.path === '/device') {
-    document.getElementById('stylesheetComp').href = 'device.css';
-    document.getElementById('scriptComp').src = './js/device.js';
+    document.getElementById('stylesheetComp').href = "/getDeviceCss";
+    document.getElementById('scriptComp').src = "/getDeviceJs";
   } 
   else if(to.path === '/door') {
     document.getElementById('stylesheetComp').href ='./widgets/door.css';

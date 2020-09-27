@@ -15,7 +15,8 @@
 
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>	
-		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+		<!--<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>-->
+		<script src="https://unpkg.com/vue#2.6.11/dist/vue.js"></script>
 		<script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
 		<link rel="stylesheet" id="stylesheetComp" href="home.css">
 	</head>
@@ -37,7 +38,27 @@
 				<router-view></router-view>
 			</keep-alive>
 		</div>
-		<script type="module" src="./js/index.js"></script>
-		<script type="module" id="scriptComp" src="./js/index.js"></script>
+	<!--	<script type="module" src="./js/index.js"></script>
+		<script type="module" id="scriptComp" src="./js/index.js"></script> -->
+	<script type="text/javascript">
+		$( document ).ready( function() {
+			$.ajax({
+			type: "GET",
+			dataType: "json",
+			cache: false,
+			url: '/getStory?title=cappuccetto rosso&group=public',
+			success: (data) =>{
+			// fill form with json's fields
+				console.log(data);
+				localStorage.setItem("story", JSON.stringify(data));
+				$('body').append("<script type='module' id='scriptComp' src='./js/index.js'><\/script>");
+			
+			},
+			error: function (e) {
+				console.log("error in get story",e);
+			}
+		})
+		} )
+	</script> 
 	</body>
 </html>
