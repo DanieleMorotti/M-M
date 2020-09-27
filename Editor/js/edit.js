@@ -5,6 +5,7 @@ export default {
     data() {
         return{
             missions: [{name:"Missione 1",activities:[]}],
+            isNewStory: false,
             currentActivity: 0,
             currentMission: 0,
             currentStory: '',
@@ -56,7 +57,7 @@ export default {
                             <li v-for="(mission,index) in missions" :key="index">
                                 {{mission.name}}&emsp;
                                 <span class="icon-group">
-                                    <i class="fas fa-cut" @click="currentMission = index" data-toggle="modal" data-target="#moveMissionModal"></i>&nbsp;&nbsp;
+                                    <i class="fas fa-cut" @click="currentMission = index" data-toggle="modal" data-target="#moveMissionModal" v-if="index != 0"></i>&nbsp;&nbsp;
                                     <i class="fas fa-clone"  @click="currentMission = index" data-toggle="modal" data-target="#copyMissionModal"></i>&nbsp;&nbsp;
                                     <i  class="fas fa-trash-alt" @click="deleteMission(index)" v-if="index != 0"></i>
                                 </span>
@@ -149,6 +150,14 @@ export default {
                                     <button class="dropdown-item" v-for="(miss,ind) in obj.missionsList" :key="ind" @click="missionWhereCopy=ind">{{miss}}</a>
                                 </div>
                             </div>
+                            <div class="dropdown" v-if="isNewStory" @click='storyWhereIcopy="newstory"'>
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                    In questa storia
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button class="dropdown-item" v-for="(miss,ind) in missions" :key="ind" @click="missionWhereCopy=ind">{{miss.name}}</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
@@ -177,10 +186,18 @@ export default {
                                     <button class="dropdown-item" v-for="(miss,ind) in obj.missionsList" :key="ind" @click="missionWhereCopy=ind">{{miss}}</a>
                                 </div>
                             </div>
+                            <div class="dropdown" v-if="isNewStory" @click='storyWhereIcopy="newstory"'>
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                    In questa storia
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button class="dropdown-item" v-for="(miss,ind) in missions" :key="ind" @click="missionWhereCopy=ind">{{miss.name}}</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                            <button type="button" class="btn btn-primary" @click="copyActivity(currentActivity,'copy')">COPIA</button>
+                            <button type="button" class="btn btn-primary" @click="copyActivity(currentActivity)">COPIA</button>
                         </div>
                     </div>
                 </div>
@@ -241,7 +258,7 @@ export default {
                         </div>
                         <div class="modal-body">
                             <span>Scegli in quale storia spostare la missione </span>
-                            <button v-for="(obj,index) in titles.privateList" :key="index" type="button" @click="storyWhereIcopy=obj.title" class="list-group-item list-group-item-action">
+                            <button v-for="(obj,index) in titles.privateList" :key="index" v-if="obj.title !== $('#inpTitle').val()" type="button" @click="storyWhereIcopy=obj.title" class="list-group-item list-group-item-action">
                                 {{obj.title}} 
                             </button>
                         </div>
@@ -266,6 +283,9 @@ export default {
                             <span>Scegli in quale storia copiare la missione </span>
                             <button v-for="(obj,index) in titles.privateList" :key="index" type="button" @click="storyWhereIcopy=obj.title" class="list-group-item list-group-item-action">
                                 {{obj.title}} 
+                            </button>
+                            <button v-for="(obj,index) in titles.privateList" :key="index" type="button" v-if="isNewStory" @click='storyWhereIcopy="newstory"' class="list-group-item list-group-item-action">
+                                In questa storia 
                             </button>
                         </div>
                         <div class="modal-footer">
@@ -352,11 +372,12 @@ export default {
             
             let toStory = this.storyWhereIcopy;
             //if the title where i have to copy is the same of the story which i'm editing
-            if(toStory === $('#inpTitle').val()) {
+            if(toStory === $('#inpTitle').val() || toStory === "newstory") {
                 obj.number = (this.missions[this.missionWhereCopy].activities.length != 0)?this.missions[this.missionWhereCopy].activities.length:0;
                 this.missions[this.missionWhereCopy].activities.push(obj);
                 $('#copyActivityModal').modal('hide');
-            }else{
+            }
+            else{
                 $.ajax({
                     type: "POST",
                     url: "/copyActivity?toStory="+toStory+"&toMiss="+this.missionWhereCopy,
@@ -424,47 +445,53 @@ export default {
         },
         /*  MISSION MANAGEMENT   */
         addMission(){
-            //TODO:risolvere problema se stiamo facendo storia nuova e non modificando(index è -1)
             this.missions.push({name:"Missione "+(this.missions.length + 1),activities:[]});
+
             //find the index for adding in real time the mission to the list of the modals
-            let index = this.titles.privateList.findIndex(x => x.title === $('#inpTitle').val());
-            this.titles.privateList[index].missionsList.push("Missione "+(this.missions.length));
+            if(!this.isNewStory){
+                let index = this.titles.privateList.findIndex(x => x.title === $('#inpTitle').val());
+                this.titles.privateList[index].missionsList.push("Missione "+(this.missions.length));
+            }
         },
         moveMission(index){
-            /*
             this.copyMission(index);
 
-            this.missions[this.currentMission].activities.splice(index,1);*/
+            $('#moveMissionModal').modal('hide');
+            this.missions.splice(index,1);
         },
-        copyMission(index, value){
-            /*
-            var obj = Object.assign({}, this.missions[index]);
-            //copying all the data of the activity
+        copyMission(index){
+
+            var obj = Object.assign({}, this.missions[this.currentMission]);
+            
             let toStory = this.storyWhereIcopy;
-            if(value) {
-                obj.name = "Missione " + (this.missions.length+1);
+            //if the title where i have to copy is the same of the story which i'm editing
+            if(toStory === $('#inpTitle').val() || toStory === "newstory") {
+                obj.name = "Missione "+ ((this.missions.length != 0)?this.missions.length+1:1);
                 this.missions.push(obj);
-                toStory="";
+                $('#copyMissionModal').modal('hide');
             }
-            $.ajax({
-                type: "POST",
-                url: "/copyMission?toStory="+toStory,
-                data: obj,
-                cache: false,
-                success: (data) =>{
-                    $('#moveActivityModal').modal('hide');
-                    $('#copyActivityModal').modal('hide');
-                },
-                error: function (e) {
-                    console.log("error",e);
-                }
-            });*/
+            else{
+                $.ajax({
+                    type: "POST",
+                    url: "/copyMission?toStory="+toStory,
+                    data: obj,
+                    cache: false,
+                    success: (data) =>{
+                        $('#copyMissionModal').modal('hide');
+                    },
+                    error: function (e) {
+                        console.log("error",e);
+                    }
+                });
+            }
         },
         deleteMission(index) {
              this.missions.splice(index,1);
              //delete in real time the mission from the titles.privateList.missionsList(for the modals)
-             let titleIndex = this.titles.privateList.findIndex(x => x.title === $('#inpTitle').val());
-             this.titles.privateList[titleIndex].missionsList.splice(index,1);
+             if(!this.isNewStory){
+                let titleIndex = this.titles.privateList.findIndex(x => x.title === $('#inpTitle').val());
+                this.titles.privateList[titleIndex].missionsList.splice(index,1);
+             }
              //needed if the activity form is filled with informations deleted
              $('#activitiesForm')[0].reset();
              $('#activitiesForm h2').text(`Nuova attività`)
@@ -548,6 +575,7 @@ export default {
                     $('#activitiesForm')[0].reset();
                     $('.infoForFile').text("");
                     $('#toHome').click();
+                    this.isNewStory = false;
                 },
                 error: function (e) {
                     console.log("error");
@@ -582,7 +610,9 @@ export default {
         bus.$emit('ready','pronto'); 
         bus.$once('story',(story) =>{
             this.currentStory = story;
+            this.isNewStory = true;
             if(this.currentStory) {
+                this.isNewStory = false;
                 $.ajax({
                     type: "GET",
                     dataType: "json",

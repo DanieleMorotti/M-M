@@ -190,12 +190,10 @@ async function addFiles(dir1, dir2,res) {
 	const files1 = await readDir(dir1);
 	await Promise.all(files1.map(async (f) => {
 		await readFiles(dir1, f);
-		console.log(obj);
 	}))
 	const files2 = await readDir(dir2);
 	await Promise.all(files2.map(async (f) => {
 		await readFiles(dir2, f);
-		console.log(obj);
 	}))
 	res.json(obj);
 }
@@ -223,6 +221,27 @@ app.post('/copyActivity',(req,res) => {
 		//set the new activity number to the last old activity +1
 		activity.number = (story.missions[toMiss].activities.length != 0)?story.missions[toMiss].activities.length : 0;
 		story.missions[toMiss].activities.push(activity);
+		fs.writeFile(path + '/'+toStory + '/file.json', JSON.stringify(story,null,2), function (err) {
+			if (err) throw err;
+			console.log('Added a new activity to '+ toStory);
+			res.status(200).end();
+		});
+	})
+		
+})
+
+/* copy a mission to a story*/
+app.post('/copyMission',(req,res) => {
+	let toStory = req.query.toStory;
+	let path = './stories/private';
+	let mission = req.body;	
+
+	fs.readFile(path + '/'+toStory + '/file.json', 'utf8', (err, data) => {  
+		if (err) throw err;
+		let story = JSON.parse(data);
+		//set the new mission number to the last mission +1
+		mission.name = "Missione " + ((story.missions.length != 0)?story.missions.length+1 : 1);
+		story.missions.push(mission);
 		fs.writeFile(path + '/'+toStory + '/file.json', JSON.stringify(story,null,2), function (err) {
 			if (err) throw err;
 			console.log('Added a new activity to '+ toStory);
