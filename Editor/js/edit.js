@@ -4,9 +4,11 @@ export default {
     name: 'editMenu',
     data() {
         return{
-            activities: [],
+            missions: [{name:"Missione 1",activities:[]}],
             currentActivity: 0,
+            currentMission: 0,
             currentStory: '',
+            missionWhereCopy: 0,
             storyWhereIcopy:'',
             titles: [],
             widgets: [],
@@ -58,17 +60,27 @@ export default {
                         <textarea id="inpIntr" name="introduction" rows="3" cols="40"></textarea>
                     </li>
                     <li>    
-                        <h2>Attività</h2>
-                        <p v-if="this.activities.length==0"> Nessuna attività per questa storia </p>
-                        <ul v-else id="activitiesSaved">
-                            <li v-for="(activity,index) in activities" :key="index">
-                                Attività {{activity.number + 1}} 
-                                <span id="icon-group">
-                                    <i class="fas fa-edit" @click="editActivity(index)"></i>&nbsp;&nbsp;
-                                    <i class="fas fa-cut" @click="currentActivity = index" data-toggle="modal" data-target="#moveModal"></i>&nbsp;&nbsp;
-                                    <i class="fas fa-clone"  @click="currentActivity = index" data-toggle="modal" data-target="#copyModal"></i>&nbsp;&nbsp;
-                                    <i  class="fas fa-trash-alt" @click="deleteActivity(index)"></i>
+                        <h2 style="display:inline-block">Missioni</h2>&nbsp;&nbsp;<i class="fas fa-plus" @click="addMission"></i>
+                        <ul id="missionSaved">
+                            <li v-for="(mission,index) in missions" :key="index">
+                                {{mission.name}}&emsp;
+                                <span class="icon-group">
+                                    <i class="fas fa-cut" @click="currentMission = index" data-toggle="modal" data-target="#moveMissionModal"></i>&nbsp;&nbsp;
+                                    <i class="fas fa-clone"  @click="currentMission = index" data-toggle="modal" data-target="#copyMissionModal"></i>&nbsp;&nbsp;
+                                    <i  class="fas fa-trash-alt" @click="deleteMission(index)" v-if="index != 0"></i>
                                 </span>
+                                <ul id="activitiesSaved" v-if="mission.activities.length != 0">
+                                    <li v-for="(activity,ind) in mission.activities" :key="ind">
+                                        Attività {{activity.number + 1}}&emsp;
+                                        <span class="icon-group">
+                                            <i class="fas fa-edit" @click="editActivity(ind,index)"></i>&nbsp;&nbsp;
+                                            <i class="fas fa-cut" @click="currentActivity = ind;currentMission = index" data-toggle="modal" data-target="#moveActivityModal"></i>&nbsp;&nbsp;
+                                            <i class="fas fa-clone"  @click="currentActivity = ind;currentMission = index" data-toggle="modal" data-target="#copyActivityModal"></i>&nbsp;&nbsp;
+                                            <i  class="fas fa-trash-alt" @click="deleteActivity(ind,index)"></i>
+                                        </span>
+                                    </li>
+                                </ul>
+                                <p v-else>Nessuna attività per questa missione </p>
                             </li>
                         </ul>
                     </li>
@@ -76,79 +88,14 @@ export default {
             </form>
             <button @click="checkForm">FINITO</button>
 
-        <!-- Modals for copy or move an activity -->
-            <div class="modal fade" id="moveModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Spostamento attività</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <span>Scegli in quale storia spostare l'attività </span>
-                            <button v-for="(title,index) in titles.privateList" :key="index" type="button" @click="storyWhereIcopy=title" class="list-group-item list-group-item-action">
-                                {{title}} 
-                            </button>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                            <button type="button" class="btn btn-primary" @click="moveActivity(currentActivity)">SPOSTA</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="copyModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Copia di un'attività</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <span>Scegli in quale storia copiare l'attività </span>
-                            <button v-for="(title,index) in titles.privateList" :key="index" type="button" @click="storyWhereIcopy=title" class="list-group-item list-group-item-action">
-                                {{title}} 
-                            </button>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                            <button type="button" class="btn btn-primary" @click="copyActivity(currentActivity,'copy')">COPIA</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="widgetModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Scegli un widget</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                        <button v-for="(title,index) in widgets" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeWidget(index)">
-                        {{title}} </button>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                            <button type="button"  class="btn btn-primary" @click="chooseWidget(event,currentWidget)">Scegli</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <!--  -->
-
             <form id="activitiesForm" @submit="addActivity">
                 <h2>Nuova attività</h2>
                 <ul id="activitiesList">
                     <li>
+                        <label for="chooseMission">Scegli in quale missione aggiungerla: </label>
+                        <select name="mission" id="chooseMission">
+                            <option v-for="(mission,index) in missions" :key="index" :value="mission.name"> {{mission.name}}</option>
+                        </select>
                         <h5>Scegli il tipo dell'attività : </h5>
                         <input id="multipleChoice" type="radio" name="activityTypeGroup" value="scelta multipla" checked/>
                         <label for="multipleChoice">Scelta multipla</label>
@@ -190,35 +137,168 @@ export default {
                 </ul>
                 <input id="saveWidget" type="submit" value="Salva widget" />
             </form>
+
+            <!-- Modals for copy or move an activity -->
+            <div class="modal fade" id="moveActivityModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Spostamento attività</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <span>Scegli in quale storia e missione spostare l'attività </span>
+                            <div class="dropdown" v-for="(obj,index) in titles.privateList" :key="index" @click="storyWhereIcopy=obj.title">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                    {{obj.title}}
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button class="dropdown-item" v-for="(miss,ind) in obj.missionsList" :key="ind" @click="missionWhereCopy=ind">{{miss}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button" class="btn btn-primary" @click="moveActivity(currentActivity)">SPOSTA</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="copyActivityModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Copia di un'attività</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <span>Scegli in quale storia e missione copiare l'attività </span>
+                            <div class="dropdown" v-for="(obj,index) in titles.privateList" :key="index" @click="storyWhereIcopy=obj.title">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                    {{obj.title}}
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button class="dropdown-item" v-for="(miss,ind) in obj.missionsList" :key="ind" @click="missionWhereCopy=ind">{{miss}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button" class="btn btn-primary" @click="copyActivity(currentActivity,'copy')">COPIA</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modals for widget choice -->
+            <div class="modal fade" id="widgetModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Scegli un widget</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <button v-for="(title,index) in widgets" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeWidget(index)">
+                            {{title}} </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button"  class="btn btn-primary" @click="chooseWidget(event,currentWidget)">Scegli</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modals for copying and moving missions -->
+            <div class="modal fade" id="moveMissionModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Spostamento missione</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <span>Scegli in quale storia spostare la missione </span>
+                            <button v-for="(obj,index) in titles.privateList" :key="index" type="button" @click="storyWhereIcopy=obj.title" class="list-group-item list-group-item-action">
+                                {{obj.title}} 
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button" class="btn btn-primary" @click="moveMission(currentMission)">SPOSTA</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="copyMissionModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Copia di una missione</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <span>Scegli in quale storia copiare la missione </span>
+                            <button v-for="(obj,index) in titles.privateList" :key="index" type="button" @click="storyWhereIcopy=obj.title" class="list-group-item list-group-item-action">
+                                {{obj.title}} 
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button" class="btn btn-primary" @click="copyMission(currentMission,'copy')">COPIA</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div> 
+
+        
     `,
     methods: {
+        /*  ACTIVITIES MANAGEMENT   */
         addActivity(e) {   
             e.preventDefault();
             if($('#saveActivity').val() == "Salva modifiche"){
                 let widgetValue = "";
+
                 if(this.currentWidget >= 0) widgetValue = this.widgets[this.currentWidget];
-                this.activities[this.currentActivity].type =  $("#activitiesList li input:checked").val();
-                this.activities[this.currentActivity].setting = $("#activitiesList li input[name='where']").val();
-                this.activities[this.currentActivity].instructions = $("#activitiesList li textarea[name='instructions']").val();
-                this.activities[this.currentActivity].widget = widgetValue;
+                this.missions[this.currentMission].activities[this.currentActivity].type =  $("#activitiesList li input:checked").val();
+                this.missions[this.currentMission].activities[this.currentActivity].setting = $("#activitiesList li input[name='where']").val();
+                this.missions[this.currentMission].activities[this.currentActivity].instructions = $("#activitiesList li textarea[name='instructions']").val();
+                this.missions[this.currentMission].activities[this.currentActivity].widget = widgetValue;
 
                 $('#activitiesForm h2').text(`Nuova attività`)
                 $('#saveActivity').prop("value", "Salva attività");
-                this.currentActivity = this.activities[this.activities.length - 1].number +1;
+                $('#chooseMission').show();
+                $('label[for="chooseMission"]').show();
             }
             else {
                 let widgetValue = "";
                 if(this.currentWidget >= 0) widgetValue = this.widgets[this.currentWidget];
+                //find the index of the mission we have to add the new activity
+                let missionIndex = this.missions.findIndex(obj => obj.name === $('#chooseMission').val());
+                let activityNumber = (this.missions[missionIndex].activities.length != 0)?this.missions[missionIndex].activities[this.missions[missionIndex].activities.length -1].number +1:0;
                 let activity = {
-                    number: this.currentActivity,
+                    number: activityNumber,
                     type: $("#activitiesList li input:checked").val(),
                     setting:  $("#activitiesList li input[name='where']").val(),
                     instructions: $("#activitiesList li textarea[name='instructions']").val(),
                     widget: widgetValue
                 }
-                this.activities.push(activity);
-                this.currentActivity++;
+                this.missions[missionIndex].activities.push(activity);
                 this.currentWidget = -1;
             }     
 
@@ -227,63 +307,69 @@ export default {
             $("#infoWidget").text("");
             $("#infoWidget").css("display", "none");
         },
-        editActivity(index){
-                $("#activitiesList li input[value='"+this.activities[index].type+"']").prop('checked', true);
-                $("#activitiesList li input[name='where']").val(this.activities[index].setting);
-                $("#activitiesList li textarea[name='instructions']").val(this.activities[index].instructions);
+        editActivity(index,misInd){
+                this.currentMission = misInd;
+                this.currentActivity = index;
+                //prevent the user to change the activity mission from this form
+                $('#chooseMission').hide();
+                $('label[for="chooseMission"]').hide();
+
+                $("#activitiesList li input[value='"+this.missions[misInd].activities[index].type+"']").prop('checked', true);
+                $("#activitiesList li input[name='where']").val(this.missions[misInd].activities[index].setting);
+                $("#activitiesList li textarea[name='instructions']").val(this.missions[misInd].activities[index].instructions);
                 
-                $('#activitiesForm h2').text("Modifica l'attività "+ (this.activities[index].number + 1))
+                $('#activitiesForm h2').text("Modifica l'attività "+ (this.missions[misInd].activities[index].number + 1))
                 $('#saveActivity').prop("value", "Salva modifiche");
 
-                if(this.activities[index].widget) {
+                if(this.missions[misInd].activities[index].widget) {
                     $("#buttonWidget").prop("value","Cambia");
-                    $("#infoWidget").text("Hai scelto il widget: " + this.activities[index].widget);
+                    $("#infoWidget").text("Hai scelto il widget: " + this.missions[misInd].activities[index].widget);
                     $("#infoWidget").css("display", "inline");
-                    this.currentWidget = this.widgets.indexOf(this.activities[index].widget);
+                    this.currentWidget = this.widgets.indexOf(this.missions[misInd].activities[index].widget);
                 }
-                
-                this.currentActivity = index;
         },
         moveActivity(index){
             this.copyActivity(index);
 
-            this.activities.splice(index,1);
-            this.currentActivity = (this.activities.length != 0)?this.activities[this.activities.length - 1].number +1: 0;
+            $('#moveActivityModal').modal('hide');
+            this.missions[this.currentMission].activities.splice(index,1);
         },
-        copyActivity(index, value){
-            var obj = Object.assign({}, this.activities[index]);
+        copyActivity(index){
             //copying all the data of the activity
+            var obj = Object.assign({}, this.missions[this.currentMission].activities[index]);
+            
             let toStory = this.storyWhereIcopy;
-            if(value) {
-                obj.number = this.activities.length;
-                this.activities.push(obj);
-                this.currentActivity = this.activities.length + 1;
-                toStory="";
+            //if the title where i have to copy is the same of the story which i'm editing
+            if(toStory === $('#inpTitle').val()) {
+                obj.number = (this.missions[this.missionWhereCopy].activities.length != 0)?this.missions[this.missionWhereCopy].activities.length:0;
+                this.missions[this.missionWhereCopy].activities.push(obj);
+                $('#copyActivityModal').modal('hide');
+            }else{
+                $.ajax({
+                    type: "POST",
+                    url: "/copyActivity?toStory="+toStory+"&toMiss="+this.missionWhereCopy,
+                    data: obj,
+                    cache: false,
+                    success: (data) =>{
+                        $('#copyActivityModal').modal('hide');
+                    },
+                    error: function (e) {
+                        console.log("error",e);
+                    }
+                });
             }
-            $.ajax({
-                type: "POST",
-                url: "/copyActivity?toStory="+toStory,
-                data: obj,
-                cache: false,
-                success: (data) =>{
-                    $('#moveModal').modal('hide');
-                    $('#copyModal').modal('hide');
-                },
-                error: function (e) {
-                    console.log("error",e);
-                }
-            });
         },
-        deleteActivity(index) {
-             this.activities.splice(index,1);
+        deleteActivity(index,missIndex) {
+             this.currentMission = missIndex;
+             this.missions[missIndex].activities.splice(index,1);
              $('#activitiesForm')[0].reset();
              $('#activitiesForm h2').text(`Nuova attività`)
              $('#saveActivity').prop("value", "Salva attività");
              $("#buttonWidget").prop("value","Scegli");
              $("#infoWidget").text("");
              $("#infoWidget").css("display", "none");
-             this.currentActivity = (this.activities.length != 0)?this.activities[this.activities.length - 1].number +1: 0;
         },
+        /*  WIDGET MANAGEMENT   */
         changeWidget(index) {
             this.currentWidget = index;
         },
@@ -315,6 +401,57 @@ export default {
                 }
             });
         },
+        /*  MISSION MANAGEMENT   */
+        addMission(){
+            this.missions.push({name:"Missione "+(this.missions.length + 1),activities:[]});
+            //find the index for adding in real time the mission to the list of the modals
+            let index = this.titles.privateList.findIndex(x => x.title === $('#inpTitle').val());
+            this.titles.privateList[index].missionsList.push("Missione "+(this.missions.length));
+        },
+        moveMission(index){
+            /*
+            this.copyMission(index);
+
+            this.missions[this.currentMission].activities.splice(index,1);*/
+        },
+        copyMission(index, value){
+            /*
+            var obj = Object.assign({}, this.missions[index]);
+            //copying all the data of the activity
+            let toStory = this.storyWhereIcopy;
+            if(value) {
+                obj.name = "Missione " + (this.missions.length+1);
+                this.missions.push(obj);
+                toStory="";
+            }
+            $.ajax({
+                type: "POST",
+                url: "/copyMission?toStory="+toStory,
+                data: obj,
+                cache: false,
+                success: (data) =>{
+                    $('#moveActivityModal').modal('hide');
+                    $('#copyActivityModal').modal('hide');
+                },
+                error: function (e) {
+                    console.log("error",e);
+                }
+            });*/
+        },
+        deleteMission(index) {
+             this.missions.splice(index,1);
+             //delete in real time the mission from the titles.privateList.missionsList(for the modals)
+             let titleIndex = this.titles.privateList.findIndex(x => x.title === $('#inpTitle').val());
+             this.titles.privateList[titleIndex].missionsList.splice(index,1);
+             //needed if the activity form is filled with informations deleted
+             $('#activitiesForm')[0].reset();
+             $('#activitiesForm h2').text(`Nuova attività`)
+             $('#saveActivity').prop("value", "Salva attività");
+             $("#buttonWidget").prop("value","Scegli");
+             $("#infoWidget").text("");
+             $("#infoWidget").css("display", "none");
+        },
+        /*  MENU MANAGEMENT   */
         checkName(type) {
             let list, value, input, info;
             if(type == 'widget') {
@@ -324,11 +461,19 @@ export default {
                 info =  $("#widgetInfo");
             } 
             else if(type == 'title') {
-                list = this.titles.privateList.concat(this.titles.publicList);
+                let list = [];
+                this.titles.privateList.map(obj => {
+                    list.push(obj.name);
+                })
+                this.titles.publicList.map(obj => {
+                    list.push(obj.name);
+                })
+                
                 input = $("#inpTitle");
                 value = $("#inpTitle").val();
                 info =  $("#titleInfo");
             }
+
             if(list.includes(value)) {
                 input.css("background-color", "red");
                 input.addClass('error');
@@ -351,7 +496,7 @@ export default {
             var verifyInput = $('input[type=file]');
             var titleChanged = ($("#inpTitle").val() != originTitle && (originTitle != '')) ? true : false;
 
-            data.append('activities',JSON.stringify(this.activities));     
+            data.append('missions',JSON.stringify(this.missions,null,2));  
             data.append('originalTitle',JSON.stringify(originTitle));
             
             //verify if the files have been entered, if not i need to keep the old file name
@@ -373,7 +518,7 @@ export default {
                 cache: false,
                 success: (data) =>{
                     //emit event to update the home component stories list
-                    var story = JSON.stringify({title: $('#inpTitle').val(), original: originTitle, changed: titleChanged});
+                    var story = JSON.stringify({titleMission:{title: $('#inpTitle').val(),missions:this.missions}, original: originTitle, changed: titleChanged});
                     this.$root.$emit('updateStories',story);
                     $('#editStoryForm')[0].reset();
                     $('#activitiesForm')[0].reset();
@@ -392,14 +537,11 @@ export default {
                     let id = $(`[name=${item[0]}`).eq(0).attr('id');
                     $(`#${id} + p`).text(item[1] );
                 }
-                else if(item[0] == "activities") {
-                    this.activities = [];
-                    this.currentActivity = 0;
+                else if(item[0] == "missions") {
+                    this.missions = [];
                     for(var i = 0; i < item[1].length; i++) {
-                        this.activities.push(item[1][i]);
+                        this.missions.push(item[1][i]);
                     }
-                    this.currentActivity = (item[1].length != 0) ? item[1][item[1].length - 1].number +1: 0;
-                    console.log(this.currentActivity);
                 }
                 else {
                     $("*[name ='"+item[0]+"'").val(item[1]);
@@ -410,7 +552,7 @@ export default {
     activated() {
         $('#editStoryForm')[0].reset();
         $('#activitiesForm')[0].reset();
-        this.activities = [];
+        this.missions = [{name:"Missione 1",activities:[]}];
         this.currentActivity = 0;
         this.currentStory = '';
         bus.$emit('ready','pronto'); 

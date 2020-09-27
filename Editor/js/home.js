@@ -18,8 +18,8 @@ export default {
             <div id="publicStories">
                 <span v-if="publicStoriesList.length == 0">Nessuna storia pubblicata</span>
                 <div id="public-list" class="list-group" v-else>
-                    <button v-for="(story,index) in publicStoriesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index,'public')">
-                        {{story}} 
+                    <button v-for="(obj,index) in publicStoriesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index,'public')">
+                        {{obj.title}} 
                         <span class="icon-group">
                             <i tabindex="0" class="fas fa-file-download" @click="downloadStory(event,index)"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-qrcode" @click="createQRCode(event, index)"></i>&nbsp;&nbsp;
@@ -37,7 +37,7 @@ export default {
                 <span v-if="privateStoriesList.length == 0">Nessuna storia presente</span>
                 <div id="private-list" class="list-group" v-else>
                     <button v-for="(story,index) in privateStoriesList" :key="index" type="button" class="list-group-item list-group-item-action " @click="changeActive(index,'private')">
-                        {{story}} 
+                        {{story.title}} 
                         <span class="icon-group">
                             <i tabindex="0" class="fas fa-edit" @click="editStory(event, index)" ></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-copy"  @click="duplicateStory(event,index)"></i>&nbsp;&nbsp;
@@ -84,8 +84,8 @@ export default {
             let current = list + '-list';
             let title;
             if(list == 'private'){
-                title = this.privateStoriesList[index];
-            } else title = this.publicStoriesList[index];
+                title = this.privateStoriesList[index].title;
+            } else title = this.publicStoriesList[index].title;
             if($(`#${current} div:eq(${index})`).css("display") == "block")
                 $(`#${current} div:eq(${index})`).css("display", "none");
             else {
@@ -123,7 +123,7 @@ export default {
         loadStory(event, index) {
             event.stopPropagation();
                 $.ajax({
-                    url: '/publicStory/' + this.privateStoriesList[index],
+                    url: '/publicStory/' + this.privateStoriesList[index].title,
                     type: 'PUT',
                     success: (response) =>{
                        console.log("Storia resa pubblica");
@@ -139,7 +139,7 @@ export default {
         downloadStory(event,index) {
             event.stopPropagation();
             $.ajax({
-                url: '/privateStory/' + this.publicStoriesList[index],
+                url: '/privateStory/' + this.publicStoriesList[index].title,
                 type: 'PUT',
                 success: (response) =>{
                    console.log("Storia resa privata");
@@ -156,11 +156,11 @@ export default {
             let title;
             console.log(this.currentList);
             if(this.currentList === "private"){
-                title= this.privateStoriesList[index];
+                title= this.privateStoriesList[index].title;
                 this.privateStoriesList.splice(index,1);
             }
             else{
-                title = this.publicStoriesList[index];
+                title = this.publicStoriesList[index].title;
                 this.publicStoriesList.splice(index,1);
             }
             $.ajax({
@@ -178,6 +178,7 @@ export default {
         editStory(event, index) {
             event.stopPropagation();
             $('.content').css("display", "none");
+            
             $('#toEditMenu').click();     
             const promise = new Promise((succ, err) => {
                 bus.$on('ready',(title) => {
@@ -189,16 +190,17 @@ export default {
             promise.then(() => {
                 console.log('emit');
                 bus.$emit('titles', {privateList:this.privateStoriesList,publicList:this.publicStoriesList});
-                bus.$emit('story',this.privateStoriesList[index])
+                console.log(JSON.stringify({privateList:this.privateStoriesList,publicList:this.publicStoriesList}));
+                bus.$emit('story',this.privateStoriesList[index].title);
             });
         },
         duplicateStory(event, index) {
             event.stopPropagation();
             $.ajax({
-                url: '/copyStory/' + this.privateStoriesList[index],
+                url: '/copyStory/' + this.privateStoriesList[index].title,
                 type: 'PUT',
                 success: (response) =>{
-                  this.privateStoriesList.push(response.title);
+                  this.privateStoriesList.push({title:response.title,missionsList:this.privateStoriesList[index].missionsList});
                 },
                 error: function (e) {
                     console.log(e.message);
@@ -207,7 +209,7 @@ export default {
         },
         createQRCode(event, index){
             event.stopPropagation();
-            let story = this.publicStoriesList[index];
+            let story = this.publicStoriesList[index].title;
             //delete the current qr code
             $('#qrcode').html("");
             new QRCode('qrcode', {
@@ -243,12 +245,17 @@ export default {
 		this.$root.$on('updateStories',(story) => {
             var current = JSON.parse(story);
             if(!current.changed) {
-                if(!this.privateStoriesList.includes(current.title))
-                     this.privateStoriesList.push(current.title);
+                //users.some(user => user.name = newUser.name);
+                if(!this.privateStoriesList.some(obj => obj.title === current.titleMission.title))
+                     this.privateStoriesList.push(current.titleMission.title);
             }
             else {
-                var index = this.privateStoriesList.indexOf(current.original);
-                this.privateStoriesList.splice(index, 1, current.title); 
+                let index,i=0;
+                for(let obj in this.privateStoriesList){
+                    if(obj.title === current.original) index = i;
+                    i++;
+                }
+                this.privateStoriesList.splice(index, 1, {title:current.titleMission.title, missionsList:current.titleMission.missions}); 
             }             
         });
         
