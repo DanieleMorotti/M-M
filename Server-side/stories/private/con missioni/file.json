@@ -1,0 +1,24 @@
+{
+  "title": "con missioni",
+  "setting": "",
+  "description": "",
+  "introduction": "",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "fsd",
+          "instructions": "sdf",
+          "widget": ""
+        }
+      ]
+    }
+  ],
+  "originalTitle": "con missioni",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}

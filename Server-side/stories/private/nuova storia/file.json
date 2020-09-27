@@ -1,0 +1,24 @@
+{
+  "title": "nuova storia",
+  "setting": "bla bla ",
+  "description": "...",
+  "introduction": "",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "prima",
+          "instructions": "",
+          "widget": "lock"
+        }
+      ]
+    }
+  ],
+  "originalTitle": "nuova storia",
+  "background": "IMG_7927.JPG",
+  "widgetCss": "",
+  "widgetJs": ""
+}

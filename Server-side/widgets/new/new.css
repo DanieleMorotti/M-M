@@ -1,0 +1,65 @@
+html,body{
+    height: 100%;
+}
+
+#editMenu{
+    font-size:1.2rem;
+    margin-left:2rem;
+    margin-top:2rem;
+    margin-bottom: 2rem;
+}
+
+#editStoryForm{
+    margin-top:2rem;
+    margin-left:2rem;
+    border:solid 2px blue;
+    padding:1rem;
+}
+
+#activitiesForm{
+    margin-left:2rem;
+    border:solid 2px green;
+    padding:1rem;
+}
+
+#widgetsForm{
+    margin-left:2rem;
+    border:solid 2px orange;
+    padding:1rem;
+}
+
+form textarea{
+    resize: none;
+    margin-top:1rem;
+}
+
+#editStoryForm li > input,h5{
+    margin-top:1rem;
+}
+
+#activitiesList{
+    list-style: none;
+}
+
+#icon-group{
+    margin-left: 3em;
+}
+
+i.fas{
+    cursor:grab;
+}
+
+#titleInfo {
+    display: none;
+}
+
+.error {
+    position: relative;
+    animation: shake .1s linear;
+    animation-iteration-count: 3;
+}
+
+@keyframes shake {
+    0% { left: -5px; }
+    100% { right: -5px; }
+}

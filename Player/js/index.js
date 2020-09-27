@@ -24,7 +24,7 @@ router.beforeEach((to, from, next) => {
     document.getElementById('scriptComp').src = './widgets/lock.js';
   }
   else {
-    document.getElementById('stylesheetComp').href ='/home.css';  
+    document.getElementById('stylesheetComp').href ='/Player/home.css';  
     document.getElementById('scriptComp').src = './js/home.js';
   }
 
