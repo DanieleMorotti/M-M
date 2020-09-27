@@ -424,6 +424,7 @@ export default {
         },
         /*  MISSION MANAGEMENT   */
         addMission(){
+            //TODO:risolvere problema se stiamo facendo storia nuova e non modificando(index è -1)
             this.missions.push({name:"Missione "+(this.missions.length + 1),activities:[]});
             //find the index for adding in real time the mission to the list of the modals
             let index = this.titles.privateList.findIndex(x => x.title === $('#inpTitle').val());
@@ -482,14 +483,14 @@ export default {
                 info =  $("#widgetInfo");
             } 
             else if(type == 'title') {
-                let list = [];
+                list = [];
                 this.titles.privateList.map(obj => {
-                    list.push(obj.name);
+                    list.push(obj.title);
                 })
                 this.titles.publicList.map(obj => {
-                    list.push(obj.name);
+                    list.push(obj.title);
                 })
-                
+
                 input = $("#inpTitle");
                 value = $("#inpTitle").val();
                 info =  $("#titleInfo");
