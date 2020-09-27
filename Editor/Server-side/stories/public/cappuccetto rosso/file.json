@@ -1,0 +1,25 @@
+{
+  "title": "cappuccetto rosso",
+  "setting": "bosco",
+  "description": "Breve descrizione introduttiva",
+  "introduction": "Introduzione",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "prima attivita'",
+          "instructions": "spiegazione attivita' uno",
+          "widget": ""
+        }
+      ]
+    }
+  ],
+  "originalTitle": "",
+  "device": "smartphone",
+  "widgetCss": "",
+  "widgetJs": "",
+  "background": "IMG_7930.JPG"
+}

@@ -1,4 +1,4 @@
-import render from './activities.js'
+//import render from './activities.js'
 
 var storyItem;
 var activities;

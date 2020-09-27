@@ -85,6 +85,12 @@ function displayFacilities() {
     usedFacilities.push(i);
 }
 
+function initialized() {
+    story = JSON.parse(localStorage.getItem("story"));
+    activities = story[0].activities;
+}
+
+/*
 export default {
     renderAct: renderActivity,
     displayDifficulties: displayDifficulties,
@@ -96,3 +102,4 @@ export default {
     }
     
 };
+*/

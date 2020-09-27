@@ -8,6 +8,11 @@ var type;
 
 export default {
 	name:'device',
+	data() {
+        return{
+            missions: []
+        }
+    },
     template: `
 	<div class="smart">
         <div id="dettaglio">
@@ -27,14 +32,10 @@ export default {
 		    </div><!-- fine header -->
         </div><!-- fine wrap-->
         <div id="bottone"></div>
-    </div><!-- fine menu-responsive menu-->
+	</div><!-- fine menu-responsive menu-->
 `,
 	methods: {
-		render() {
-			storyItem = JSON.parse(localStorage.getItem("story"));
-			activities = storyItem[0].activities;
-			render.initialized();
-		},
+		
 		play() {
 			if(performedActivities.length < activities.length) {
 				do {
@@ -90,5 +91,11 @@ export default {
 			$('#play').attr('disabled', false);
 			$('#check').attr('disabled', true);
 		}
+	},
+	activated() {
+		storyItem = JSON.parse(localStorage.getItem("story"));
+		console.log(storyItem.missions);
+		this.missions = storyItem.missions;
+		initialized();
 	}
 }

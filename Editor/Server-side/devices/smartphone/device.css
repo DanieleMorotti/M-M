@@ -10,12 +10,8 @@ body {
   -moz-animation: AnimationName 59s ease infinite;
   animation: AnimationName 59s ease infinite;
     
-    
   }
-  
-  
-  
-  
+
   @-webkit-keyframes AnimationName {
       0%{background-position:0% 50%}
       50%{background-position:100% 50%}
@@ -47,14 +43,11 @@ body {
     border: 2px solid #ddd;
     margin: 0 auto;
     padding: 60px 10px;
-    
     position: relative;
-  
   }
   
   #acenzione-button {
       background-color: #333;
-      
       height: 20px;
       left: -5px;
       top: 59px;
@@ -63,9 +56,7 @@ body {
       width: 3px;
       background: #333;
       position: absolute;
-      
   }
-  
   
   #volume-su {
       height: 40px;
@@ -85,7 +76,6 @@ body {
       left: -7px;
       top: 155px;
       border-radius: 4px 0 0 4px;
-  
       width: 5px;
       background: #333;
       position: absolute;
@@ -105,7 +95,6 @@ body {
       height: 7px;
       width: 7px;
       margin: auto;
-  
       border-radius: 100px;
       display: block;
   }
@@ -133,7 +122,7 @@ body {
     margin: auto;
     width: 90%;
     height: 95%;
-      background-color: #fff;
+      background-color: grey;
       box-shadow: 0 0 0 1px    rgba(0,0,0,0.1)inset;
       overflow: hidden;
       position: relative;
@@ -174,87 +163,8 @@ body {
   #menu {
       position: relative;
       height: 60px;
-  
-  
-  
   }
-  
-  #menu ul {
-      list-style: none;
-  }
-  
-  #menu ul li {
-      float: left;
-      padding: 3px;
-  
-  }
-  
-  
-  #menu ul li a {
-      display: block;
-      padding: 20px;
-      color: #fff;
-      text-decoration: none;
-    font-weight: 700;
-   
-    
-    
-  }
-  
-  #menu ul li a:hover {
-      background: #444;
-       transition-property: background-color;
-     transition-duration: 0.4s;
-     transition-timing-function: ease;
-     color: #FFF;
-  
-  
-  
-  }
-  
-  
-  .three-lines-menu {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      text-decoration: none;
-      color: #fff;
-      font-size: 32px;
-      display: none;
-  }
-  
-  
-  
-  
-      #menu ul {
-          display: none;
-          padding: 60px;
-      
-  
-          
-      }
-  
-      #menu ul li {
-          float: none;
-          background: #555;
-      
-  
-  
-      }
-  
-  
-      .three-lines-menu {
-          display: block;
-          cursor: pointer;
-  
-      }
-  
-      #menu ul.menu-responsive {
-          display: block;
-          width: 100%;
-          margin-top: 0;
-     
-      }
+
   
   
   

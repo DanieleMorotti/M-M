@@ -25,10 +25,8 @@ export default {
     },
     activated() {
         story = JSON.parse(localStorage.getItem("story"));
-        console.log('story ' + story.title);
         $('#storyDiv').css('background-image', 'url("/getImage?title='+story.title+'&name='+story.background+'")');
         $('#description').html(story.description);
-        console.log(story.description);
         $('#btnDev').html("Prendi il " +story.device);
     }
 }

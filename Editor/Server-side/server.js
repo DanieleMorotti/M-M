@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/',(req,res) =>{
 	res.status(200);
-	res.sendFile(path.join(__dirname,"..","index.html"));
+	res.sendFile(path.join(__dirname,"../Editor/index.html"));
 })
 
 /* save a new story */
@@ -84,12 +84,13 @@ app.post('/saveStory', (req, res) => {
 });
 
 
-let story, device;
+var story, device;
 /* require a story which already exists */ 
 app.get('/getStory',(req, res) => {
 	story = req.query.title;
 	fs.readFile('./stories/'+req.query.group+'/'+req.query.title+'/file.json', 'utf8', (err, data) => {  
 		device = JSON.parse(data).device;
+		console.log('caricamento storia' +device);
 		res.set('Content-Type', 'application/json');
 		res.send(data)
 		res.status(200);
@@ -336,12 +337,14 @@ app.get('/getImage',(req,res) =>{
 
 app.get('/getDeviceJs',(req,res) =>{
 	res.status(200);
-	res.sendFile(path.join(__dirname,"/devices/"+ device +"/device.js"));
+
+	res.sendFile(path.join(__dirname,"/devices/"+device+"/device.js"));
+  //  res.send('ok');
 })
 
 app.get('/getDeviceCss',(req,res) =>{
 	res.status(200);
-	res.sendFile(path.join(__dirname,"/devices/"+ device +"/device.css"));
+	res.sendFile(path.join(__dirname,"/devices/"+req.query.name+"/device.css"));
 })
 
 
