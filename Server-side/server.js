@@ -358,9 +358,7 @@ app.get('/getImage',(req,res) =>{
 
 app.get('/getDeviceJs',(req,res) =>{
 	res.status(200);
-
-	res.sendFile(path.join(__dirname,"/devices/"+device+"/device.js"));
-  //  res.send('ok');
+	res.sendFile(path.join(__dirname,"/devices/"+req.query.name+"/device.js"));
 })
 
 app.get('/getDeviceCss',(req,res) =>{

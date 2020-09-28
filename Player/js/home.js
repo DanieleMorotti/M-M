@@ -9,7 +9,7 @@ export default {
     },
     template: `
         <div id="storyDiv" style="text-align: center">
-            <p id="description"> {{step}} </p>
+            <p id="description"> </p>
             <button id="btnDev" @click="grab"></button>
         </div> 
     `,

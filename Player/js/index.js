@@ -7,7 +7,7 @@ const router = new VueRouter({
   routes: Routes,
 })
 
-console.log(Routes);
+
 //function that is executed before every routing change
 router.beforeEach((to, from, next) => {
   if(to.path === '/device') {
@@ -34,6 +34,6 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
     router: router,
-    el: '#app',
-  
+    el: '#app'
 })
+
