@@ -10,9 +10,21 @@
         {
           "number": 0,
           "type": "scelta multipla",
-          "setting": "prima",
-          "instructions": "",
-          "widget": "lock"
+          "setting": "das",
+          "instructions": "adsds",
+          "widget": ""
+        }
+      ]
+    },
+    {
+      "name": "Missione 2",
+      "activities": [
+        {
+          "number": "0",
+          "type": "scelta multipla",
+          "setting": "dda",
+          "instructions": "as",
+          "widget": ""
         }
       ]
     }
