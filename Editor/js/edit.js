@@ -356,17 +356,9 @@ export default {
                     type: $("#activitiesList li input:checked").val(),
                     setting:  $("#activitiesList li input[name='where']").val(),
                     instructions: $("#activitiesList li textarea[name='instructions']").val(),
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-                    isActive: false,
-=======
->>>>>>> Stashed changes
-                    widget: widgetValue,
                     question: $("#question").val(),
                     answers: this.answerList,
                     isActive: true,
->>>>>>> 65be821d48b76b7fa00e8d89cddfe65ef26ce8f1
                     widget: widgetValue
                 }
                 this.missions[missionIndex].activities.push(activity);
