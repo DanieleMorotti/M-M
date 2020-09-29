@@ -181,7 +181,6 @@ function readFiles(dir, f) {
 				})
 				// fare attenzione qui!!
 				dirName = dir.substring(dir.lastIndexOf('\\') + 1);
-				console.log(dirName);
 				obj[`${dirName}`].push({title:f,missionsList:missions});
 				succ(data);
 			}

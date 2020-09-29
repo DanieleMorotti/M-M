@@ -320,13 +320,11 @@ export default {
     methods: {
         /*  ACTIVITIES MANAGEMENT   */
         addAnswer(e) {
-            console.log('here')
-           // e.preventDefault();
+            e.preventDefault();
             this.answerList.push($("#answer").val());
             $("#answer").prop("value", "");
         },
         addActivity(e) {   
-            console.log(this.type);
             e.preventDefault();
             if($('#saveActivity').val() == "Salva modifiche"){
                 let widgetValue = "";
@@ -363,7 +361,6 @@ export default {
                 }
                 this.missions[missionIndex].activities.push(activity);
                 this.currentWidget = -1;
-                console.log(activity, this.missions[missionIndex].activities)
             }     
 
             $('#activitiesForm')[0].reset();
