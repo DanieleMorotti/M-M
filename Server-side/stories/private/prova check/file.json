@@ -1,0 +1,49 @@
+{
+  "title": "prova check",
+  "setting": "",
+  "description": "fds",
+  "introduction": "fdsf",
+  "isActive": "on",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "fsdd",
+          "instructions": "sdfd",
+          "isActive": true,
+          "widget": ""
+        },
+        {
+          "number": 1,
+          "type": "domanda aperta",
+          "setting": "dfs",
+          "instructions": "dsf",
+          "isActive": false,
+          "widget": ""
+        }
+      ],
+      "isActive": false
+    },
+    {
+      "name": "Missione 2",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "fdsf",
+          "instructions": "fdsd",
+          "isActive": true,
+          "widget": ""
+        }
+      ],
+      "isActive": false
+    }
+  ],
+  "originalTitle": "prova chekc",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}

@@ -41,6 +41,15 @@ form textarea{
     list-style: none;
 }
 
+#activitiesSaved{
+    list-style:none;
+}
+
+#missionSaved{
+    font-size: 1.1em;
+    list-style: none;
+}
+
 #icon-group{
     margin-left: 3em;
 }
