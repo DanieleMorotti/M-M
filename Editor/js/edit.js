@@ -7,6 +7,8 @@ export default {
             missions: [{name:"Missione 1",activities:[]}],
             isNewStory: false,
             currentActivity: 0,
+            type: 'scelta multipla',
+            answerList: [],
             currentMission: 0,
             currentStory: '',
             missionWhereCopy: 0,
@@ -89,11 +91,11 @@ export default {
                             <option v-for="(mission,index) in missions" :key="index" :value="mission.name"> {{mission.name}}</option>
                         </select>
                         <h5>Scegli il tipo dell'attività : </h5>
-                        <input id="multipleChoice" type="radio" name="activityTypeGroup" value="scelta multipla" checked/>
+                        <input id="multipleChoice" type="radio" v-model="type" value="scelta multipla" name="activityTypeGroup" checked/>
                         <label for="multipleChoice">Scelta multipla</label>
-                        <input id="openQuest" type="radio" name="activityTypeGroup" value="domanda aperta" />
+                        <input id="openQuest" type="radio" v-model="type" value="domanda aperta" name="activityTypeGroup" />
                         <label for="openQuest">Domanda aperta</label>
-                        <input id="figur" type="radio" name="activityTypeGroup" value="figurativa" />
+                        <input id="figur" type="radio" v-model="type" value="figurativa" name="activityTypeGroup" />
                         <label for="figur">Figurativa</label>
 
                         <h5>Dove si svolge l'attività?(ambientazione)</h5>
@@ -102,6 +104,20 @@ export default {
                         <h5>Spiegazione per lo svolgimento dell'attività:</h5>
                         <textarea name="instructions" rows="3" cols="40"></textarea>
 
+                        <div id="questionDiv">
+                            <label for="question">Inserisci la domanda:</label><br>
+                            <input id="question" type="text" name="question" /><br>
+                            <label for="answer">Inserisci una risposta:</label><br>
+                            <input id="answer" type="text" name="answer" :disabled="type =='figurativa'"  @keyup.enter="addAnswer(event)"  />
+                            <i class="fas fa-plus-square" id="insertAnswer" @click="addAnswer(event)"></i>
+                            <ul id="answers">
+                                <li v-for="(answer,index) in answerList" :key="index">
+                                {{answer}} &nbsp;&nbsp;<i  class="fas fa-trash-alt" @click="answerList.splice(index,1)"></i>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                
                         <h5>Scegli un widget per questa attività</h5>
                         <input type="button" id="buttonWidget" data-toggle="modal" data-target="#widgetModal" value="Scegli"/>
                         <p id="infoWidget" style="display:none"> </p>
@@ -301,7 +317,14 @@ export default {
     `,
     methods: {
         /*  ACTIVITIES MANAGEMENT   */
+        addAnswer(e) {
+            console.log('here')
+           // e.preventDefault();
+            this.answerList.push($("#answer").val());
+            $("#answer").prop("value", "");
+        },
         addActivity(e) {   
+            console.log(this.type);
             e.preventDefault();
             if($('#saveActivity').val() == "Salva modifiche"){
                 let widgetValue = "";
@@ -311,6 +334,8 @@ export default {
                 this.missions[this.currentMission].activities[this.currentActivity].setting = $("#activitiesList li input[name='where']").val();
                 this.missions[this.currentMission].activities[this.currentActivity].instructions = $("#activitiesList li textarea[name='instructions']").val();
                 this.missions[this.currentMission].activities[this.currentActivity].widget = widgetValue;
+                this.missions[this.currentMission].activities[this.currentActivity].question = $("#question").val();
+                this.missions[this.currentMission].activities[this.currentActivity].answers = this.answerList;
 
                 $('#activitiesForm h2').text(`Nuova attività`)
                 $('#saveActivity').prop("value", "Salva attività");
@@ -328,16 +353,21 @@ export default {
                     type: $("#activitiesList li input:checked").val(),
                     setting:  $("#activitiesList li input[name='where']").val(),
                     instructions: $("#activitiesList li textarea[name='instructions']").val(),
-                    widget: widgetValue
+                    widget: widgetValue,
+                    question: $("#question").val(),
+                    answers: this.answerList
                 }
                 this.missions[missionIndex].activities.push(activity);
                 this.currentWidget = -1;
+                console.log(activity, this.missions[missionIndex].activities)
             }     
 
             $('#activitiesForm')[0].reset();
             $("#buttonWidget").prop("value","Scegli");
             $("#infoWidget").text("");
             $("#infoWidget").css("display", "none");
+            this.type = 'scelta multipla';
+            this.answerList = [];
         },
         editActivity(index,misInd){
                 this.currentMission = misInd;
@@ -352,6 +382,11 @@ export default {
                 
                 $('#activitiesForm h2').text("Modifica l'attività "+ (parseInt(this.missions[misInd].activities[index].number) + 1))
                 $('#saveActivity').prop("value", "Salva modifiche");
+
+                $("#question").prop("value",this.missions[misInd].activities[index].question);
+                
+                this.type = this.missions[misInd].activities[index].type;
+                if(this.type !== 'figurativa') this.answerList = this.missions[misInd].activities[index].answers;
 
                 if(this.missions[misInd].activities[index].widget) {
                     $("#buttonWidget").prop("value","Cambia");

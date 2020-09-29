@@ -122,19 +122,33 @@ body {
     margin: auto;
     width: 90%;
     height: 95%;
-      background-color: grey;
-      box-shadow: 0 0 0 1px    rgba(0,0,0,0.1)inset;
-      overflow: hidden;
-      position: relative;
+    background-color: grey;
+    box-shadow: 0 0 0 1px    rgba(0,0,0,0.1)inset;
+    overflow: hidden;
+    position: relative;
     color: white;
   }
   
-  
+  #text {
+      margin: 1em;
+  }
+
+  #schermo p {
+      position: absolute;
+      bottom: 0.5em;
+      right: 0.5em;
+      font-size: 2em;
+  }
+
+  #schermo p:active {
+    color: grey;
+}
+
   #bottone {
       height: 40px;
       width: 40px;
       background: #111;
-      margin: 17px auto;
+      margin: 10px auto;
       border-radius: 100px;
   }
   
