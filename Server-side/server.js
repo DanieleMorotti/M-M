@@ -55,6 +55,8 @@ app.post('/saveStory', (req, res) => {
 				let tempObj = JSON.parse(field);
 				jsonFile[name] = tempObj;
 			}
+			//because we catch the checkboxes but we have to process them inside the 'missions',not here
+			else if(name === "isActive") ;
 			else{
 				if(name === "title")
 					jsonTitle = field;

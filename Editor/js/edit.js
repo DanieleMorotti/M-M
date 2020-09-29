@@ -4,15 +4,18 @@ export default {
     name: 'editMenu',
     data() {
         return{
-            missions: [{name:"Missione 1",activities:[],isActive:true}],
+            missions: [{name:"Missione 1",activities:[],isActive:false}],
             isNewStory: false,
             currentActivity: 0,
             type: 'scelta multipla',
             answerList: [],
             currentMission: 0,
             currentStory: '',
+            //i save here the index of the mission where i will copy the activity
             missionWhereCopy: 0,
+            //i save here the name of the story where i will copy activity or mission
             storyWhereIcopy:'',
+            //this obj has 2 properties: publicList and privateList,which contain 2 properties title and missionsList
             titles: [],
             widgets: [],
             currentWidget: -1,
@@ -57,7 +60,7 @@ export default {
                         <h2 style="display:inline-block">Missioni</h2>&nbsp;&nbsp;<i class="fas fa-plus" @click="addMission"></i>
                         <ul id="missionSaved">
                             <li v-for="(mission,index) in missions" :key="index">
-                                <input type="checkbox" name="isActive" @click="mission.isActive = !mission.isActive" checked>&emsp;
+                                <input type="checkbox" name="isActive" :checked="mission.isActive" @click="mission.isActive = !mission.isActive" />&emsp;
                                 {{mission.name}}&emsp;
                                 <span class="icon-group">
                                     <i class="fas fa-cut" @click="currentMission = index" data-toggle="modal" data-target="#moveMissionModal" v-if="index != 0"></i>&nbsp;&nbsp;
@@ -66,7 +69,7 @@ export default {
                                 </span>
                                 <ul id="activitiesSaved" v-if="mission.activities.length != 0">
                                     <li v-for="(activity,ind) in mission.activities" :key="ind">
-                                        <input type="checkbox" name="isActive" @click="activity.isActive = !activity.isActive" checked>&emsp;
+                                        <input type="checkbox" name="isActive" :checked="activity.isActive" @click="activity.isActive = !activity.isActive" />&emsp;
                                         Attività {{parseInt(activity.number) + 1}}&emsp;
                                         <span class="icon-group">
                                             <i class="fas fa-edit" @click="editActivity(ind,index)"></i>&nbsp;&nbsp;
@@ -353,10 +356,17 @@ export default {
                     type: $("#activitiesList li input:checked").val(),
                     setting:  $("#activitiesList li input[name='where']").val(),
                     instructions: $("#activitiesList li textarea[name='instructions']").val(),
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+                    isActive: false,
+=======
+>>>>>>> Stashed changes
                     widget: widgetValue,
                     question: $("#question").val(),
                     answers: this.answerList,
                     isActive: true,
+>>>>>>> 65be821d48b76b7fa00e8d89cddfe65ef26ce8f1
                     widget: widgetValue
                 }
                 this.missions[missionIndex].activities.push(activity);
@@ -487,7 +497,7 @@ export default {
                 let index = this.titles.privateList.findIndex(x => x.title === $('#inpTitle').val());
                 this.titles.privateList[index].missionsList.push("Missione "+(this.missions.length +1));
             }
-            this.missions.push({name:"Missione "+(this.missions.length + 1),activities:[]});
+            this.missions.push({name:"Missione "+(this.missions.length + 1),activities:[],isActive:false});
         },
         moveMission(index){
             this.copyMission(index,'move');
@@ -501,7 +511,6 @@ export default {
         },
         copyMission(index,val){
 
-            //var mission = JSON.parse(JSON.stringify(this.missions[index]));
             let mission = jQuery.extend(true,{}, this.missions[index]);
             let toStory = this.storyWhereIcopy;
             let storyIndex;
@@ -594,6 +603,7 @@ export default {
         },
         checkForm: function() {
             if(this.invalid) return;
+
             let data = new FormData($('#editStoryForm')[0]);
 
             var originTitle = this.currentStory;
@@ -646,7 +656,7 @@ export default {
                 }
                 else if(item[0] == "missions") {
                     this.missions = [];
-                    for(var i = 0; i < item[1].length; i++) {
+                    for(let i = 0; i < item[1].length; i++) {
                         this.missions.push(item[1][i]);
                     }
                 }
@@ -659,7 +669,7 @@ export default {
     activated() {
         $('#editStoryForm')[0].reset();
         $('#activitiesForm')[0].reset();
-        this.missions = [{name:"Missione 1",activities:[]}];
+        this.missions = [{name:"Missione 1",activities:[],isActive:false}];
         this.currentActivity = 0;
         this.currentStory = '';
         bus.$emit('ready','pronto'); 
