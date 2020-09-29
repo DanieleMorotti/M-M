@@ -4,7 +4,7 @@ export default {
     name: 'editMenu',
     data() {
         return{
-            missions: [{name:"Missione 1",activities:[]}],
+            missions: [{name:"Missione 1",activities:[],isActive:true}],
             isNewStory: false,
             currentActivity: 0,
             type: 'scelta multipla',
@@ -57,6 +57,7 @@ export default {
                         <h2 style="display:inline-block">Missioni</h2>&nbsp;&nbsp;<i class="fas fa-plus" @click="addMission"></i>
                         <ul id="missionSaved">
                             <li v-for="(mission,index) in missions" :key="index">
+                                <input type="checkbox" name="isActive" @click="mission.isActive = !mission.isActive" checked>&emsp;
                                 {{mission.name}}&emsp;
                                 <span class="icon-group">
                                     <i class="fas fa-cut" @click="currentMission = index" data-toggle="modal" data-target="#moveMissionModal" v-if="index != 0"></i>&nbsp;&nbsp;
@@ -65,6 +66,7 @@ export default {
                                 </span>
                                 <ul id="activitiesSaved" v-if="mission.activities.length != 0">
                                     <li v-for="(activity,ind) in mission.activities" :key="ind">
+                                        <input type="checkbox" name="isActive" @click="activity.isActive = !activity.isActive" checked>&emsp;
                                         Attività {{parseInt(activity.number) + 1}}&emsp;
                                         <span class="icon-group">
                                             <i class="fas fa-edit" @click="editActivity(ind,index)"></i>&nbsp;&nbsp;
@@ -355,7 +357,9 @@ export default {
                     instructions: $("#activitiesList li textarea[name='instructions']").val(),
                     widget: widgetValue,
                     question: $("#question").val(),
-                    answers: this.answerList
+                    answers: this.answerList,
+                    isActive: true,
+                    widget: widgetValue
                 }
                 this.missions[missionIndex].activities.push(activity);
                 this.currentWidget = -1;
@@ -370,6 +374,7 @@ export default {
             this.answerList = [];
         },
         editActivity(index,misInd){
+                this.answerList = [];
                 this.currentMission = misInd;
                 this.currentActivity = index;
                 //prevent the user to change the activity mission from this form

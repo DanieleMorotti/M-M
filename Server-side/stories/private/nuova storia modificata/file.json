@@ -1,8 +1,9 @@
 {
-  "title": "nuova storia",
+  "title": "nuova storia modificata",
   "setting": "bla bla ",
   "description": "...",
   "introduction": "",
+  "isActive": "on",
   "missions": [
     {
       "name": "Missione 1",

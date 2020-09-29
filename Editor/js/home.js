@@ -243,16 +243,15 @@ export default {
 		this.$root.$on('updateStories',(story) => {
             var current = JSON.parse(story);
             if(!current.changed) {
-                //users.some(user => user.name = newUser.name);
                 if(!this.privateStoriesList.some(obj => obj.title === current.titleMission.title))
-                     this.privateStoriesList.push({title:current.titleMission.title, missionsList: current.titleMission.missionsList});
+                    this.privateStoriesList.push({title:current.titleMission.title, missionsList: current.titleMission.missionsList});
+                else{
+                    let ind = this.privateStoriesList.findIndex(x => x.title === current.titleMission.title);
+                    this.privateStoriesList[ind] = {title:current.titleMission.title, missionsList: current.titleMission.missionsList};
+                }
             }
             else {
-                let index,i=0;
-                for(let obj in this.privateStoriesList){
-                    if(obj.title === current.original) index = i;
-                    i++;
-                }
+                let index = this.privateStoriesList.findIndex(x => x.title === current.original);
                 this.privateStoriesList.splice(index, 1, {title:current.titleMission.title, missionsList:current.titleMission.missions}); 
             }             
         });
