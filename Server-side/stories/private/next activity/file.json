@@ -1,0 +1,65 @@
+{
+  "title": "next activity",
+  "setting": "",
+  "description": "",
+  "introduction": "",
+  "isActive": "on",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "stanza 1",
+          "instructions": "",
+          "widget": "",
+          "question": "",
+          "answers": [],
+          "isActive": true,
+          "goTo": {
+            "ifCorrect": "0/1",
+            "ifNotCorrect": "0/1"
+          }
+        },
+        {
+          "number": 1,
+          "type": "domanda aperta",
+          "setting": "stanza 5",
+          "instructions": "",
+          "widget": "",
+          "question": "",
+          "answers": [],
+          "isActive": true,
+          "goTo": {
+            "ifCorrect": "-/-",
+            "ifNotCorrect": "1/0"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Missione 2",
+      "activities": [
+        {
+          "number": 0,
+          "type": "figurativa",
+          "setting": "stanza 8",
+          "instructions": "",
+          "widget": "",
+          "question": "",
+          "answers": [],
+          "isActive": true,
+          "goTo": {
+            "ifCorrect": "-/-",
+            "ifNotCorrect": "-/-"
+          }
+        }
+      ]
+    }
+  ],
+  "originalTitle": "new story",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}

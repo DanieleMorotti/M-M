@@ -1,0 +1,44 @@
+{
+  "title": "cappuccetto rosso",
+  "setting": "bosco",
+  "description": "La mamma manda cappuccetto a rosso a portare dei dolcetti alla nonna",
+  "introduction": "Introduzione alla storia",
+  "isActive": "on",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "stanza 1",
+          "instructions": "In questa attivita' dovrai...",
+          "widget": "",
+          "question": "Che colore danno blu e giallo mescolati assieme?",
+          "answers": [
+            "blu",
+            "rosso",
+            "verde"
+          ],
+          "isActive": true
+        },
+        {
+          "number": 1,
+          "type": "domanda aperta",
+          "setting": "stanza 23",
+          "instructions": "In questa attivita' dovrai...",
+          "widget": "",
+          "question": "Di che colore e' il vestito di Madame Bovary?",
+          "answers": [
+            "blu"
+          ],
+          "isActive": true
+        }
+      ]
+    }
+  ],
+  "originalTitle": "cappuccetto rosso",
+  "background": "NROF3200.JPG",
+  "widgetCss": "",
+  "widgetJs": ""
+}

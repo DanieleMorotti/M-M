@@ -45,7 +45,7 @@ export default {
                         <textarea id="inpDescr" name="description" rows="3" cols="40"></textarea>
                     </li>
                     <li>
-                        <h5>Scegli il dispositivo che il cellulare rappresenterà:</h5>
+                        <label for="buttonDevice">Scegli il dispositivo che il cellulare rappresenterà:</label><br>
                         <input type="button" id="buttonDevice" data-toggle="modal" data-target="#deviceModal" value="Scegli"/>
                         <p id="infoDevice" style="display:none"> </p>
                     </li>
@@ -114,9 +114,36 @@ export default {
                             <i class="fas fa-plus-square" id="insertAnswer" @click="addAnswer(event)"></i>
                             <ul id="answers">
                                 <li v-for="(answer,index) in answerList" :key="index">
-                                {{answer}} &nbsp;&nbsp;<i  class="fas fa-trash-alt" @click="answerList.splice(index,1)"></i>
+                                {{answer}} &nbsp;&nbsp;<i class="fas fa-trash-alt" @click="answerList.splice(index,1)"></i>
                                 </li>
                             </ul>
+                            <div>
+                                <p>Scegli l'attività successiva: </p>
+                                <ul>
+                                <li>
+                                    <label for="nextActvityCorrect"> in caso di risposta corretta</label><br>
+                                    <select id="nextActivityCorrect" name="nextActivityCorrect" :disabled="missions.length == 1 && missions[0].activities.length == 0">
+                                        <option value="-/-" > Missione -  Attività -  </option> 
+                                        <template v-for="(mission, indMiss) in missions" :key="indMiss"> 
+                                        <option v-for="activity in mission.activities" :value="indMiss+'/'+activity.number"> 
+                                        {{mission.name}} Attività {{activity.number + 1}}
+                                        </option>
+                                        </template>
+                                    </select>
+                                </li>
+                                <li>
+                                    <label for="nextActvityIncorrect"> in caso di risposta errata</label><br>
+                                    <select id="nextActivityIncorrect" name="nextActivityIncorrect" :disabled="missions.length == 1 && missions[0].activities.length == 0">
+                                        <option value="-/-" > Missione -  Attività -  </option> 
+                                        <template v-for="(mission, indMiss) in missions" :key="indMiss"> 
+                                        <option v-for="activity in mission.activities" :value="[indMiss]+'/'+[activity.number]"> 
+                                        {{mission.name}} Attività {{activity.number + 1}}
+                                        </option>
+                                        </template>
+                                    </select>
+                                </li>
+                                </ul>
+                            </div>
                         </div>
                         
                 
@@ -336,6 +363,8 @@ export default {
                 this.missions[this.currentMission].activities[this.currentActivity].widget = widgetValue;
                 this.missions[this.currentMission].activities[this.currentActivity].question = $("#question").val();
                 this.missions[this.currentMission].activities[this.currentActivity].answers = this.answerList;
+                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect = $("#nextActivityCorrect").val();
+                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifNotCorrect = $("#nextActivityIncorrect").val();
 
                 $('#activitiesForm h2').text(`Nuova attività`)
                 $('#saveActivity').prop("value", "Salva attività");
@@ -357,7 +386,11 @@ export default {
                     question: $("#question").val(),
                     answers: this.answerList,
                     isActive: true,
-                    widget: widgetValue
+                    widget: widgetValue,
+                    goTo: {
+                        ifCorrect: $("#nextActivityCorrect").val(),
+                        ifNotCorrect: $("#nextActivityIncorrect").val()
+                    }
                 }
                 this.missions[missionIndex].activities.push(activity);
                 this.currentWidget = -1;
@@ -374,6 +407,9 @@ export default {
                 this.answerList = [];
                 this.currentMission = misInd;
                 this.currentActivity = index;
+                $(`#nextActivityCorrect option[value='-/-']`).prop('selected', true);
+                $(`#nextActivityIncorrect option[value='-/-']`).prop('selected', true);
+
                 //prevent the user to change the activity mission from this form
                 $('#chooseMission').hide();
                 $('label[for="chooseMission"]').hide();
@@ -387,9 +423,21 @@ export default {
 
                 $("#question").prop("value",this.missions[misInd].activities[index].question);
                 
+                // resume activity's type and answers list
                 this.type = this.missions[misInd].activities[index].type;
                 if(this.type !== 'figurativa') this.answerList = this.missions[misInd].activities[index].answers;
 
+                // resume activity's next tasks
+                let missNum1 = this.missions[misInd].activities[index].goTo.ifCorrect.substring(0,1);
+                let actNum1 = this.missions[misInd].activities[index].goTo.ifCorrect.substring(2,3);
+                if(missNum1 !== "-" && this.missions[missNum1].activities[actNum1]) 
+                    $(`#nextActivityCorrect option[value='${missNum1}/${actNum1}']`).prop('selected', true);
+                
+                let missNum2 = this.missions[misInd].activities[index].goTo.ifNotCorrect.substring(0,1);
+                let actNum2 = this.missions[misInd].activities[index].goTo.ifNotCorrect.substring(2,3);
+                if(missNum2 !== "-" && this.missions[missNum2].activities[actNum2]) 
+                    $(`#nextActivityIncorrect option[value='${missNum2}/${actNum2}']`).prop('selected', true);
+                 
                 if(this.missions[misInd].activities[index].widget) {
                     $("#buttonWidget").prop("value","Cambia");
                     $("#infoWidget").text("Hai scelto il widget: " + this.missions[misInd].activities[index].widget);
