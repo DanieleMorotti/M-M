@@ -366,8 +366,10 @@ export default {
                 this.missions[this.currentMission].activities[this.currentActivity].widget = widgetValue;
                 this.missions[this.currentMission].activities[this.currentActivity].question = $("#question").val();
                 this.missions[this.currentMission].activities[this.currentActivity].answers = this.answerList;
-                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect = $("#nextActivityCorrect").val();
-                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifNotCorrect = $("#nextActivityIncorrect").val();
+                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect.nextMission = $("#nextActivityCorrect").val().substring(0,1);
+                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect.nextActivity = $("#nextActivityCorrect").val().substring(2,3);
+                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifNotCorrect.nextMission = $("#nextActivityIncorrect").val().substring(0,1);
+                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifNotCorrect.nextActivity = $("#nextActivityIncorrect").val().substring(2,3);
 
                 $('#activitiesForm h2').text(`Nuova attività`)
                 $('#saveActivity').prop("value", "Salva attività");
@@ -390,12 +392,19 @@ export default {
                     isActive: true,
                     widget: widgetValue,
                     goTo: {
-                        ifCorrect: $("#nextActivityCorrect").val(),
-                        ifNotCorrect: $("#nextActivityIncorrect").val()
+                        ifCorrect: {
+                            nextMission: $("#nextActivityCorrect").val().substring(0,1),
+                            nextActivity: $("#nextActivityCorrect").val().substring(2,3)
+                        },
+                        ifNotCorrect: {
+                            nextMission: $("#nextActivityIncorrect").val().substring(0,1),
+                            nextActivity: $("#nextActivityCorrect").val().substring(2,3)
+                        }
                     }
                 }
                 this.missions[missionIndex].activities.push(activity);
                 this.currentWidget = -1;
+                console.log(activity);
             }     
 
             $('#activitiesForm')[0].reset();
@@ -430,13 +439,14 @@ export default {
                 if(this.type !== 'figurativa') this.answerList = this.missions[misInd].activities[index].answers;
 
                 // resume activity's next tasks
-                let missNum1 = this.missions[misInd].activities[index].goTo.ifCorrect.substring(0,1);
-                let actNum1 = this.missions[misInd].activities[index].goTo.ifCorrect.substring(2,3);
+                let missNum1 = this.missions[misInd].activities[index].goTo.ifCorrect.nextMission;
+                console.log(missNum1);
+                let actNum1 = this.missions[misInd].activities[index].goTo.ifCorrect.nextActivity;
                 if(missNum1 !== "-" && this.missions[missNum1].activities[actNum1]) 
                     $(`#nextActivityCorrect option[value='${missNum1}/${actNum1}']`).prop('selected', true);
                 
-                let missNum2 = this.missions[misInd].activities[index].goTo.ifNotCorrect.substring(0,1);
-                let actNum2 = this.missions[misInd].activities[index].goTo.ifNotCorrect.substring(2,3);
+                let missNum2 = this.missions[misInd].activities[index].goTo.ifNotCorrect.nextMission;
+                let actNum2 = this.missions[misInd].activities[index].goTo.ifNotCorrect.nextActivity;
                 if(missNum2 !== "-" && this.missions[missNum2].activities[actNum2]) 
                     $(`#nextActivityIncorrect option[value='${missNum2}/${actNum2}']`).prop('selected', true);
                  

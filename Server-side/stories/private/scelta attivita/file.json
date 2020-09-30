@@ -1,0 +1,84 @@
+{
+  "title": "scelta attivita",
+  "setting": "",
+  "description": "",
+  "introduction": "",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "prima",
+          "instructions": "",
+          "question": "",
+          "answers": [],
+          "isActive": true,
+          "widget": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": "0",
+              "nextActivity": "1"
+            },
+            "ifNotCorrect": {
+              "nextMission": "0",
+              "nextActivity": "1"
+            }
+          }
+        },
+        {
+          "number": 1,
+          "type": "scelta multipla",
+          "setting": "seconda",
+          "instructions": "",
+          "question": "",
+          "answers": [],
+          "isActive": true,
+          "widget": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": "1",
+              "nextActivity": "0"
+            },
+            "ifNotCorrect": {
+              "nextMission": "1",
+              "nextActivity": "0"
+            }
+          }
+        }
+      ],
+      "isActive": false
+    },
+    {
+      "name": "Missione 2",
+      "activities": [
+        {
+          "number": 0,
+          "type": "domanda aperta",
+          "setting": "terza",
+          "instructions": "",
+          "question": "",
+          "answers": [],
+          "isActive": true,
+          "widget": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": "-",
+              "nextActivity": "-"
+            },
+            "ifNotCorrect": {
+              "nextMission": "-",
+              "nextActivity": "-"
+            }
+          }
+        }
+      ],
+      "isActive": false
+    }
+  ],
+  "originalTitle": "",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}
