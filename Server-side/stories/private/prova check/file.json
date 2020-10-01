@@ -3,7 +3,6 @@
   "setting": "",
   "description": "fds",
   "introduction": "fdsf",
-  "isActive": "on",
   "missions": [
     {
       "name": "Missione 1",
@@ -25,7 +24,7 @@
           "widget": ""
         }
       ],
-      "isActive": false
+      "isActive": true
     },
     {
       "name": "Missione 2",
@@ -42,7 +41,7 @@
       "isActive": false
     }
   ],
-  "originalTitle": "prova chekc",
+  "originalTitle": "prova check",
   "background": "",
   "widgetCss": "",
   "widgetJs": ""

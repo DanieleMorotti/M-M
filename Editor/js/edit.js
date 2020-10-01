@@ -85,7 +85,7 @@ export default {
                     </li>
                 </ul>
             </form>
-            <button @click="checkForm">FINITO</button>
+            <button @click="checkForm">FINITO</button><span id="selMissErr">Nessuna missione è stata attivata</span>
 
             <form id="activitiesForm" @submit="addActivity">
                 <h2>Nuova attività</h2>
@@ -653,7 +653,12 @@ export default {
         },
         checkForm: function() {
             if(this.invalid) return;
-
+            else if(!this.missions.some(el => el.isActive)){
+                console.log("Sono entrato");
+                $('#selMissErr').show();
+                $('#selMissErr').removeClass('error').addClass('error');
+                return;
+            }
             let data = new FormData($('#editStoryForm')[0]);
 
             var originTitle = this.currentStory;
@@ -722,6 +727,7 @@ export default {
         this.missions = [{name:"Missione 1",activities:[],isActive:false}];
         this.currentActivity = 0;
         this.currentStory = '';
+        $('#selMissErr').hide();
         bus.$emit('ready','pronto'); 
         bus.$once('story',(story) =>{
             this.currentStory = story;
