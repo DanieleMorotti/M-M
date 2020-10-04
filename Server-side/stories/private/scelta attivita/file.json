@@ -64,12 +64,12 @@
           "widget": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": "-",
-              "nextActivity": "-"
+              "nextMission": "0",
+              "nextActivity": "0"
             },
             "ifNotCorrect": {
-              "nextMission": "-",
-              "nextActivity": "-"
+              "nextMission": "0",
+              "nextActivity": "0"
             }
           }
         }
