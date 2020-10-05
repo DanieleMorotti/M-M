@@ -404,7 +404,6 @@ export default {
                 }
                 this.missions[missionIndex].activities.push(activity);
                 this.currentWidget = -1;
-                console.log(activity);
             }     
 
             $('#activitiesForm')[0].reset();
@@ -440,7 +439,6 @@ export default {
 
                 // resume activity's next tasks
                 let missNum1 = this.missions[misInd].activities[index].goTo.ifCorrect.nextMission;
-                console.log(missNum1);
                 let actNum1 = this.missions[misInd].activities[index].goTo.ifCorrect.nextActivity;
                 if(missNum1 !== "-" && this.missions[missNum1].activities[actNum1]) 
                     $(`#nextActivityCorrect option[value='${missNum1}/${actNum1}']`).prop('selected', true);

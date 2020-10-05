@@ -1,0 +1,38 @@
+{
+  "title": "new story",
+  "setting": "",
+  "description": "",
+  "introduction": "",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "prima",
+          "instructions": "",
+          "question": "",
+          "answers": [],
+          "isActive": true,
+          "widget": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": "-",
+              "nextActivity": "-"
+            },
+            "ifNotCorrect": {
+              "nextMission": "-",
+              "nextActivity": "-"
+            }
+          }
+        }
+      ],
+      "isActive": false
+    }
+  ],
+  "originalTitle": "",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}
