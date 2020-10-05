@@ -68,6 +68,7 @@ i.fas{
 
 .error {
     position: relative;
+    color:red;
     animation: shake .1s linear;
     animation-iteration-count: 3;
 }

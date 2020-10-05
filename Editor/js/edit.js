@@ -85,7 +85,8 @@ export default {
                     </li>
                 </ul>
             </form>
-            <button @click="checkForm">FINITO</button>
+            <button @click="checkForm">FINITO</button><span id="selMissErr">Nessuna missione è stata attivata</span>
+            <svg width="960" height="600"></svg>
 
             <form id="activitiesForm" @submit="addActivity">
                 <h2>Nuova attività</h2>
@@ -651,7 +652,12 @@ export default {
         },
         checkForm: function() {
             if(this.invalid) return;
-
+            else if(!this.missions.some(el => el.isActive)){
+                console.log("Sono entrato");
+                $('#selMissErr').show();
+                $('#selMissErr').removeClass('error').addClass('error');
+                return;
+            }
             let data = new FormData($('#editStoryForm')[0]);
 
             var originTitle = this.currentStory;
@@ -712,6 +718,128 @@ export default {
                     $("*[name ='"+item[0]+"'").val(item[1]);
                 }
             })
+        },
+        drawGraph(){
+            var colors = d3.scaleOrdinal(d3.schemeCategory10);
+            var svg = d3.select("svg"),
+                width = +svg.attr("width"),
+                height = +svg.attr("height"),
+                node,
+                link;
+
+            //for making arrows
+            svg.append('defs').append('marker')
+                .attrs({'id':'arrowhead',
+                    'viewBox':'-0 -5 10 10',
+                    'refX':13,
+                    'refY':0,
+                    'orient':'auto',
+                    'markerWidth':13,
+                    'markerHeight':13,
+                    'xoverflow':'visible'})
+                .append('svg:path')
+                .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
+                .attr('fill', '#999')
+                .style('stroke','none');
+
+            var simulation = d3.forceSimulation()
+                .force("link", d3.forceLink().id(function (d) {return d.id;}).distance(100).strength(1))
+                .force("charge", d3.forceManyBody())
+                .force("center", d3.forceCenter(width / 2, height / 2));
+
+            
+            var graph = {nodes:[],links:[]};
+            let indAct = 0;
+            let indMiss = 0;
+
+            /*for(let item in this.missions){
+                for(let act in item.activities){
+                    graph.nodes.push({mission:item.name,activity:"Attività"+(act.number+1),id: toString(indMiss)+indAct});
+                    //qui aggiungere controllo, se la prossima missione è vuota gestisci in qualche maniera
+                    graph.links.push({source: toString(indMiss)+indAct, target: toString(act.goTo.ifCorrect.nextMission)+ act.goTo.ifCorrect.nextActivity});
+                    indAct++;
+                }
+                indMiss++;
+            }*/
+            this.missions.map(item =>{
+                item.activities.map(act => {
+                    graph.nodes.push({mission:item.name,activity:"Attività"+(act.number+1),id: indMiss.toString()+indAct});
+                    let tmp = act.goTo.ifCorrect;
+                    graph.links.push({source: indMiss.toString()+indAct,target: tmp.nextMission.toString()+ tmp.nextActivity});
+                    indAct++;
+                })
+                indMiss++;
+                indAct = 0;
+            })
+            update(graph.links, graph.nodes);
+
+            function update(links, nodes) {
+                link = svg.selectAll(".link")
+                    .data(links)
+                    .enter()
+                    .append("line")
+                    .attr("class", "link")
+                    .attr('marker-end','url(#arrowhead)')
+                    .style("stroke", 'black');
+
+                node = svg.selectAll(".node")
+                    .data(nodes)
+                    .enter()
+                    .append("g")
+                    .attr("class", "node")
+                    .call(d3.drag()
+                            .on("start", dragstarted)
+                            .on("drag", dragged)
+                            //.on("end", dragended)
+                    );
+
+                node.append("circle")
+                    .attr("r", 5)
+                    .style("fill", function (d, i) {return colors(i);})
+
+                node.append("title")
+                    .text(function (d) {return d.id;});
+
+                node.append("text")
+                    .attr("dy", -3)
+                    .text(function (d) {return d.mission+"-"+d.activity;});
+
+                simulation
+                    .nodes(nodes)
+                    .on("tick", ticked);
+
+                simulation.force("link")
+                    .links(links);
+            }
+
+            function ticked() {
+                link
+                    .attr("x1", function (d) {return d.source.x;})
+                    .attr("y1", function (d) {return d.source.y;})
+                    .attr("x2", function (d) {return d.target.x;})
+                    .attr("y2", function (d) {return d.target.y;});
+
+                node
+                    .attr("transform", function (d) {return "translate(" + d.x + ", " + d.y + ")";});
+            }
+
+            function dragstarted(d) {
+                if (!d3.event.active) simulation.alphaTarget(0.3).restart()
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+
+            function dragged(d) {
+                d.fx = d3.event.x;
+                d.fy = d3.event.y;
+            }
+            
+            /*Dopo il drag riporta al centro tutti i nodi,inutile
+            function dragended(d) {
+                if (!d3.event.active) simulation.alphaTarget(0);
+                d.fx = undefined;
+                d.fy = undefined;
+            }*/
         }
     },
     activated() {
@@ -720,6 +848,7 @@ export default {
         this.missions = [{name:"Missione 1",activities:[],isActive:false}];
         this.currentActivity = 0;
         this.currentStory = '';
+        $('#selMissErr').hide();
         bus.$emit('ready','pronto'); 
         bus.$once('story',(story) =>{
             this.currentStory = story;
@@ -734,6 +863,7 @@ export default {
                     success: (data) =>{
                      // fill form with json's fields
                         this.showData(data);
+                        this.drawGraph();
                     },
                     error: function (e) {
                         console.log("error in get story",e);

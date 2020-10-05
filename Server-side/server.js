@@ -200,6 +200,8 @@ async function addFiles(dir1, dir2,res) {
 		await readFiles(dir2, f);
 	}))
 	res.json(obj);
+	obj.private = [];
+	obj.public = [];
 }
 
 /* return the list of titles and the missions of the stories stored in the server */
