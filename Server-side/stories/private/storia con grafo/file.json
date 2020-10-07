@@ -1,5 +1,5 @@
 {
-  "title": "scelta attivita",
+  "title": "storia con grafo",
   "setting": "",
   "description": "",
   "introduction": "",
@@ -23,7 +23,7 @@
             },
             "ifNotCorrect": {
               "nextMission": "0",
-              "nextActivity": "1"
+              "nextActivity": "2"
             }
           }
         },
@@ -38,24 +38,18 @@
           "widget": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": "1",
-              "nextActivity": "0"
+              "nextMission": "-",
+              "nextActivity": "-"
             },
             "ifNotCorrect": {
-              "nextMission": "1",
-              "nextActivity": "0"
+              "nextMission": "-",
+              "nextActivity": "-"
             }
           }
-        }
-      ],
-      "isActive": true
-    },
-    {
-      "name": "Missione 2",
-      "activities": [
+        },
         {
-          "number": 0,
-          "type": "domanda aperta",
+          "number": 2,
+          "type": "scelta multipla",
           "setting": "terza",
           "instructions": "",
           "question": "",
@@ -64,12 +58,12 @@
           "widget": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": "0",
-              "nextActivity": "0"
+              "nextMission": "-",
+              "nextActivity": "-"
             },
             "ifNotCorrect": {
-              "nextMission": "0",
-              "nextActivity": "0"
+              "nextMission": "-",
+              "nextActivity": "-"
             }
           }
         }
@@ -77,7 +71,7 @@
       "isActive": true
     }
   ],
-  "originalTitle": "scelta attivita",
+  "originalTitle": "storia con grafo",
   "background": "",
   "widgetCss": "",
   "widgetJs": ""

@@ -78,3 +78,55 @@ i.fas{
     100% { right: -5px; }
 }
 
+
+/* GRAPH MODAL */
+/* The Modal (background) 
+.modal{
+    display: none; 
+    z-index: 1; 
+ 
+    width: 960px;  
+    height: 600px; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.8);} */
+  
+ #modalGraph {
+    z-index: 1; 
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -30%);
+    width: 80%;
+    height: 70%;
+    background-color: rgba(0,0,0,0.8);
+    min-width: 900px;
+    min-height: 600px;
+ } 
+
+ #modalGraph > svg {
+    display: block; 
+    margin: auto;
+    width: 900px;
+    height: 600px;
+ }
+ 
+  
+  /* The Close Button */
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+ 

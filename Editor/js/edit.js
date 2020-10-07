@@ -58,6 +58,15 @@ export default {
                     </li>
                     <li>    
                         <h2 style="display:inline-block">Missioni</h2>&nbsp;&nbsp;<i class="fas fa-plus" @click="addMission"></i>
+                        <button id="showGraph"  v-on:click.stop.prevent="show">Grafo attività</button>
+                      
+                        <!-- The Modal -->
+                        <div id="modalGraph" class="modal">
+                            <span class="close">&times;</span>
+                            <svg ></svg>
+                        </div> 
+                        
+
                         <ul id="missionSaved">
                             <li v-for="(mission,index) in missions" :key="index">
                                 <input type="checkbox" name="isActive" :checked="mission.isActive" @click="mission.isActive = !mission.isActive" />&emsp;
@@ -86,7 +95,6 @@ export default {
                 </ul>
             </form>
             <button @click="checkForm">FINITO</button><span id="selMissErr">Nessuna missione è stata attivata</span>
-            <svg width="960" height="600"></svg>
 
             <form id="activitiesForm" @submit="addActivity">
                 <h2>Nuova attività</h2>
@@ -357,6 +365,8 @@ export default {
         },
         addActivity(e) {   
             e.preventDefault();
+            $(`#nextActivityCorrect option`).prop('disabled', false);
+            $(`#nextActivityIncorrect option`).prop('disabled', false);
             if($('#saveActivity').val() == "Salva modifiche"){
                 let widgetValue = "";
 
@@ -420,6 +430,10 @@ export default {
                 this.currentActivity = index;
                 $(`#nextActivityCorrect option[value='-/-']`).prop('selected', true);
                 $(`#nextActivityIncorrect option[value='-/-']`).prop('selected', true);
+                $(`#nextActivityCorrect option`).prop('disabled', false);
+                $(`#nextActivityIncorrect option`).prop('disabled', false);
+                $(`#nextActivityCorrect option[value='${misInd}/${index}']`).prop('disabled', true);
+                $(`#nextActivityIncorrect option[value='${misInd}/${index}']`).prop('disabled', true);
 
                 //prevent the user to change the activity mission from this form
                 $('#chooseMission').hide();
@@ -719,58 +733,113 @@ export default {
                 }
             })
         },
+        show() {
+            var modal = document.getElementById("modalGraph");
+            modal.style.display = "block";
+            this.drawGraph();
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function() { 
+                modal.style.display = "none";
+                d3.selectAll("svg > *").remove()
+            }
+        },
         drawGraph(){
             var colors = d3.scaleOrdinal(d3.schemeCategory10);
             var svg = d3.select("svg"),
-                width = +svg.attr("width"),
-                height = +svg.attr("height"),
                 node,
                 link;
-
-            //for making arrows
-            svg.append('defs').append('marker')
-                .attrs({'id':'arrowhead',
-                    'viewBox':'-0 -5 10 10',
-                    'refX':13,
-                    'refY':0,
-                    'orient':'auto',
-                    'markerWidth':13,
-                    'markerHeight':13,
-                    'xoverflow':'visible'})
-                .append('svg:path')
-                .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-                .attr('fill', '#999')
-                .style('stroke','none');
 
             var simulation = d3.forceSimulation()
                 .force("link", d3.forceLink().id(function (d) {return d.id;}).distance(100).strength(1))
                 .force("charge", d3.forceManyBody())
-                .force("center", d3.forceCenter(width / 2, height / 2));
+                .force("collide", d3.forceCollide(30));
+              //  .force("center", d3.forceCenter(width / 2, height / 2));
 
             
             var graph = {nodes:[],links:[]};
-            let indAct = 0;
+            let indAct = 0, totAct = 0;
             let indMiss = 0;
 
-            /*for(let item in this.missions){
-                for(let act in item.activities){
-                    graph.nodes.push({mission:item.name,activity:"Attività"+(act.number+1),id: toString(indMiss)+indAct});
-                    //qui aggiungere controllo, se la prossima missione è vuota gestisci in qualche maniera
-                    graph.links.push({source: toString(indMiss)+indAct, target: toString(act.goTo.ifCorrect.nextMission)+ act.goTo.ifCorrect.nextActivity});
-                    indAct++;
-                }
-                indMiss++;
-            }*/
+            graph.nodes.push({id: "start", name: "start", r: 10});
+            graph.nodes.push({id: "end", name: "end", r: 10});
+            
+
             this.missions.map(item =>{
-                item.activities.map(act => {
-                    graph.nodes.push({mission:item.name,activity:"Attività"+(act.number+1),id: indMiss.toString()+indAct});
-                    let tmp = act.goTo.ifCorrect;
-                    graph.links.push({source: indMiss.toString()+indAct,target: tmp.nextMission.toString()+ tmp.nextActivity});
-                    indAct++;
-                })
+                if(item.isActive) {
+                    item.activities.map(act => {
+                        if(act.isActive) {
+                            graph.nodes.push({mission:item.name,activity:act.number+1,id: indMiss.toString()+indAct, r: 7, name: "(M"+(indMiss+1)+", A"+(act.number+1)+")"});
+                            let correct = act.goTo.ifCorrect, incorrect = act.goTo.ifNotCorrect;
+                            if(indMiss.toString()+indAct == "00") 
+                                graph.links.push({source: "start", target: "00", color: 'white'});
+                                
+                            if(correct.nextActivity !== '-' && this.missions[correct.nextMission].activities[correct.nextActivity]) {
+                                console.log('corretta esiste');
+                                graph.links.push({source: indMiss.toString()+indAct,target: correct.nextMission.toString()+ correct.nextActivity, color: 'green'});
+                            }
+                            else {
+                                totAct++;
+                                graph.nodes.push({name: "",id: indMiss.toString()+indAct+"-correct", r: 0.1});
+                                graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-correct", color: 'green'});
+                            }
+                            if(incorrect.nextActivity !== '-' && this.missions[incorrect.nextMission].activities[incorrect.nextActivity]) {
+                                console.log('errata esiste')
+                                graph.links.push({source: indMiss.toString()+indAct,target: incorrect.nextMission.toString()+ incorrect.nextActivity, color: 'red'});
+                            }
+                            else {
+                                totAct++;
+                                graph.nodes.push({name: "",id: indMiss.toString()+indAct+"-incorrect", r: 0.1});
+                                graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-incorrect", color: 'red'});
+                            }
+
+                            indAct++;
+                            totAct++;
+                        }
+                    })
+                }
                 indMiss++;
                 indAct = 0;
             })
+
+            
+            let svgWidth = $("#modalGraph").width();
+            let range = (svgWidth-300)/totAct;
+            let i = 0;
+            graph.nodes.forEach(function(d){
+                if(d.id == "start") { d.x = 150; d.y = 300; }
+                else if(d.id == "end") { d.x = 750; d.y = 300}
+                else {
+                    d.x = Math.random()*range + (range * i + 60); 
+                    d.y = Math.random()*500 + 50;
+                    i++;
+                }
+            })
+            
+            //for making arrows
+            svg.append('svg:defs')
+            .selectAll(".link")
+            .data(graph.links)
+            .enter()
+            .append("svg:marker") 
+            .attr("class", "triangle")
+            .attr("id", function(d){ return "arrow" + d.color})
+            .attrs({
+                'viewBox':'-0 -5 10 10',
+                'refX':10,
+                'refY':0,
+                'orient':'auto',
+                'markerWidth':13,
+                'markerHeight':13,
+                'xoverflow':'visible',
+                'color': 'white'
+            })
+            .append('svg:path')
+            .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
+            .style("fill", function(d){
+                return(d.color)
+            })     
+            .style('stroke','none');
+            
             update(graph.links, graph.nodes);
 
             function update(links, nodes) {
@@ -779,50 +848,51 @@ export default {
                     .enter()
                     .append("line")
                     .attr("class", "link")
-                    .attr('marker-end','url(#arrowhead)')
-                    .style("stroke", 'black');
+                    .attr('marker-end',function(d){ return "url(#arrow" + d.color +')'})
+                    .style("stroke", function (l) {return l.color});//'white');
 
                 node = svg.selectAll(".node")
                     .data(nodes)
                     .enter()
                     .append("g")
-                    .attr("class", "node")
+                    .attr("class", "node");
+                    /*
                     .call(d3.drag()
                             .on("start", dragstarted)
                             .on("drag", dragged)
-                            //.on("end", dragended)
-                    );
+                            .on("end", dragended)
+                    );*/
+                                
 
                 node.append("circle")
-                    .attr("r", 5)
-                    .style("fill", function (d, i) {return colors(i);})
-
-                node.append("title")
-                    .text(function (d) {return d.id;});
+                    .attr("r", function(d) {return d.r})
+                    .style("fill", function (d, i) {return colors(i)});
 
                 node.append("text")
-                    .attr("dy", -3)
-                    .text(function (d) {return d.mission+"-"+d.activity;});
+                    .attr("font-size", "1em")
+                    .style("fill", "white")
+                    .text(function (d) { return d.name; });
 
                 simulation
                     .nodes(nodes)
                     .on("tick", ticked);
 
                 simulation.force("link")
-                    .links(links);
+                    .links(links); 
             }
 
             function ticked() {
+                
                 link
-                    .attr("x1", function (d) {return d.source.x;})
-                    .attr("y1", function (d) {return d.source.y;})
-                    .attr("x2", function (d) {return d.target.x;})
-                    .attr("y2", function (d) {return d.target.y;});
-
+                    .attr("x1", function (d) {return d.source.x})
+                    .attr("y1", function (d) {return d.source.y})
+                    .attr("x2", function (d) {return d.target.x - 2})
+                    .attr("y2", function (d) {return d.target.y - 2});
+    
                 node
                     .attr("transform", function (d) {return "translate(" + d.x + ", " + d.y + ")";});
             }
-
+/*
             function dragstarted(d) {
                 if (!d3.event.active) simulation.alphaTarget(0.3).restart()
                 d.fx = d.x;
@@ -834,12 +904,12 @@ export default {
                 d.fy = d3.event.y;
             }
             
-            /*Dopo il drag riporta al centro tutti i nodi,inutile
+            //Dopo il drag riporta al centro tutti i nodi,inutile 
             function dragended(d) {
                 if (!d3.event.active) simulation.alphaTarget(0);
                 d.fx = undefined;
                 d.fy = undefined;
-            }*/
+            } */
         }
     },
     activated() {
@@ -863,7 +933,6 @@ export default {
                     success: (data) =>{
                      // fill form with json's fields
                         this.showData(data);
-                        this.drawGraph();
                     },
                     error: function (e) {
                         console.log("error in get story",e);
