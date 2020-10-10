@@ -10,17 +10,6 @@ let app = new Vue({
         currRoom: 0
     },
     methods:{
-        //find the index of the user i need to chat with(i need this method because i used array instead of dictionary ;) )
-        findIndex(newId){
-            let i = 0;
-            while( i < this.users.length){
-                if(this.users[i].id === newId){
-                    break;
-                }
-                i++;
-            }
-            return i;
-        },
         //save the messages of the staff and send them to the server
         onChatSubmitted(){
             this.users[this.currRoom].messages.push({mess:this.newMess,type:0});
@@ -32,41 +21,45 @@ let app = new Vue({
         },
         //change the current chat to the 'id' chat 
         enterChat(id){
-            this.currRoom = this.findIndex(id);
+            this.currRoom = this.users.findIndex(item => item.id === id);
         }
     },
     created(){
+
+        sock.on('set_cookie', (cookie) => {
+            console.log(JSON.stringify(cookie));
+            document.cookie = cookie;
+        });
         //when the staff update for the first time the list of users
         //TODO: possiamo aggiungere che se un user è connesso prima dello staff(impossibile?) ci salviamo i messaggi inviati prima e li mostriamo appena si connette lo staff
         sock.on('first-connection',(list) => {
             if(list){
                 for(let i=0; i< list.length;i++){
-                    if( sock.id !== ('/staff#'+list[i].id)){
-                        this.users.push({id:list[i].id,messages:[]});
-                        //i need to join the room immediatly,if not when the user types before i click on his button i don't receive any messages
-                        sock.emit('join-room',list[i].id);
-                    }
+                    this.users.push({id:list[i],messages:[]});
+                    //i need to join the room immediatly,if not when the user types before i click on his button i don't receive any messages
+                    sock.emit('join-room',list[i]);
                 }
             }
         })
         //everytime a user is connected i update the list with the user id and his room
-        sock.on('update-users',(data) =>{
-            //if is not the message sent for my firts connection i update the array
-            if(('/staff#'+data) !== sock.id){
-                this.users.push({id:data,messages:[]});
-                sock.emit('join-room',data);
-            }
+        sock.on('update-users',(usName) =>{
+            //update the users array, only if it's not a page refresh(the user is already in)
+            if(this.users.some(item => item.id === usName));
+            else this.users.push({id:usName,messages:[]});
+            sock.emit('join-room',usName);
         })
         //when an user is disconnected i delete it from the list
         sock.on('disc-user',(id) =>{
-           let toDel = this.findIndex(id);
+           let toDel = this.users.findIndex(item => item.id === id);
            this.users.splice(toDel,1);
         })
         
         sock.on('message',(data) => {
             //finding the position in the list of users and push the messages
-            this.users[this.findIndex(data.from)].messages.push({mess:data.mess,type:1});
+            this.users[this.users.findIndex(item => item.id === data.from)].messages.push({mess:data.mess,type:1});
         })
+
+        
 
     }
 })

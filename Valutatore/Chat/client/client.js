@@ -24,5 +24,9 @@ let app = new Vue({
     sock.on('message',(data) => {
       this.messages.push({mess:data,type:1});
     })
+
+    sock.on('set_cookie', (cookie) => {
+      document.cookie = cookie;
+    });
   }
 })

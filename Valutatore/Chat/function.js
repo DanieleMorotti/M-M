@@ -1,26 +1,20 @@
 const usersList = [];
 
-//function for managing users
+//functions for managing users
 
 function userJoin(id){
-    const user = {id};
-    usersList.push(user);
-    return user;
+    if(usersList.includes(id));
+    else usersList.push(id);
+    return id;
 }
 
 function getCurrenUser(id){
-    return usersList.find(user => user.id === id);
+    return usersList.find(user => user === id);
 }
 
 function removeUser(id){
-    let i=0;
-    while(i < usersList.length){
-        if(usersList[i].id === id){
-            usersList.splice(i,1);
-            break;
-        }
-        i++;
-    }
+    let index= usersList.indexOf(id);
+    if(index != -1) usersList.splice(index,1);
 }
 
 module.exports = {
