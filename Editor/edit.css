@@ -80,36 +80,28 @@ i.fas{
 
 
 /* GRAPH MODAL */
-/* The Modal (background) 
-.modal{
-    display: none; 
-    z-index: 1; 
- 
-    width: 960px;  
-    height: 600px; 
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.8);} */
-  
- #modalGraph {
+
+/* GRAPH MODAL */
+
+#graphModal {
     z-index: 1; 
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -30%);
+    transform: translate(-50%, 0%);
     width: 80%;
     height: 70%;
     background-color: rgba(0,0,0,0.8);
     min-width: 900px;
     min-height: 600px;
- } 
+} 
 
- #modalGraph > svg {
+#graphModal > svg {
     display: block; 
     margin: auto;
     width: 900px;
     height: 600px;
- }
- 
+}
   
   /* The Close Button */
   .close {

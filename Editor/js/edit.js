@@ -61,7 +61,7 @@ export default {
                         <button id="showGraph"  v-on:click.stop.prevent="show">Grafo attività</button>
                       
                         <!-- The Modal -->
-                        <div id="modalGraph" class="modal">
+                        <div id="graphModal" class="modal">
                             <span class="close">&times;</span>
                             <svg ></svg>
                         </div> 
@@ -734,34 +734,38 @@ export default {
             })
         },
         show() {
-            var modal = document.getElementById("modalGraph");
+            var modal = document.getElementById("graphModal");
             modal.style.display = "block";
             this.drawGraph();
+            $("input, select, textarea ").prop("disabled", true);
             var span = document.getElementsByClassName("close")[0];
             span.onclick = function() { 
                 modal.style.display = "none";
-                d3.selectAll("svg > *").remove()
+                d3.selectAll("svg > *").remove();
+                $("input, select, textarea").prop("disabled", false);
             }
         },
         drawGraph(){
             var colors = d3.scaleOrdinal(d3.schemeCategory10);
             var svg = d3.select("svg"),
+                width = 900,
+                height = 600,
                 node,
                 link;
 
             var simulation = d3.forceSimulation()
-                .force("link", d3.forceLink().id(function (d) {return d.id;}).distance(100).strength(1))
+                .force("link", d3.forceLink().id(function (d) {return d.id;}).distance(function(d) {return d.distance}).strength(1))
                 .force("charge", d3.forceManyBody())
-                .force("collide", d3.forceCollide(30));
-              //  .force("center", d3.forceCenter(width / 2, height / 2));
+           //     .force("collide", d3.forceCollide(30))
+                .force("center", d3.forceCenter(width / 2, height / 2));
 
             
             var graph = {nodes:[],links:[]};
             let indAct = 0, totAct = 0;
             let indMiss = 0;
 
-            graph.nodes.push({id: "start", name: "start", r: 10});
-            graph.nodes.push({id: "end", name: "end", r: 10});
+            graph.nodes.push({id: "start", name: "START", r: 10});
+            graph.nodes.push({id: "end", name: "END", r: 10});
             
 
             this.missions.map(item =>{
@@ -771,25 +775,21 @@ export default {
                             graph.nodes.push({mission:item.name,activity:act.number+1,id: indMiss.toString()+indAct, r: 7, name: "(M"+(indMiss+1)+", A"+(act.number+1)+")"});
                             let correct = act.goTo.ifCorrect, incorrect = act.goTo.ifNotCorrect;
                             if(indMiss.toString()+indAct == "00") 
-                                graph.links.push({source: "start", target: "00", color: 'white'});
+                                graph.links.push({source: "start", target: "00", color: 'white', distance: 100});
                                 
                             if(correct.nextActivity !== '-' && this.missions[correct.nextMission].activities[correct.nextActivity]) {
-                                console.log('corretta esiste');
-                                graph.links.push({source: indMiss.toString()+indAct,target: correct.nextMission.toString()+ correct.nextActivity, color: 'green'});
+                                graph.links.push({source: indMiss.toString()+indAct,target: correct.nextMission.toString()+ correct.nextActivity, color: 'green', distance: 100});
                             }
                             else {
-                                totAct++;
                                 graph.nodes.push({name: "",id: indMiss.toString()+indAct+"-correct", r: 0.1});
-                                graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-correct", color: 'green'});
+                                graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-correct", color: 'green', distance: 50});
                             }
                             if(incorrect.nextActivity !== '-' && this.missions[incorrect.nextMission].activities[incorrect.nextActivity]) {
-                                console.log('errata esiste')
-                                graph.links.push({source: indMiss.toString()+indAct,target: incorrect.nextMission.toString()+ incorrect.nextActivity, color: 'red'});
+                                graph.links.push({source: indMiss.toString()+indAct,target: incorrect.nextMission.toString()+ incorrect.nextActivity, color: 'red', distance: 100});
                             }
                             else {
-                                totAct++;
                                 graph.nodes.push({name: "",id: indMiss.toString()+indAct+"-incorrect", r: 0.1});
-                                graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-incorrect", color: 'red'});
+                                graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-incorrect", color: 'red', distance: 50});
                             }
 
                             indAct++;
@@ -800,21 +800,32 @@ export default {
                 indMiss++;
                 indAct = 0;
             })
-
-            
-            let svgWidth = $("#modalGraph").width();
-            let range = (svgWidth-300)/totAct;
+         
+            /*
+            let range = 700/totAct;
+            console.log(range);
             let i = 0;
             graph.nodes.forEach(function(d){
-                if(d.id == "start") { d.x = 150; d.y = 300; }
+                if(d.id == "start") { d.x = 50; d.y = 300; }
                 else if(d.id == "end") { d.x = 750; d.y = 300}
                 else {
-                    d.x = Math.random()*range + (range * i + 60); 
-                    d.y = Math.random()*500 + 50;
-                    i++;
+                    if(d.name){
+                        d.x = Math.floor(Math.random()*range) + (range*i) + 50;
+                        d.y = Math.floor(Math.random()*500) + 50;
+                        i++;
+                        console.log(d.x, d.y)
+                    }
                 }
+            })*/
+            /*
+            graph.links.forEach(function(d){
+                if(d.distance == 100) {
+                    console.log(d.source.x);
+                    d.distance = Math.sqrt(Math.pow(d.source.x - d.target.x, 2) + Math.pow(d.source.y - d.target.y, 2));
+                    console.log(d.distance);
+                } 
             })
-            
+            */
             //for making arrows
             svg.append('svg:defs')
             .selectAll(".link")
@@ -849,19 +860,19 @@ export default {
                     .append("line")
                     .attr("class", "link")
                     .attr('marker-end',function(d){ return "url(#arrow" + d.color +')'})
-                    .style("stroke", function (l) {return l.color});//'white');
+                    .style("stroke", function (l) {return l.color});
 
                 node = svg.selectAll(".node")
                     .data(nodes)
                     .enter()
                     .append("g")
-                    .attr("class", "node");
-                    /*
-                    .call(d3.drag()
+                    .attr("class", "node")
+                    
+                 /*   .call(d3.drag()
                             .on("start", dragstarted)
                             .on("drag", dragged)
                             .on("end", dragended)
-                    );*/
+                    )*/;
                                 
 
                 node.append("circle")
@@ -892,13 +903,12 @@ export default {
                 node
                     .attr("transform", function (d) {return "translate(" + d.x + ", " + d.y + ")";});
             }
-/*
+
             function dragstarted(d) {
                 if (!d3.event.active) simulation.alphaTarget(0.3).restart()
                 d.fx = d.x;
                 d.fy = d.y;
             }
-
             function dragged(d) {
                 d.fx = d3.event.x;
                 d.fy = d3.event.y;
@@ -909,7 +919,7 @@ export default {
                 if (!d3.event.active) simulation.alphaTarget(0);
                 d.fx = undefined;
                 d.fy = undefined;
-            } */
+            } 
         }
     },
     activated() {
