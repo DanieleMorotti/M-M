@@ -1,0 +1,44 @@
+{
+  "title": "cenerentola",
+  "setting": "castello",
+  "description": "descrizione inziale",
+  "introduction": "introduction",
+  "conclusion": "conclusion",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "luogo 1",
+          "instructions": "svolgimento attivita 1",
+          "question": "domanda",
+          "answers": [
+            "risposta1",
+            "risposta2"
+          ],
+          "score": "60",
+          "isActive": true,
+          "widget": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": "-",
+              "nextActivity": "-"
+            },
+            "ifNotCorrect": {
+              "nextMission": "-",
+              "nextActivity": "-"
+            }
+          }
+        }
+      ],
+      "isActive": true
+    }
+  ],
+  "originalTitle": "cenerentola",
+  "device": "smartphone",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}

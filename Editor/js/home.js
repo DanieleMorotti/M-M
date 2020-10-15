@@ -29,6 +29,7 @@ export default {
                     </button>
                 </div>
             </div>
+            
             <p class="info">Seleziona la storia che vuoi modificare,copiare,eliminare o pubblicare.</p>
             <div id="littleMenu">
                 <button @click="newStory">Nuova storia <i class="fas fa-plus"></i></button>
@@ -48,11 +49,7 @@ export default {
                     </button>
                 </div>
             </div>
-            <div id="qrcodeMenu">
-                <div id="qrcode"></div>
-                <p></p>
-                <button @click="hideMenu">CHIUDI FINESTRA</button>
-            </div>
+            
             <!-- Modal for confirming the elimination -->
             <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -73,6 +70,27 @@ export default {
                     </div>
                 </div>
             </div>
+
+            <!-- Modal for qrcode -->
+
+            <div class="modal fade" id="qrcodeModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" >QRCode</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="qrcode"></div>
+                            <br>
+                            <p>Per salvare l'immagine : <br><code>1. Click tasto destro del mouse sul QR code. <br>2. Salva con nome</code></p>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+
         </div> 
     `,
     methods: {
@@ -205,8 +223,10 @@ export default {
                 }
              });
         },
-        createQRCode(event, index){
+        createQRCode(event, index) {
             event.stopPropagation();
+
+            $('#qrcodeModal').modal('show');
             let story = this.publicStoriesList[index].title;
             //delete the current qr code
             $('#qrcode').html("");
@@ -218,15 +238,10 @@ export default {
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
             });
-            $('#qrcodeMenu').show();
-            $('#qrcode + p').html("Per salvare l'immagine : <code>1)Click tasto destro del mouse sul QR code. 2)Salva con nome</code>");
             /*Magari serviranno per cose future quindi ho lasciato qui queste 2 funzioni
             qrcode.clear(); // clear the code.
             qrcode.makeCode("http://naver.com"); // make another code.
             */
-        },
-        hideMenu(){
-            $('#qrcodeMenu').hide();
         }
     },
     mounted() {        

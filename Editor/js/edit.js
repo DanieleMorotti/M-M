@@ -21,7 +21,8 @@ export default {
             currentWidget: -1,
             devices: [],
             currentDevice: -1,
-            invalid: false
+            invalid: false,
+            value: 50
         }
     }, 
     template: `
@@ -55,6 +56,10 @@ export default {
                     <li>
                         <label for="inpIntr">Inserisci l'introduzione della tua storia:</label><br>
                         <textarea id="inpIntr" name="introduction" rows="3" cols="40"></textarea>
+                    </li>
+                    <li>
+                        <label for="inpConcl">Inserisci la conclusione della tua storia:</label><br>
+                        <textarea id="inpConcl" name="conclusion" rows="3" cols="40"></textarea>
                     </li>
                     <li>    
                         <h2 style="display:inline-block">Missioni</h2>&nbsp;&nbsp;<i class="fas fa-plus" @click="addMission"></i>
@@ -129,6 +134,10 @@ export default {
                                 {{answer}} &nbsp;&nbsp;<i class="fas fa-trash-alt" @click="answerList.splice(index,1)"></i>
                                 </li>
                             </ul>
+                            <label for="score">Inserisci un punteggio da assegnare:</label><br>
+                            <input id="score" type="range" min="10" max="100" step="5"  v-model="value" name="score"/>
+                            <span v-text="total" id="scoreValue"></span>
+
                             <div>
                                 <p>Scegli l'attività successiva: </p>
                                 <ul>
@@ -141,6 +150,7 @@ export default {
                                         {{mission.name}} Attività {{activity.number + 1}}
                                         </option>
                                         </template>
+                                        <option value="x/x" > Conclusione </option> 
                                     </select>
                                 </li>
                                 <li>
@@ -152,6 +162,7 @@ export default {
                                         {{mission.name}} Attività {{activity.number + 1}}
                                         </option>
                                         </template>
+                                        <option value="x/x" > Conclusione </option> 
                                     </select>
                                 </li>
                                 </ul>
@@ -377,6 +388,7 @@ export default {
                 this.missions[this.currentMission].activities[this.currentActivity].widget = widgetValue;
                 this.missions[this.currentMission].activities[this.currentActivity].question = $("#question").val();
                 this.missions[this.currentMission].activities[this.currentActivity].answers = this.answerList;
+                this.missions[this.currentMission].activities[this.currentActivity].score = this.value;
                 this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect.nextMission = $("#nextActivityCorrect").val().substring(0,1);
                 this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect.nextActivity = $("#nextActivityCorrect").val().substring(2,3);
                 this.missions[this.currentMission].activities[this.currentActivity].goTo.ifNotCorrect.nextMission = $("#nextActivityIncorrect").val().substring(0,1);
@@ -400,6 +412,7 @@ export default {
                     instructions: $("#activitiesList li textarea[name='instructions']").val(),
                     question: $("#question").val(),
                     answers: this.answerList,
+                    score: this.value,
                     isActive: true,
                     widget: widgetValue,
                     goTo: {
@@ -415,6 +428,7 @@ export default {
                 }
                 this.missions[missionIndex].activities.push(activity);
                 this.currentWidget = -1;
+                this.value = 50;
             }     
 
             $('#activitiesForm')[0].reset();
@@ -451,6 +465,9 @@ export default {
                 // resume activity's type and answers list
                 this.type = this.missions[misInd].activities[index].type;
                 if(this.type !== 'figurativa') this.answerList = this.missions[misInd].activities[index].answers;
+
+                //resume activity's score
+                this.value = this.missions[misInd].activities[index].score;
 
                 // resume activity's next tasks
                 let missNum1 = this.missions[misInd].activities[index].goTo.ifCorrect.nextMission;
@@ -511,6 +528,7 @@ export default {
              $("#buttonWidget").prop("value","Scegli");
              $("#infoWidget").text("");
              $("#infoWidget").css("display", "none");
+             this.value = 50;
         },
         /*  WIDGET MANAGEMENT   */
         changeWidget(index) {
@@ -776,16 +794,26 @@ export default {
                             let correct = act.goTo.ifCorrect, incorrect = act.goTo.ifNotCorrect;
                             if(indMiss.toString()+indAct == "00") 
                                 graph.links.push({source: "start", target: "00", color: 'white', distance: 100});
-                                
-                            if(correct.nextActivity !== '-' && this.missions[correct.nextMission].activities[correct.nextActivity]) {
-                                graph.links.push({source: indMiss.toString()+indAct,target: correct.nextMission.toString()+ correct.nextActivity, color: 'green', distance: 100});
+                            
+                            if(correct.nextActivity !== '-' /*&& this.missions[correct.nextMission].activities[correct.nextActivity]*/) {
+                                if(correct.nextActivity == 'x') {
+                                    graph.links.push({source: indMiss.toString()+indAct,target: 'end', color: 'green', distance: 100});
+                                }
+                                else {
+                                    graph.links.push({source: indMiss.toString()+indAct,target: correct.nextMission.toString()+ correct.nextActivity, color: 'green', distance: 100});
+                                }
                             }
                             else {
                                 graph.nodes.push({name: "",id: indMiss.toString()+indAct+"-correct", r: 0.1});
                                 graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-correct", color: 'green', distance: 50});
                             }
-                            if(incorrect.nextActivity !== '-' && this.missions[incorrect.nextMission].activities[incorrect.nextActivity]) {
-                                graph.links.push({source: indMiss.toString()+indAct,target: incorrect.nextMission.toString()+ incorrect.nextActivity, color: 'red', distance: 100});
+                            if(incorrect.nextActivity !== '-' /*&& this.missions[incorrect.nextMission].activities[incorrect.nextActivity]*/) {
+                                if(incorrect.nextActivity == 'x'){
+                                    graph.links.push({source: indMiss.toString()+indAct,target: 'end', color: 'red', distance: 100});
+                                }
+                                else {
+                                    graph.links.push({source: indMiss.toString()+indAct,target: incorrect.nextMission.toString()+ incorrect.nextActivity, color: 'red', distance: 100});
+                                }
                             }
                             else {
                                 graph.nodes.push({name: "",id: indMiss.toString()+indAct+"-incorrect", r: 0.1});
@@ -921,6 +949,11 @@ export default {
                 d.fy = undefined;
             } 
         }
+    },
+    computed: {
+        total: function () {
+        return this.value 
+      }
     },
     activated() {
         $('#editStoryForm')[0].reset();
