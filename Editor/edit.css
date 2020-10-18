@@ -54,6 +54,10 @@ form textarea{
     margin-left: 3em;
 }
 
+#answers {
+    list-style-type: none;
+}
+
 i.fas{
     cursor:grab;
 }
@@ -78,8 +82,6 @@ i.fas{
     100% { right: -5px; }
 }
 
-
-/* GRAPH MODAL */
 
 /* GRAPH MODAL */
 

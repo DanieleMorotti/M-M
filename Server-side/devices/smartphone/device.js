@@ -1,4 +1,4 @@
-//import render from './activities.js'
+import render from '/Player/js/activities.js'
 
 var storyItem;
 var activities;
@@ -26,10 +26,9 @@ export default {
         <div id="accesione-button"></div>
         <div id="volume-su"></div>
 		<div id="volume-giu"></div>
-		<div> new</div>
 		<div id="schermo">
 			<div id="text"> </div>
-			<p id="next" @click="next"> &rarr; </p>
+			<button id="next" @click="next"> &rarr; </button>
 		</div>
         <div id="bottone"></div>
 	</div>
@@ -42,8 +41,10 @@ export default {
 		},
 
 		next() {
+			
 			this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
-			console.log(this.type);
+			render.methods.next(this.type, this.currentMission, this.currentActivity);
+
 		},
 		check() {
 		}
@@ -52,5 +53,6 @@ export default {
 		storyItem = JSON.parse(localStorage.getItem("story"));
 		this.missions = storyItem.missions;
 		$('#text').text(storyItem.introduction);
+		render.methods.initialize();
 	}
 }

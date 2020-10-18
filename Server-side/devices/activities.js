@@ -1,5 +1,3 @@
-
-
 var story;
 var activities;
 var current;
@@ -91,42 +89,20 @@ function initialized() {
     story = JSON.parse(localStorage.getItem("story"));
     activities = story[0].activities;
 }
-/*
-function next(type, mission) {
-    if(type == "scelta multipla") {
-        $("#text").html("prova");//this.missions[mission].activities[activity].question);
 
+
+function next(str) {
+    console.log(str)
+    if(str == "scelta multipla") {
     }
 }
-*/
+
 
 export default {
-    name:'act',
-    data() {
-        return{
-			missions: []
-        }
-    },
-  /*  renderAct: renderActivity,
+    renderAct: renderActivity,
     displayDifficulties: displayDifficulties,
-    displayFacilities: displayFacilities,*/
-   // next: next,
-    methods: {
-        next(type, mission, activity) {
-            if(type == "scelta multipla") {
-                $("#text").html(this.missions[mission].activities[activity].question);
-                let i = 1;
-                this.missions[mission].activities[activity].answers.forEach(element => {
-                    $("#text").append(`<br><input type="radio" id="answer${i}" name="answer" value="${element}" checked>
-                    <label for="answer${i}">${element}</label>`);
-                    i++;
-                });
-            }
-        },
-        initialize() {
-            let storyItem = JSON.parse(localStorage.getItem("story"));
-            this.missions = storyItem.missions;
-        }
-    },
+    displayFacilities: displayFacilities,
+    next: next,
     
-}
+    
+};

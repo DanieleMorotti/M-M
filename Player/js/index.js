@@ -1,5 +1,4 @@
 import Routes from './routes.js'
-//request.open('GET', '../data.json', true);
 
 let story = JSON.parse(localStorage.getItem("story"));
 
@@ -13,7 +12,7 @@ router.beforeEach((to, from, next) => {
   if(to.path === '/device') {
     document.getElementById('stylesheetComp').href = `/getDeviceCss?name=${story.device}`;
     document.getElementById('scriptComp').src = `/getDeviceJs?name=${story.device}`;
-    $('body').append("<script src='./js/activities.js'><\/script>")
+  //  $('body').append("<script src='/Player/js/activities.js'><\/script>")
   } 
   else if(to.path === '/door') {
     document.getElementById('stylesheetComp').href ='./widgets/door.css';

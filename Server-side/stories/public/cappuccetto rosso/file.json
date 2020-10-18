@@ -1,9 +1,9 @@
 {
-  "title": "cenerentola",
-  "setting": "castello",
-  "description": "descrizione inziale",
-  "introduction": "introduction",
-  "conclusion": "conclusion",
+  "title": "cappuccetto rosso",
+  "setting": "bosco ",
+  "description": "breve descrizione iniziale",
+  "introduction": "breve introduzione",
+  "conclusion": "conclusione alla storia",
   "missions": [
     {
       "name": "Missione 1",
@@ -11,8 +11,8 @@
         {
           "number": 0,
           "type": "scelta multipla",
-          "setting": "descrizione",
-          "instructions": "",
+          "setting": "ambientazione1",
+          "instructions": "spiegazione",
           "question": "domanda1",
           "answers": [
             "risposta1",
@@ -34,34 +34,11 @@
         },
         {
           "number": 1,
-          "type": "domanda aperta",
-          "setting": "seconda",
+          "type": "scelta multipla",
+          "setting": "ambientazione 2",
           "instructions": "",
-          "question": "domanda",
+          "question": "domanda2",
           "answers": [],
-          "correctAns": "risposta",
-          "score": 50,
-          "isActive": true,
-          "widget": "",
-          "goTo": {
-            "ifCorrect": {
-              "nextMission": "-",
-              "nextActivity": "-"
-            },
-            "ifNotCorrect": {
-              "nextMission": "-",
-              "nextActivity": "-"
-            }
-          }
-        },
-        {
-          "number": 2,
-          "type": "figurativa",
-          "setting": "",
-          "instructions": "",
-          "question": "domanda",
-          "answers": [],
-          "correctAns": "",
           "score": 50,
           "isActive": true,
           "widget": "",
@@ -80,8 +57,9 @@
       "isActive": true
     }
   ],
-  "originalTitle": "cenerentola",
-  "background": "",
+  "originalTitle": "",
+  "device": "smartphone",
   "widgetCss": "",
-  "widgetJs": ""
+  "widgetJs": "",
+  "background": "DGYZ7277.JPG"
 }

@@ -127,13 +127,24 @@ export default {
                             <label for="question">Inserisci la domanda:</label><br>
                             <input id="question" type="text" name="question" /><br>
                             <label for="answer">Inserisci una risposta:</label><br>
-                            <input id="answer" type="text" name="answer" :disabled="type =='figurativa'"  @keyup.enter="addAnswer(event)"  />
-                            <i class="fas fa-plus-square" id="insertAnswer" @click="addAnswer(event)"></i>
+                    
+                        <div v-if="type=='scelta multipla'">
+                            <input id="answer" type="text" name="answer" @keyup.enter="addAnswer(event)"/>
+                            <button id="insertAnswer" @click="addAnswer(event)">Aggiungi risposta</button>
+                            <p v-if="answerList.length">Seleziona la risposta corretta</p>
                             <ul id="answers">
                                 <li v-for="(answer,index) in answerList" :key="index">
-                                {{answer}} &nbsp;&nbsp;<i class="fas fa-trash-alt" @click="answerList.splice(index,1)"></i>
+                                <input type="radio" :id="index" name="answer" :value="answer" checked>
+                                <label :for="index"> {{answer}} </label>
+                                 &nbsp;&nbsp;
+                                <i class="fas fa-trash-alt" @click="answerList.splice(index,1)"></i>
                                 </li>
                             </ul>
+                        </div>
+                        <div v-else>
+                            <input id="answer" type="text" name="answer" :disabled="type =='figurativa'" />
+                        </div>
+
                             <label for="score">Inserisci un punteggio da assegnare:</label><br>
                             <input id="score" type="range" min="10" max="100" step="5"  v-model="value" name="score"/>
                             <span v-text="total" id="scoreValue"></span>
@@ -387,7 +398,19 @@ export default {
                 this.missions[this.currentMission].activities[this.currentActivity].instructions = $("#activitiesList li textarea[name='instructions']").val();
                 this.missions[this.currentMission].activities[this.currentActivity].widget = widgetValue;
                 this.missions[this.currentMission].activities[this.currentActivity].question = $("#question").val();
-                this.missions[this.currentMission].activities[this.currentActivity].answers = this.answerList;
+                
+                if(this.type == 'scelta multipla') {
+                    this.missions[this.currentMission].activities[this.currentActivity].answers = this.answerList;
+                    this.missions[this.currentMission].activities[this.currentActivity].correctAns = $('#answers:checked').val();
+                }
+                else if(this.type == 'domanda aperta') {
+                    this.missions[this.currentMission].activities[this.currentActivity].answers = '';
+                    this.missions[this.currentMission].activities[this.currentActivity].correctAns = $('#answer').val();
+                }
+                else {
+                    this.missions[this.currentMission].activities[this.currentActivity].answers = '';
+                    this.missions[this.currentMission].activities[this.currentActivity].correctAns = '';
+                }
                 this.missions[this.currentMission].activities[this.currentActivity].score = this.value;
                 this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect.nextMission = $("#nextActivityCorrect").val().substring(0,1);
                 this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect.nextActivity = $("#nextActivityCorrect").val().substring(2,3);
@@ -405,6 +428,16 @@ export default {
                 //find the index of the mission we have to add the new activity
                 let missionIndex = this.missions.findIndex(obj => obj.name === $('#chooseMission').val());
                 let activityNumber = (this.missions[missionIndex].activities.length != 0)?this.missions[missionIndex].activities[this.missions[missionIndex].activities.length -1].number +1:0;
+                
+                let correctAnswer = '';
+                if (this.type == 'scelta multipla') {
+                    correctAnswer = $('#answers:checked').val();
+                }
+                else if(this.type == 'domanda aperta') {
+                    correctAnswer =  $('#answer').val();
+                }
+
+               
                 let activity = {
                     number: activityNumber,
                     type: $("#activitiesList li input:checked").val(),
@@ -412,6 +445,7 @@ export default {
                     instructions: $("#activitiesList li textarea[name='instructions']").val(),
                     question: $("#question").val(),
                     answers: this.answerList,
+                    correctAns: correctAnswer,
                     score: this.value,
                     isActive: true,
                     widget: widgetValue,
@@ -464,7 +498,9 @@ export default {
                 
                 // resume activity's type and answers list
                 this.type = this.missions[misInd].activities[index].type;
-                if(this.type !== 'figurativa') this.answerList = this.missions[misInd].activities[index].answers;
+                $('#answer').prop("value", "");
+                if(this.type == 'scelta multipla') this.answerList = this.missions[misInd].activities[index].answers;
+                else if (this.type == 'domanda aperta') $('#answer').prop("value", this.missions[misInd].activities[index].correctAns);
 
                 //resume activity's score
                 this.value = this.missions[misInd].activities[index].score;
@@ -984,6 +1020,14 @@ export default {
             }
         })
         bus.$on('titles', (response) => { this.titles = response});
+
+
+        $('#activitiesForm').keydown(function (e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
     },
     created() {
         /* retrieve widgets' names */

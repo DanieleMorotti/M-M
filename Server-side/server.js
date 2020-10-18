@@ -86,12 +86,10 @@ app.post('/saveStory', (req, res) => {
 });
 
 
-var story, device;
 /* require a story which already exists */ 
 app.get('/getStory',(req, res) => {
-	story = req.query.title;
 	fs.readFile('./stories/'+req.query.group+'/'+req.query.title+'/file.json', 'utf8', (err, data) => {  
-		device = JSON.parse(data).device;
+		//device = JSON.parse(data).device;
 		console.log('caricamento storia' +device);
 		res.set('Content-Type', 'application/json');
 		res.send(data)
@@ -101,11 +99,9 @@ app.get('/getStory',(req, res) => {
 
 /* require device's css */
 app.get('/getDeviceCss',(req, res) => {
-	res.header("Access-Control-Allow-Origin", "http://localhost:5000");
 	res.sendFile(path.join(__dirname,".",'./devices/'+req.query.name+'/device.css'));
 })
 app.get('/getDeviceJs',(req, res) => {
-	res.header("Access-Control-Allow-Origin", "http://localhost:5000");
 	res.sendFile(path.join(__dirname,".",'./devices/'+req.query.name+'/device.js'));
 })
 
@@ -350,10 +346,22 @@ app.put('/privateStory/:title', (req, res) => {
 /*****************
  * GESTIONE PLAYER
  *****************/
+var story, device;
 
-app.get('/Player',(req,res) =>{
-	res.status(200);
+app.get('/Play',(req,res) =>{
+	//res.status(200);
+	story = req.query.story;
 	res.sendFile(path.join(__dirname,"../Player/index.html"));
+})
+
+
+app.get('/getPlayableStory', (req,res) => {
+	fs.readFile('./stories/public/'+ story +'/file.json', 'utf8', (err, data) => {  
+		device = JSON.parse(data).device;
+		res.set('Content-Type', 'application/json');
+		res.send(data)
+		res.status(200);
+	})
 })
 
 app.get('/getImage',(req,res) =>{

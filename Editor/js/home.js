@@ -231,7 +231,7 @@ export default {
             //delete the current qr code
             $('#qrcode').html("");
             new QRCode('qrcode', {
-                text: "http://site192001.tw.cs.unibo.it/stories?story="+story,
+                text: "http://site192001.tw.cs.unibo.it/getStory?title="+story,
                 width: 128,
                 height: 128,
                 colorDark : "#000000",
