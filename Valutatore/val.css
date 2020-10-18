@@ -1,0 +1,9 @@
+
+html,body{
+    height: 100%;
+}
+
+.info{
+    font-size:1.2rem;
+    margin:1rem;
+}
