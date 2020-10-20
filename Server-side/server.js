@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const socketio = require('socket.io');
 const cookie = require('cookie');
 //const { readdir } = require('fs');
+var http = require('http');
 
 const app = express();
 const server = http.createServer(app);
@@ -55,12 +56,12 @@ app.post('/saveStory', (req, res) => {
 	form.parse(req);
 	form.on('field', (name, field) => {
 			//because activities field is already a json,so i need to convert it to a js object to push into jsonfile
-			if(name === "missions" || name === "originalTitle" || name === "device"){
+			if(name === "missions" || name === "originalTitle" || name === "device" || name === "facilities" || name === "difficulties"){
 				let tempObj = JSON.parse(field);
 				jsonFile[name] = tempObj;
 			}
 			//because we catch the checkboxes but we have to process them inside the 'missions',not here
-			else if(name === "isActive") ;
+			else if(name === "isActive" || name === "facility" || name === "difficulty") ;
 			else{
 				if(name === "title")
 					jsonTitle = field;
@@ -393,6 +394,7 @@ app.get('/getDeviceCss',(req,res) =>{
 
 const myfunctions = require('./function');
 const { usersList } = require('./function');
+const { json } = require('express');
 var idNum = 1;
 var cookieNum = 1;
 var numStaff = 1;

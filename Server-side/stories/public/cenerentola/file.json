@@ -1,0 +1,100 @@
+{
+  "title": "cenerentola",
+  "setting": "ambientazione",
+  "description": "descrizione iniziale",
+  "introduction": "introduzione",
+  "conclusion": "conclusione",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "ambientazione1",
+          "instructions": "svolgimento1",
+          "question": "domanda",
+          "answers": [
+            "risposta1",
+            "risposta2"
+          ],
+          "score": 50,
+          "isActive": true,
+          "widget": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": "0",
+              "nextActivity": "1"
+            },
+            "ifNotCorrect": {
+              "nextMission": "0",
+              "nextActivity": "2"
+            }
+          }
+        },
+        {
+          "number": 1,
+          "type": "scelta multipla",
+          "setting": "ambientazione1",
+          "instructions": "svolgimento",
+          "question": "domanda",
+          "answers": [
+            "riposta1",
+            "risposta2",
+            "risposta3"
+          ],
+          "score": "95",
+          "isActive": true,
+          "widget": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": "x",
+              "nextActivity": "x"
+            },
+            "ifNotCorrect": {
+              "nextMission": "0",
+              "nextActivity": "2"
+            }
+          }
+        },
+        {
+          "number": 2,
+          "type": "domanda aperta",
+          "setting": "ambientazione2",
+          "instructions": "svolgimento",
+          "question": "domanda",
+          "answers": "",
+          "correctAns": "risposta aperta",
+          "score": "75",
+          "isActive": true,
+          "widget": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": "x",
+              "nextActivity": "x"
+            },
+            "ifNotCorrect": {
+              "nextMission": "x",
+              "nextActivity": "x"
+            }
+          }
+        }
+      ],
+      "isActive": true
+    }
+  ],
+  "facilities": [
+    "facilitazione1",
+    "facilitazione2"
+  ],
+  "difficulties": [
+    "difficolta1",
+    "difficolta2",
+    "difficolta3"
+  ],
+  "originalTitle": "cenerentola",
+  "device": "smartphone",
+  "background": "IMG_E4161.JPG",
+  "widgetCss": "",
+  "widgetJs": ""
+}

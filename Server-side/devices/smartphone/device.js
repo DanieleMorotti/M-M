@@ -15,6 +15,7 @@ export default {
 			performedMissions: [],
 			currentMission: 0,
 			currentActivity: 0,
+			verify: false
         }
     },
     template: `
@@ -41,10 +42,18 @@ export default {
 		},
 
 		next() {
-			
-			this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
-			render.methods.next(this.type, this.currentMission, this.currentActivity);
-
+			if(!this.verify) {
+				this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
+				render.methods.visualize(this.type, this.currentMission, this.currentActivity);
+			//	this.currentActivity++;
+				this.verify = true;
+			}
+			else {
+				let obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
+				this.verify = false;
+				this.currentActivity = obj[0]; this.currentMission = obj[1];
+				console.log(obj)
+			}
 		},
 		check() {
 		}

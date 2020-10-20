@@ -22,7 +22,9 @@ export default {
             devices: [],
             currentDevice: -1,
             invalid: false,
-            value: 50
+            value: 50,
+            facilitiesList: [],
+            difficultiesList: []
         }
     }, 
     template: `
@@ -63,7 +65,7 @@ export default {
                     </li>
                     <li>    
                         <h2 style="display:inline-block">Missioni</h2>&nbsp;&nbsp;<i class="fas fa-plus" @click="addMission"></i>
-                        <button id="showGraph"  v-on:click.stop.prevent="show">Grafo attività</button>
+                        <button id="showGraph"  v-on:click.stop.prevent="show(event)">Grafo attività</button>
                       
                         <!-- The Modal -->
                         <div id="graphModal" class="modal">
@@ -94,6 +96,30 @@ export default {
                                     </li>
                                 </ul>
                                 <p v-else>Nessuna attività per questa missione </p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h3>Facilitazioni</h3>
+                        <label for="facility">Inserisci una facilitazione:</label><br>                 
+                        <input id="facility" type="text" name="facility" @keyup.enter="addFacility(event)"/>
+                        <button id="insertFacility" @click="addFacility(event)">Aggiungi</button>
+                        <ul id="facilities">
+                            <li v-for="(facility,index) in facilitiesList" :key="index">
+                             {{facility}}  &nbsp;&nbsp;
+                            <i class="fas fa-trash-alt" @click="facilitiesList.splice(index,1)"></i>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h3>Difficoltà</h3>
+                        <label for="difficulty">Inserisci una difficoltà:</label><br>                 
+                        <input id="difficulty" type="text" name="difficulty" @keyup.enter="addDifficulty(event)"/>
+                        <button id="insertDifficulty" @click="addDifficulty(event)">Aggiungi</button>
+                        <ul id="difficulties">
+                            <li v-for="(difficulty,index) in difficultiesList" :key="index">
+                             {{difficulty}}  &nbsp;&nbsp;
+                            <i class="fas fa-trash-alt" @click="difficultiesList.splice(index,1)"></i>
                             </li>
                         </ul>
                     </li>
@@ -385,6 +411,16 @@ export default {
             this.answerList.push($("#answer").val());
             $("#answer").prop("value", "");
         },
+        addFacility(e) {
+            e.preventDefault();
+            this.facilitiesList.push($(`#facility`).val().trim());
+            $(`#facility`).prop("value", "");
+        },
+        addDifficulty(e) {
+            e.preventDefault();
+            this.difficultiesList.push($(`#difficulty`).val().trim());
+            $(`#difficulty`).prop("value", "");
+        },
         addActivity(e) {   
             e.preventDefault();
             $(`#nextActivityCorrect option`).prop('disabled', false);
@@ -431,7 +467,7 @@ export default {
                 
                 let correctAnswer = '';
                 if (this.type == 'scelta multipla') {
-                    correctAnswer = $('#answers:checked').val();
+                    correctAnswer = $('#answers input:checked').val();
                 }
                 else if(this.type == 'domanda aperta') {
                     correctAnswer =  $('#answer').val();
@@ -732,7 +768,11 @@ export default {
             var verifyInput = $('input[type=file]');
             var titleChanged = ($("#inpTitle").val() != originTitle && (originTitle != '')) ? true : false;
 
-            data.append('missions',JSON.stringify(this.missions,null,2));  
+            data.append('missions',JSON.stringify(this.missions,null,2)); 
+
+            data.append('facilities',JSON.stringify(this.facilitiesList));  
+            data.append('difficulties',JSON.stringify(this.difficultiesList)); 
+
             data.append('originalTitle',JSON.stringify(originTitle));
             if(this.currentDevice > -1) 
                 data.append('device',JSON.stringify(this.devices[this.currentDevice]));
@@ -782,6 +822,8 @@ export default {
                         this.missions.push(item[1][i]);
                     }
                 }
+                else if(item[0] == "facilities") this.facilitiesList = item[1]
+                else if(item[0] == "facilities") this.difficultiesList = item[1]
                 else {
                     $("*[name ='"+item[0]+"'").val(item[1]);
                 }
@@ -1022,7 +1064,7 @@ export default {
         bus.$on('titles', (response) => { this.titles = response});
 
 
-        $('#activitiesForm').keydown(function (e) {
+        $('#activitiesForm, #editStoryForm, #showGraph, #insertFacility, #insertDifficulty').keydown(function (e) {
             if (e.keyCode == 13) {
                 e.preventDefault();
                 return false;

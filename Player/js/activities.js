@@ -1,4 +1,4 @@
-
+/*
 
 var story;
 var activities;
@@ -91,28 +91,19 @@ function initialized() {
     story = JSON.parse(localStorage.getItem("story"));
     activities = story[0].activities;
 }
-/*
-function next(type, mission) {
-    if(type == "scelta multipla") {
-        $("#text").html("prova");//this.missions[mission].activities[activity].question);
-
-    }
-}
 */
 
 export default {
     name:'act',
     data() {
         return{
-			missions: []
+            story: null,
+            missions: [],
+            facilities: [],
         }
     },
-  /*  renderAct: renderActivity,
-    displayDifficulties: displayDifficulties,
-    displayFacilities: displayFacilities,*/
-   // next: next,
     methods: {
-        next(type, mission, activity) {
+        visualize(type, mission, activity) {
             if(type == "scelta multipla") {
                 $("#text").html(this.missions[mission].activities[activity].question);
                 let i = 1;
@@ -122,9 +113,31 @@ export default {
                     i++;
                 });
             }
+            else if( type =="domanda aperta") {
+                $("#text").html(this.missions[mission].activities[activity].question);
+                $("#text").append(`<br><input type="text" id="answer"/>`);
+            }
+            
         },
+        verify(type, mission, activity) {
+            let nextAct, nextMiss;
+            if((type == 'scelta multipla' && $('input[name="answer"]:checked').val() == this.missions[mission].activities[activity].correctAns) ||
+            (type == "domanda aperta"  && ($("#answer").val() == this.missions[mission].activities[activity].correctAns))) {
+                    $("#text").html(this.story.facilities[activity]);
+                    nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity;
+                    nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
+                }
+                else { 
+                    $("#text").html(this.story.difficulties[activity]);
+                    nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity; 
+                    nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
+                }
+        
+            return([nextAct, nextMiss]);
+        }, 
         initialize() {
             let storyItem = JSON.parse(localStorage.getItem("story"));
+            this.story = storyItem;
             this.missions = storyItem.missions;
         }
     },

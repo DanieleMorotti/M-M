@@ -1,0 +1,106 @@
+{
+  "title": "storia con grafo",
+  "setting": "",
+  "description": "",
+  "introduction": "",
+  "conclusion": "",
+  "facility": "{\n  \"facilities\": [\n    \"uno\",\n    \"due\"\n  ]\n}",
+  "difficulty": "",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "prima",
+          "instructions": "",
+          "question": "",
+          "answers": [],
+          "isActive": true,
+          "widget": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": "0",
+              "nextActivity": "1"
+            },
+            "ifNotCorrect": {
+              "nextMission": "0",
+              "nextActivity": "2"
+            }
+          }
+        },
+        {
+          "number": 1,
+          "type": "scelta multipla",
+          "setting": "seconda",
+          "instructions": "",
+          "question": "",
+          "answers": [],
+          "isActive": true,
+          "widget": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": "-",
+              "nextActivity": "-"
+            },
+            "ifNotCorrect": {
+              "nextMission": "-",
+              "nextActivity": "-"
+            }
+          }
+        },
+        {
+          "number": 2,
+          "type": "scelta multipla",
+          "setting": "terza",
+          "instructions": "",
+          "question": "",
+          "answers": [],
+          "isActive": true,
+          "widget": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": "-",
+              "nextActivity": "-"
+            },
+            "ifNotCorrect": {
+              "nextMission": "-",
+              "nextActivity": "-"
+            }
+          }
+        },
+        {
+          "number": 3,
+          "type": "scelta multipla",
+          "setting": "quarta",
+          "instructions": "",
+          "question": "",
+          "answers": [
+            "prima",
+            "seconda",
+            "terza"
+          ],
+          "score": 50,
+          "isActive": true,
+          "widget": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": "-",
+              "nextActivity": "-"
+            },
+            "ifNotCorrect": {
+              "nextMission": "-",
+              "nextActivity": "-"
+            }
+          }
+        }
+      ],
+      "isActive": true
+    }
+  ],
+  "originalTitle": "storia con grafo",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}
