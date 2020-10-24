@@ -120,25 +120,32 @@ export default {
             
         },
         verify(type, mission, activity) {
-            let nextAct, nextMiss;
             if((type == 'scelta multipla' && $('input[name="answer"]:checked').val() == this.missions[mission].activities[activity].correctAns) ||
             (type == "domanda aperta"  && ($("#answer").val() == this.missions[mission].activities[activity].correctAns))) {
                     $("#text").html(this.story.facilities[activity]);
-                    nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity;
-                    nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
-                }
-                else { 
-                    $("#text").html(this.story.difficulties[activity]);
-                    nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity; 
-                    nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
-                }
+                    this.nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity;
+                    this.nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
+            }
+            else if(type == 'scelta multipla') { 
+                $("#text").html(this.story.difficulties[activity]);
+                this.nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity; 
+                this.nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
+            }
+            else if(type == "domanda aperta") {
+
+            }
+            else {
+
+            }
         
-            return([nextAct, nextMiss]);
+            return([this.nextAct, this.nextMiss]);
         }, 
         initialize() {
             let storyItem = JSON.parse(localStorage.getItem("story"));
             this.story = storyItem;
             this.missions = storyItem.missions;
+            this.nextAct = 0;
+            this.nextMiss = 0;
         }
     },
     

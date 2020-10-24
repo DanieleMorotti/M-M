@@ -35,11 +35,6 @@ export default {
 	</div>
 `,
 	methods: {
-		
-		play() {
-		
-
-		},
 
 		next() {
 			if(!this.verify) {

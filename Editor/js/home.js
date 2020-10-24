@@ -111,7 +111,6 @@ export default {
                     url: '/getStory?title='+title+'&group='+list,
                     type: 'GET',
                     success: (data) =>{    
-                        //console.log(JSON.stringify(data,null,2));                   
                         $(`#${current} div:eq(${index})`).html("<hr><pre>"+JSON.stringify(data,null,2)+"</pre>");
                         $(`#${current} div:eq(${index})`).css("display", "block");
       
@@ -205,7 +204,6 @@ export default {
             promise.then(() => {
                 console.log('emit');
                 bus.$emit('titles', {privateList:this.privateStoriesList,publicList:this.publicStoriesList});
-                //console.log(JSON.stringify({privateList:this.privateStoriesList,publicList:this.publicStoriesList}));
                 bus.$emit('story',this.privateStoriesList[index].title);
             });
         },
