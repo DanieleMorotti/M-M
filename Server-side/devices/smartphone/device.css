@@ -127,6 +127,8 @@ body {
     overflow: hidden;
     position: relative;
     color: white;
+    background-size: contain;
+
   }
   
   #text {

@@ -202,7 +202,6 @@ export default {
             });
             
             promise.then(() => {
-                console.log('emit');
                 bus.$emit('titles', {privateList:this.privateStoriesList,publicList:this.publicStoriesList});
                 bus.$emit('story',this.privateStoriesList[index].title);
             });

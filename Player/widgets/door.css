@@ -1,12 +1,13 @@
 #paper {
     background-color: white ;
     opacity: 0.7;
-    width: 70%;
-    height: 30%;
-    display: inline-block;
+    height: 60%;
+    width: 80%;
+  /*  display: inline-block;*/
     text-align: center;
     overflow-y: scroll;
     overflow-x: hidden; 
+    margin: auto;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -20,21 +21,6 @@
   scrollbar-width: none;  /* Firefox */
 }
 
-#doorInstructions {
-    height: 100vh;
-    text-align: center;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-color: #474747;
-}
-
-#doorInstructions p {
-    color: white;
-    font: 1em sans-serif;
-    text-align: center;
-}
-
 
 
 input {
@@ -44,12 +30,12 @@ input {
     background-color: transparent;
     border-style: none;
     font-size:bold;
-    font: 1.5em Walkway, Arial, sans-serif;
+    font: 1rem Walkway, Arial, sans-serif;
     text-align: center;
 }
 
 #paper p {
     color: black;
     font-size:bold;
-    font: 1.3em Walkway, Arial, sans-serif;
+    font: 1rem Walkway, Arial, sans-serif;
 }

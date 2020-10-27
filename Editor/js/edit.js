@@ -160,7 +160,7 @@ export default {
                             <p v-if="answerList.length">Seleziona la risposta corretta</p>
                             <ul id="answers">
                                 <li v-for="(answer,index) in answerList" :key="index">
-                                <input type="radio" :id="index" name="answer" :value="answer" checked>
+                                <input type="radio" :id="index" name="answer" :value="answer" checked required>
                                 <label :for="index"> {{answer}} </label>
                                  &nbsp;&nbsp;
                                 <i class="fas fa-trash-alt" @click="answerList.splice(index,1)"></i>
@@ -168,7 +168,7 @@ export default {
                             </ul>
                         </div>
                         <div v-else>
-                            <input id="answer" type="text" name="answer" :disabled="type =='figurativa'" />
+                            <input id="answer" type="text" name="answer"/>
                         </div>
 
                             <label for="score">Inserisci un punteggio da assegnare:</label><br>
@@ -437,16 +437,13 @@ export default {
                 
                 if(this.type == 'scelta multipla') {
                     this.missions[this.currentMission].activities[this.currentActivity].answers = this.answerList;
-                    this.missions[this.currentMission].activities[this.currentActivity].correctAns = $('#answers:checked').val();
+                    this.missions[this.currentMission].activities[this.currentActivity].correctAns = $('#answers input:checked').val();
                 }
-                else if(this.type == 'domanda aperta') {
+                else if(this.type) {
                     this.missions[this.currentMission].activities[this.currentActivity].answers = '';
                     this.missions[this.currentMission].activities[this.currentActivity].correctAns = $('#answer').val();
                 }
-                else {
-                    this.missions[this.currentMission].activities[this.currentActivity].answers = '';
-                    this.missions[this.currentMission].activities[this.currentActivity].correctAns = '';
-                }
+                
                 this.missions[this.currentMission].activities[this.currentActivity].score = this.value;
                 this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect.nextMission = $("#nextActivityCorrect").val().substring(0,1);
                 this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect.nextActivity = $("#nextActivityCorrect").val().substring(2,3);
@@ -461,6 +458,7 @@ export default {
             else {
                 let widgetValue = "";
                 if(this.currentWidget >= 0) widgetValue = this.widgets[this.currentWidget];
+                
                 //find the index of the mission we have to add the new activity
                 let missionIndex = this.missions.findIndex(obj => obj.name === $('#chooseMission').val());
                 let activityNumber = (this.missions[missionIndex].activities.length != 0)?this.missions[missionIndex].activities[this.missions[missionIndex].activities.length -1].number +1:0;
@@ -469,7 +467,7 @@ export default {
                 if (this.type == 'scelta multipla') {
                     correctAnswer = $('#answers input:checked').val();
                 }
-                else if(this.type == 'domanda aperta') {
+                else {
                     correctAnswer =  $('#answer').val();
                 }
 
@@ -536,7 +534,7 @@ export default {
                 this.type = this.missions[misInd].activities[index].type;
                 $('#answer').prop("value", "");
                 if(this.type == 'scelta multipla') this.answerList = this.missions[misInd].activities[index].answers;
-                else if (this.type == 'domanda aperta') $('#answer').prop("value", this.missions[misInd].activities[index].correctAns);
+                else $('#answer').prop("value", this.missions[misInd].activities[index].correctAns);
 
                 //resume activity's score
                 this.value = this.missions[misInd].activities[index].score;
@@ -544,12 +542,13 @@ export default {
                 // resume activity's next tasks
                 let missNum1 = this.missions[misInd].activities[index].goTo.ifCorrect.nextMission;
                 let actNum1 = this.missions[misInd].activities[index].goTo.ifCorrect.nextActivity;
-                if(missNum1 !== "-" && this.missions[missNum1].activities[actNum1]) 
+
+                if(missNum1 !== "-") 
                     $(`#nextActivityCorrect option[value='${missNum1}/${actNum1}']`).prop('selected', true);
                 
                 let missNum2 = this.missions[misInd].activities[index].goTo.ifNotCorrect.nextMission;
                 let actNum2 = this.missions[misInd].activities[index].goTo.ifNotCorrect.nextActivity;
-                if(missNum2 !== "-" && this.missions[missNum2].activities[actNum2]) 
+                if(missNum2 !== "-") 
                     $(`#nextActivityIncorrect option[value='${missNum2}/${actNum2}']`).prop('selected', true);
                  
                 if(this.missions[misInd].activities[index].widget) {
@@ -822,8 +821,13 @@ export default {
                         this.missions.push(item[1][i]);
                     }
                 }
+                else if(item[0] == "device") {
+                    for(let i = 0; i < this.devices.length; i++ ) {
+                        if(this.devices[i] == item[1]) { this.currentDevice = i; return 0; }
+                    }
+                }
                 else if(item[0] == "facilities") this.facilitiesList = item[1]
-                else if(item[0] == "facilities") this.difficultiesList = item[1]
+                else if(item[0] == "difficulties") this.difficultiesList = item[1]
                 else {
                     $("*[name ='"+item[0]+"'").val(item[1]);
                 }

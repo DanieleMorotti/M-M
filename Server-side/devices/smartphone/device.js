@@ -29,6 +29,7 @@ export default {
 		<div id="volume-giu"></div>
 		<div id="schermo">
 			<div id="text"> </div>
+			<div id="info"> </div>
 			<button id="next" @click="next"> &rarr; </button>
 		</div>
         <div id="bottone"></div>
@@ -40,14 +41,26 @@ export default {
 			if(!this.verify) {
 				this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
 				render.methods.visualize(this.type, this.currentMission, this.currentActivity);
-			//	this.currentActivity++;
 				this.verify = true;
 			}
 			else {
 				let obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
-				this.verify = false;
-				this.currentActivity = obj[0]; this.currentMission = obj[1];
-				console.log(obj)
+				if(obj) {
+					console.log(obj) 
+					if(obj[0] != 'x') {
+						this.currentActivity = obj[0]; this.currentMission = obj[1];
+						this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
+						render.methods.visualize(this.type, this.currentMission, this.currentActivity);
+					}
+					else {
+						$('#text').html("");
+						$('#text').append(storyItem.conclusion);
+					}
+					
+				}
+				else {
+					
+				}
 			}
 		},
 		check() {
