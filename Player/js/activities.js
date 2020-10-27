@@ -102,8 +102,8 @@ export default {
             story: null,
             missions: [],
             facilities: [],
-            nextAct: 0,
-            nextMiss: 0
+            nextAct: null,
+            nextMiss: null
         }
     },
     methods: {
@@ -186,7 +186,26 @@ export default {
             let storyItem = JSON.parse(localStorage.getItem("story"));
             this.story = storyItem;
             this.missions = storyItem.missions;
+            this.nextMiss = 0;
+            this.nextAct = 0;
+
+            //to update the server about my curret position
+            setInterval(() => {                
+                $.ajax({
+                    type: "POST",
+                    url: '/updatePlayerPosition',
+                    data: {
+                        currMission: this.nextMiss+1,
+                        currAct: this.nextAct+1
+                    },
+                    success: (data) =>{
+                        console.log("Ok");
+                    },
+                    error: function (e) {
+                        console.log("error in update player position",e);
+                    }
+                })
+            }, 3000);
         }
-    },
-    
+    }
 }
