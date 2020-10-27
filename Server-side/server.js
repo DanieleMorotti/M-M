@@ -385,7 +385,40 @@ app.get('/getDeviceCss',(req,res) =>{
 })
 
 
+let partecipants = [];
 
+//manage the update of user position
+app.post('/updatePlayerPosition',(req,res) => {
+	//pos is an object with currMiss and currAct
+	let pos = req.body;
+	let usName = req.headers.cookie.substring(7,13);
+	let index;
+
+	//to avoid access at field 'id' if array has no object
+	if(partecipants.length > 0){
+		if((index = partecipants.findIndex(x => x.id==usName)) >= 0){
+			//if user is in the same position since the last update
+			if(JSON.stringify(partecipants[index].position) == JSON.stringify(pos)){
+				partecipants[index].time++;
+				//if the user is in the same position since a few minutes
+				if(partecipants[index].time > 6)partecipants[index].needHelp = true;
+			}
+			else{
+				partecipants[index].position = pos;
+				partecipants[index].time = 0;
+				partecipants[index].needHelp = false;
+			}
+		}
+		else{
+			partecipants.push({id:usName,position:pos,time:0,needHelp:false});
+		}
+	}
+	else{
+		partecipants.push({id:usName,position:pos,time:0,needHelp:false});
+	}
+	
+	res.end();
+})
 
 //////////////////////////////////////////////////////////
 //VALUTATORE
