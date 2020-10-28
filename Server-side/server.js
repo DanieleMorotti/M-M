@@ -416,7 +416,6 @@ app.post('/updatePlayerPosition',(req,res) => {
 	else{
 		partecipants.push({id:usName,position:pos,time:0,needHelp:false});
 	}
-	
 	res.end();
 })
 
@@ -424,7 +423,16 @@ app.post('/updatePlayerPosition',(req,res) => {
 //VALUTATORE
 /////////////////////////////////////////////////////////
 
+app.get('/whoNeedHelp',(req,res) =>{
+	let who = [];
+	partecipants.forEach(el => { if(el.needHelp)who.push({who:el.id,where:el.position}); })
+	res.json(who);
+})
 
+
+////////////////////////////////////////////////////////////////////
+//CHAT SECTION
+///////////////////////////////////////////////////////////////////
 const myfunctions = require('./function');
 const { usersList } = require('./function');
 const { json } = require('express');
@@ -438,10 +446,6 @@ io.engine.generateId = function (req) {
 	idNum++;
     return 'user'+idNum;
 }
-
-////////////////////////////////////////////////////////////////////
-//CHAT SECTION
-///////////////////////////////////////////////////////////////////
 
 
 app.get('/staff', function(req,res){
