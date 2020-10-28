@@ -1,10 +1,6 @@
 import render from '/Player/js/activities.js'
 
 var storyItem;
-var activities;
-var performedActivities = [];
-var currentAct;
-var type;
 
 export default {
 	name:'device',
@@ -15,11 +11,12 @@ export default {
 			performedMissions: [],
 			currentMission: 0,
 			currentActivity: 0,
-			verify: false
+			verify: false,
+			obj: null
         }
     },
     template: `
-	<div class="smart">
+	<div class="device">
         <div id="dettaglio">
             <div id="sensore"></div>
             <div id="microfono"></div>
@@ -44,11 +41,10 @@ export default {
 				this.verify = true;
 			}
 			else {
-				let obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
-				if(obj) {
-					console.log(obj) 
-					if(obj[0] != 'x') {
-						this.currentActivity = obj[0]; this.currentMission = obj[1];
+				if(this.obj) {
+					console.log(this.obj) 
+					if(this.obj[0] != 'x') {
+						this.currentActivity = this.obj[0]; this.currentMission = this.obj[1];
 						this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
 						render.methods.visualize(this.type, this.currentMission, this.currentActivity);
 					}
@@ -56,10 +52,10 @@ export default {
 						$('#text').html("");
 						$('#text').append(storyItem.conclusion);
 					}
-					
+					this.obj = null;
 				}
 				else {
-					
+					this.obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
 				}
 			}
 		},

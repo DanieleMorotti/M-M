@@ -1,42 +1,18 @@
 
 body {
-
     height: 100%;
     font-family: 'Ubuntu', sans-serif;
-    background: linear-gradient(270deg, #82c3fe, #2e74b4);
-  background-size: 400% 400%;
+    background-color: #6b1a39;
+}
   
-  -webkit-animation: AnimationName 59s ease infinite;
-  -moz-animation: AnimationName 59s ease infinite;
-  animation: AnimationName 59s ease infinite;
-    
-  }
-
-  @-webkit-keyframes AnimationName {
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-  }
-  @-moz-keyframes AnimationName {
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-  }
-  @keyframes AnimationName { 
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-  }
-  
-  .smart {
-      
+.device {
     margin-left:auto;
     margin-right:auto;
     margin-top: 100px;
-  
+
     border-color: #444;
     background-color: #333;
- 
+
     width: 295px;
     height: 532px;
     border-radius: 40px;
@@ -44,96 +20,75 @@ body {
     margin: 0 auto;
     padding: 60px 10px;
     position: relative;
-  }
+}
+
   
-  #acenzione-button {
-      background-color: #333;
-      height: 20px;
-      left: -5px;
-      top: 59px;
-      border-radius: 4px 0 0 4px;
+#volume-su {
+    height: 40px;
+    width: 3px;
+    left: -7px;
+    top: 110px;
+    border-radius: 4px 0 0 4px;
+
+    width: 5px;
+    background: #333;
+    position: absolute;
+}
   
-      width: 3px;
-      background: #333;
-      position: absolute;
-  }
-  
-  #volume-su {
-      height: 40px;
-      width: 3px;
-      left: -7px;
-      top: 110px;
-      border-radius: 4px 0 0 4px;
-  
-      width: 5px;
-      background: #333;
-      position: absolute;
-  }
-  
-  #volume-giu {
-      height: 40px;
-      width: 3px;
-      left: -7px;
-      top: 155px;
-      border-radius: 4px 0 0 4px;
-      width: 5px;
-      background: #333;
-      position: absolute;
-  }
+#volume-giu {
+    height: 40px;
+    width: 3px;
+    left: -7px;
+    top: 155px;
+    border-radius: 4px 0 0 4px;
+    width: 5px;
+    background: #333;
+    position: absolute;
+}
   
   
-  #dettaglio {
-      position: absolute;
-      left: 0;
-      top: 17px;
-      width: 100%;
-  }
+#dettaglio {
+    position: absolute;
+    left: 0;
+    top: 17px;
+    width: 100%;
+}
+
+#sensore {
+    background: #111;
+    height: 7px;
+    width: 7px;
+    margin: 12px 100px;
+
+    border-radius: 100px;
+    display: block;
+}
+  
+#microfono {
+    background: #111;
+    height: 7px;
+    width: 90px;
+    margin: -19px auto 0;
+    border-radius: 100px;
+}
   
   
-  #fotocamera {
-      background: #111;
-      height: 7px;
-      width: 7px;
-      margin: auto;
-      border-radius: 100px;
-      display: block;
-  }
-  
-  #sensore {
-      background: #111;
-      height: 7px;
-      width: 7px;
-      margin: 12px 100px;
-  
-      border-radius: 100px;
-      display: block;
-  }
-  
-  #microfono {
-      background: #111;
-      height: 7px;
-      width: 90px;
-      margin: -19px auto 0;
-      border-radius: 100px;
-  }
-  
-  
-  #schermo {
+#schermo {
     margin: auto;
     width: 90%;
     height: 95%;
-    background-color: grey;
+    background-color: rgb(51, 61, 63);
     box-shadow: 0 0 0 1px    rgba(0,0,0,0.1)inset;
     overflow: hidden;
     position: relative;
     color: white;
     background-size: contain;
 
-  }
+}
   
-  #text {
-      margin: 1em;
-  }
+#text, #info {
+    margin: 1em;
+}
 
 #next {
     position: absolute;
@@ -141,35 +96,49 @@ body {
     right: 0.5em;
     font-size: 2em;
     border-style: none !important;
-    background-color: grey;
+    background-color: transparent;
     outline: none !important;
+    box-shadow: none !important;
 }
 
 
 
-#schermo p:active {
-    color: grey;
+
+#bottone {
+    height: 40px;
+    width: 40px;
+    background: #111;
+    margin: 10px auto;
+    border-radius: 100px;
 }
 
-  #bottone {
-      height: 40px;
-      width: 40px;
-      background: #111;
-      margin: 10px auto;
-      border-radius: 100px;
-  }
-  
-  
+#menu {
+    position: relative;
+    height: 60px;
+}
 
-  
-  #menu {
-      position: relative;
-      height: 60px;
-  }
 
-  
- 
-  
-  
-  
-  
+
+
+#answers label {
+    cursor:pointer;
+}
+#answers input {
+    display:none;
+}
+
+#answers label {
+    width: 100%;
+    position:relative;
+    border-radius: 4px;
+    background-color: transparent;
+}
+
+#answers input:checked + label {
+    background-color: #f3c93f;
+}
+
+
+#widget {
+    height: 60%;
+}
