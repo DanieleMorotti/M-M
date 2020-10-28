@@ -104,7 +104,6 @@
 				},
 				created(){
 					this.sock = io();
-					console.log("ciao mamma");
 					//listening for the messages that will arrive
 					this.sock.on('message',(data) => {
 					this.messages.push({mess:data,type:1});

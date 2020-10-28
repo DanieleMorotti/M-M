@@ -96,7 +96,7 @@ export default {
             this.nextMiss = 0;
             this.nextAct = 0;
 
-            //to update the server about my curret position
+            //to update the server about my current position
             setInterval(() => {                
                 $.ajax({
                     type: "POST",
