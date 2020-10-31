@@ -65,14 +65,17 @@ export default {
                     </li>
                     <li>    
                         <h2 style="display:inline-block">Missioni</h2>&nbsp;&nbsp;<i class="fas fa-plus" @click="addMission"></i>
-                        <button id="showGraph"  v-on:click.stop.prevent="show(event)">Grafo attività</button>
-                      
-                        <!-- The Modal -->
-                        <div id="graphModal" class="modal">
-                            <span class="close">&times;</span>
-                            <svg ></svg>
-                        </div> 
-                        
+                        <input type="button" id="buttonGraph" data-toggle="modal" data-target="#graphModal" value="Grafo attività"/>
+
+
+                        <div class="modal fade" id="graphModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                <span class="close">&times;</span>
+                                    <svg></svg>
+                                </div>
+                            </div>
+                        </div>
 
                         <ul id="missionSaved">
                             <li v-for="(mission,index) in missions" :key="index">
@@ -400,7 +403,9 @@ export default {
                     </div>
                 </div>
             </div>
+
         </div> 
+
 
         
     `,
@@ -835,14 +840,11 @@ export default {
         },
         show() {
             var modal = document.getElementById("graphModal");
-            modal.style.display = "block";
             this.drawGraph();
-            $("input, select, textarea ").prop("disabled", true);
             var span = document.getElementsByClassName("close")[0];
             span.onclick = function() { 
-                modal.style.display = "none";
+                $('#graphModal').modal('hide');
                 d3.selectAll("svg > *").remove();
-                $("input, select, textarea").prop("disabled", false);
             }
         },
         drawGraph(){
@@ -1068,11 +1070,15 @@ export default {
         bus.$on('titles', (response) => { this.titles = response});
 
 
-        $('#activitiesForm, #editStoryForm, #showGraph, #insertFacility, #insertDifficulty').keydown(function (e) {
+        $('#activitiesForm, #editStoryForm, #insertFacility, #insertDifficulty').keydown(function (e) {
             if (e.keyCode == 13) {
                 e.preventDefault();
                 return false;
             }
+        });
+
+        $(document).on('click','#buttonGraph', () =>{
+            this.show();
         });
     },
     created() {

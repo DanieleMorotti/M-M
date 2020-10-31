@@ -2,13 +2,9 @@ let story = JSON.parse(localStorage.getItem("story"));
 
 //each object is a route
 import homeComp from './home.js'
-import doorComp from '../widgets/door.js'
-import lockComp from '../widgets/lock.js'
-
+let d = 'door';
 
 export default [
         { path: '/', component: homeComp},
-        { path: '/device', component: () => import(`/getDeviceJs?name=${story.device}`)},
-        { path: '/door', component: doorComp},
-        { path: '/lock', component: lockComp}
+        { path: '/device', component: () => import(`../../Server-side/devices/${story.device}/device.js`)},
 ]

@@ -374,6 +374,7 @@ app.get('/getImage',(req,res) =>{
 	res.sendFile(path.join(__dirname,"/stories/public/"+ req.query.title +"/files/"+req.query.name));
 })
 
+/*
 app.get('/getDeviceJs',(req,res) =>{
 	res.status(200);
 	res.sendFile(path.join(__dirname,"/devices/"+req.query.name+"/device.js"));
@@ -383,7 +384,12 @@ app.get('/getDeviceCss',(req,res) =>{
 	res.status(200);
 	res.sendFile(path.join(__dirname,"/devices/"+req.query.name+"/device.css"));
 })
+*/
 
+app.get('/getWidget',(req,res) =>{
+	res.status(200);
+	res.sendFile(path.join(__dirname,"/widgets/"+req.query.name+"/door.js"));
+})
 
 let partecipants = [];
 

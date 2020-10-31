@@ -1,15 +1,17 @@
-import door from '../widgets/door.js'
-
+//import door from '../widgets/door.js'
 
 export default {
     name:'act',
+    
     data() {
         return{
             story: null,
             missions: [],
             facilities: [],
             nextAct: null,
-            nextMiss: null
+            nextMiss: null,
+            widget: null,
+            door: null
         }
     },
     methods: {
@@ -28,17 +30,33 @@ export default {
                 $("#text").html(this.missions[mission].activities[activity].question);
                 $("#text").append(`<br><input type="text" id="answer"/>`);
             }
-            else {  //tipy figurative
+            else {  //tipe figurative
                 $('#text').html("");
                 $('#text').append(this.missions[mission].activities[activity].instructions);
                 let widget = this.missions[mission].activities[activity].widget;
                 $('#schermo').css('background-image', `url("/Server-side/widgets/${widget}/${widget}.jpg")`);
-                $('#schermo').append(`<div id="widget"><div>`)
-                $('#widget').append(door.template);
+         
+                $('#schermo').append(`<script  type="module" src='/Player/widgets/door.js'></script>`);
+             //   $('#schermo').append(this.door.template);
+             //   this.door.methods.render(this.missions[mission].activities[activity].question, this.missions[mission].activities[activity].correctAns); 
+
+                let question = this.missions[mission].activities[activity].question;
+                let correctAns = this.missions[mission].activities[activity].correctAns;
+
+                async function load() {
+                    console.log('here')
+                    let d = 'door';
+                    let x = await import(`/Player/widgets/${d}.js`);
+                    $('#schermo').append(x.template());
+                    x.render(question, correctAns)
+                }
                 
-                door.methods.render(this.missions[mission].activities[activity].question, this.missions[mission].activities[activity].correctAns); 
-            }
+                load();
+                
+            }   
+           
             
+         
         },
         verify(type, mission, activity) {
             $("#info").html("");
@@ -116,3 +134,4 @@ export default {
         }
     }
 }
+

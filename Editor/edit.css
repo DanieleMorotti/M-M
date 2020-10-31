@@ -85,26 +85,20 @@ i.fas{
 
 /* GRAPH MODAL */
 
-#graphModal {
-    z-index: 1; 
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, 0%);
-    width: 80%;
-    height: 70%;
+
+#graphModal .modal-dialog {
     background-color: rgba(0,0,0,0.8);
-    min-width: 900px;
-    min-height: 600px;
+    
 } 
 
-#graphModal > svg {
-    display: block; 
-    margin: auto;
-    width: 900px;
-    height: 600px;
+#graphModal  svg {
+    background-color: rgba(0,0,0,0.8);
+    min-height: 600px;
 }
-  
+
+
+
+
   /* The Close Button */
   .close {
     position: absolute;

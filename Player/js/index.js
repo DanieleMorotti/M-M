@@ -10,18 +10,9 @@ const router = new VueRouter({
 //function that is executed before every routing change
 router.beforeEach((to, from, next) => {
   if(to.path === '/device') {
-    document.getElementById('stylesheetComp').href = `/getDeviceCss?name=${story.device}`;
-    document.getElementById('scriptComp').src = `/getDeviceJs?name=${story.device}`;
-  //  $('body').append("<script src='/Player/js/activities.js'><\/script>")
+    document.getElementById('stylesheetComp').href = `../../Server-side/devices/${story.device}/device.css`;
+    document.getElementById('scriptComp').src = `../../Server-side/devices/${story.device}/device.js`;
   } 
-  else if(to.path === '/door') {
-    document.getElementById('stylesheetComp').href ='./widgets/door.css';
-    document.getElementById('scriptComp').src = './widgets/door.js';
-  }
-  else if(to.path === '/lock') {
-    document.getElementById('stylesheetComp').href ='./widgets/lock.css';
-    document.getElementById('scriptComp').src = './widgets/lock.js';
-  }
   else {
     document.getElementById('stylesheetComp').href ='/Player/home.css';  
     document.getElementById('scriptComp').src = './js/home.js';

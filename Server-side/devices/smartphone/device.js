@@ -1,7 +1,5 @@
 import render from '/Player/js/activities.js'
 
-var storyItem;
-
 export default {
 	name:'device',
 	data() {
@@ -14,8 +12,8 @@ export default {
 			verify: false,
 			obj: null
         }
-    },
-    template: `
+	},
+	template: `
 	<div class="device">
         <div id="dettaglio">
             <div id="sensore"></div>
@@ -29,7 +27,7 @@ export default {
 			<div id="info"> </div>
 			<button id="next" @click="next"> &rarr; </button>
 		</div>
-        <div id="bottone"></div>
+		<div id="bottone"></div>
 	</div>
 `,
 	methods: {
@@ -63,7 +61,7 @@ export default {
 		}
 	},
 	activated() {
-		storyItem = JSON.parse(localStorage.getItem("story"));
+		let storyItem = JSON.parse(localStorage.getItem("story"));
 		this.missions = storyItem.missions;
 		$('#text').text(storyItem.introduction);
 		render.methods.initialize();
