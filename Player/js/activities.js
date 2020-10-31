@@ -114,14 +114,14 @@ export default {
             this.nextMiss = 0;
             this.nextAct = 0;
 
-            //to update the server about my curret position
+            //to update the server about my current position
             setInterval(() => {                
                 $.ajax({
                     type: "POST",
                     url: '/updatePlayerPosition',
                     data: {
-                        currMission: this.nextMiss+1,
-                        currAct: this.nextAct+1
+                        currMission: parseInt(this.nextMiss)+1,
+                        currAct: parseInt(this.nextAct)+1
                     },
                     success: (data) =>{
                         console.log("Ok");

@@ -46,9 +46,5 @@ export default {
     this.sock.on('message',(data) => {
       this.messages.push({mess:data,type:1});
     })
-
-    this.sock.on('set_cookie', (cookie) => {
-      document.cookie = cookie;
-    });
   }
 }

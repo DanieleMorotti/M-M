@@ -14,7 +14,7 @@ body {
     padding: 0 5px;
   }
   
-  button {
+  #chatMenu button {
     text-transform: uppercase;
     font-size: 0.8rem;
     padding: 3px 15px;
