@@ -102,8 +102,8 @@ export default {
                     type: "POST",
                     url: '/updatePlayerPosition',
                     data: {
-                        currMission: this.nextMiss+1,
-                        currAct: this.nextAct+1
+                        currMission: parseInt(this.nextMiss)+1,
+                        currAct: parseInt(this.nextAct)+1
                     },
                     success: (data) =>{
                         console.log("Ok");

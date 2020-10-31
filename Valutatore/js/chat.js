@@ -58,12 +58,10 @@ export default {
         }
     },
     created() {
-        sock.on('set_cookie', (cookie) => {
-            console.log(JSON.stringify(cookie));
-            document.cookie = cookie;
-        });
+        
         //when the staff update for the first time the list of users
         sock.on('first-connection',(list) => {
+            console.log(JSON.stringify(list,null,2));
             if(list){
                 for(let i=0; i< list.length;i++){
                     this.users.push({id:list[i],messages:[]});
@@ -74,10 +72,16 @@ export default {
         })
         //everytime a user is connected i update the list with the user id and his room
         sock.on('update-users',(usName) =>{
-            //update the users array, only if it's not a page refresh(the user is already in)
-            if(this.users.some(item => item.id === usName));
-            else this.users.push({id:usName,messages:[]});
-            sock.emit('join-room',usName);
+            //avoid to add staff to the users list
+            if(usName.substring(0,5) === 'staff'){
+
+            }
+            else{
+                //update the users array, only if it's not a page refresh(the user is already in)
+                if(this.users.some(item => item.id === usName));
+                else this.users.push({id:usName,messages:[]});
+                sock.emit('join-room',usName);
+            }
         })
         //when an user is disconnected i delete it from the list
         sock.on('disc-user',(id) =>{
@@ -89,5 +93,25 @@ export default {
             //finding the position in the list of users and push the messages
             this.users[this.users.findIndex(item => item.id === data.from)].messages.push({mess:data.mess,type:1});
         })
+    },
+    mounted(){
+        //within mounted because i need access to dom element to notify users difficulties
+        setInterval(() => {                
+            $.ajax({
+                type: "GET",
+                url: '/whoNeedHelp',
+                success: (data) =>{
+                    if(data.length > 0){
+                        data.forEach(el => {
+                            console.log(el.who+" ha bisogno di aiuto in: "+JSON.stringify(el.where));
+                        });
+                    }
+                    else console.log("tutto tranquillo");
+                },
+                error: function (e) {
+                    console.log("error in /whoNeedHelp request",e);
+                }
+            })
+        }, 5000);
     }
 }

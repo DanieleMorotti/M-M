@@ -4,6 +4,7 @@ const path = require('path');
 const formidable = require('formidable');
 const fs = require('fs-extra');
 const bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser')
 const socketio = require('socket.io');
 const cookie = require('cookie');
 //const { readdir } = require('fs');
@@ -15,6 +16,7 @@ const io = socketio().listen(server,{cookie:false});
 
 app.use(express.static(`${__dirname}/..`));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.get('/Editor',(req,res) =>{
 	res.status(200);
@@ -352,10 +354,31 @@ app.put('/privateStory/:title', (req, res) => {
  * GESTIONE PLAYER
  *****************/
 var story, device;
+let cookies;
+var cookieNum = 1;
+var numStaff = 1;
+let isStaff = false;
+var idNum = 1;
+
+const myfunctions = require('./function');
 
 app.get('/Play',(req,res) =>{
 	//res.status(200);
 	story = req.query.story;
+
+	cookies = req.cookies;
+	//set the cookies for the users
+	if(cookies && cookies.userId){
+		console.log("Ho già cookies:",cookies.userId);
+		res.cookie('userId',cookies.userId,{path:'/Play'});	
+	}else{
+		console.log("non ho cookies sono appena entrato");
+		//set the cookie for the client
+		res.cookie('userId','user'+cookieNum,{path:'/Play'});
+		cookieNum++;
+	}
+
+	
 	res.sendFile(path.join(__dirname,"../Player/index.html"));
 })
 
@@ -425,75 +448,57 @@ app.post('/updatePlayerPosition',(req,res) => {
 
 app.get('/whoNeedHelp',(req,res) =>{
 	let who = [];
-	partecipants.forEach(el => { if(el.needHelp)who.push({who:el.id,where:el.position}); })
+	partecipants.forEach(el => { if(el.needHelp)who.push({who:el.id,where:el.position}); });
 	res.json(who);
 })
-
 
 ////////////////////////////////////////////////////////////////////
 //CHAT SECTION
 ///////////////////////////////////////////////////////////////////
-const myfunctions = require('./function');
 const { usersList } = require('./function');
-const { json } = require('express');
-var idNum = 1;
-var cookieNum = 1;
-var numStaff = 1;
-let isStaff = false;
-
-//modified the function which generate the socket id
-io.engine.generateId = function (req) {
-	idNum++;
-    return 'user'+idNum;
-}
 
 
-app.get('/staff', function(req,res){
-	//TODO:pericoloso, perchè se accedono contemporaneamente 1 dello staff e uno no, diventano tutte dello staff
+app.get('/Valutatore', function(req,res){
+	//pericoloso, perchè se accedono contemporaneamente 1 dello staff e uno no, diventano tutte dello staff
 	isStaff = true;
+	cookies = req.cookies;
+
+	if(cookies && cookies.staffId){
+		console.log("Sono dello staff, ho già cookie",cookies.staffId);
+		res.cookie('staffId',cookies.staffId,{path:'/Valutatore'});
+	}else{
+		console.log("non ho ancora cookie(staff)");
+		res.cookie('staffId','staff'+numStaff,{path:'/Valutatore'});
+	}
 	res.sendFile(path.join(__dirname,'../Valutatore/valutatore.html'));
 } )
 
-app.get('/chat-utente', function(req,res){
-	res.sendFile(path.join(__dirname,'../Player/Chat/chat-user.html'));
-} )
 
-let cookies;
 //every time someone connect to the server
 io.on('connection', (sock) => {
-	//get the cookies from the client and parse them if exist
-	cookies = sock.request.headers.cookie;
-	if(cookies)cookies = cookie.parse(cookies);
-
 	//username is saved different for every socket
-	let cookieVal,userName;
+	let userName;
 
-	//set the cookies for the users
 	if(!isStaff){
-		if(cookies && cookies.userId){
-			console.log("Ho già cookies:",cookies);
-			sock.emit('set_cookie', cookie.serialize('userId',cookies.userId));
-			userName = cookies.userId;
-		}else{
-			console.log("non ho cookies sono appena entrato");
-			//set the cookie for the client
-			cookieVal = cookie.serialize('userId', 'user'+cookieNum);
-			userName = 'user'+cookieNum;
-			cookieNum++;
-			sock.emit('set_cookie', cookieVal);
+		if(cookies.userId) userName = cookies.userId;
+		else{
+			userName = 'user'+(idNum);
+			idNum++;
 		}
-		//update the staff list only the first time
-		io.of('/staff').emit('update-users',userName);
-			
+		//update the staff list
 		myfunctions.userJoin(userName);
-	}else{
-		if(cookies && cookies.staffId){
-			userName = cookies.staffId;
-		}else{
-			userName = 'staff'+numStaff;
+	}
+	else{
+		if(cookies.staffId) userName = cookies.staffId;
+		else{
+			userName = 'staff'+ numStaff;
+			numStaff++;
 		}
 	}
 
+	//eventually control if the user is already here
+	io.of('/staff').emit('update-users',userName);
+	
 	//every user need to have a private chat with the staff so he will join a private room
 	sock.join(userName);
 
@@ -503,6 +508,7 @@ io.on('connection', (sock) => {
 	//when a user is disconnected the server tell the staff to delete him from the list
 	sock.on('disconnect',() => {
 		myfunctions.removeUser(userName);
+		partecipants.splice(partecipants.findIndex(x => x.who === userName,1));
 		io.of('/staff').emit('disc-user',userName);
 		console.log(userName + ' is disconnected');
 	}) 
@@ -513,20 +519,7 @@ io.on('connection', (sock) => {
 var staffSpace = io.of('/staff');
 
 staffSpace.on('connection', function(sock){
-	//manage cookie
-	if(cookies && cookies.staffId){
-		console.log("Ho già cookies(staff):",cookies);
-		cookieVal = cookie.serialize('staffId', cookies.staffId);
-		sock.emit('set_cookie',cookieVal);
-		username = cookies.staffId;
-	}else{
-		console.log("non ho cookies sono appena entrato(staff)");
-		//set the cookie for the staff
-		cookieVal = cookie.serialize('staffId', 'staff'+numStaff);
-		sock.emit('set_cookie', cookieVal);
-		username = 'staff'+numStaff;
-		numStaff++;
-	}
+	
 	isStaff = false;
 
 	//on the first connection the staff is informed about the users that are connected yet
