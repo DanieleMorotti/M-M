@@ -1,7 +1,7 @@
 var widgetComp = null;
 
 export default {
-    name:'act',
+    name:'activities',
     
     data() {
         return{
@@ -36,14 +36,13 @@ export default {
                 let widget = this.missions[mission].activities[activity].widget;
                 $('#schermo').css('background-image', `url("/Server-side/widgets/${widget}/${widget}.jpg")`);
          
-                $('#schermo').append(`<script  type="module" src='/Player/widgets/door.js'></script>`);
 
                 let question = this.missions[mission].activities[activity].question;
                 let correctAns = this.missions[mission].activities[activity].correctAns;
 
                 async function load() {
                     console.log('here')
-                    widgetComp = await import(`/Player/widgets/${widget}.js`);
+                    widgetComp = await import(`/Server-side/widgets/${widget}/${widget}.js`);
                     $('#schermo').append(`<div id="widget"></div>`)
                     $('#widget').append(widgetComp.default.template);
                     widgetComp.default.methods.render(question, correctAns)

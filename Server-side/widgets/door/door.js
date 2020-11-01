@@ -1,13 +1,10 @@
 
+var risposta = false;
+
 export default {
     name: 'door',
-    data() {
-        return{
-            answer: false
-        }
-    },
     template: `
-            <link rel="stylesheet" href="/Player/widgets/door.css">
+            <link rel="stylesheet" href="/Server-side/widgets/door/door.css">
             <div id="paper">
                 <input type="text" id="word"/>
                 <br>
@@ -17,7 +14,7 @@ export default {
         render(question, answer) {
             $('#word').attr("placeholder", question);
             var pos = $("#paper").position();
-            var correct = false;
+
             pos.left = 25;
                 $( "#paper" ).draggable( {
                     cursor: "grabbing",
@@ -38,7 +35,7 @@ export default {
                                 $("<p id='x'>"+risp+"</p>").insertBefore("#word");
                                 $("#x").delay(2000).css('color', '#0f0').fadeIn(function(){
                                     $('#paper').draggable( "destroy" )
-                                    this.answer = true;
+                                    risposta = true;
                                 });
                             }
                             else 
@@ -50,7 +47,7 @@ export default {
                 })
         },
         check() {
-            return(this.answer)
+            return(risposta)
         }
     }
   

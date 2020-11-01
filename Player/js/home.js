@@ -25,7 +25,7 @@ export default {
     },
     activated() {
         story = JSON.parse(localStorage.getItem("story"));
-        $('#storyDiv').css('background-image', 'url("/getImage?title='+story.title+'&name='+story.background+'")');
+        $('#storyDiv').css('background-image', `url("/Server-side/stories/public/${story.title}/files/${story.background}")`);  
         $('#description').html(story.description);
         $('#btnDev').html("Prendi il " +story.device);
     }

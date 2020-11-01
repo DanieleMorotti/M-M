@@ -104,13 +104,14 @@ app.get('/getStory',(req, res) => {
 	})
 })
 
-/* require device's css */
+/* require device's css 
 app.get('/getDeviceCss',(req, res) => {
 	res.sendFile(path.join(__dirname,".",'./devices/'+req.query.name+'/device.css'));
 })
 app.get('/getDeviceJs',(req, res) => {
 	res.sendFile(path.join(__dirname,".",'./devices/'+req.query.name+'/device.js'));
 })
+*/
 
 /* require widgets names */
 app.get('/getWidgets',(req, res) => {
@@ -392,22 +393,7 @@ app.get('/getPlayableStory', (req,res) => {
 	})
 })
 
-app.get('/getImage',(req,res) =>{
-	res.status(200);
-	res.sendFile(path.join(__dirname,"/stories/public/"+ req.query.title +"/files/"+req.query.name));
-})
 
-/*
-app.get('/getDeviceJs',(req,res) =>{
-	res.status(200);
-	res.sendFile(path.join(__dirname,"/devices/"+req.query.name+"/device.js"));
-})
-
-app.get('/getDeviceCss',(req,res) =>{
-	res.status(200);
-	res.sendFile(path.join(__dirname,"/devices/"+req.query.name+"/device.css"));
-})
-*/
 
 app.get('/getWidget',(req,res) =>{
 	res.status(200);
