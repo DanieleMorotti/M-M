@@ -1,5 +1,7 @@
 import render from '/Player/js/activities.js'
 
+let storyItem;
+
 export default {
 	name:'device',
 	data() {
@@ -61,7 +63,7 @@ export default {
 		}
 	},
 	activated() {
-		let storyItem = JSON.parse(localStorage.getItem("story"));
+		storyItem = JSON.parse(localStorage.getItem("story"));
 		this.missions = storyItem.missions;
 		$('#text').text(storyItem.introduction);
 		render.methods.initialize();

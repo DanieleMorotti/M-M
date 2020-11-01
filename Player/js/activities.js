@@ -1,4 +1,4 @@
-//import door from '../widgets/door.js'
+var widgetComp = null;
 
 export default {
     name:'act',
@@ -37,22 +37,19 @@ export default {
                 $('#schermo').css('background-image', `url("/Server-side/widgets/${widget}/${widget}.jpg")`);
          
                 $('#schermo').append(`<script  type="module" src='/Player/widgets/door.js'></script>`);
-             //   $('#schermo').append(this.door.template);
-             //   this.door.methods.render(this.missions[mission].activities[activity].question, this.missions[mission].activities[activity].correctAns); 
 
                 let question = this.missions[mission].activities[activity].question;
                 let correctAns = this.missions[mission].activities[activity].correctAns;
 
                 async function load() {
                     console.log('here')
-                    let d = 'door';
-                    let x = await import(`/Player/widgets/${d}.js`);
-                    $('#schermo').append(x.template());
-                    x.render(question, correctAns)
+                    widgetComp = await import(`/Player/widgets/${widget}.js`);
+                    $('#schermo').append(`<div id="widget"></div>`)
+                    $('#widget').append(widgetComp.default.template);
+                    widgetComp.default.methods.render(question, correctAns)
                 }
                 
                 load();
-                
             }   
            
             
@@ -86,15 +83,16 @@ export default {
                 }   
             }
             else if (type == "figurativa") {
-                if(door.methods.check()) {
+                $('#widget').remove();
+                $('#schermo').css('background-image', 'none');
+
+                if(widgetComp.default.methods.check()) {
                     $("#text").html(this.story.facilities[activity]);
                     this.nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity;
                     this.nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
                     return([this.nextAct, this.nextMiss]);
                 }
                 else {
-                    $('#widget').remove();
-                    $('#schermo').css('background-image', 'none');
                     $("#text").html(this.story.difficulties[activity]);
                     this.nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity; 
                     this.nextMiss = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextMission;
@@ -115,7 +113,7 @@ export default {
             this.nextAct = 0;
 
             //to update the server about my current position
-            setInterval(() => {                
+         /*   setInterval(() => {                
                 $.ajax({
                     type: "POST",
                     url: '/updatePlayerPosition',
@@ -130,7 +128,7 @@ export default {
                         console.log("error in update player position",e);
                     }
                 })
-            }, 3000);
+            }, 3000); */
         }
     }
 }
