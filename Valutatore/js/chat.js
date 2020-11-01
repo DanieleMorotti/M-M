@@ -15,32 +15,56 @@ export default {
         }
     }, 
     template: `
-        <div id="chatMenu" class="container">
-            <div id="chatHome">
-                <ul v-if="users.length != 0">
-                    <li v-for="user in users" v-bind:key="user.id"><button @click="enterChat(user.id)">{{user.id}}</button></li>
-                </ul>
-            </div>
+    <div class="container py-5 px-4">
+        <div class="row rounded-lg overflow-hidden shadow">
+            <!-- Users box-->
+            <div class="col-5 px-0">
+                <div class="bg-white" v-if="users.length != 0">
         
-            <div id="chat-staff" class="controls-wrapper">
-                <ul id="events" v-if="users.length != 0" v-chat-scroll>
-                    <li class="defaultMes">Staff member</li>
-                    <div v-if="users[currRoom].messages">
-                        <li v-for="message in users[currRoom].messages" v-bind:key="message.id"
-                        v-bind:class="{'myMes': message.type == 0,'otherMes': message.type == 1}">{{message.mess}}</li> 
-                    </div>
-                </ul>
-                <div class="controls">
-                    <div class="chat-wrapper">
-                        <form id="chat-form" @submit.prevent="onChatSubmitted">
-                            <input id="chatInput" autocomplete="off" type="text" v-model="newMess" title="chat" required/>
-                            <button type="submit">Send</button>
-                            <button type="button" @click="clearChat">Clear</button>
-                        </form>
+                <div class="messages-box" v-for="user in users" v-bind:key="user.id" @click="enterChat(user.id)">
+                    <div class="list-group rounded-0">
+                    <a class="list-group-item list-group-item-action active text-white rounded-0">
+                        <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
+                        <div class="media-body ml-4">
+                            <div class="d-flex align-items-center justify-content-between mb-1">
+                            <h6 class="mb-0">{{user.id}}</h6>
+                            </div>
+                        </div>
+                        </div>
+                    </a>
                     </div>
                 </div>
+                </div>
             </div>
-        </div> 
+            <!-- Chat Box-->
+            <div class="col-7 px-0">
+                <div class="container-fluid" style="overflow: auto;" v-chat-scroll>
+                    <span class="defaultMes">Staff member</span>
+                    <div class="px-4 py-5 chat-box bg-white">
+                        <!-- Messages-->
+                        <div class="media mb-3" id="events" v-if="users.length != 0">
+                            <div class="media-body " v-if="users[currRoom].messages" >
+                                <div class="bg-light rounded py-2 px-3 mb-2" v-for="message in users[currRoom].messages" v-bind:key="message.id" 
+                                v-bind:class="{'myMes': message.type == 0,'otherMes': message.type == 1}">
+                                    <p class="text-small mb-0">{{message.mess}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Typing area -->
+                <form @submit.prevent="onChatSubmitted" class="bg-light">
+                    <div class="input-group">
+                        <input type="text" placeholder="Type a message"  class="form-control rounded-0 border-0 py-4 bg-light" v-model="newMess" title="chat" required>
+                        <div class="input-group-append">
+                            <button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
     `,
     methods: {
         //save the messages of the staff and send them to the server
@@ -61,7 +85,6 @@ export default {
         
         //when the staff update for the first time the list of users
         sock.on('first-connection',(list) => {
-            console.log(JSON.stringify(list,null,2));
             if(list){
                 for(let i=0; i< list.length;i++){
                     this.users.push({id:list[i],messages:[]});
