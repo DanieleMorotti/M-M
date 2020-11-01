@@ -100,7 +100,7 @@ export default {
             setInterval(() => {                
                 $.ajax({
                     type: "POST",
-                    url: '/updatePlayerPosition',
+                    url: '/Play/updatePlayerPosition',
                     data: {
                         currMission: parseInt(this.nextMiss)+1,
                         currAct: parseInt(this.nextAct)+1

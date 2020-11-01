@@ -25,7 +25,7 @@
 
 	<body>
 		<div id="app">
-			<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+			<nav class="navbar navbar-expand-sm navbar-dark bg-dark" style="display: none;">
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
 				  <span class="navbar-toggler-icon"></span>
 				</button>
@@ -33,32 +33,54 @@
 				<div class="collapse navbar-collapse" id="navbarsExample03">
 					<router-link type="button" class="btn btn-dark mr-1" to="/" >Home</router-link>
 					<router-link id="toDevice" tag="button" class="btn btn-dark mr-1"  to="/device" :disabled="true">Device</router-link>
-					<i class="far fa-comments" style="cursor:pointer;color:white;font-size:1.3rem" onclick="toggleChat()"></i>
 				</div>
-			  </nav>
+			</nav>
 			
 			<keep-alive>
 				<router-view></router-view>
 			</keep-alive>
 		</div>
-		<div id="chat-user">
-			<div id="chat" class="controls-wrapper">
-				<ul id="events"  v-chat-scroll>
-					<li class="defaultMes">You are online</li>
-					<li v-for="mess in messages" :key="mess.id"
-					v-bind:class="{'myMes': mess.type == 0,'otherMes': mess.type == 1}">{{mess.mess}}</li> 
-				</ul>
-				<div class="controls">
-					<div class="chat-wrapper">
-						<form id="chat-form" @submit.prevent="onChatSubmitted">
-							<input id="chatInput" autocomplete="off" type="text" v-model="newMess" title="chat" required/>
-							<button type="submit">Send</button>
-							<button type="button" @click="clearChat">Clear</button>
-						</form>
+		<div class="row collapse h-75 py-1 px-4" id="chat-user">
+			<div class="col-12 rounded-lg overflow-hidden shadow card card-body">
+				<!-- Chat Box-->
+				<div class="container px-0">
+					<div class="container-fluid" style="overflow: auto;" v-chat-scroll>
+						<span class="defaultMes">You are online</span>
+						<div class="px-4 py-5 chat-box bg-white">
+							<!-- Messages-->
+							<div class="media mb-3" id="events">
+								<div class="media-body ">
+									<div class="bg-light rounded py-2 px-1 mb-2" v-for="mess in messages" :key="mess.id" 
+									v-bind:class="{'myMes': mess.type == 0,'otherMes': mess.type == 1}">
+										<p class="text-small mb-0">{{mess.mess}}</p>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
+					<!-- Typing area -->
+					<form @submit.prevent="onChatSubmitted" class="bg-light">
+						<div class="input-group">
+							<input type="text" placeholder="Type a message"  class="form-control rounded-0 border-0 py-4 bg-light" v-model="newMess" title="chat" required>
+							<div class="input-group-append">
+								<button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
+							</div>
+						</div>
+					</form>
 				</div>
+				
 			</div>
 		</div>
+		<p style="position:absolute;bottom:5rem;right:2rem;z-index:6">
+			<button class="btn btn-primary" type="button" >
+				Richiesta aiuto
+			</button>
+			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#chat-user" aria-expanded="false">
+				Chat
+			</button>
+		</p>
+		
+		
 		
 		<!--<script type="module" src="./js/index.js"></script>
 		<script type="module" id="scriptComp" src="./js/index.js"></script> -->

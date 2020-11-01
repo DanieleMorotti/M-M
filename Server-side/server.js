@@ -411,10 +411,10 @@ app.get('/getDeviceCss',(req,res) =>{
 let partecipants = [];
 
 //manage the update of user position
-app.post('/updatePlayerPosition',(req,res) => {
+app.post('/Play/updatePlayerPosition',(req,res) => {
 	//pos is an object with currMiss and currAct
 	let pos = req.body;
-	let usName = req.headers.cookie.substring(7,13);
+	let usName = req.cookies.userId.substring(0,5);
 	let index;
 
 	//to avoid access at field 'id' if array has no object
