@@ -366,7 +366,7 @@ const myfunctions = require('./function');
 app.get('/Play',(req,res) =>{
 	//res.status(200);
 	story = req.query.story;
-/*
+
 	cookies = req.cookies;
 	//set the cookies for the users
 	if(cookies && cookies.userId){
@@ -379,7 +379,7 @@ app.get('/Play',(req,res) =>{
 		cookieNum++;
 	}
 
-	*/
+	
 	res.sendFile(path.join(__dirname,"../Player/index.html"));
 })
 
@@ -465,7 +465,7 @@ app.get('/Valutatore', function(req,res){
 	res.sendFile(path.join(__dirname,'../Valutatore/valutatore.html'));
 } )
 
-/*
+
 //every time someone connect to the server
 io.on('connection', (sock) => {
 	//username is saved different for every socket
@@ -505,7 +505,7 @@ io.on('connection', (sock) => {
 		console.log(userName + ' is disconnected');
 	}) 
 
-});*/
+});
 
 //this is the namespace to manage the staff
 var staffSpace = io.of('/staff');

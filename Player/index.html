@@ -19,13 +19,14 @@
 	<!--<script src="https://unpkg.com/vue#2.6.11/dist/vue.js"></script> -->
 		<script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+		<link rel="stylesheet" href="/Player/index.css">
 		<link rel="stylesheet" id="stylesheetComp" href="/Player/home.css">
 		<link rel="stylesheet" href="/Player/Chat/chat.css">
 	</head>
 
 	<body>
 		<div id="app">
-			<nav class="navbar navbar-expand-sm navbar-dark bg-dark" style="display: none;">
+			<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
 				  <span class="navbar-toggler-icon"></span>
 				</button>
@@ -39,14 +40,16 @@
 			<keep-alive>
 				<router-view></router-view>
 			</keep-alive>
+		
 		</div>
-		<div class="row collapse h-75 py-1 px-4" id="chat-user">
+
+		<div class="row collapse py-1 px-4" id="chat-user">
 			<div class="col-12 rounded-lg overflow-hidden shadow card card-body">
 				<!-- Chat Box-->
 				<div class="container px-0">
 					<div class="container-fluid" style="overflow: auto;" v-chat-scroll>
 						<span class="defaultMes">You are online</span>
-						<div class="px-4 py-5 chat-box bg-white">
+						<div class=" py-3 chat-box bg-white">
 							<!-- Messages-->
 							<div class="media mb-3" id="events">
 								<div class="media-body ">
@@ -71,7 +74,8 @@
 				
 			</div>
 		</div>
-		<p style="position:absolute;bottom:5rem;right:2rem;z-index:6">
+		
+		<p id="bottomBtn">
 			<button class="btn btn-primary" type="button" >
 				Richiesta aiuto
 			</button>
@@ -79,7 +83,6 @@
 				Chat
 			</button>
 		</p>
-		
 		
 		
 		<!--<script type="module" src="./js/index.js"></script>

@@ -112,7 +112,7 @@ export default {
             this.nextAct = 0;
 
             //to update the server about my current position
-         /*   setInterval(() => {                
+            setInterval(() => {                
                 $.ajax({
                     type: "POST",
                     url: '/Play/updatePlayerPosition',
@@ -127,7 +127,7 @@ export default {
                         console.log("error in update player position",e);
                     }
                 })
-            }, 3000); */
+            }, 3000); 
         }
     }
 }

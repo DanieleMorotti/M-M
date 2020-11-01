@@ -4,13 +4,12 @@ export default {
     name: 'home',
     data() {
         return {
-            step: 4,
         }
     },
     template: `
         <div id="storyDiv" style="text-align: center">
             <p id="description"> </p>
-            <button id="btnDev" @click="grab"></button>
+            <button id="startBtn" @click="grab"></button>
         </div> 
     `,
     methods: {
@@ -25,8 +24,8 @@ export default {
     },
     activated() {
         story = JSON.parse(localStorage.getItem("story"));
-        $('#storyDiv').css('background-image', `url("/Server-side/stories/public/${story.title}/files/${story.background}")`);  
+        $('body').css('background-image', `url("/Server-side/stories/public/${story.title}/files/${story.background}")`);  
         $('#description').html(story.description);
-        $('#btnDev').html("Prendi il " +story.device);
+        $('#startBtn').html("Inizia la storia");
     }
 }

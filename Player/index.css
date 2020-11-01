@@ -1,0 +1,9 @@
+#bottomBtn {
+    position:absolute;
+    bottom: 2%;
+    right:2rem;
+}
+
+#app nav {
+   display: none;
+}

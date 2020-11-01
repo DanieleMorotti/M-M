@@ -1,41 +1,29 @@
-  html,body{
-    height: 100%;
-  }
-
-  body {
-    font-family: "Helvetica Neue", sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-
 
   .myMes{
-    background-color: lightgreen !important;
-    border: 1px solid black;
+    background-color: rgb(166, 226, 166) !important;
+   /* border: 1px solid black; */
     border-radius: 20px;
-    width:40%;
+    width:50%;
     overflow-wrap: break-word;
     margin-right:2px;
-    margin-left:52%;
+    margin-left:50%;
     margin-bottom:2%;
-
   }
-  .otherMes{
-    background-color: lightskyblue !important;
-    border: 1px solid black;
+
+  .otherMes {
+    background-color: rgb(153, 206, 238) !important;
+   /* border: 1px solid black; */
     border-radius: 20px;
-    width:40%;
-    margin-right:52%;
+    width:50%;
+    margin-right:50%;
     margin-left:2px;
     margin-bottom:2%;
   }
-  .defaultMes{
+
+  .defaultMes {
     font-size: smaller;
     color:grey;
     text-align:center !important;
-  }
-  form{
-    margin:0.5rem;
   }
 
   #chat-user{
@@ -44,4 +32,25 @@
     right:0;
     z-index: 5;
     margin:0;
+    height: 85% !important;
+    min-width: 300px;
+    max-height: 300px !important;
+  }
+
+
+  .container {
+    height: 100%;
+  }
+
+  .container-fluid {
+    height: 85%;
+  }
+
+  #events {
+    height: 60vh
+  }
+
+  #chat-user form{
+    margin: 0.5rem;
+    margin-bottom: 1rem;
   }

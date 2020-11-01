@@ -3,7 +3,6 @@
     opacity: 0.7;
     width: 80%;
     height: 10rem;
-  /*  display: inline-block;*/
     text-align: center;
     overflow-y: scroll;
     overflow-x: hidden; 
@@ -11,19 +10,17 @@
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-*::-webkit-scrollbar {
+#paper::-webkit-scrollbar {
     display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
-* {
+#paper {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
 
-
-
-input {
+#paper input {
     display: block;
     margin : 0 auto;
     width: 60%;

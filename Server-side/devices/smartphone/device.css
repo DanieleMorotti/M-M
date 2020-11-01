@@ -3,6 +3,7 @@ body {
     height: 100%;
     font-family: 'Ubuntu', sans-serif;
     background-color: #6b1a39;
+    background-image: none !important;
 }
   
 .device {
@@ -83,7 +84,6 @@ body {
     position: relative;
     color: white;
     background-size: contain;
-
 }
   
 #text, #info {
@@ -99,6 +99,7 @@ body {
     background-color: transparent;
     outline: none !important;
     box-shadow: none !important;
+    color: white;
 }
 
 
