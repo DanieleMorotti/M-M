@@ -10,22 +10,24 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>	
 		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
-		<script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/Valutatore/js/vue-chat-scroll.min.js"></script>
-		<link rel="stylesheet" id="stylesheetComp" href="/Valutatore/chat.css">
+		<link rel="stylesheet" id="stylesheetDyn" href="/Valutatore/chat.css">
 	</head>
 
 	<body>
-		<div id="app">
-			<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
-				<router-link id="toChat" tag="button" class="btn btn-dark mr-1" to="/" >Chat</router-link>
-				<router-link id="toVal" tag="button" class="btn btn-dark mr-1" to="/valMenu">Valuta foto</router-link>
-			</nav>
-			<keep-alive>
-				<router-view ></router-view>
-			</keep-alive>
+		<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+			<button id="toChat" class="btn btn-dark mr-1" onclick="toggleMenu(1)">Chat</button>
+			<button id="toVal" class="btn btn-dark mr-1" onclick="toggleMenu(2)">Valuta</button>
+		</nav>
+		<div id="chat">
+			<div id="chatMenu"></div>
+			<div id="eventMenu"></div>
 		</div>
-		<script type="module" src="/Valutatore/js/index.js"></script>
+		<div id="valMenu">
+
+		</div>
+		<script type="module" src="/Valutatore/js/chat.js"></script>
+		<script src="/Valutatore/js/valuta.js"></script>
 	</body>
 </html>

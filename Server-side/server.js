@@ -438,7 +438,7 @@ app.post('/Play/updatePlayerPosition',(req,res) => {
 //VALUTATORE
 /////////////////////////////////////////////////////////
 
-app.get('/whoNeedHelp',(req,res) =>{
+app.get('/Valutatore/whoNeedHelp',(req,res) =>{
 	let who = [];
 	partecipants.forEach(el => { if(el.needHelp)who.push({who:el.id,where:el.position}); });
 	res.json(who);

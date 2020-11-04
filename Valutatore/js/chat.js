@@ -1,11 +1,7 @@
-//import { bus } from './index.js';
-import valComp from './val.js'
-
 const sock = io.connect('/staff');
 
-export default {
-    name: 'chatMenu',
-    components: valComp,
+new Vue({
+    el: '#chatMenu',
     data() {
         return{
             newMess: null,
@@ -15,7 +11,7 @@ export default {
         }
     }, 
     template: `
-    <div class="container py-5 px-4">
+    <div class="container py-5 px-4 mx-5">
         <div class="row rounded-lg overflow-hidden shadow">
             <!-- Users box-->
             <div class="col-5 px-0">
@@ -65,6 +61,7 @@ export default {
             
         </div>
     </div>
+    
     `,
     methods: {
         //save the messages of the staff and send them to the server
@@ -72,9 +69,6 @@ export default {
             this.users[this.currRoom].messages.push({mess:this.newMess,type:0});
             sock.emit('staff-chat-message',{to:this.users[this.currRoom].id,mess:this.newMess});
             this.newMess = null;
-        },
-        clearChat(){
-            this.users[this.currRoom].messages = [];
         },
         //change the current chat to the 'id' chat 
         enterChat(id){
@@ -122,7 +116,7 @@ export default {
         setInterval(() => {                
             $.ajax({
                 type: "GET",
-                url: '/whoNeedHelp',
+                url: '/Valutatore/whoNeedHelp',
                 success: (data) =>{
                     if(data.length > 0){
                         data.forEach(el => {
@@ -137,4 +131,27 @@ export default {
             })
         }, 5000);
     }
-}
+})
+
+
+new Vue({
+    el: '#eventMenu',
+    data() {
+        return{
+            
+        }
+    }, 
+    template: `
+        <div>
+            <span>lolo</span>
+        </div>
+    `,
+    methods: {
+        
+    },
+    created() {
+    },
+    mounted(){
+        
+    }
+})
