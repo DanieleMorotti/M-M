@@ -1,4 +1,5 @@
 var widgetComp = null;
+var score = 0;
 
 export default {
     name:'activities',
@@ -11,7 +12,7 @@ export default {
             nextAct: null,
             nextMiss: null,
             widget: null,
-            door: null
+            score: 0
         }
     },
     methods: {
@@ -61,13 +62,14 @@ export default {
                     $("#text").html(this.story.facilities[activity]);
                     this.nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity;
                     this.nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
-                    return([this.nextAct, this.nextMiss]);
+                    this.score = this.score + this.missions[mission].activities[activity].score;
+                    return([this.nextAct, this.nextMiss, this.score]);
             }
             else if(type == 'scelta multipla') { 
                 $("#text").html(this.story.difficulties[activity]);
                 this.nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity; 
                 this.nextMiss = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextMission;
-                return([this.nextAct, this.nextMiss]);
+                return([this.nextAct, this.nextMiss, this.score]);
             }
             else if(type == "domanda aperta") {
                 if($("#answer").val() == "") {
@@ -78,7 +80,7 @@ export default {
                     $("#text").html(this.story.difficulties[activity]);
                     this.nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity; 
                     this.nextMiss = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextMission;
-                    return([this.nextAct, this.nextMiss]);
+                    return([this.nextAct, this.nextMiss, this.score]);
                 }   
             }
             else if (type == "figurativa") {
@@ -89,13 +91,14 @@ export default {
                     $("#text").html(this.story.facilities[activity]);
                     this.nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity;
                     this.nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
-                    return([this.nextAct, this.nextMiss]);
+                    this.score = this.score + this.missions[mission].activities[activity].score;
+                    return([this.nextAct, this.nextMiss, this.score]);
                 }
                 else {
                     $("#text").html(this.story.difficulties[activity]);
                     this.nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity; 
                     this.nextMiss = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextMission;
-                    return([this.nextAct, this.nextMiss]);
+                    return([this.nextAct, this.nextMiss, this.score]);
                 }
             }
             else {
@@ -110,6 +113,7 @@ export default {
             this.missions = storyItem.missions;
             this.nextMiss = 0;
             this.nextAct = 0;
+            this.score = 0;
 
             //to update the server about my current position
             setInterval(() => {                

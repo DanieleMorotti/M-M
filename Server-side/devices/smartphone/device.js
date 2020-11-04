@@ -42,7 +42,6 @@ export default {
 			}
 			else {
 				if(this.obj) {
-					console.log(this.obj) 
 					if(this.obj[0] != 'x') {
 						this.currentActivity = this.obj[0]; this.currentMission = this.obj[1];
 						this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
@@ -51,6 +50,8 @@ export default {
 					else {
 						$('#text').html("");
 						$('#text').append(storyItem.conclusion);
+						$('#text').append(`<br><br><p>Congratulazioni hai totalizzato ${this.obj[2]} punti!`)
+						$('#next').attr("disabled","disabled");
 					}
 					this.obj = null;
 				}

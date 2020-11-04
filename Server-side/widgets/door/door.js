@@ -12,6 +12,7 @@ export default {
     `,
     methods: {
         render(question, answer) {
+            this.init()
             $('#word').attr("placeholder", question);
             var pos = $("#paper").position();
 
@@ -49,6 +50,7 @@ export default {
         check() {
             return(risposta)
         }
+      
     }
   
     

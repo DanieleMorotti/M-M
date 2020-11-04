@@ -7,3 +7,7 @@
 #app nav {
    display: none;
 }
+
+#app {
+    margin-top: 5vh
+}

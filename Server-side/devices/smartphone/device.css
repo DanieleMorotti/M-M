@@ -102,7 +102,9 @@ body {
     color: white;
 }
 
-
+#next:disabled {
+    color: grey;
+}
 
 
 #bottone {
