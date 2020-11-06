@@ -77,7 +77,7 @@
 		</div>
 		
 		<p id="bottomBtn">
-			<button class="btn btn-primary" type="button" >
+			<button class="btn btn-primary" type="button" onclick="askHelp()" >
 				Richiesta aiuto
 			</button>
 			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#chat-user" aria-expanded="false">
@@ -109,6 +109,20 @@
 				})
 			})
 
+			//function to ask for help
+			function askHelp(){
+				$.ajax({
+                    type: "POST",
+                    url: '/Play/askForHelp',
+                    success: (data) =>{
+                        console.log("Richiesta di aiuto arrivata");
+                    },
+                    error: function (e) {
+                        console.log("error in /askForHelp",e);
+                    }
+                })
+			}
+			
 			let app = new Vue({
 				el: '#chat-user',
 				data:{

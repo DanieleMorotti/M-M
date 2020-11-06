@@ -401,6 +401,8 @@ app.get('/getWidget',(req,res) =>{
 })
 
 let partecipants = [];
+//array for users who ask help with the button
+let askingHelp = [];
 
 //manage the update of user position
 app.post('/Play/updatePlayerPosition',(req,res) => {
@@ -416,7 +418,7 @@ app.post('/Play/updatePlayerPosition',(req,res) => {
 			if(JSON.stringify(partecipants[index].position) == JSON.stringify(pos)){
 				partecipants[index].time++;
 				//if the user is in the same position since a few minutes
-				if(partecipants[index].time > 6)partecipants[index].needHelp = true;
+				if(partecipants[index].time > 5)partecipants[index].needHelp = true;
 			}
 			else{
 				partecipants[index].position = pos;
@@ -434,15 +436,32 @@ app.post('/Play/updatePlayerPosition',(req,res) => {
 	res.end();
 })
 
+app.post('/Play/askForHelp',(req,res) =>{
+	let name = req.cookies.userId.substring(0,5);
+	if(askingHelp.length > 0){
+		//avoid to have multiple request from the same user notified 
+		if((index = askingHelp.findIndex(x => x.who==name)) >= 0){
+		}
+		else{
+			askingHelp.push({who:name,where:""});
+		}
+	}
+	else{
+		askingHelp.push({who:name,where:""});
+	}
+	res.end();
+})
 //////////////////////////////////////////////////////////
 //VALUTATORE
 /////////////////////////////////////////////////////////
 
 app.get('/Valutatore/whoNeedHelp',(req,res) =>{
 	let who = [];
-	partecipants.forEach(el => { if(el.needHelp)who.push({who:el.id,where:el.position}); });
+	partecipants.forEach(el => { if(el.needHelp)who.push({who:el.id,where:el.position});});
+	who = askingHelp.concat(who);
 	res.json(who);
 })
+
 
 ////////////////////////////////////////////////////////////////////
 //CHAT SECTION

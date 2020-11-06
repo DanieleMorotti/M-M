@@ -42,7 +42,17 @@
   form{
     margin:0.5rem;
   }
-  #chatHome{
-    padding:2rem;
-    margin: 1.5rem 30rem ;
+ 
+  #chat{
+    height:100%;
+  }
+  #chatNotif{
+    height: 100%;
+  }
+  #notMenu{
+    border:1px solid blue;
+    float:right;
+    margin-top: 5vh;
+    margin-right:10vw;
+    margin-bottom: 3vh;
   }

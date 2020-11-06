@@ -131,7 +131,7 @@ export default {
                         console.log("error in update player position",e);
                     }
                 })
-            }, 3000); 
+            }, 2000); 
         }
     }
 }
