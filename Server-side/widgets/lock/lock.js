@@ -1,81 +1,121 @@
-$(function(){
 
-	var comboArray = [0, 0, 0, 0, 0];
-	var combination = [8, 7, 5, 9, 0];
-	
-	var gridIncrement = $( ".lock-dial ul" ).css('line-height').replace('px', '')/2;
-	var numNums = $( ".lock-dial:eq(0) ul li" ).length;
-	var halfHeight = gridIncrement*numNums;
-	var initTop = -(halfHeight-gridIncrement);
-	
-	$( ".lock-dial ul" ).css('top', initTop);
-	
-	$( ".lock-dial ul" ).draggable({
-		grid: [ 0, gridIncrement ],
-		axis: 'y',
-		drag: function(){
-			var dragDir = $(this).css('top').replace('px', '') < initTop ? "up" : "down";
-			
-			if(dragDir == "up"){
-				var curNum = parseInt($(this).find('li:last-child').text()) + 1;
-				if(curNum < 10){
-					$(this).append('<li>'+curNum+'</li>');
-				}else{
-					$(this).append('<li>0</li>');
-				};
-			}else{
-				var curNum = parseInt($(this).find('li:first-child').text()) - 1;
-				var thisTop = parseInt($(this).css('margin-top').replace('px', ''));
-				
-				$(this).css({
-					marginTop: thisTop-(gridIncrement*2)
-				});
-				
-				if(curNum > -1){
-					$(this).prepend('<li>'+curNum+'</li>');
-				}else{
-					$(this).prepend('<li>9</li>');
-				};
-			};
-		},
-		stop: function(){
-		
-			//MATHS		
-			var negOrPos = $(this).css('margin-top').replace('px', '') > 0 ? 1 : -1;
-			var thisTopTotal = parseInt($(this).css('top').replace('px', '')) + Math.abs(initTop);
-			var marginMinified = parseInt(Math.abs($(this).css('margin-top').replace('px', ''))) - thisTopTotal;
-			var numIncs = Math.floor(marginMinified/(halfHeight*2));
-			var totalDif = numIncs*(halfHeight*2);
-			var topTen = (marginMinified - totalDif)*negOrPos;
-			var activeIndex = Math.abs(topTen/(gridIncrement*2)) + (halfHeight/(gridIncrement*2));
-			
-			$(this).attr("data-combo-num", $(this).find('li').eq(activeIndex).text()).css({
-				top: -315,
-				marginTop: topTen
-			}).find('li').slice(20).remove();
-			
-			for(var i=0; i<$( ".lock-dial ul" ).length; i++){
-				comboArray[i] = $( ".lock-dial ul:eq("+i+")" ).attr("data-combo-num");
-			}
-			
-			
-			if(comboArray == ""+combination){
-				$('.lock-dial ul').draggable('disable');
-				$('#lock-wrapper').addClass("unlocked");
-				$('.lock-dial').each(function(){
-					var $this = $(this);
-					$this.find('ul').delay(400).css('color', '#0f0').fadeOut(function(){
-						$this.animate({
-							marginTop: 150
-						}, function(){
-							$this.fadeOut(function(){
-								$('.welcome-message').fadeIn();
-							});
-						});
-					});
-				});
-			}
-		}
-	});
+var risposta = false;
 
-})
+export default {
+    name: 'door',
+    template: `
+            <link rel="stylesheet" href="/Server-side/widgets/lock/lock.css">
+            <div id="question"></div>
+            <div class="lockContainer">
+            <div id="zero" class="lockDigitContainer digit0">
+                <div class="lockDigit lockDigitPrev">9</div>
+                <div class="lockDigit lockDigitCur">0</div>
+                <div class="lockDigit lockDigitNext">1</div>
+            </div>
+            <div id="one" class="lockDigitContainer digit1">
+                <div class="lockDigit lockDigitPrev">9</div>
+                <div class="lockDigit lockDigitCur">0</div>
+                <div class="lockDigit lockDigitNext">1</div>
+            </div>
+            <div id="two" class="lockDigitContainer digit2">
+                <div class="lockDigit lockDigitPrev">9</div>
+                <div class="lockDigit lockDigitCur">0</div>
+                <div class="lockDigit lockDigitNext">1</div>
+            </div>
+            <div id="three" class="lockDigitContainer digit3">
+                <div class="lockDigit lockDigitPrev">9</div>
+                <div class="lockDigit lockDigitCur">0</div>
+                <div class="lockDigit lockDigitNext">1</div>
+            </div>
+            </div>
+    `,
+    methods: {
+        render(question, answer) {
+
+                console.log(answer)
+                let combination = []
+                let start = [0,0,0,0]
+
+                for(var i = 0 ; i < 4; i++) {
+                   combination[i] = answer.charAt(i);
+                } 
+              
+               $('#question').html(question);
+
+               function ComboLock() {
+                    this.mouseDownY = null;
+                    this.mouseDownItem = null;
+               }
+    
+            ComboLock.prototype.init = function() {
+                var self = this;
+                $(".lockDigitContainer").mousedown(function(evt) {
+                    self.mouseDownItem = $(this);
+                    self.mouseDownItem.addClass('depressed');
+                    self.mouseDownY = evt.clientY;
+                });
+            
+                $(document).mouseup(function(evt) {
+                    if (self.mouseDownY)
+                    {
+                    var dir = 'down'
+                    if (self.mouseDownY > evt.clientY)
+                        var dir = 'up';
+                    
+                    self.rotateDirection(dir, self.mouseDownItem);
+                    self.mouseDownItem.removeClass('depressed');
+                    
+                    self.mouseDownY = null;
+                    self.mouseDownItem = null;
+                    }
+                });
+            };
+    
+            ComboLock.prototype.rotateDirection = function(direction, item) {
+                var checkdigit = 0;
+                var newdigit = 9;
+                var additiondigit = -1;
+                if ('up' == direction){
+                    checkdigit = 9;
+                    newdigit = 0;
+                    additiondigit = 1;
+                }
+    
+                var p = parseInt(item.find('.lockDigitPrev').html());
+                var c = parseInt(item.find('.lockDigitCur').html());
+                var n = parseInt(item.find('.lockDigitNext').html());
+                
+                if(item[0].id =='zero') 
+                    start[0] = p;
+                if(item[0].id == 'one')
+                    start[1] = p;
+                if(item[0].id =='two') 
+                    start[2] = p;
+                if(item[0].id == 'three')
+                    start[3] = p;
+    
+                p = (p == checkdigit) ? newdigit : p + additiondigit;
+                c = (c == checkdigit) ? newdigit : c + additiondigit;
+                n = (n == checkdigit) ? newdigit : n + additiondigit;
+
+                if(start.toString() == combination.toString()) {
+                    $('.lockDigitCur').addClass( "correct" );
+                    risposta = true;
+                }
+    
+                item.find('.lockDigitPrev').html(p);
+                item.find('.lockDigitCur').html(c);
+                item.find('.lockDigitNext').html(n);
+            };
+    
+               var combo = new ComboLock();
+               combo.init();
+        },
+        check() {
+            return(risposta)
+        }
+      
+    }
+    
+    
+}

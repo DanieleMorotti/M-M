@@ -69,6 +69,28 @@
           "widget": "door",
           "goTo": {
             "ifCorrect": {
+              "nextMission": "0",
+              "nextActivity": "3"
+            },
+            "ifNotCorrect": {
+              "nextMission": "0",
+              "nextActivity": "3"
+            }
+          }
+        },
+        {
+          "number": 3,
+          "type": "figurativa",
+          "setting": "seminterrato",
+          "instructions": "svolgimento",
+          "question": "domanda lock",
+          "answers": "",
+          "correctAns": "9999",
+          "score": 50,
+          "isActive": true,
+          "widget": "lock",
+          "goTo": {
+            "ifCorrect": {
               "nextMission": "x",
               "nextActivity": "x"
             },

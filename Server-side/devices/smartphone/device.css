@@ -83,7 +83,11 @@ body {
     overflow: hidden;
     position: relative;
     color: white;
-    background-size: contain;
+  /*  background-size: contain; */
+   
+    background-size:     cover;                    
+    background-repeat:   no-repeat;
+    background-position: center center;
 }
   
 #text, #info {
@@ -121,11 +125,10 @@ body {
 }
 
 
-
-
 #answers label {
     cursor:pointer;
 }
+
 #answers input {
     display:none;
 }
@@ -140,7 +143,6 @@ body {
 #answers input:checked + label {
     background-color: #f3c93f;
 }
-
 
 #widget {
     height: 60%;

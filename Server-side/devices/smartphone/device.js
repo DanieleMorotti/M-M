@@ -59,8 +59,6 @@ export default {
 					this.obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
 				}
 			}
-		},
-		check() {
 		}
 	},
 	activated() {
