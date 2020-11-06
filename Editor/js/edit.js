@@ -30,6 +30,7 @@ export default {
     template: `
         <div id="editMenu" class="container">
             <p id="title">Inserisci i dati per creare la tua nuova storia </p>
+            <button id="submitBtn" @click="checkForm">FINITO</button><span id="selMissErr">Nessuna missione è stata attivata</span>
             <form id="editStoryForm">
                 <ul>
                     <li>
@@ -64,7 +65,7 @@ export default {
                         <textarea id="inpConcl" name="conclusion" rows="3" cols="40"></textarea>
                     </li>
                     <li>    
-                        <h2 style="display:inline-block">Missioni</h2>&nbsp;&nbsp;<i class="fas fa-plus" @click="addMission"></i>
+                        <h3 style="display:inline-block">Missioni</h3>&nbsp;&nbsp;<i class="fas fa-plus" @click="addMission"></i>
                         <input type="button" id="buttonGraph" data-toggle="modal" data-target="#graphModal" value="Grafo attività"/>
 
 
@@ -128,7 +129,7 @@ export default {
                     </li>
                 </ul>
             </form>
-            <button @click="checkForm">FINITO</button><span id="selMissErr">Nessuna missione è stata attivata</span>
+           
 
             <form id="activitiesForm" @submit="addActivity">
                 <h2>Nuova attività</h2>
@@ -145,6 +146,8 @@ export default {
                         <label for="openQuest">Domanda aperta</label>
                         <input id="figur" type="radio" v-model="type" value="figurativa" name="activityTypeGroup" />
                         <label for="figur">Figurativa</label>
+                        <input id="valutabile" type="radio" v-model="type" value="valutabile" name="activityTypeGroup"  />
+                        <label for="valutabile">Valutabile</label>
 
                         <h5>Dove si svolge l'attività?(ambientazione)</h5>
                         <input type="text" name="where" />
@@ -155,24 +158,39 @@ export default {
                         <div id="questionDiv">
                             <label for="question">Inserisci la domanda:</label><br>
                             <input id="question" type="text" name="question" /><br>
-                            <label for="answer">Inserisci una risposta:</label><br>
                     
-                        <div v-if="type=='scelta multipla'">
-                            <input id="answer" type="text" name="answer" @keyup.enter="addAnswer(event)"/>
-                            <button id="insertAnswer" @click="addAnswer(event)">Aggiungi risposta</button>
-                            <p v-if="answerList.length">Seleziona la risposta corretta</p>
-                            <ul id="answers">
-                                <li v-for="(answer,index) in answerList" :key="index">
-                                <input type="radio" :id="index" name="answer" :value="answer" checked required>
-                                <label :for="index"> {{answer}} </label>
-                                 &nbsp;&nbsp;
-                                <i class="fas fa-trash-alt" @click="answerList.splice(index,1)"></i>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-else>
-                            <input id="answer" type="text" name="answer"/>
-                        </div>
+                            <div v-if="type=='scelta multipla'">
+                                <label for="answer">Inserisci una risposta:</label><br>
+                                <input id="answer" type="text" name="answer" @keyup.enter="addAnswer(event)"/>
+                                <button id="insertAnswer" @click="addAnswer(event)">Aggiungi risposta</button>
+                                <p v-if="answerList.length">Seleziona la risposta corretta</p>
+                                <ul id="answers">
+                                    <li v-for="(answer,index) in answerList" :key="index">
+                                    <input type="radio" :id="index" name="answer" :value="answer" checked required>
+                                    <label :for="index"> {{answer}} </label>
+                                    &nbsp;&nbsp;
+                                    <i class="fas fa-trash-alt" @click="answerList.splice(index,1)"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div v-else-if="type=='domanda aperta' || type=='figurativa'">
+                                <label for="answer">Inserisci una risposta:</label><br>
+                                <input id="answer" type="text" name="answer"/>
+                            </div>
+                            <div>
+                                <h5>Scegli il tipo di oggetto da inserire: </h5>
+                                <ul id="inputObject">
+                                    <li>
+                                        <input id="text" type="radio" value="text" name="inputObjectGroup" :disabled="type!=='valutabile'" checked />
+                                        <label for="text">Campo di testo</label>
+                                    </li>
+                                    <li>
+                                        <input id="file" type="radio" value="file" name="inputObjectGroup" :disabled="type!=='valutabile'" />
+                                        <label for="file">Scelta file</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            
 
                             <label for="score">Inserisci un punteggio da assegnare:</label><br>
                             <input id="score" type="range" min="10" max="100" step="5"  v-model="value" name="score"/>
@@ -430,6 +448,7 @@ export default {
             e.preventDefault();
             $(`#nextActivityCorrect option`).prop('disabled', false);
             $(`#nextActivityIncorrect option`).prop('disabled', false);
+
             if($('#saveActivity').val() == "Salva modifiche"){
                 let widgetValue = "";
 
@@ -444,9 +463,12 @@ export default {
                     this.missions[this.currentMission].activities[this.currentActivity].answers = this.answerList;
                     this.missions[this.currentMission].activities[this.currentActivity].correctAns = $('#answers input:checked').val();
                 }
-                else if(this.type) {
+                else {
                     this.missions[this.currentMission].activities[this.currentActivity].answers = '';
                     this.missions[this.currentMission].activities[this.currentActivity].correctAns = $('#answer').val();
+                }
+                if(this.type == 'valutabile') {
+                    this.missions[this.currentMission].activities[this.currentActivity].inputType = $('#inputObject input:checked').val();
                 }
                 
                 this.missions[this.currentMission].activities[this.currentActivity].score = this.value;
@@ -468,7 +490,7 @@ export default {
                 let missionIndex = this.missions.findIndex(obj => obj.name === $('#chooseMission').val());
                 let activityNumber = (this.missions[missionIndex].activities.length != 0)?this.missions[missionIndex].activities[this.missions[missionIndex].activities.length -1].number +1:0;
                 
-                let correctAnswer = '';
+                let correctAnswer = '', inputType = '';
                 if (this.type == 'scelta multipla') {
                     correctAnswer = $('#answers input:checked').val();
                 }
@@ -476,6 +498,7 @@ export default {
                     correctAnswer =  $('#answer').val();
                 }
 
+                if(this.type == 'valutabile') inputType = $('#inputObject input:checked').val();
                
                 let activity = {
                     number: activityNumber,
@@ -485,6 +508,7 @@ export default {
                     question: $("#question").val(),
                     answers: this.answerList,
                     correctAns: correctAnswer,
+                    inputType: inputType,
                     score: this.value,
                     isActive: true,
                     widget: widgetValue,
@@ -541,6 +565,11 @@ export default {
                 if(this.type == 'scelta multipla') this.answerList = this.missions[misInd].activities[index].answers;
                 else $('#answer').prop("value", this.missions[misInd].activities[index].correctAns);
 
+                if(this.type == 'valutabile') {
+                    let val = this.missions[misInd].activities[index].inputType;
+                    console.log(val)
+                    $(`#inputObject li input[value='${val}']`).prop("checked", true);
+                }
                 //resume activity's score
                 this.value = this.missions[misInd].activities[index].score;
 

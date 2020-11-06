@@ -1,19 +1,21 @@
 
 html,body{
     height: 100%;
+    background-color: rgb(29, 27, 27);
+}
+
+body p, span {
+    color: white
 }
 
 .info{
     font-size:1.2rem;
-    margin:1rem;
-}
-
-#littleMenu{
-    margin-left:2rem;
 }
 
 #privateStories, #publicStories{
-    margin:2rem;
+    margin: 2rem;
+    margin-top: 4rem;
+    margin-bottom: 3rem;
 }
 
 #private-list, #public-list{
@@ -21,20 +23,23 @@ html,body{
 }
 
 #public-list > button {
-    background-color:#facbc8;
+    background-color:#ceaec8;
+    color: white
 }
 
-#private-list > button:focus{
-    background-color:#d1fff2;
+#private-list > button{
+    background-color:#889ebf;
+    color: white
 }
 
 .icon-group{
     float: right;
-    margin-right: 3em;
+    margin-right: 2em;
+    color: black
 }
 
 .icon-group i.fas{
-    cursor:grab;
+    cursor: grab;
 }
 
 #qrcodeMenu{
@@ -50,3 +55,25 @@ html,body{
     width:24%;
     height: 24%;
 }
+
+
+#newStory {
+    background-color: #ece9e9b9;
+    color: rgb(51, 51, 51);
+    font-size: 1rem;
+    padding: 0.7rem 0.7rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    top: 0;
+    right: 0;
+    margin-top: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 2rem;
+    position: absolute;
+}
+
+
+    
+  

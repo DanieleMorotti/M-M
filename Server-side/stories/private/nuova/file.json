@@ -1,0 +1,20 @@
+{
+  "title": "nuova",
+  "setting": "",
+  "description": "",
+  "introduction": "",
+  "conclusion": "",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [],
+      "isActive": true
+    }
+  ],
+  "facilities": [],
+  "difficulties": [],
+  "originalTitle": "",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}

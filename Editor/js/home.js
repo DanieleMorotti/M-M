@@ -13,9 +13,11 @@ export default {
         }
     },
     template: `
+
         <div id="storySection" class="container-fluid">
-            <p class="info">Storie pubblicate</p>
+            <button id="newStory" @click="newStory">Nuova storia <i class="fas fa-plus"></i></button>
             <div id="publicStories">
+            <p class="info">STORIE PUBBLICATE</p>
                 <span v-if="publicStoriesList.length == 0">Nessuna storia pubblicata</span>
                 <div id="public-list" class="list-group" v-else>
                     <button v-for="(obj,index) in publicStoriesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index,'public')">
@@ -30,11 +32,9 @@ export default {
                 </div>
             </div>
             
-            <p class="info">Seleziona la storia che vuoi modificare,copiare,eliminare o pubblicare.</p>
-            <div id="littleMenu">
-                <button @click="newStory">Nuova storia <i class="fas fa-plus"></i></button>
-            </div>
+            
             <div id="privateStories">
+            <p class="info">STORIE PRIVATE <br>Seleziona la storia che vuoi modificare, copiare, eliminare o pubblicare.</p>
                 <span v-if="privateStoriesList.length == 0">Nessuna storia presente</span>
                 <div id="private-list" class="list-group" v-else>
                     <button v-for="(story,index) in privateStoriesList" :key="index" type="button" class="list-group-item list-group-item-action " @click="changeActive(index,'private')">
