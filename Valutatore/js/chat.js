@@ -1,68 +1,78 @@
-//import { bus } from './index.js';
-import valComp from './val.js'
-
 const sock = io.connect('/staff');
 
-export default {
-    name: 'chatMenu',
-    components: valComp,
+new Vue({
+    el: '#chatMenu',
     data() {
         return{
             newMess: null,
             users: [],
+            blockUsers:[],
             //for default the chat of the first user is shown
             currRoom: 0
         }
     }, 
     template: `
-    <div class="container py-5 px-4">
-        <div class="row rounded-lg overflow-hidden shadow">
-            <!-- Users box-->
-            <div class="col-5 px-0">
-                <div class="bg-white" v-if="users.length != 0">
-        
-                <div class="messages-box" v-for="user in users" v-bind:key="user.id" @click="enterChat(user.id)">
-                    <div class="list-group rounded-0">
-                    <a class="list-group-item list-group-item-action active text-white rounded-0">
-                        <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
-                        <div class="media-body ml-4">
-                            <div class="d-flex align-items-center justify-content-between mb-1">
-                            <h6 class="mb-0">{{user.id}}</h6>
+    <div id="chatNotif">
+        <div class="container py-4 px-4 ml-4 mr-1 d-inline-block" style="height:80% !important">
+            <div class="row rounded-lg overflow-hidden shadow" style="height:100% !important;width:100% !important;">
+                <!-- Users box-->
+                <div class="col-5 px-0">
+                    <div class="bg-white" v-if="users.length != 0">
+                        <div class="messages-box" v-for="user in users" v-bind:key="user.id" @click="enterChat(user.id)">
+                            <div class="list-group rounded-0">
+                                <a class="list-group-item list-group-item-action active text-white rounded-0">
+                                    <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
+                                        <div class="media-body ml-4">
+                                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                            <h6 class="mb-0">{{user.id}}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
                         </div>
-                        </div>
-                    </a>
                     </div>
                 </div>
-                </div>
-            </div>
-            <!-- Chat Box-->
-            <div class="col-7 px-0">
-                <div class="container-fluid" style="overflow: auto;" v-chat-scroll>
-                    <span class="defaultMes">Staff member</span>
-                    <div class="px-4 py-5 chat-box bg-white">
-                        <!-- Messages-->
-                        <div class="media mb-3" id="events" v-if="users.length != 0">
-                            <div class="media-body " v-if="users[currRoom].messages" >
-                                <div class="bg-light rounded py-2 px-3 mb-2" v-for="message in users[currRoom].messages" v-bind:key="message.id" 
-                                v-bind:class="{'myMes': message.type == 0,'otherMes': message.type == 1}">
-                                    <p class="text-small mb-0">{{message.mess}}</p>
+                <!-- Chat Box-->
+                <div class="col-7 px-0">
+                    <div class="container-fluid" style="overflow: auto;height:85% !important" v-chat-scroll>
+                        <span class="defaultMes">Staff member</span>
+                        <div class="px-4 py-5 chat-box bg-white">
+                            <!-- Messages-->
+                            <div class="media mb-3" id="events" v-if="users.length != 0">
+                                <div class="media-body " v-if="users[currRoom].messages" >
+                                    <div class="bg-light rounded py-2 px-3 mb-2" v-for="message in users[currRoom].messages" v-bind:key="message.id" 
+                                    v-bind:class="{'myMes': message.type == 0,'otherMes': message.type == 1}">
+                                        <p class="text-small mb-0">{{message.mess}}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Typing area -->
-                <form @submit.prevent="onChatSubmitted" class="bg-light">
-                    <div class="input-group">
-                        <input type="text" placeholder="Type a message"  class="form-control rounded-0 border-0 py-4 bg-light" v-model="newMess" title="chat" required>
-                        <div class="input-group-append">
-                            <button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
+                    <!-- Typing area -->
+                    <form @submit.prevent="onChatSubmitted" class="bg-light">
+                        <div class="input-group">
+                            <input type="text" placeholder="Type a message"  class="form-control rounded-0 border-0 py-4 bg-light" v-model="newMess" title="chat" required>
+                            <div class="input-group-append">
+                                <button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
+                
             </div>
-            
+        </div>
+        <div id="notMenu" class="py-5 d-inline-block">
+            <div v-if="blockUsers.length != 0" v-chat-scroll>
+                <span>Notifiche utenti</span>
+                <ul class="list-group" >
+                    <li class="list-group-item" v-for="(user,i) in blockUsers" v-bind:key="user.id" @click="enterChat(user.who,i)">
+                        <span v-if="user.where">{{user.who}} ha bisogno nella missione {{user.where.currMission}}, attività {{user.where.currAct}}</span>
+                        <span v-else>{{user.who}} ha richiesto aiuto</span>
+                    </li>
+                </ul>
+            </div>
+            <span v-else>Nessuna notifica </span>
         </div>
     </div>
     `,
@@ -73,11 +83,12 @@ export default {
             sock.emit('staff-chat-message',{to:this.users[this.currRoom].id,mess:this.newMess});
             this.newMess = null;
         },
-        clearChat(){
-            this.users[this.currRoom].messages = [];
-        },
         //change the current chat to the 'id' chat 
-        enterChat(id){
+        enterChat(id,i){
+            //the i parameters is inserted only in the notify menu
+            if(Number.isInteger(i)){
+                $('#notMenu > div > ul > li').eq(i).css('text-decoration','line-through');
+            }
             this.currRoom = this.users.findIndex(item => item.id === id);
         }
     },
@@ -122,14 +133,10 @@ export default {
         setInterval(() => {                
             $.ajax({
                 type: "GET",
-                url: '/whoNeedHelp',
+                url: '/Valutatore/whoNeedHelp',
                 success: (data) =>{
-                    if(data.length > 0){
-                        data.forEach(el => {
-                            console.log(el.who+" ha bisogno di aiuto in: "+JSON.stringify(el.where));
-                        });
-                    }
-                    else console.log("tutto tranquillo");
+                    //update the blocked user
+                    this.blockUsers = data.slice();                              
                 },
                 error: function (e) {
                     console.log("error in /whoNeedHelp request",e);
@@ -137,4 +144,25 @@ export default {
             })
         }, 5000);
     }
-}
+})
+
+
+/*new Vue({
+    el: '#valutaMenu',
+    data() {
+        return{
+            
+        }
+    }, 
+    template: `
+        
+    `,
+    methods: {
+        
+    },
+    created() {
+    },
+    mounted(){
+        
+    }
+})*/
