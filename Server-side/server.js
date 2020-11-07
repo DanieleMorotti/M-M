@@ -438,17 +438,7 @@ app.post('/Play/updatePlayerPosition',(req,res) => {
 
 app.post('/Play/askForHelp',(req,res) =>{
 	let name = req.cookies.userId.substring(0,5);
-	if(askingHelp.length > 0){
-		//avoid to have multiple request from the same user notified 
-		if((index = askingHelp.findIndex(x => x.who==name)) >= 0){
-		}
-		else{
-			askingHelp.push({who:name,where:""});
-		}
-	}
-	else{
-		askingHelp.push({who:name,where:""});
-	}
+	askingHelp.push({who:name,where:""});
 	res.end();
 })
 //////////////////////////////////////////////////////////

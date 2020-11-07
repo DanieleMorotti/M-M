@@ -13,7 +13,7 @@ new Vue({
     }, 
     template: `
     <div id="chatNotif">
-        <div class="container py-4 px-4 ml-4 mr-1 d-inline-block" style="height:80% !important">
+        <div class="container py-4 px-4 ml-4 d-inline-block" style="height:80% !important">
             <div class="row rounded-lg overflow-hidden shadow" style="height:100% !important;width:100% !important;">
                 <!-- Users box-->
                 <div class="col-5 px-0">
@@ -62,15 +62,17 @@ new Vue({
                 
             </div>
         </div>
-        <div id="notMenu" class="py-5 d-inline-block">
-            <div v-if="blockUsers.length != 0" v-chat-scroll>
-                <span>Notifiche utenti</span>
-                <ul class="list-group" >
-                    <li class="list-group-item" v-for="(user,i) in blockUsers" v-bind:key="user.id" @click="enterChat(user.who,i)">
-                        <span v-if="user.where">{{user.who}} ha bisogno nella missione {{user.where.currMission}}, attività {{user.where.currAct}}</span>
-                        <span v-else>{{user.who}} ha richiesto aiuto</span>
-                    </li>
-                </ul>
+        <div id="notMenu" class="d-inline-block">
+            <div class="h-100" v-if="blockUsers.length != 0">
+                <span id="notMenuTitle">Notifiche utenti</span>
+                <nav id="onlyNot" v-chat-scroll> 
+                    <ul class="list-group" >
+                        <li class="list-group-item" v-for="(user,i) in blockUsers" v-bind:key="user.id" @click="enterChat(user.who,i)">
+                            <span v-if="user.where">{{user.who}} ha bisogno nella missione {{user.where.currMission}}, attività {{user.where.currAct}}</span>
+                            <span v-else>{{user.who}} ha richiesto aiuto</span>
+                        </li>
+                    </ul>
+                </nav>
             </div>
             <span v-else>Nessuna notifica </span>
         </div>
