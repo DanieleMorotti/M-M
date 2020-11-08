@@ -149,22 +149,39 @@ new Vue({
 })
 
 
-/*new Vue({
+new Vue({
     el: '#valutaMenu',
     data() {
         return{
-            
+            /*
+            Mi servirà lato server. var d = new Date();
+            var n = d.toLocaleString();*/
+            requests:[{id:'user2',time:"8/11/2020, 14:24:02",type:"testo",content:"Ciao a tutti"},{id:'user4',time:"8/11/2020, 14:26:02",type:"immagine",content:"IMG_3969.JPG"}]
         }
     }, 
     template: `
-        
+        <div class="container-fluid">
+            <div class="container" v-if="requests.length != 0">
+                <div class="card" v-for="user in requests" v-bind:key="user.id">
+                    <div class="card-header"> {{user.id}} </div>
+                    <div class="card-body">
+                        <p class="card-text">Inviato: {{user.time}}</p>
+                        <p>Tipo: {{user.type}}</p>
+                        <p>Da valutare: 
+                            <img v-if="user.type === 'immagine'" v-bind:src="'/Server-side/valuta/img/' + user.content" width="150">
+                            <span v-else>{{user.content}}</span>
+                        </p>
+                        <a href="#" class="btn btn-primary">VALUTA</a>
+                    </div>
+                </div>
+            </div>
+            <p v-else>Ancora nessuna risposta da valutare </p>
+        </div>
     `,
     methods: {
         
     },
-    created() {
-    },
     mounted(){
         
     }
-})*/
+})
