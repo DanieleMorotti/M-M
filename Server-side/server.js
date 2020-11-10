@@ -394,11 +394,11 @@ app.get('/getPlayableStory', (req,res) => {
 })
 
 
-
+/*
 app.get('/getWidget',(req,res) =>{
 	res.status(200);
 	res.sendFile(path.join(__dirname,"/widgets/"+req.query.name+"/door.js"));
-})
+})*/
 
 let partecipants = [];
 //array for users who ask help with the button
@@ -451,6 +451,16 @@ app.post('/Play/askForHelp',(req,res) =>{
 	}
 	res.end();
 })
+
+
+app.post('/Play/askForRating',(req,res) =>{
+	var answer = new formidable.IncomingForm();
+	var jsonFile = {};
+
+	console.log('received');
+	res.end();
+})
+
 //////////////////////////////////////////////////////////
 //VALUTATORE
 /////////////////////////////////////////////////////////

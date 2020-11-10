@@ -10,16 +10,11 @@
       "activities": [
         {
           "number": 0,
-          "type": "scelta multipla",
+          "type": "valutabile",
           "setting": "ambientazione1",
           "instructions": "svolgimento",
           "question": "domanda1",
-          "answers": [
-            "risposta1",
-            "risposta2",
-            "risposta3"
-          ],
-          "correctAns": "risposta3",
+          "answers": "",
           "score": 50,
           "isActive": true,
           "widget": "",
@@ -32,7 +27,8 @@
               "nextMission": "0",
               "nextActivity": "1"
             }
-          }
+          },
+          "inputType": "file"
         },
         {
           "number": 1,

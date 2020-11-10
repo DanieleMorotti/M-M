@@ -35,6 +35,14 @@ export default {
                 $("#text").html(this.missions[mission].activities[activity].question);
                 $("#text").append(`<br><input type="text" id="answer"/>`);
             }
+            else if(type == "valutabile") {
+                $("#text").html(this.missions[mission].activities[activity].question);         
+                $("#text").append(`<br>
+                <form id="toBeEvaluated">
+                <label for="answer">Invia risposta:</label>
+                <input type="${this.missions[mission].activities[activity].inputType}" id="answer"/>
+                </form>`);
+            }
             else {  //tipe figurative
                 $('#text').html("");
                 $('#text').append(this.missions[mission].activities[activity].instructions);
@@ -71,6 +79,28 @@ export default {
         },
         verify(type, mission, activity) {
             $("#info").html("");
+            
+            if(type == "valutabile") {
+                let data = new FormData($('#toBeEvaluated')[0]);
+                
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: '/Play/askForRating',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: (data) =>{
+                        console.log("andata bene");
+                            $('#scrivi').html(JSON.stringify(data),null,2);
+                    },
+                    error: function (e) {
+                        console.log("error");
+                    }
+                });
+    
+            }
             if((type == 'scelta multipla' && $('input[name="answer"]:checked').val() == this.missions[mission].activities[activity].correctAns) ||
             (type == "domanda aperta"  && ($("#answer").val() == this.missions[mission].activities[activity].correctAns))) {
 
