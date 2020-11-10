@@ -13,7 +13,7 @@ new Vue({
     }, 
     template: `
     <div id="chatNotif">
-        <div class="container py-4 px-4 ml-4 mr-1 d-inline-block" style="height:80% !important">
+        <div class="container py-4 px-4 ml-4 d-inline-block" style="height:80% !important">
             <div class="row rounded-lg overflow-hidden shadow" style="height:100% !important;width:100% !important;">
                 <!-- Users box-->
                 <div class="col-5 px-0">
@@ -62,15 +62,17 @@ new Vue({
                 
             </div>
         </div>
-        <div id="notMenu" class="py-5 d-inline-block">
-            <div v-if="blockUsers.length != 0" v-chat-scroll>
-                <span>Notifiche utenti</span>
-                <ul class="list-group" >
-                    <li class="list-group-item" v-for="(user,i) in blockUsers" v-bind:key="user.id" @click="enterChat(user.who,i)">
-                        <span v-if="user.where">{{user.who}} ha bisogno nella missione {{user.where.currMission}}, attività {{user.where.currAct}}</span>
-                        <span v-else>{{user.who}} ha richiesto aiuto</span>
-                    </li>
-                </ul>
+        <div id="notMenu" class="d-inline-block">
+            <div class="h-100" v-if="blockUsers.length != 0">
+                <span id="notMenuTitle">Notifiche utenti</span>
+                <nav id="onlyNot" v-chat-scroll> 
+                    <ul class="list-group" >
+                        <li class="list-group-item" v-for="(user,i) in blockUsers" v-bind:key="user.id" @click="enterChat(user.who,i)">
+                            <span v-if="user.where">{{user.who}} ha bisogno nella missione {{user.where.currMission}}, attività {{user.where.currAct}}</span>
+                            <span v-else>{{user.who}} ha richiesto aiuto</span>
+                        </li>
+                    </ul>
+                </nav>
             </div>
             <span v-else>Nessuna notifica </span>
         </div>
@@ -147,22 +149,106 @@ new Vue({
 })
 
 
-/*new Vue({
+new Vue({
     el: '#valutaMenu',
     data() {
         return{
-            
+            requests:[{id:'user2',time:"8/11/2020, 14:24:02",type:"testo",content:"Ciao a tutti"},{id:'user4',time:"8/11/2020, 14:26:02",type:"immagine",content:"IMG_3969.JPG"}],
+            modalInfo: {id:"Nome utente",time:"1/1/2000, 00:00:00",type:"testo",content:"contenuto"},
+            evaluation:6
         }
     }, 
     template: `
-        
+        <div class="container-fluid">
+            <div class="container m-3" v-if="requests.length != 0">
+                <div class="card val-request" v-for="user in requests" v-bind:key="user.id">
+                    <div class="card-header"> {{user.id}} </div>
+                    <div class="card-body">
+                        <p class="card-text">Inviato: {{user.time}}</p>
+                        <p>Tipo: {{user.type}}</p>
+                        <a href="#" type="button" class="btn btn-primary" data-toggle="modal" data-target="#valutaModal" @click="updateQuest(user)">VALUTA</a>
+                    </div>
+                </div>
+            </div>
+            <p v-else>Ancora nessuna risposta da valutare </p>
+
+            <!-- Modale per la valutazione -->
+            <div class="modal fade" id="valutaModal" aria-hidden="true" role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{{modalInfo.id}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Da valutare:</p> 
+                            <div>
+                                <img class="img-fluid w-75 mx-auto d-block" v-if="modalInfo.type === 'immagine'" v-bind:src="'/Server-side/valuta/img/' + modalInfo.content" >
+                                <span v-else>{{modalInfo.content}}</span>
+                            </div>
+                        </div>
+                        <div style="border:2px solid black;padding:1rem">
+                            <label for="points">Punti assegnati: </label>
+                            <input type="range" id="points" value="6" min="1" max="10" v-model="evaluation">&nbsp;&nbsp;
+                            <span v-text="realtimeNumber"></span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Invia valutazione</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     `,
-    methods: {
-        
+    computed: {
+        realtimeNumber: function () {
+            return this.evaluation;
+        }
     },
-    created() {
+    methods: {
+        updateQuest(userInfo){
+            //userInfo composed by id,time,type and content fields
+            this.modalInfo = userInfo;
+            $('#points').val(6);
+        },
+        sendEvaluation(){
+            let mark = $('#points').val();
+            let usr = this.modalInfo.id;
+            $.ajax({
+                type: "POST",
+                url: "/Valutatore/evaluationDone",
+                data: {
+                    id: usr,
+                    mark: mark
+                },
+                success: (data) =>{
+					this.requests.splice(this.requests.findIndex(x => x.id === usr),1);
+                },
+                error: function (e) {
+                    console.log("error in sending evaluation");
+                }
+            });
+        }
     },
     mounted(){
-        
+        setInterval(() => {                
+            $.ajax({
+                type: "GET",
+                url: '/Valutatore/needEvaluation',
+                success: (data) =>{
+                    if(JSON.stringify(data) === JSON.stringify(this.requests)){
+                        console.log("nessuna nuova richiesta da valutare")
+                    }else{
+                        this.requests = data.slice();
+                    }                     
+                },
+                error: function (e) {
+                    console.log("error in /needEvaluation request",e);
+                }
+            })
+        }, 10000);
     }
-})*/
+})

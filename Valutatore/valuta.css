@@ -1,3 +1,11 @@
 html,body{
     height: 100%;
 }
+
+.val-request{
+    width:27%;
+    height:20%;
+    display:inline-block !important;
+    padding: 1.5rem !important;
+    margin: 1.5rem !important;
+}

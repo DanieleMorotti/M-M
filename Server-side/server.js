@@ -400,8 +400,10 @@ app.get('/getWidget',(req,res) =>{
 	res.sendFile(path.join(__dirname,"/widgets/"+req.query.name+"/door.js"));
 })*/
 
+/*MODULO AGGIUNTO PER IL VALUTATORE */
+
+//@partecipants: all the users connected,@askingHelp:array for users who ask help with the button
 let partecipants = [];
-//array for users who ask help with the button
 let askingHelp = [];
 
 //manage the update of user position
@@ -438,18 +440,53 @@ app.post('/Play/updatePlayerPosition',(req,res) => {
 
 app.post('/Play/askForHelp',(req,res) =>{
 	let name = req.cookies.userId.substring(0,5);
-	if(askingHelp.length > 0){
-		//avoid to have multiple request from the same user notified 
-		if((index = askingHelp.findIndex(x => x.who==name)) >= 0){
-		}
-		else{
-			askingHelp.push({who:name,where:""});
-		}
-	}
-	else{
-		askingHelp.push({who:name,where:""});
-	}
+	askingHelp.push({who:name,where:""});
 	res.end();
+})
+
+//@formidable_eval new instance for managing requests to evaluate,@toEval array of the requests to evaluate,@evaluated:requests evaluated
+const formidable_eval = require('formidable');
+let toEval = [];
+let evaluated = [];
+
+//route to receive the users responses to evaluate
+app.post('/Play/toEvaluate', (req,res) =>{
+	var form = new formidable_eval.IncomingForm();//per server unibo{uploadDir: __dirname + '/tmp',keepExtensions:true});
+
+	let id = req.cookies.userId.substring(0,5);
+	var time = new Date().toLocaleString();
+	let reqEval = {id: id,time:time};
+	form.parse(req);
+	form.on('field', (name, field) => {
+			reqEval['content'] = field;
+			reqEval['type'] = "testo";
+		})
+		.on('fileBegin', function (name, file){
+			if(file.name != "") file.path = __dirname+'/valuta/img/' + file.name;
+		})
+		.on('file', (name, file) => {
+			reqEval['content'] = file.name;
+			reqEval['type'] = "immagine";
+		})
+		.on('error', (err) => {
+			console.error('Error', err);
+			throw err;
+		})
+		.on('end',() => {
+			console.log(JSON.stringify(reqEval,null,2));
+			toEval.push(reqEval);
+			res.status(200).end();
+		});
+})
+
+app.get('/Play/checkMark',(req,res)=>{
+	let userName = req.cookies.userId.substring(0,5);
+	let ind = evaluated.findIndex(x => x.id === userName);
+	if(ind < 0) res.end();
+	else{
+		let tmp = evaluated.splice(ind,1);
+		res.send(tmp);
+	}
 })
 
 
@@ -472,10 +509,19 @@ app.get('/Valutatore/whoNeedHelp',(req,res) =>{
 	res.json(who);
 })
 
+app.get('/Valutatore/needEvaluation',(req,res)=>{
+	res.json(toEval);
+})
 
-////////////////////////////////////////////////////////////////////
-//CHAT SECTION
-///////////////////////////////////////////////////////////////////
+app.post('/Valutatore/evaluationDone',(req,res)=>{
+	let mark = req.body.mark;
+	let userName = req.body.id;
+	toEval.splice(toEval.findIndex(us => us.id === userName),1);
+	evaluated.push({id:userName,mark:mark});
+	console.log("Rimozione dall'array di valutazione");
+})
+
+/*CHAT SECTION*/
 const { usersList } = require('./function');
 
 
@@ -529,7 +575,7 @@ io.on('connection', (sock) => {
 	//when a user is disconnected the server tell the staff to delete him from the list
 	sock.on('disconnect',() => {
 		myfunctions.removeUser(userName);
-		partecipants.splice(partecipants.findIndex(x => x.who === userName,1));
+		partecipants.splice(partecipants.findIndex(x => x.who === userName),1);
 		io.of('/staff').emit('disc-user',userName);
 		console.log(userName + ' is disconnected');
 	}) 
