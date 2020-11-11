@@ -41,6 +41,7 @@ export default {
 				this.verify = true;
 			}
 			else {
+				console.log('next')
 				if(this.obj) {
 					if(this.obj[0] != 'x') {
 						this.currentActivity = this.obj[0]; this.currentMission = this.obj[1];
@@ -56,6 +57,7 @@ export default {
 					this.obj = null;
 				}
 				else {
+					console.log('here')
 					this.obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
 				}
 			}
@@ -66,5 +68,6 @@ export default {
 		this.missions = storyItem.missions;
 		$('#text').text(storyItem.introduction);
 		render.methods.initialize();
+		
 	}
 }

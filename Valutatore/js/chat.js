@@ -196,7 +196,7 @@ new Vue({
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Invia valutazione</button>
+                            <button type="button" class="btn btn-primary" @click="sendEvaluation">Invia valutazione</button>
                         </div>
                     </div>
                 </div>

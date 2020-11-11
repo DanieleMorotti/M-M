@@ -480,23 +480,29 @@ app.post('/Play/toEvaluate', (req,res) =>{
 })
 
 app.get('/Play/checkMark',(req,res)=>{
+	//set all headers for server-sent
+	res.setHeader('Cache-Control', 'no-cache');
+	res.setHeader('Content-Type', 'text/event-stream');
+	res.setHeader('Access-Control-Allow-Origin','*');
+	res.flushHeaders();
+
 	let userName = req.cookies.userId.substring(0,5);
-	let ind = evaluated.findIndex(x => x.id === userName);
-	if(ind < 0) res.end();
-	else{
-		let tmp = evaluated.splice(ind,1);
-		res.send(tmp);
-	}
+	console.log(userName)
+	setInterval(()=>{
+		let ind = evaluated.findIndex(x => x.id === userName);
+		if(ind < 0) ;
+		else{
+			let tmp = evaluated.splice(ind,1);
+			res.write('data:'+JSON.stringify(tmp)+'\n\n');
+		}
+	},5000);
+	res.on('close',()=>{
+		console.log("client dropped server sent for check mark");
+		res.end();
+	})
 })
 
 
-app.post('/Play/askForRating',(req,res) =>{
-	var answer = new formidable.IncomingForm();
-	var jsonFile = {};
-
-	console.log('received');
-	res.end();
-})
 
 //////////////////////////////////////////////////////////
 //VALUTATORE

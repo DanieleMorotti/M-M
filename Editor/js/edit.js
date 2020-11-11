@@ -189,6 +189,9 @@ export default {
                                         <label for="file">Scelta file</label>
                                     </li>
                                 </ul>
+                                <h5>Inserisci un messaggio da visualizzare nel momento in cui l'utente attende che la sua risposta venga valutata: </h5>
+                                <input id="waitMsg" type="text" name="inputObjectGroup" :disabled="type!=='valutabile'" />
+                                <label for="waitMsg">Messaggio</label>
                             </div>
                             
 
@@ -469,6 +472,7 @@ export default {
                 }
                 if(this.type == 'valutabile') {
                     this.missions[this.currentMission].activities[this.currentActivity].inputType = $('#inputObject input:checked').val();
+                    this.missions[this.currentMission].activities[this.currentActivity].waitMsg = $('#waitMsg').val();
                 }
                 
                 this.missions[this.currentMission].activities[this.currentActivity].score = this.value;
@@ -490,7 +494,7 @@ export default {
                 let missionIndex = this.missions.findIndex(obj => obj.name === $('#chooseMission').val());
                 let activityNumber = (this.missions[missionIndex].activities.length != 0)?this.missions[missionIndex].activities[this.missions[missionIndex].activities.length -1].number +1:0;
                 
-                let correctAnswer = '', inputType = '';
+                let correctAnswer = '', inputType = '', message = '';
                 if (this.type == 'scelta multipla') {
                     correctAnswer = $('#answers input:checked').val();
                 }
@@ -498,8 +502,10 @@ export default {
                     correctAnswer =  $('#answer').val();
                 }
 
-                if(this.type == 'valutabile') inputType = $('#inputObject input:checked').val();
-               
+                if(this.type == 'valutabile') {
+                    inputType = $('#inputObject input:checked').val();
+                    message = $('#waitMsg').val();
+                }
                 let activity = {
                     number: activityNumber,
                     type: $("#activitiesList li input:checked").val(),
@@ -512,6 +518,7 @@ export default {
                     score: this.value,
                     isActive: true,
                     widget: widgetValue,
+                    waitMsg: message,
                     goTo: {
                         ifCorrect: {
                             nextMission: $("#nextActivityCorrect").val().substring(0,1),
@@ -567,8 +574,8 @@ export default {
 
                 if(this.type == 'valutabile') {
                     let val = this.missions[misInd].activities[index].inputType;
-                    console.log(val)
                     $(`#inputObject li input[value='${val}']`).prop("checked", true);
+                    $("#waitMsg").prop("value",this.missions[misInd].activities[index].waitMsg);
                 }
                 //resume activity's score
                 this.value = this.missions[misInd].activities[index].score;

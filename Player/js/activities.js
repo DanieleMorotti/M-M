@@ -16,10 +16,51 @@ export default {
             nextAct: null,
             nextMiss: null,
             widget: null,
-            score: 0
+            score: 0,
+            mission: 0,
+            activity: 0,
+            servSent: null,
+            data: null 
         }
     },
     methods: {
+        send(event, mission, activity) {
+            event.preventDefault();
+
+            console.log($('#answer').val())
+            let data = new FormData();
+
+            if($('#answer').attr("type") == 'file')
+                data.append('input',document.getElementById('answer').files[0]);
+            else 
+                data.append('input',$("#answer").val());
+
+            $('#text').html("");
+            $('#text').append(this.missions[mission].activities[activity].waitMsg);
+
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: '/Play/toEvaluate',
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: (data) =>{
+                    let interval = setInterval(()=>{
+                        if(this.data) {
+                            console.log(this.data);
+                            $('#next').attr("disabled",false);
+                            clearInterval(interval);
+                        }
+                    },5000);
+                    
+                },
+                error: function (e) {
+                    console.log("error");
+                }
+            });
+        },
         visualize(type, mission, activity) {
             if(type == "scelta multipla") {
                 $("#text").html(this.missions[mission].activities[activity].question);
@@ -36,14 +77,20 @@ export default {
                 $("#text").append(`<br><input type="text" id="answer"/>`);
             }
             else if(type == "valutabile") {
+                this.data = null;
                 $("#text").html(this.missions[mission].activities[activity].question);         
-                $("#text").append(`<br>
-                <form id="toBeEvaluated">
-                <label for="answer">Invia risposta:</label>
-                <input type="${this.missions[mission].activities[activity].inputType}" id="answer"/>
-                </form>`);
+                $("#text").append(`<br><form id="evaluableForm">
+                    <label for="answer">Invia risposta:</label>
+                    <input type="text" id="answer"/>
+                    <button id="sendBtn">Invia</button>
+                    </form>`); 
+                $('#evaluableForm').show();
+                    $('#next').attr("disabled","disabled");
+                
+                this.mission = mission;
+                this.activity = activity;
             }
-            else {  //tipe figurative
+            else {  //tipe figurative ${this.missions[mission].activities[activity].inputType}
                 $('#text').html("");
                 $('#text').append(this.missions[mission].activities[activity].instructions);
                 let widget = this.missions[mission].activities[activity].widget;
@@ -64,7 +111,6 @@ export default {
                 let correctAns = this.missions[mission].activities[activity].correctAns;
 
                 async function load() {
-                    console.log('here')
                     widgetComp = await import(`/Server-side/widgets/${widget}/${widget}.js`);
                     $('#schermo').append(`<div id="widget"></div>`)
                     $('#widget').append(widgetComp.default.template);
@@ -72,34 +118,19 @@ export default {
                 }
                 
                 load();
-            }   
-           
-            
-         
+            }  
         },
         verify(type, mission, activity) {
             $("#info").html("");
             
             if(type == "valutabile") {
-                let data = new FormData($('#toBeEvaluated')[0]);
-                
-                $.ajax({
-                    type: "POST",
-                    enctype: 'multipart/form-data',
-                    url: '/Play/askForRating',
-                    data: data,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    success: (data) =>{
-                        console.log("andata bene");
-                            $('#scrivi').html(JSON.stringify(data),null,2);
-                    },
-                    error: function (e) {
-                        console.log("error");
-                    }
-                });
-    
+                if(this.data.mark > 5) {
+                    this.nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity;
+                    this.nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
+                    this.score = this.score + this.missions[mission].activities[activity].score*this.data.mark/10;
+                    console.log(this.score);
+                    return([this.nextAct, this.nextMiss, this.score]);
+                }
             }
             if((type == 'scelta multipla' && $('input[name="answer"]:checked').val() == this.missions[mission].activities[activity].correctAns) ||
             (type == "domanda aperta"  && ($("#answer").val() == this.missions[mission].activities[activity].correctAns))) {
@@ -196,7 +227,19 @@ export default {
                     }
                 })
             }, 2000); 
+
+            $(document).on('click','#sendBtn', (event) =>{
+                this.send(event, this.mission, this.activity);
+            });
+
+            this.servSent = new EventSource('/Play/checkMark');
+
+            this.servSent.onmessage = (event) =>{
+                this.data = JSON.parse(event.data);
+            }
         }
     }
+    
+
 }
 

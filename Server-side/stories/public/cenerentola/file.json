@@ -28,7 +28,8 @@
               "nextActivity": "1"
             }
           },
-          "inputType": "file"
+          "inputType": "file",
+          "waitMsg": "messaggio"
         },
         {
           "number": 1,
