@@ -523,9 +523,10 @@ app.get('/Valutatore/needRequests',(req,res) =>{
 		who = askingHelp.concat(who);
 		//if the array is equal to the array in the last control
         if (JSON.stringify(who) !== JSON.stringify(prev)) {
-			res.write('data:{"needHelp":'+JSON.stringify(who)+',"needEval":'+JSON.stringify(toEval)+'}\n\n'); // res.write() instead of res.send()
+			res.write('data:{"needHelp":'+JSON.stringify(who)+'}\n\n'); // res.write() instead of res.send()
 			prev = who.slice();
 		}
+		res.write('data:{"needEval":'+JSON.stringify(toEval)+'}\n\n');
 	},5000);
 	
     // If client closes connection, stop sending events

@@ -21,7 +21,7 @@ new Vue({
                     <div class="bg-white" v-if="users.length != 0">
                         <div class="messages-box" v-for="user in users" v-bind:key="user.id" @click="enterChat(user.id)">
                             <div class="list-group rounded-0">
-                                <a class="list-group-item list-group-item-action text-white rounded-0">
+                                <a class="list-group-item list-group-item-action active text-white rounded-0">
                                     <div class="media">
                                         <img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
                                         <div class="media-body ml-4">
@@ -154,7 +154,11 @@ new Vue({
     mounted(){
         this.servSent.onmessage = (event) => {
             let arr = JSON.parse(event.data);
-            this.blockUsers = arr.needHelp.slice();
+            if(arr.needHelp)this.blockUsers = arr.needHelp.slice();
+        };
+
+        this.servSent.onerror = function(err) {
+            console.log("Server sent failed: /needRequests", err);
         };
     }
 })
@@ -236,12 +240,13 @@ new Vue({
                     mark: mark
                 },
                 success: (data) =>{
-					this.requests.splice(this.requests.findIndex(x => x.id === usr),1);
+                    this.requests.splice(this.requests.findIndex(x => x.id === usr),1);
                 },
                 error: function (e) {
                     console.log("error in sending evaluation");
                 }
             });
+            $('#valutaModal').modal('hide');
         }
     },
     created(){
@@ -250,13 +255,19 @@ new Vue({
     mounted(){
         this.servSent.onmessage = (event) => {
             let parsedData = JSON.parse(event.data);
-            let arr = parsedData.needEval;
-            if(JSON.stringify(arr) === JSON.stringify(this.requests)){
-                console.log("nessuna nuova richiesta da valutare");
-            }else{
-                this.requests = arr.slice();
+            //only the array requested i'm interested in
+            if(parsedData.needEval){
+                let arr = parsedData.needEval;
+                if(JSON.stringify(arr) === JSON.stringify(this.requests)){
+                    console.log("nessuna nuova richiesta da valutare");
+                }else{
+                    this.requests = arr.slice();
+                }
             }
-            
+        };
+
+        this.servSent.onerror = function(err) {
+            console.log("Server sent failed: /evaluationDone", err);
         };
     }
 })
