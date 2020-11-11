@@ -458,8 +458,13 @@ app.post('/Play/toEvaluate', (req,res) =>{
 	let reqEval = {id: id,time:time};
 	form.parse(req);
 	form.on('field', (name, field) => {
-			reqEval['content'] = field;
-			reqEval['type'] = "testo";
+			if(name == 'input') {
+				reqEval['content'] = field;
+				reqEval['type'] = "testo";
+			}
+			else {
+				reqEval['question'] = field;
+			}
 		})
 		.on('fileBegin', function (name, file){
 			if(file.name != "") file.path = __dirname+'/valuta/img/' + file.name;

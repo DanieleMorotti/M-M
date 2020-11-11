@@ -44,7 +44,7 @@ export default {
                     </li>
                     <li>
                         <label for="inpBack">Inserisci lo sfondo:</label>
-                        <input type="file" name="background" id="inpBack" accept="image/*" />
+                        <input  type="file" name="background" id="inpBack" accept="image/*" />
                         <p class="infoForFile"></p>
                     </li>
                     <li>
@@ -67,7 +67,7 @@ export default {
                     <li>    
                         <h3 style="display:inline-block">Missioni</h3>&nbsp;&nbsp;<i class="fas fa-plus" @click="addMission"></i>
                         <input type="button" id="buttonGraph" data-toggle="modal" data-target="#graphModal" value="Grafo attività"/>
-
+                            
 
                         <div class="modal fade" id="graphModal" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -77,7 +77,6 @@ export default {
                                 </div>
                             </div>
                         </div>
-
                         <ul id="missionSaved">
                             <li v-for="(mission,index) in missions" :key="index">
                                 <input type="checkbox" name="isActive" :checked="mission.isActive" @click="mission.isActive = !mission.isActive" />&emsp;
@@ -102,6 +101,8 @@ export default {
                                 <p v-else>Nessuna attività per questa missione </p>
                             </li>
                         </ul>
+                        <span style="font-size:30px;cursor:pointer" @click="openNav('activity')">&#9776; Aggiungi attività</span><br>
+                        <span style="font-size:30px;cursor:pointer" @click="openNav('widget')">&#9776; Aggiungi widget</span>
                     </li>
                     <li>
                         <h3>Facilitazioni</h3>
@@ -130,8 +131,11 @@ export default {
                 </ul>
             </form>
            
-
-            <form id="activitiesForm" @submit="addActivity">
+            <!-- menu form activities -->
+            <div id="activitiesNav" class="overlay">
+                <a href="javascript:void(0)" class="closebtn" @click="closeNav('activity')">&times;</a>
+                <div class="overlay-content">
+                <form id="activitiesForm" @submit="addActivity">
                 <h2>Nuova attività</h2>
                 <ul id="activitiesList">
                     <li>
@@ -238,26 +242,37 @@ export default {
                 </ul>
                 <input id="saveActivity" type="submit" value="Salva attività" />
             </form>
-            <form id="widgetsForm" @submit="addWidget">
-                <h2>Nuovo widget</h2>
-                <ul>
-                    <li>
-                        <h5>Crea un nuovo widget: </h5>
-                        <label for="inpWidgetName">Nome del widget:</label>
-                        <input type="text" id="inpWidgetName" name="name" v-on:keyup="checkName('widget')" required/>
-                        <p id="widgetInfo"> Un widget con questo nome esiste già</p>
-                    </li>
-                    <li>
-                        <label for="inpWidgetCss">Aggiungi un file CSS</label>
-                        <input type="file" name="widgetCss" id="inpWidgetCss" accept="text/css" required/>
-                    </li>
-                    <li>
-                        <label for="inpWidgetJs">Aggiungi un file JS</label>
-                        <input type="file" name="widgetJs" id="inpWidgetJs" accept=".js" required/>
-                    </li>
-                </ul>
-                <input id="saveWidget" type="submit" value="Salva widget" />
-            </form>
+                </div>
+            </div>
+            
+            <!-- menu form widgets -->
+
+            <div id="widgetNav" class="overlay">
+                <a href="javascript:void(0)" class="closebtn" @click="closeNav('widget')">&times;</a>
+                <div class="overlay-content">
+                <form id="widgetsForm" @submit="addWidget">
+                    <h2>Nuovo widget</h2>
+                    <ul>
+                        <li>
+                            <h5>Crea un nuovo widget: </h5>
+                            <label for="inpWidgetName">Nome del widget:</label>
+                            <input type="text" id="inpWidgetName" name="name" v-on:keyup="checkName('widget')" required/>
+                            <p id="widgetInfo"> Un widget con questo nome esiste già</p>
+                        </li>
+                        <li>
+                            <label for="inpWidgetCss">Aggiungi un file CSS</label>
+                            <input type="file" name="widgetCss" id="inpWidgetCss" accept="text/css" required/>
+                        </li>
+                        <li>
+                            <label for="inpWidgetJs">Aggiungi un file JS</label>
+                            <input type="file" name="widgetJs" id="inpWidgetJs" accept=".js" required/>
+                        </li>
+                    </ul>
+                    <input id="saveWidget" type="submit" value="Salva widget" />
+                </form>
+                </div>
+            </div>
+
 
             <!-- Modals for copy or move an activity -->
             <div class="modal fade" id="moveActivityModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -431,6 +446,19 @@ export default {
         
     `,
     methods: {
+        openNav(navValue) {
+            if(navValue == 'activity')
+                document.getElementById("activitiesNav").style.width = "100%";
+            else
+                document.getElementById("widgetNav").style.width = "100%";
+        },
+        
+        closeNav(navValue) {
+            if(navValue == 'activity')
+                document.getElementById("activitiesNav").style.width = "0%";
+            else
+                document.getElementById("widgetNav").style.width = "0%";
+        },
         /*  ACTIVITIES MANAGEMENT   */
         addAnswer(e) {
             e.preventDefault();

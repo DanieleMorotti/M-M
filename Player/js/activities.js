@@ -30,6 +30,8 @@ export default {
             console.log($('#answer').val())
             let data = new FormData();
 
+            data.append('question',this.missions[mission].activities[activity].question);
+
             if($('#answer').attr("type") == 'file')
                 data.append('input',document.getElementById('answer').files[0]);
             else 
@@ -100,12 +102,8 @@ export default {
                     type: 'GET',
                     success: function(data){ 
                         $('#schermo').css('background-image', `url("/Server-side/widgets/${widget}/${widget}.jpg")`);     
-                    },
-                    error: function(data) {
-                        $('#schermo').css('background-color', 'black');
                     }
                 })
-                
          
                 let question = this.missions[mission].activities[activity].question;
                 let correctAns = this.missions[mission].activities[activity].correctAns;
@@ -123,33 +121,44 @@ export default {
         verify(type, mission, activity) {
             $("#info").html("");
             
-            if(type == "valutabile") {
-                if(this.data.mark > 5) {
-                    this.nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity;
-                    this.nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
-                    this.score = this.score + this.missions[mission].activities[activity].score*this.data.mark/10;
-                    console.log(this.score);
-                    return([this.nextAct, this.nextMiss, this.score]);
-                }
-            }
+            /* if response is correct */
             if((type == 'scelta multipla' && $('input[name="answer"]:checked').val() == this.missions[mission].activities[activity].correctAns) ||
-            (type == "domanda aperta"  && ($("#answer").val() == this.missions[mission].activities[activity].correctAns))) {
+            (type == "domanda aperta"  && ($("#answer").val() == this.missions[mission].activities[activity].correctAns)) ||
+            (type == 'valutabile' && this.data[0].mark > 5) ||
+            (type == "figurativa" && widgetComp.default.methods.check())) {
 
                     // compute next facility
                     while(this.usedFacilities.includes(this.currentF)) {
                         if(this.currentF < this.story.facilities.length - 1) this.currentF++;
                         else this.currentF--;
                     }
+
                     $("#text").html(this.story.facilities[this.currentF]);
                     this.usedFacilities.push(this.currentF);
 
+                    /* select next activity */
                     this.nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity;
                     this.nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
-                    this.score = this.score + this.missions[mission].activities[activity].score;
+
+                    if(type == 'valutabile') 
+                        this.score = this.score + this.missions[mission].activities[activity].score*this.data[0].mark/10;
+                    else 
+                        this.score = this.score + this.missions[mission].activities[activity].score;
+                     
+                    console.log(this.score)
+                    if (type == "figurativa") {
+                        $('#widget').remove();
+                        $('#schermo').css('background-image', 'none');
+                    }
                     return([this.nextAct, this.nextMiss, this.score]);
             }
-            else if(type == 'scelta multipla') { 
-
+            /* if user didn't answered */
+            else if(type == "domanda aperta" && $("#answer").val() == "") {
+                $("#info").html("Inserisci una risposta!");
+                    return(false)
+            }
+            /* if answer is incorrect */
+            else {
                 // compute next difficulty
                 while(this.usedFacilities.includes(this.currentD)) {
                     if(this.currentD < this.story.difficulties.length - 1) this.currentD++;
@@ -160,42 +169,13 @@ export default {
 
                 this.nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity; 
                 this.nextMiss = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextMission;
+
+                if (type == "figurativa") {
+                    $('#widget').remove();
+                    $('#schermo').css('background-image', 'none');
+                }
                 return([this.nextAct, this.nextMiss, this.score]);
             }
-            else if(type == "domanda aperta") {
-                if($("#answer").val() == "") {
-                    $("#info").html("Inserisci una risposta!");
-                    return(false)
-                }
-                else {
-                    $("#text").html(this.story.difficulties[activity]);
-                    this.nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity; 
-                    this.nextMiss = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextMission;
-                    return([this.nextAct, this.nextMiss, this.score]);
-                }   
-            }
-            else if (type == "figurativa") {
-                $('#widget').remove();
-                $('#schermo').css('background-image', 'none');
-
-                if(widgetComp.default.methods.check()) {
-                    $("#text").html(this.story.facilities[activity]);
-                    this.nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity;
-                    this.nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
-                    this.score = this.score + this.missions[mission].activities[activity].score;
-                    return([this.nextAct, this.nextMiss, this.score]);
-                }
-                else {
-                    $("#text").html(this.story.difficulties[activity]);
-                    this.nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity; 
-                    this.nextMiss = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextMission;
-                    return([this.nextAct, this.nextMiss, this.score]);
-                }
-            }
-            else {
-                return(false)
-            }
-        
             
         }, 
         initialize() {

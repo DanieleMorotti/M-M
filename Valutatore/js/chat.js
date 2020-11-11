@@ -183,7 +183,8 @@ new Vue({
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>Da valutare:</p> 
+                            <p>Domanda: <span>{{modalInfo.question}}</span</p>
+                            <p>Risposta da valutare:</p> 
                             <div>
                                 <img class="img-fluid w-75 mx-auto d-block" v-if="modalInfo.type === 'immagine'" v-bind:src="'/Server-side/valuta/img/' + modalInfo.content" >
                                 <span v-else>{{modalInfo.content}}</span>
