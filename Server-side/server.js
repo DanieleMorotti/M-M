@@ -508,16 +508,37 @@ app.get('/Play/checkMark',(req,res)=>{
 //VALUTATORE
 /////////////////////////////////////////////////////////
 
-app.get('/Valutatore/whoNeedHelp',(req,res) =>{
-	let who = [];
-	partecipants.forEach(el => { if(el.needHelp)who.push({who:el.id,where:el.position});});
-	who = askingHelp.concat(who);
-	res.json(who);
+//return the players who asked help and the players who need help because blocked in an activity 
+app.get('/Valutatore/needRequests',(req,res) =>{
+	//set all headers for server-sent
+	res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+	res.flushHeaders(); // flush the headers to establish SSE with client
+	
+	let prev = [];
+	setInterval(()=>{
+		let who = [];
+		partecipants.forEach(el => { if(el.needHelp)who.push({who:el.id,where:el.position});});
+		who = askingHelp.concat(who);
+		//if the array is equal to the array in the last control
+        if (JSON.stringify(who) !== JSON.stringify(prev)) {
+			res.write('data:{"needHelp":'+JSON.stringify(who)+',"needEval":'+JSON.stringify(toEval)+'}\n\n'); // res.write() instead of res.send()
+			prev = who.slice();
+		}
+	},5000);
+	
+    // If client closes connection, stop sending events
+    res.on('close', () => {
+		console.log('client dropped server-sent');
+        res.end();
+    });
+	
 })
 
-app.get('/Valutatore/needEvaluation',(req,res)=>{
+/*app.get('/Valutatore/needEvaluation',(req,res)=>{
 	res.json(toEval);
-})
+})*/
 
 app.post('/Valutatore/evaluationDone',(req,res)=>{
 	let mark = req.body.mark;
@@ -529,6 +550,7 @@ app.post('/Valutatore/evaluationDone',(req,res)=>{
 
 /*CHAT SECTION*/
 const { usersList } = require('./function');
+const { SSL_OP_EPHEMERAL_RSA } = require('constants');
 
 
 app.get('/Valutatore', function(req,res){

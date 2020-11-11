@@ -8,7 +8,8 @@ new Vue({
             users: [],
             blockUsers:[],
             //for default the chat of the first user is shown
-            currRoom: 0
+            currRoom: 0,
+            servSent: null
         }
     }, 
     template: `
@@ -20,11 +21,13 @@ new Vue({
                     <div class="bg-white" v-if="users.length != 0">
                         <div class="messages-box" v-for="user in users" v-bind:key="user.id" @click="enterChat(user.id)">
                             <div class="list-group rounded-0">
-                                <a class="list-group-item list-group-item-action active text-white rounded-0">
-                                    <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
+                                <a class="list-group-item list-group-item-action text-white rounded-0">
+                                    <div class="media">
+                                        <img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
                                         <div class="media-body ml-4">
                                             <div class="d-flex align-items-center justify-content-between mb-1">
                                             <h6 class="mb-0">{{user.id}}</h6>
+                                            <span class="badge badge-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -84,14 +87,26 @@ new Vue({
             this.users[this.currRoom].messages.push({mess:this.newMess,type:0});
             sock.emit('staff-chat-message',{to:this.users[this.currRoom].id,mess:this.newMess});
             this.newMess = null;
+            $('.media .badge').eq(this.currRoom).text('');
         },
         //change the current chat to the 'id' chat 
         enterChat(id,i){
             //the i parameters is inserted only in the notify menu
             if(Number.isInteger(i)){
-                $('#notMenu > div > ul > li').eq(i).css('text-decoration','line-through');
+                $('#onlyNot > ul > li').eq(i).css('text-decoration','line-through');
             }
-            this.currRoom = this.users.findIndex(item => item.id === id);
+            let index = this.users.findIndex(item => item.id === id);
+            this.currRoom = index;
+            $('.media .badge').eq(index).text('');
+        },
+        sortRecent(ind){
+            if(ind > 0){
+                //move the user who receive a message to the top position
+                this.users.unshift(this.users.splice(ind,1)[0]);
+                //because all the users are shifted by 1, if i'm not in the moved chat
+                if(this.currRoom != ind)this.currRoom++;
+                else this.currRoom = 0;
+            }
         }
     },
     created() {
@@ -127,27 +142,22 @@ new Vue({
         
         sock.on('message',(data) => {
             //finding the position in the list of users and push the messages
-            this.users[this.users.findIndex(item => item.id === data.from)].messages.push({mess:data.mess,type:1});
+            let i = this.users.findIndex(item => item.id === data.from);
+            this.users[i].messages.push({mess:data.mess,type:1});
+            $('.media .badge').eq(i).text('NEW');
+            this.sortRecent(i);
         })
+
+        this.servSent = new EventSource('/Valutatore/needRequests');
+        
     },
     mounted(){
-        //within mounted because i need access to dom element to notify users difficulties
-        setInterval(() => {                
-            $.ajax({
-                type: "GET",
-                url: '/Valutatore/whoNeedHelp',
-                success: (data) =>{
-                    //update the blocked user
-                    this.blockUsers = data.slice();                              
-                },
-                error: function (e) {
-                    console.log("error in /whoNeedHelp request",e);
-                }
-            })
-        }, 5000);
+        this.servSent.onmessage = (event) => {
+            let arr = JSON.parse(event.data);
+            this.blockUsers = arr.needHelp.slice();
+        };
     }
 })
-
 
 new Vue({
     el: '#valutaMenu',
@@ -155,7 +165,8 @@ new Vue({
         return{
             requests:[{id:'user2',time:"8/11/2020, 14:24:02",type:"testo",content:"Ciao a tutti"},{id:'user4',time:"8/11/2020, 14:26:02",type:"immagine",content:"IMG_3969.JPG"}],
             modalInfo: {id:"Nome utente",time:"1/1/2000, 00:00:00",type:"testo",content:"contenuto"},
-            evaluation:6
+            evaluation:6,
+            servSent:null
         }
     }, 
     template: `
@@ -233,22 +244,19 @@ new Vue({
             });
         }
     },
+    created(){
+        this.servSent = new EventSource('/Valutatore/needRequests');
+    },
     mounted(){
-        setInterval(() => {                
-            $.ajax({
-                type: "GET",
-                url: '/Valutatore/needEvaluation',
-                success: (data) =>{
-                    if(JSON.stringify(data) === JSON.stringify(this.requests)){
-                        console.log("nessuna nuova richiesta da valutare")
-                    }else{
-                        this.requests = data.slice();
-                    }                     
-                },
-                error: function (e) {
-                    console.log("error in /needEvaluation request",e);
-                }
-            })
-        }, 10000);
+        this.servSent.onmessage = (event) => {
+            let parsedData = JSON.parse(event.data);
+            let arr = parsedData.needEval;
+            if(JSON.stringify(arr) === JSON.stringify(this.requests)){
+                console.log("nessuna nuova richiesta da valutare");
+            }else{
+                this.requests = arr.slice();
+            }
+            
+        };
     }
 })
