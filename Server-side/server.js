@@ -493,7 +493,7 @@ app.get('/Play/checkMark',(req,res)=>{
 
 	let userName = req.cookies.userId.substring(0,5);
 	console.log(userName)
-	setInterval(()=>{
+	let interv = setInterval(()=>{
 		let ind = evaluated.findIndex(x => x.id === userName);
 		if(ind < 0) ;
 		else{
@@ -503,6 +503,7 @@ app.get('/Play/checkMark',(req,res)=>{
 	},5000);
 	res.on('close',()=>{
 		console.log("client dropped server sent for check mark");
+		clearInterval(interv);
 		res.end();
 	})
 })
@@ -522,7 +523,7 @@ app.get('/Valutatore/needRequests',(req,res) =>{
 	res.flushHeaders(); // flush the headers to establish SSE with client
 	
 	let prev = [];
-	setInterval(()=>{
+	let interv = setInterval(()=>{
 		let who = [];
 		partecipants.forEach(el => { if(el.needHelp)who.push({who:el.id,where:el.position});});
 		who = askingHelp.concat(who);
@@ -537,7 +538,8 @@ app.get('/Valutatore/needRequests',(req,res) =>{
     // If client closes connection, stop sending events
     res.on('close', () => {
 		console.log('client dropped server-sent');
-        res.end();
+		clearInterval(interv);
+		res.end();
     });
 	
 })

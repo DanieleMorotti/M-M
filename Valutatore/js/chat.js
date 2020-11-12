@@ -1,5 +1,7 @@
 const sock = io.connect('/staff');
 
+const bus = new Vue();
+
 new Vue({
     el: '#chatMenu',
     data() {
@@ -119,6 +121,7 @@ new Vue({
                     //i need to join the room immediatly,if not when the user types before i click on his button i don't receive any messages
                     sock.emit('join-room',list[i]);
                 }
+                bus.$emit('first-upd-us',list); 
             }
         })
         //everytime a user is connected i update the list with the user id and his room
@@ -130,7 +133,10 @@ new Vue({
             else{
                 //update the users array, only if it's not a page refresh(the user is already in)
                 if(this.users.some(item => item.id === usName));
-                else this.users.push({id:usName,messages:[]});
+                else{
+                    this.users.push({id:usName,messages:[]});
+                    bus.$emit('upd-us', usName);
+                }
                 sock.emit('join-room',usName);
             }
         })
@@ -138,6 +144,7 @@ new Vue({
         sock.on('disc-user',(id) =>{
            let toDel = this.users.findIndex(item => item.id === id);
            this.users.splice(toDel,1);
+           bus.$emit('del-user', id);
         })
         
         sock.on('message',(data) => {
@@ -167,7 +174,7 @@ new Vue({
     el: '#valutaMenu',
     data() {
         return{
-            requests:[{id:'user2',time:"8/11/2020, 14:24:02",type:"testo",content:"Ciao a tutti"},{id:'user4',time:"8/11/2020, 14:26:02",type:"immagine",content:"IMG_3969.JPG"}],
+            requests:[],
             modalInfo: {id:"Nome utente",time:"1/1/2000, 00:00:00",type:"testo",content:"contenuto"},
             evaluation:6,
             servSent:null
@@ -270,5 +277,91 @@ new Vue({
         this.servSent.onerror = function(err) {
             console.log("Server sent failed: /evaluationDone", err);
         };
+    }
+})
+
+
+new Vue({
+    el: '#optionMenu',
+    data() {
+        return{
+            users: []
+        }
+    }, 
+    template: `
+        <div class="container-fluid">
+            <div class="container"  v-if="users.length != 0">
+                <h3>Cambia come preferisci i nomi dei giocatori</h3>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(user,ind) in users" v-bind:key="user.id">
+                            <th scope="row">{{ind+1}}</th>
+                            <td>{{Object.keys(user)[0]}}</td>
+                            <td class="editableName"><span>{{Object.values(user)[0]}}</span> &nbsp;<i tabindex="0" class="fas fa-edit" 
+                                @click="editName(ind)" ></i><button type="button" 
+                                class="btn btn-info" style="display:none" @click="saveName(ind,Object.values(user)[0])">SALVA</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p v-else>Ancora nessun giocatore connesso</p>
+        </div>
+    `,
+    methods: {
+        
+        editName(index){
+            $('.editableName > span').eq(index).attr('contenteditable','true');
+            $('.editableName > i').eq(index).hide();
+            $('.editableName > button').eq(index).show();
+        },
+        //save the new name and communicate to the player
+        saveName(index,id){
+            $('.editableName > span').eq(index).attr('contenteditable','false');
+            $('.editableName > i').eq(index).show();
+            $('.editableName > button').eq(index).hide();
+
+            let newName = $('.editableName > span').eq(index).text();
+            this.users[index][id] = newName;
+            /*  DA finire, decidere se comunicare ogni tot se il nome è cambiato al player(unendo questa richiesta a quella già
+                esistente del server-sent). La pusho al server che si salva una variabile che invia al player
+            $.ajax({
+                type: "POST",
+                url: "/Valutatore/nameChange",
+                data: {
+                    name: newName
+                },
+                success: (data) =>{
+                    console.log(" Il nome è arrivato a destinazione ;) ");
+                },
+                error: function (e) {
+                    console.log("error in sending newname");
+                }
+            });*/
+        }
+    },
+    created(){
+        //get the list of users on first connection
+        bus.$on('first-upd-us', (arr) => { 
+            arr.forEach(us => {
+                this.users.push({[us]:us});
+            });
+        });
+    },
+    mounted(){
+        //update users list when a new player join the game
+        bus.$on('upd-us', (name) => { this.users.push({[name]:name})});
+
+        //delete user from the list when it's disconnected
+        bus.$on('del-user', (toDel) => { 
+            let i = this.users.findIndex(obj => Object.keys(obj)[0] === toDel);
+            this.users.splice(i,1);
+        });
     }
 })

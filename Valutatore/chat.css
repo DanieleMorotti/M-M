@@ -84,3 +84,11 @@
     top:2px !important;
     color:red !important;
   }
+
+  #valMenu{
+    display:none;
+  }
+
+  #optMenu{
+    display: none;
+  }
