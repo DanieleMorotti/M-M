@@ -23,7 +23,7 @@ new Vue({
                     <div class="bg-white" v-if="users.length != 0">
                         <div class="messages-box" v-for="user in users" v-bind:key="user.id" @click="enterChat(user.id)">
                             <div class="list-group rounded-0">
-                                <a class="list-group-item list-group-item-action active text-white rounded-0">
+                                <a class="list-group-item list-group-item-action  rounded-0">
                                     <div class="media">
                                         <img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
                                         <div class="media-body ml-4">

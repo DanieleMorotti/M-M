@@ -16,7 +16,7 @@
   
   .overlay-content {
     position: relative;
-    top: 25%;
+    top: 10%;
     width: 100%;
     margin-top: 30px;
   }
@@ -57,40 +57,50 @@ html,body{
     background-color: rgb(29, 27, 27);
 }
 
-body p, h5, li, h2 {
+body p, h5, li{
     color: rgb(238, 233, 225);
     font-family: Gill Sans Nova Light, Tahoma, sans-serif;
 }
 
-h3 {
+h3, h2 {
     color: #bd6d12;
     font-weight: bold;
-    margin-top: 1rem
+    margin-top: 1rem;
+    font-family: Gill Sans Nova Light, Tahoma, sans-serif;
 }
+
 
 li {
     list-style:none;
-    margin-top: 1rem;
+    margin-top: 2rem;
+}
+
+#inputObject li, #activitiesSaved li {
+    margin-top: 0;
 }
 
 label {
     margin-bottom: 0;
-    margin-top: 1rem;
 }
 
 
 input[type="text"], input[type="file"], textarea {
     display: inline-block;
     border-style: none;
-    border: 0.5px solid #680d3f;;
-    border-bottom: 2.5px solid #680d3f;
+    border: 0.5px solid #117a8b;;
+    border-bottom: 2.5px solid  #117a8b;
     border-radius: 9px;
     box-sizing: border-box;
     background-color: rgb(29, 27, 27);
-    width: 100%;
+    width: 90%;
     overflow: auto;
+    margin-top:1rem;
+    color: white;
 }
 
+input[type='range'] {
+    margin-top: 1rem;
+}
 
 
 button, #buttonGraph, input[type="button"] {
@@ -103,8 +113,8 @@ button, #buttonGraph, input[type="button"] {
     border-radius: 5px;
     text-align: center;
     text-transform: uppercase;
-
 }
+
 
 #submitBtn {
     padding: 0.7rem 0.7rem;
@@ -118,20 +128,16 @@ button, #buttonGraph, input[type="button"] {
 
 #buttonGraph {
     width: 30%;
-    float: right;
+    margin-left: 45%
 }
 
-textarea {
-    width: 100%
-}
+
 #editMenu{
     font-size:1.2rem;
     margin-left:2rem;
     margin-top:2rem;
     margin-bottom: 2rem;
 }
-
-
 
 #activitiesForm{
     margin-left:2rem;
@@ -146,6 +152,7 @@ textarea {
 form textarea{
     resize: none;
     margin-top:1rem;
+    width: 90%
 }
 
 
@@ -195,6 +202,43 @@ i.fas{
     100% { right: -5px; }
 }
 
+#insertAnswer {
+    margin-top: 1rem;
+}
+
+#chooseMission {
+    background-color: #f5f5f5bf;
+    border-radius: 5px;
+    margin-left: 1rem;
+}
+
+#nextActivityCorrect, #nextActivityIncorrect {
+    background-color: #f5f5f5bf;
+    border-radius: 5px;
+}
+
+.info {
+    margin-top: 2rem;
+}
+
+#saveActivity, #saveWidget {
+    margin-top: 2rem;
+}
+
+#buttonWidget, #buttonDevice {
+    margin-top: 2rem;
+    margin-left: 1rem;
+    padding: 0.2rem;
+}
+
+#buttonDevice {
+    padding: 0.4rem;
+}
+
+#insertFacility, #insertDifficulty {
+    margin-top: 1rem;
+}
+ 
 
 /* GRAPH MODAL */
 
@@ -228,4 +272,8 @@ i.fas{
     cursor: pointer;
 }
   
- 
+ /* modals */
+
+ .modal-title {
+     color: black
+ }

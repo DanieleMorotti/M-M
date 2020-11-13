@@ -11,3 +11,15 @@
 #app {
     margin-top: 5vh
 }
+
+.chatButton {
+    background-color: powderblue;
+    color: rgb(51, 51, 51);
+    font-size: 1rem;
+    padding: 0.7rem 0.7rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    bottom: 5%; 
+}

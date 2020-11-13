@@ -15,23 +15,18 @@ export default {
 			obj: null
         }
 	},
-	template: `
-	<div class="device">
-        <div id="dettaglio">
-            <div id="sensore"></div>
-            <div id="microfono"></div>
+	template: ` 
+        <div class="notebook">
+            <div class="note">
+                <div id="text"> </div>
+				<div class="post-it">
+					<div id="container" class="sticky taped">
+					</div>
+				</div>
+                <button id="next" @click="next"> &rarr; </button>
+            </div>
         </div>
-        <div id="accesione-button"></div>
-        <div id="volume-su"></div>
-		<div id="volume-giu"></div>
-		<div id="container">
-			<div id="text"> </div>
-			<div id="info"> </div>
-			<button id="next" @click="next"> &rarr; </button>
-		</div>
-		<div id="bottone"></div>
-	</div>
-`,
+    `,
 	methods: {
 
 		next() {

@@ -16,7 +16,8 @@
     bottom: 5%; 
 }
 
+
 #startBtn:hover {
-    background-color: black;
+    background-color: rgb(180, 95, 25);
     color: white;
 }

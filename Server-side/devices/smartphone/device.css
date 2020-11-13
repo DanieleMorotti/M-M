@@ -74,7 +74,7 @@ body {
 }
   
   
-#schermo {
+#container {
     margin: auto;
     width: 90%;
     height: 95%;
@@ -124,7 +124,6 @@ body {
     height: 60px;
 }
 
-
 #answers label {
     cursor:pointer;
 }
@@ -146,4 +145,29 @@ body {
 
 #widget {
     height: 60%;
+}
+
+#evaluableForm input {
+    background-color:rgb(51, 61, 63);
+    border: 1px solid rgb(255, 225, 160);
+    border-radius: 5px;
+    color: white;
+}
+
+#evaluableForm button {
+    background-color: rgba(255, 255, 255, 0.692);
+    border-style: none;
+    border-radius: 2px;
+}
+
+#evaluableForm * {
+    margin-top: 1rem;
+}
+
+#answer {
+    background-color:rgb(51, 61, 63);
+    border: 1px solid rgb(255, 225, 160);
+    border-radius: 5px;
+    color: white;
+    margin-top: 1rem;
 }

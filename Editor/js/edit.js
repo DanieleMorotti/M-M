@@ -52,7 +52,7 @@ export default {
                         <textarea id="inpDescr" name="description" rows="3" cols="40"></textarea>
                     </li>
                     <li>
-                        <label for="buttonDevice">Scegli il dispositivo che il cellulare rappresenterà:</label><br>
+                        <label for="buttonDevice">Scegli il dispositivo che il cellulare rappresenterà:</label>
                         <input type="button" id="buttonDevice" data-toggle="modal" data-target="#deviceModal" value="Scegli"/>
                         <p id="infoDevice" style="display:none"> </p>
                     </li>
@@ -65,7 +65,7 @@ export default {
                         <textarea id="inpConcl" name="conclusion" rows="3" cols="40"></textarea>
                     </li>
                     <li>    
-                        <h3 style="display:inline-block">Missioni</h3>&nbsp;&nbsp;<i class="fas fa-plus" @click="addMission"></i>
+                        <h3 style="display:inline-block">Missioni</h3>&nbsp;&nbsp;
                         <input type="button" id="buttonGraph" data-toggle="modal" data-target="#graphModal" value="Grafo attività"/>
                             
 
@@ -101,8 +101,11 @@ export default {
                                 <p v-else>Nessuna attività per questa missione </p>
                             </li>
                         </ul>
-                        <span style="font-size:30px;cursor:pointer" @click="openNav('activity')">&#9776; Aggiungi attività</span><br>
-                        <span style="font-size:30px;cursor:pointer" @click="openNav('widget')">&#9776; Aggiungi widget</span>
+                    </li>
+                    <li>
+                        <span style="font-size:30px;cursor:pointer"><i class="fas fa-chess-bishop" @click="addMission"></i>&nbsp;&nbsp;Aggiungi missione</span><br>
+                        <span style="font-size:30px;cursor:pointer" @click="openNav('activity')"><i class="fas fa-chess-pawn"></i>&nbsp;&nbsp;Aggiungi attività</span><br>
+                        <span style="font-size:30px;cursor:pointer" @click="openNav('widget')"><i class="fas fa-chess-rook"></i>&nbsp;&nbsp;Aggiungi widget</span>
                     </li>
                     <li>
                         <h3>Facilitazioni</h3>
@@ -143,20 +146,20 @@ export default {
                         <select name="mission" id="chooseMission">
                             <option v-for="(mission,index) in missions" :key="index" :value="mission.name"> {{mission.name}}</option>
                         </select>
-                        <h5>Scegli il tipo dell'attività : </h5>
+                        <h5 class="info">Scegli il tipo dell'attività : </h5>
                         <input id="multipleChoice" type="radio" v-model="type" value="scelta multipla" name="activityTypeGroup" checked/>
-                        <label for="multipleChoice">Scelta multipla</label>
+                        <label for="multipleChoice">Scelta multipla</label><br>
                         <input id="openQuest" type="radio" v-model="type" value="domanda aperta" name="activityTypeGroup" />
-                        <label for="openQuest">Domanda aperta</label>
+                        <label for="openQuest">Domanda aperta</label><br>
                         <input id="figur" type="radio" v-model="type" value="figurativa" name="activityTypeGroup" />
-                        <label for="figur">Figurativa</label>
+                        <label for="figur">Figurativa</label><br>
                         <input id="valutabile" type="radio" v-model="type" value="valutabile" name="activityTypeGroup"  />
                         <label for="valutabile">Valutabile</label>
 
-                        <h5>Dove si svolge l'attività?(ambientazione)</h5>
+                        <h5 class="info">Dove si svolge l'attività?(ambientazione)</h5>
                         <input type="text" name="where" />
 
-                        <h5>Spiegazione per lo svolgimento dell'attività:</h5>
+                        <h5 class="info">Spiegazione per lo svolgimento dell'attività:</h5>
                         <textarea name="instructions" rows="3" cols="40"></textarea>
 
                         <div id="questionDiv">
@@ -182,7 +185,7 @@ export default {
                                 <input id="answer" type="text" name="answer"/>
                             </div>
                             <div>
-                                <h5>Scegli il tipo di oggetto da inserire: </h5>
+                                <h5 class="info">Scegli il tipo di oggetto da inserire: </h5>
                                 <ul id="inputObject">
                                     <li>
                                         <input id="text" type="radio" value="text" name="inputObjectGroup" :disabled="type!=='valutabile'" checked />
@@ -193,18 +196,18 @@ export default {
                                         <label for="file">Scelta file</label>
                                     </li>
                                 </ul>
-                                <h5>Inserisci un messaggio da visualizzare nel momento in cui l'utente attende che la sua risposta venga valutata: </h5>
+                                <h5 class="info">Inserisci un messaggio da visualizzare nel momento in cui l'utente attende che la sua risposta venga valutata: </h5>
                                 <input id="waitMsg" type="text" name="inputObjectGroup" :disabled="type!=='valutabile'" />
-                                <label for="waitMsg">Messaggio</label>
+                                <label for="waitMsg" style="display:none">Messaggio</label>
                             </div>
                             
 
-                            <label for="score">Inserisci un punteggio da assegnare:</label><br>
+                            <label for="score" class="info">Inserisci un punteggio da assegnare:</label><br>
                             <input id="score" type="range" min="10" max="100" step="5"  v-model="value" name="score"/>
                             <span v-text="total" id="scoreValue"></span>
 
                             <div>
-                                <p>Scegli l'attività successiva: </p>
+                                <h5 class="info">Scegli l'attività successiva: </h5>
                                 <ul>
                                 <li>
                                     <label for="nextActvityCorrect"> in caso di risposta corretta</label><br>
@@ -235,8 +238,8 @@ export default {
                         </div>
                         
                 
-                        <h5>Scegli un widget per questa attività</h5>
-                        <input type="button" id="buttonWidget" data-toggle="modal" data-target="#widgetModal" value="Scegli"/>
+                        <h5 class="info" style="display:inline">Scegli un widget per questa attività: </h5>
+                        <input type="button" id="buttonWidget" data-toggle="modal" data-target="#widgetModal" value="Seleziona"/>
                         <p id="infoWidget" style="display:none"> </p>
                     </li>
                 </ul>
@@ -254,7 +257,7 @@ export default {
                     <h2>Nuovo widget</h2>
                     <ul>
                         <li>
-                            <h5>Crea un nuovo widget: </h5>
+                            <h5 >Crea un nuovo widget: </h5>
                             <label for="inpWidgetName">Nome del widget:</label>
                             <input type="text" id="inpWidgetName" name="name" v-on:keyup="checkName('widget')" required/>
                             <p id="widgetInfo"> Un widget con questo nome esiste già</p>
@@ -477,6 +480,8 @@ export default {
         },
         addActivity(e) {   
             e.preventDefault();
+            this.closeNav('activity');
+
             $(`#nextActivityCorrect option`).prop('disabled', false);
             $(`#nextActivityIncorrect option`).prop('disabled', false);
 
@@ -571,6 +576,7 @@ export default {
             this.answerList = [];
         },
         editActivity(index,misInd){
+                this.openNav('activity')
                 this.answerList = [];
                 this.currentMission = misInd;
                 this.currentActivity = index;
@@ -691,6 +697,7 @@ export default {
         },
         addWidget(e) {
             e.preventDefault();
+            this.closeNav('widget')
             let data = new FormData($('#widgetsForm')[0]);
             let widgetName = $("#inpWidgetName").val()
             $.ajax({
@@ -818,7 +825,7 @@ export default {
                 this.invalid = true;               
             }
             else {
-                input.css("background-color", "white");
+                input.css("background-color", '##1d1b1b');
                 info.css("display", "none");
             }
         },

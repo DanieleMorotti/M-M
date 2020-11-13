@@ -1,0 +1,132 @@
+body {
+    height: 100%;
+    font-family: 'Ubuntu', sans-serif;
+    background-color: #6b1a39;
+    background-image: none !important;
+    font-family: 'Ink Free', 'Tahoma', serif;
+}
+  
+.notebook{
+    display: block;
+    position: relative;
+    width: 60%;
+    height: 80vh;
+    width: 400px;
+    background-color: #FFFFCC;
+    margin: 20px auto;
+    box-shadow: 10px 13px 10px 4px rgba(0,0,0,0.2);
+}
+
+.notebook::before{
+    position:absolute;
+    content:'';
+    top: 13px;
+    left: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    box-shadow: 20px 0 0px 0px #CCC, 50px 0 0 #CCC, 80px 0 0 #CCC, 110px 0 0 #CCC, 140px 0 0 #CCC, 170px 0 0 #CCC, 200px 0 0 #CCC, 230px 0 0 #CCC,  260px 0 0 #CCC,  290px 0 0 #CCC, 320px 0 0 #CCC, 350px 0 0 #CCC;
+}
+
+#text{
+    position: absolute;
+    content: '';
+    font-size: 1rem;
+    text-align: left;
+    top: 70px;
+    background-color: #FFFFCC;
+    width: 90% ;
+    height: 80%;
+    border: none;
+    background-image: repeating-linear-gradient(#FFAB00 0px, #FFAB00 0px, transparent 1px, transparent 30px);
+    background-repeat: repeat-y, no-repeat;
+    outline: none;
+    padding-left: 20px;
+}
+
+#info {
+    margin-top: 1rem;
+}
+   
+.note{
+   overflow-y: hidden; /* Hide vertical scrollbar */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
+#next {
+    position: absolute;
+    bottom: 0.5em;
+    right: 0.5em;
+    font-size: 2em;
+    border-style: none !important;
+    background-color: transparent;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#evaluableForm button {
+    background-color: transparent;
+    border-radius: 2px;
+}
+
+#evaluableForm * {
+    margin-top: 2rem;
+}
+
+input {
+    background-color:transparent;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: black;
+    width: 100%;
+}
+
+input, input:focus {
+    outline: none !important;
+}
+
+#answer {
+    margin-top: 2rem;
+}
+
+
+.sticky {
+    -webkit-box-shadow: #DDD 0px 1px 2px;
+    position: relative;
+    background-color: #f8ad0a;
+    color: #47576B;
+    text-align: center;
+    margin: 2.5em 0px;
+    padding: 1.5em 1em;
+    height: 100%;
+    -webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.25);
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.25);
+    -webkit-transform: rotate(2deg);
+    -moz-transform: rotate(2deg);
+    -o-transform: rotate(2deg);
+    -ms-transform: rotate(2deg);
+    transform: rotate(2deg);
+}
+.post-it {
+    width: 70%;
+    height: 35vh;
+    position: absolute;
+    top: 35%;
+    left: 40%;
+}
+ 
+.sticky.taped:after {
+    display: block;
+    content: "";
+    position: absolute; 
+    width: 110px;
+    height: 30px;
+    top: -21px;
+    left: 30%;    
+    border: 1px solid #fff;
+    background: rgba(254, 254, 254, .6);
+    -webkit-box-shadow: 0px 0 3px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 0 3px rgba(0,0,0,0.1);
+    box-shadow: 0px 0 3px rgba(0,0,0,0.1);  
+}

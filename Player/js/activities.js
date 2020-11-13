@@ -26,10 +26,7 @@ export default {
     methods: {
         send(event, mission, activity) {
             event.preventDefault();
-
-            console.log($('#answer').val())
             let data = new FormData();
-
             data.append('question',this.missions[mission].activities[activity].question);
 
             if($('#answer').attr("type") == 'file')
@@ -76,14 +73,14 @@ export default {
             }
             else if( type =="domanda aperta") {
                 $("#text").html(this.missions[mission].activities[activity].question);
-                $("#text").append(`<br><input type="text" id="answer"/>`);
+                $("#text").append(`<br><input  type="text" id="answer" placeholder="Scrivi qui" />`);
             }
             else if(type == "valutabile") {
                 this.data = null;
                 $("#text").html(this.missions[mission].activities[activity].question);         
                 $("#text").append(`<br><form id="evaluableForm">
-                    <label for="answer">Invia risposta:</label>
-                    <input type="text" id="answer"/>
+                    <label for="answer" style="display:none">Invia risposta:</label>
+                    <input type="text" id="answer"  placeholder="Scrivi qui"/><br>
                     <button id="sendBtn">Invia</button>
                     </form>`); 
                 $('#evaluableForm').show();
@@ -92,7 +89,7 @@ export default {
                 this.mission = mission;
                 this.activity = activity;
             }
-            else {  //tipe figurative ${this.missions[mission].activities[activity].inputType}
+            else {  //tipe figurative 
                 $('#text').html("");
                 $('#text').append(this.missions[mission].activities[activity].instructions);
                 let widget = this.missions[mission].activities[activity].widget;
@@ -101,7 +98,10 @@ export default {
                     url: `/Server-side/widgets/${widget}/${widget}.jpg`,
                     type: 'GET',
                     success: function(data){ 
-                        $('#schermo').css('background-image', `url("/Server-side/widgets/${widget}/${widget}.jpg")`);     
+                        $('#container').css('background-image', `url("/Server-side/widgets/${widget}/${widget}.jpg")`);     
+                    },
+                    error: function(){
+                        $('#container').css('background-color', 'black');     
                     }
                 })
          
@@ -110,7 +110,7 @@ export default {
 
                 async function load() {
                     widgetComp = await import(`/Server-side/widgets/${widget}/${widget}.js`);
-                    $('#schermo').append(`<div id="widget"></div>`)
+                    $('#container').append(`<div id="widget"></div>`)
                     $('#widget').append(widgetComp.default.template);
                     widgetComp.default.methods.render(question, correctAns)
                 }
@@ -119,7 +119,7 @@ export default {
             }  
         },
         verify(type, mission, activity) {
-            $("#info").html("");
+        //    $("#info").html("");
             
             /* if response is correct */
             if((type == 'scelta multipla' && $('input[name="answer"]:checked').val() == this.missions[mission].activities[activity].correctAns) ||
@@ -148,13 +148,14 @@ export default {
                     console.log(this.score)
                     if (type == "figurativa") {
                         $('#widget').remove();
-                        $('#schermo').css('background-image', 'none');
+                        $('#container').css('background-image', 'none');
                     }
                     return([this.nextAct, this.nextMiss, this.score]);
             }
             /* if user didn't answered */
             else if(type == "domanda aperta" && $("#answer").val() == "") {
-                $("#info").html("Inserisci una risposta!");
+               // $("#info").html("Inserisci una risposta!");
+               $('#text').append('<p>Inserisci una risposta!</p>')
                     return(false)
             }
             /* if answer is incorrect */
@@ -172,7 +173,7 @@ export default {
 
                 if (type == "figurativa") {
                     $('#widget').remove();
-                    $('#schermo').css('background-image', 'none');
+                    $('#container').css('background-image', 'none');
                 }
                 return([this.nextAct, this.nextMiss, this.score]);
             }
@@ -188,7 +189,14 @@ export default {
             this.usedFacilities = []
             this.usedDifficulties = []
             this.currentF = Math.floor(Math.random() * this.story.facilities.length); 
-            this.currentD = Math.floor(Math.random() * this.story.difficulties.length)
+            this.currentD = Math.floor(Math.random() * this.story.difficulties.length);
+
+            $(document).on('keydown','#answer', (e) =>{
+                if (e.keyCode == 13) {
+                    document.getElementById('next').click();
+                    return false;
+                }
+            });
 
             //to update the server about my current position
             setInterval(() => {                
