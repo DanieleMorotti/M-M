@@ -405,6 +405,8 @@ app.get('/getWidget',(req,res) =>{
 //@partecipants: all the users connected,@askingHelp:array for users who ask help with the button
 let partecipants = [];
 let askingHelp = [];
+//list of object {id-name assigned}
+let listOfAssociatedNames = [];
 
 //manage the update of user position
 app.post('/Play/updatePlayerPosition',(req,res) => {
@@ -492,7 +494,6 @@ app.get('/Play/checkMark',(req,res)=>{
 	res.flushHeaders();
 
 	let userName = req.cookies.userId.substring(0,5);
-	console.log(userName)
 	let interv = setInterval(()=>{
 		let ind = evaluated.findIndex(x => x.id === userName);
 		if(ind < 0) ;
@@ -508,6 +509,15 @@ app.get('/Play/checkMark',(req,res)=>{
 	})
 })
 
+//get the name if valutatore give me one
+app.get('/Play/getNewName',(req,res)=>{
+	let id = req.cookies.userId.substring(0,5);
+	if(listOfAssociatedNames.some(el => el[id])){
+		let i = listOfAssociatedNames.findIndex(obj => Object.keys(obj)[0] === id);
+		res.send(listOfAssociatedNames[i][id]);
+	}
+	else res.end();
+})
 
 
 //////////////////////////////////////////////////////////
@@ -523,6 +533,7 @@ app.get('/Valutatore/needRequests',(req,res) =>{
 	res.flushHeaders(); // flush the headers to establish SSE with client
 	
 	let prev = [];
+
 	let interv = setInterval(()=>{
 		let who = [];
 		partecipants.forEach(el => { if(el.needHelp)who.push({who:el.id,where:el.position});});
@@ -544,22 +555,29 @@ app.get('/Valutatore/needRequests',(req,res) =>{
 	
 })
 
-/*app.get('/Valutatore/needEvaluation',(req,res)=>{
-	res.json(toEval);
-})*/
-
 app.post('/Valutatore/evaluationDone',(req,res)=>{
 	let mark = req.body.mark;
 	let userName = req.body.id;
 	toEval.splice(toEval.findIndex(us => us.id === userName),1);
 	evaluated.push({id:userName,mark:mark});
 	console.log("Rimozione dall'array di valutazione");
+	res.end();
 })
+
+
+//listOfAssociatedNames is defined as the list of pair id-name
+app.post('/Valutatore/changeName',(req,res)=>{
+	let data = req.body;
+	
+	//push the new association id-name
+	listOfAssociatedNames.push({[data.id]:data.newName});
+	res.end();
+
+})
+
 
 /*CHAT SECTION*/
 const { usersList } = require('./function');
-const { SSL_OP_EPHEMERAL_RSA } = require('constants');
-
 
 app.get('/Valutatore', function(req,res){
 	//pericoloso, perchè se accedono contemporaneamente 1 dello staff e uno no, diventano tutte dello staff

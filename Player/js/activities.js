@@ -20,7 +20,7 @@ export default {
             mission: 0,
             activity: 0,
             servSent: null,
-            data: null 
+            data: null,
         }
     },
     methods: {
@@ -207,6 +207,8 @@ export default {
                     }
                 })
             }, 2000); 
+
+            
 
             $(document).on('click','#sendBtn', (event) =>{
                 this.send(event, this.mission, this.activity);

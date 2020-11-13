@@ -12,7 +12,8 @@ export default {
 			currentMission: 0,
 			currentActivity: 0,
 			verify: false,
-			obj: null
+			obj: null,
+			myName: null
         }
 	},
 	template: `
@@ -62,10 +63,23 @@ export default {
 		}
 	},
 	activated() {
+		this.myName = document.cookie.split('=')[1];
 		storyItem = JSON.parse(localStorage.getItem("story"));
 		this.missions = storyItem.missions;
-		$('#text').text(storyItem.introduction);
 		render.methods.initialize();
-		
+
+		//request for getting new name if exist
+		$.ajax({
+			type: "GET",
+			url: '/Play/getNewName',
+			success: (data) =>{
+				if(data)this.myName = data;
+				$('#text').text('ciao '+this.myName+'\n'+storyItem.introduction);
+
+			},
+			error: function (e) {
+				console.log("error in get player name",e);
+			}
+		})
 	}
 }
