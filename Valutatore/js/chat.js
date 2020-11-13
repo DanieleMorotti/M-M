@@ -23,7 +23,7 @@ new Vue({
                     <div class="bg-white" v-if="users.length != 0">
                         <div class="messages-box" v-for="user in users" v-bind:key="user.id" @click="enterChat(user.id)">
                             <div class="list-group rounded-0">
-                                <a class="list-group-item list-group-item-action  rounded-0">
+                                <a class="list-group-item list-group-item-action rounded-0">
                                     <div class="media">
                                         <img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
                                         <div class="media-body ml-4">
@@ -329,21 +329,21 @@ new Vue({
 
             let newName = $('.editableName > span').eq(index).text();
             this.users[index][id] = newName;
-            /*  DA finire, decidere se comunicare ogni tot se il nome è cambiato al player(unendo questa richiesta a quella già
-                esistente del server-sent). La pusho al server che si salva una variabile che invia al player
+            
             $.ajax({
                 type: "POST",
-                url: "/Valutatore/nameChange",
+                url: "/Valutatore/changeName",
                 data: {
-                    name: newName
+                    id: id,
+                    newName: newName    
                 },
                 success: (data) =>{
-                    console.log(" Il nome è arrivato a destinazione ;) ");
+                    console.log("Grande valutatore, hai cambiato il nome a ",id);
                 },
                 error: function (e) {
                     console.log("error in sending newname");
                 }
-            });*/
+            });
         }
     },
     created(){
@@ -355,7 +355,7 @@ new Vue({
         });
     },
     mounted(){
-        //update users list when a new player join the game
+        //update users list when a new player join the game; [name] computed property names es6
         bus.$on('upd-us', (name) => { this.users.push({[name]:name})});
 
         //delete user from the list when it's disconnected

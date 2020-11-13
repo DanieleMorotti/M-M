@@ -92,3 +92,7 @@
   #optMenu{
     display: none;
   }
+
+  .list-group-item-action{
+    background-color:pink;
+  }
