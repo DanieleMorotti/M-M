@@ -383,7 +383,7 @@ app.get('/Play',(req,res) =>{
 })
 
 
-app.get('/getPlayableStory', (req,res) => {
+app.get('/Play/getPlayableStory', (req,res) => {
 	fs.readFile('./stories/public/'+ story +'/file.json', 'utf8', (err, data) => {  
 		device = JSON.parse(data).device;
 		res.set('Content-Type', 'application/json');
@@ -391,7 +391,6 @@ app.get('/getPlayableStory', (req,res) => {
 		res.status(200);
 	})
 })
-
 
 /*
 app.get('/getWidget',(req,res) =>{
@@ -520,6 +519,24 @@ app.get('/Play/getNewName',(req,res)=>{
 	else res.end();
 })
 
+
+/*reset all the common variables when another story is requested
+app.post('/cleanServer',(req,res)=>{
+	//cookie management variables
+	cookieNum = 1;
+	numStaff = 1;
+	isStaff = false;
+	idNum = 1;
+	//'valutatore' variables
+	partecipants = [];
+	askingHelp = [];
+	listOfAssociatedNames = [];
+	endPlayers = [];
+	toEval = [];
+	evaluated = [];
+})
+
+*/
 
 //////////////////////////////////////////////////////////
 //VALUTATORE

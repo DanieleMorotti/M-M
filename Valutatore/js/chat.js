@@ -392,6 +392,7 @@ new Vue({
             this.users.splice(i,1);
         });
 
+        //i need only one message because all the players play the same story
         sock.once('current-story',(storyName)=>{
             this.storyName = storyName;
         })

@@ -7,6 +7,7 @@ export default {
     data() {
         return{
             currentStory: -1,
+            //saving here if i'm working on a story in private or public list
             currentList:"",
             privateStoriesList: [],
             publicStoriesList: []
@@ -94,24 +95,26 @@ export default {
         </div> 
     `,
     methods: {
-        //ogni volta che clicco su un bottone per svolgere attività sulla storia viene eseguita anche questa perchè i bottoni piccoli sono dentro
-        //a quello grande, in questa maniera so da quale storia è stato premuto il bottone per eseguire modifiche
+        //every time i click on a story button to do something on it i execute this function
         changeActive(index,list){
             this.currentStory = index;
             this.currentList = list;
             let current = list + '-list';
             let title;
-            if(list == 'private'){
-                title = this.privateStoriesList[index].title;
-            } else title = this.publicStoriesList[index].title;
+
+            if(list == 'private') title = this.privateStoriesList[index].title;
+            else title = this.publicStoriesList[index].title;
+
             if($(`#${current} div:eq(${index})`).css("display") == "block")
                 $(`#${current} div:eq(${index})`).css("display", "none");
             else {
                 $.ajax({
                     url: '/getStory?title='+title+'&group='+list,
                     type: 'GET',
-                    success: (data) =>{    
-                        $(`#${current} div:eq(${index})`).html("<hr><pre>"+JSON.stringify(data,null,2)+"</pre>");
+                    success: (data) =>{
+                        //typeof val === 'object'
+                        let parsed = this.formatJSON(data);
+                        $(`#${current} div:eq(${index})`).html("<hr><pre>"+parsed+"</pre>");
                         $(`#${current} div:eq(${index})`).css("display", "block");
       
                     },
@@ -120,6 +123,22 @@ export default {
                     }
                 });
             }
+        },
+        formatJSON(obj){
+            let parsed;
+            for (let key of Object.keys(obj)) {
+                if(parsed){
+                    parsed += `<h3>${key.toUpperCase()}</h3>`;
+                    if(typeof obj[key] !== 'object')parsed += `<p>${obj[key]}</p>`;
+                    else{
+                        parsed += `<p>${JSON.stringify(obj[key],null,2)}</p>`;
+                    }
+                }
+                else{
+                    parsed = `<h3>${key.toUpperCase()}</h3><p>${obj[key]}</p>`;
+                }
+            }
+            return parsed;
         },
         newStory(){
             $('.content').css("display", "none");
