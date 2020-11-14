@@ -103,7 +103,7 @@ export default {
                         </ul>
                     </li>
                     <li>
-                        <span style="font-size:30px;cursor:pointer"><i class="fas fa-chess-bishop" @click="addMission"></i>&nbsp;&nbsp;Aggiungi missione</span><br>
+                        <span style="font-size:30px;cursor:pointer"  @click="addMission"><i class="fas fa-chess-bishop"></i>&nbsp;&nbsp;Aggiungi missione</span><br>
                         <span style="font-size:30px;cursor:pointer" @click="openNav('activity')"><i class="fas fa-chess-pawn"></i>&nbsp;&nbsp;Aggiungi attività</span><br>
                         <span style="font-size:30px;cursor:pointer" @click="openNav('widget')"><i class="fas fa-chess-rook"></i>&nbsp;&nbsp;Aggiungi widget</span>
                     </li>

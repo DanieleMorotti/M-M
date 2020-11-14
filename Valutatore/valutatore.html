@@ -17,9 +17,16 @@
 
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-			<button id="toChat" class="btn btn-dark mr-1" onclick="toggleMenu(1)">Chat</button>
-			<button id="toVal" class="btn btn-dark mr-1" onclick="toggleMenu(2)">Valuta</button>
-			<button id="toOpt" class="btn btn-dark mr-1" onclick="toggleMenu(3)">Impostazioni</button>
+			<button class="btn btn-dark mr-1" onclick="toggleMenu(1)">Chat</button>
+			<button class="btn btn-dark mr-1" onclick="toggleMenu(2)">Valuta</button>
+			<div class="dropdown">
+				<button class="btn btn-dark mr-1 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+				 aria-expanded="false">Impostazioni</button>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				  <a class="dropdown-item" href="#" onclick="toggleMenu(3,1)">Cambia i nomi</a>
+				  <a class="dropdown-item" href="#" onclick="toggleMenu(3,2)">Stampa risultati</a>
+				</div>
+			</div>
 		</nav>
 		<div id="chat">
 			<div id="chatMenu"></div>
