@@ -519,9 +519,9 @@ app.get('/Play/getNewName',(req,res)=>{
 	else res.end();
 })
 
-
-/*reset all the common variables when another story is requested
-app.post('/cleanServer',(req,res)=>{
+/*
+//reset all the common variables when another story is requested
+app.get('/cleanServer',(req,res)=>{
 	//cookie management variables
 	cookieNum = 1;
 	numStaff = 1;
@@ -534,9 +534,14 @@ app.post('/cleanServer',(req,res)=>{
 	endPlayers = [];
 	toEval = [];
 	evaluated = [];
-})
 
-*/
+	
+
+	io.of('/').emit('disconnect','now');
+	res.send('<p>ok</p>');
+})*/
+
+
 
 //////////////////////////////////////////////////////////
 //VALUTATORE

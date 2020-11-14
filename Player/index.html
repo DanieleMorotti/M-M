@@ -135,14 +135,18 @@
 					onChatSubmitted(){
 					this.messages.push({mess:this.newMess,type:0});
 					this.sock.emit('chat-message',this.newMess);
-					this.newMess = null;
+						this.newMess = null;
 					}
 				},
 				created(){
 					this.sock = io();
 					//listening for the messages that will arrive
 					this.sock.on('message',(data) => {
-					this.messages.push({mess:data,type:1});
+						this.messages.push({mess:data,type:1});
+					})
+					this.sock.on('disconnect',(data)=>{
+						this.sock.close();
+						//redirect to a page to tell that match is over window.location = "https://www.google.com";
 					})
 
 				}

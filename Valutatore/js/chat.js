@@ -86,10 +86,13 @@ new Vue({
     methods: {
         //save the messages of the staff and send them to the server
         onChatSubmitted(){
-            this.users[this.currRoom].messages.push({mess:this.newMess,type:0});
-            sock.emit('staff-chat-message',{to:this.users[this.currRoom].id,mess:this.newMess});
-            this.newMess = null;
-            $('.media .badge').eq(this.currRoom).text('');
+            //i can't send message if there isn't any player
+            if(this.users.length != 0){
+                this.users[this.currRoom].messages.push({mess:this.newMess,type:0});
+                sock.emit('staff-chat-message',{to:this.users[this.currRoom].id,mess:this.newMess});
+                this.newMess = null;
+                $('.media .badge').eq(this.currRoom).text('');
+            }
         },
         //change the current chat to the 'id' chat 
         enterChat(id,i){
