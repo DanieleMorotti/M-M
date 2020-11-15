@@ -519,7 +519,7 @@ app.get('/Play/getNewName',(req,res)=>{
 	else res.end();
 })
 
-/*
+
 //reset all the common variables when another story is requested
 app.get('/cleanServer',(req,res)=>{
 	//cookie management variables
@@ -534,14 +534,15 @@ app.get('/cleanServer',(req,res)=>{
 	endPlayers = [];
 	toEval = [];
 	evaluated = [];
-
-	
-
+	//emit event to disconnect all users and to refresh 'valutatore' page
 	io.of('/').emit('disconnect','now');
+	io.of('/staff').emit('refresh-page','now');
 	res.send('<p>ok</p>');
-})*/
+})
 
-
+app.get('/endGame',(req,res)=>{
+	res.sendFile(path.join(__dirname,'../Player/endGame.html'));
+})
 
 //////////////////////////////////////////////////////////
 //VALUTATORE

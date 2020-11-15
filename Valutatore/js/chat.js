@@ -158,6 +158,9 @@ new Vue({
             this.sortRecent(i);
         })
 
+        sock.on('refresh-page',(data)=>{
+            location.reload();
+        })
         this.servSent = new EventSource('/Valutatore/needRequests');
         
     },

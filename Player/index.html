@@ -146,7 +146,8 @@
 					})
 					this.sock.on('disconnect',(data)=>{
 						this.sock.close();
-						//redirect to a page to tell that match is over window.location = "https://www.google.com";
+						//redirect to a page to tell that match is over 
+						window.location.replace("http://localhost:8000/endGame");
 					})
 
 				}
