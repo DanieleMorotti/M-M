@@ -10,7 +10,8 @@ export default {
             //saving here if i'm working on a story in private or public list
             currentList:"",
             privateStoriesList: [],
-            publicStoriesList: []
+            publicStoriesList: [],
+            parsedJSON: ""
         }
     },
     template: `
@@ -125,20 +126,33 @@ export default {
             }
         },
         formatJSON(obj){
-            let parsed;
+           
+            /*Ricorsiva su tutti gli oggetti ma non indentati bene e ci sono i numeri, perchè gli array hanno come chiave quelli
+            for (let key in obj) {
+                if (typeof obj[key] === "object") {
+                        this.parsed += `<h2>${key}: </h2>`;
+                        this.formatJSON(obj[key]);   
+                } else {
+                    this.parsed += `<h3>${key}: </h3>`;
+                    this.parsed+= '<p>  '+(obj[key])+'</p>';    
+                }
+            }
+            return this.parsed;*/
+            
             for (let key of Object.keys(obj)) {
-                if(parsed){
-                    parsed += `<h3>${key.toUpperCase()}</h3>`;
-                    if(typeof obj[key] !== 'object')parsed += `<p>${obj[key]}</p>`;
+                //to avoid 'undefined' print on first line
+                if(this.parsed){
+                    this.parsed += `<h3>${key.toUpperCase()}</h3>`;
+                    if(typeof obj[key] !== 'object')this.parsed += `<p>${obj[key]}</p>`;
                     else{
-                        parsed += `<p>${JSON.stringify(obj[key],null,2)}</p>`;
+                        this.parsed += `<p>${JSON.stringify(obj[key],null,2)}</p>`;
                     }
                 }
                 else{
-                    parsed = `<h3>${key.toUpperCase()}</h3><p>${obj[key]}</p>`;
+                    this.parsed = `<h3>${key.toUpperCase()}</h3><p>${obj[key]}</p>`;
                 }
             }
-            return parsed;
+            return this.parsed;
         },
         newStory(){
             $('.content').css("display", "none");
