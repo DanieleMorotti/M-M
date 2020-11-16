@@ -21,3 +21,7 @@
     background-color: rgb(180, 95, 25);
     color: white;
 }
+
+#conclusionDiv p, h1 {
+    color: white
+}
