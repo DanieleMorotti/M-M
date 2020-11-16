@@ -355,7 +355,7 @@ app.put('/privateStory/:title', (req, res) => {
 /*****************
  * GESTIONE PLAYER
  *****************/
-var story, device;
+var story, device, oldStory;
 let cookies;
 var cookieNum = 1;
 var numStaff = 1;
@@ -366,6 +366,12 @@ const myfunctions = require('./function');
 
 app.get('/Play',(req,res) =>{
 	story = req.query.story;
+	//verify if a different story is requested
+	if(oldStory && oldStory != story){
+		reinitializeVariables();
+		oldStory = story;
+	}
+	else oldStory = story;
 
 	cookies = req.cookies;
 	//set the cookies for the users
@@ -520,9 +526,8 @@ app.get('/Play/getNewName',(req,res)=>{
 	else res.end();
 })
 
-
-//reset all the common variables when another story is requested
-app.get('/cleanServer',(req,res)=>{
+//to rinitialize all the variables when the match is over
+function reinitializeVariables(){
 	//cookie management variables
 	cookieNum = 1;
 	numStaff = 1;
@@ -538,9 +543,9 @@ app.get('/cleanServer',(req,res)=>{
 	//emit event to disconnect all users and to refresh 'valutatore' page
 	io.of('/').emit('disconnect','now');
 	io.of('/staff').emit('refresh-page','now');
-	res.send('<p>ok</p>');
-})
+}
 
+//send the page when a user is disconnected 
 app.get('/endGame',(req,res)=>{
 	res.sendFile(path.join(__dirname,'../Player/endGame.html'));
 })
