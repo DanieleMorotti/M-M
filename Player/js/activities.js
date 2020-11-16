@@ -208,7 +208,7 @@ export default {
                         currAct: parseInt(this.nextAct)+1
                     },
                     success: (data) =>{
-                        console.log("Ok");
+                        console.log("Update posizione avvenuto");
                     },
                     error: function (e) {
                         console.log("error in update player position",e);

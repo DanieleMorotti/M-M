@@ -85,12 +85,8 @@
     color:red !important;
   }
 
-  #valMenu{
+  #valMenu,#optMenu,#printResults,#changeNameMenu{
     display:none;
-  }
-
-  #optMenu{
-    display: none;
   }
 
   .list-group-item-action{

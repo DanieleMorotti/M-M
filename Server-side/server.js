@@ -365,7 +365,6 @@ var idNum = 1;
 const myfunctions = require('./function');
 
 app.get('/Play',(req,res) =>{
-	//res.status(200);
 	story = req.query.story;
 
 	cookies = req.cookies;
@@ -385,7 +384,7 @@ app.get('/Play',(req,res) =>{
 })
 
 
-app.get('/getPlayableStory', (req,res) => {
+app.get('/Play/getPlayableStory', (req,res) => {
 	fs.readFile('./stories/public/'+ story +'/file.json', 'utf8', (err, data) => {  
 		device = JSON.parse(data).device;
 		res.set('Content-Type', 'application/json');
@@ -393,7 +392,6 @@ app.get('/getPlayableStory', (req,res) => {
 		res.status(200);
 	})
 })
-
 
 /*
 app.get('/getWidget',(req,res) =>{
@@ -408,6 +406,8 @@ let partecipants = [];
 let askingHelp = [];
 //list of object {id-name assigned}
 let listOfAssociatedNames = [];
+//players who finished the game,list of obj {name:,points:}
+let endPlayers = [];
 
 //manage the update of user position
 app.post('/Play/updatePlayerPosition',(req,res) => {
@@ -521,6 +521,30 @@ app.get('/Play/getNewName',(req,res)=>{
 })
 
 
+//reset all the common variables when another story is requested
+app.get('/cleanServer',(req,res)=>{
+	//cookie management variables
+	cookieNum = 1;
+	numStaff = 1;
+	isStaff = false;
+	idNum = 1;
+	//'valutatore' variables
+	partecipants = [];
+	askingHelp = [];
+	listOfAssociatedNames = [];
+	endPlayers = [];
+	toEval = [];
+	evaluated = [];
+	//emit event to disconnect all users and to refresh 'valutatore' page
+	io.of('/').emit('disconnect','now');
+	io.of('/staff').emit('refresh-page','now');
+	res.send('<p>ok</p>');
+})
+
+app.get('/endGame',(req,res)=>{
+	res.sendFile(path.join(__dirname,'../Player/endGame.html'));
+})
+
 //////////////////////////////////////////////////////////
 //VALUTATORE
 /////////////////////////////////////////////////////////
@@ -576,6 +600,12 @@ app.post('/Valutatore/changeName',(req,res)=>{
 
 })
 
+//verify the players that ended the game
+app.get('/Valutatore/whoFinished',(req,res)=>{
+	res.json(endPlayers);
+})
+
+
 
 /*CHAT SECTION*/
 const { usersList } = require('./function');
@@ -618,8 +648,9 @@ io.on('connection', (sock) => {
 		}
 	}
 
-	//eventually control if the user is already here
+	//send the new user to the "valutatore"
 	io.of('/staff').emit('update-users',userName);
+	io.of('/staff').emit('current-story',story);
 	
 	//every user need to have a private chat with the staff so he will join a private room
 	sock.join(userName);
@@ -644,7 +675,10 @@ staffSpace.on('connection', function(sock){
 	
 	isStaff = false;
 
-	//on the first connection the staff is informed about the users that are connected yet
+	//on the first connection the staff is informed about the users that are connected yet,if a user is already here i send the name of the story
+	if(story){
+		sock.emit('current-story',story);
+	}
 	sock.emit('first-connection',usersList);
 
 	//when the staff join that unique room

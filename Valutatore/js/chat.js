@@ -86,10 +86,13 @@ new Vue({
     methods: {
         //save the messages of the staff and send them to the server
         onChatSubmitted(){
-            this.users[this.currRoom].messages.push({mess:this.newMess,type:0});
-            sock.emit('staff-chat-message',{to:this.users[this.currRoom].id,mess:this.newMess});
-            this.newMess = null;
-            $('.media .badge').eq(this.currRoom).text('');
+            //i can't send message if there isn't any player
+            if(this.users.length != 0){
+                this.users[this.currRoom].messages.push({mess:this.newMess,type:0});
+                sock.emit('staff-chat-message',{to:this.users[this.currRoom].id,mess:this.newMess});
+                this.newMess = null;
+                $('.media .badge').eq(this.currRoom).text('');
+            }
         },
         //change the current chat to the 'id' chat 
         enterChat(id,i){
@@ -155,6 +158,9 @@ new Vue({
             this.sortRecent(i);
         })
 
+        sock.on('refresh-page',(data)=>{
+            location.reload();
+        })
         this.servSent = new EventSource('/Valutatore/needRequests');
         
     },
@@ -285,33 +291,44 @@ new Vue({
     el: '#optionMenu',
     data() {
         return{
-            users: []
+            users: [],
+            usWin: [],
+            storyName: null
         }
     }, 
     template: `
         <div class="container-fluid">
-            <div class="container"  v-if="users.length != 0">
-                <h3>Cambia come preferisci i nomi dei giocatori</h3>
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(user,ind) in users" v-bind:key="user.id">
-                            <th scope="row">{{ind+1}}</th>
-                            <td>{{Object.keys(user)[0]}}</td>
-                            <td class="editableName"><span>{{Object.values(user)[0]}}</span> &nbsp;<i tabindex="0" class="fas fa-edit" 
-                                @click="editName(ind)" ></i><button type="button" 
-                                class="btn btn-info" style="display:none" @click="saveName(ind,Object.values(user)[0])">SALVA</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="container" id="changeNameMenu">
+                <div class="container"  v-if="users.length != 0">
+                    <h3>Cambia come preferisci i nomi dei giocatori che stanno giocando a "{{storyName}}"</h3>
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(user,ind) in users" v-bind:key="user.id">
+                                <th scope="row">{{ind+1}}</th>
+                                <td>{{Object.keys(user)[0]}}</td>
+                                <td class="editableName"><span>{{Object.values(user)[0]}}</span> &nbsp;<i tabindex="0" class="fas fa-edit" 
+                                    @click="editName(ind)" ></i><button type="button" 
+                                    class="btn btn-info" style="display:none" @click="saveName(ind,Object.values(user)[0])">SALVA</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p v-else>Ancora nessun giocatore connesso</p>
             </div>
-            <p v-else>Ancora nessun giocatore connesso</p>
+            <div class="container" id="printResults">
+                <h4>Stampa i risultati della partita, solamente i giocatori che hanno già terminato saranno presenti </h4>
+                <ul class="list-group" v-if="usWin.length != 0">
+                    <li class="list-group-item" v-for="us in usWin">{{us.name}}</li>
+                </ul>
+                <button @click="verifyWhoFinished">Verifica chi ha finito</button>
+            </div>
         </div>
     `,
     methods: {
@@ -344,24 +361,46 @@ new Vue({
                     console.log("error in sending newname");
                 }
             });
+        },
+        verifyWhoFinished(){
+            $.ajax({
+                type: "GET",
+                url: "/Valutatore/whoFinished",
+                success: (data) =>{
+                    if(data.length != 0){
+                        this.usWin = data.slice();
+                    }
+                    console.log("get the list of players have finished");
+                },
+                error: function (e) {
+                    console.log("error in whoFinished");
+                }
+            });
         }
     },
     created(){
         //get the list of users on first connection
         bus.$on('first-upd-us', (arr) => { 
             arr.forEach(us => {
-                this.users.push({[us]:us});
+                let index = this.users.push({[us]:us});
             });
         });
     },
     mounted(){
         //update users list when a new player join the game; [name] computed property names es6
-        bus.$on('upd-us', (name) => { this.users.push({[name]:name})});
+        bus.$on('upd-us', (name) => { 
+            let index = this.users.push({[name]:name})
+        });
 
         //delete user from the list when it's disconnected
         bus.$on('del-user', (toDel) => { 
             let i = this.users.findIndex(obj => Object.keys(obj)[0] === toDel);
             this.users.splice(i,1);
         });
+
+        //i need only one message because all the players play the same story
+        sock.once('current-story',(storyName)=>{
+            this.storyName = storyName;
+        })
     }
 })
