@@ -4,8 +4,6 @@
   "description": "",
   "introduction": "",
   "conclusion": "",
-  "facility": "{\n  \"facilities\": [\n    \"uno\",\n    \"due\"\n  ]\n}",
-  "difficulty": "",
   "missions": [
     {
       "name": "Missione 1",
@@ -99,6 +97,8 @@
       "isActive": true
     }
   ],
+  "facilities": [],
+  "difficulties": [],
   "originalTitle": "storia con grafo",
   "background": "",
   "widgetCss": "",

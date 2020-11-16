@@ -34,6 +34,10 @@ export default {
             <form id="editStoryForm">
                 <ul>
                     <li>
+                        <input type="checkbox" id="accessibility" name="accessibility" value="true">
+                        <label for="accessibility">STORIA ACCESSIBILE</label><br>
+                    </li>
+                    <li>
                         <label for="inpTitle">Inserisci il titolo: </label>
                         <input type="text" name="title" id="inpTitle" v-on:keyup="checkName('title')" required/>
                         <p id="titleInfo"> Una storia con questo titolo esiste già</p>
@@ -693,7 +697,7 @@ export default {
             $('#deviceModal').modal('hide');
             $("#buttonDevice").prop("value", "Cambia");
             $("#infoDevice").text("Hai scelto il device: " + this.devices[this.currentDevice]);
-            $("#infoDevice").css("display", "inline");
+            $("#infoDevice").css("display", "block");
         },
         addWidget(e) {
             e.preventDefault();
@@ -816,17 +820,14 @@ export default {
             }
 
             if(list.includes(value)) {
-                input.css("background-color", "red");
                 input.addClass('error');
                 info.css("display", "inline");
-                setTimeout(function() {
-                    input.removeClass('error');
-                }, 3000);    
                 this.invalid = true;               
             }
             else {
-                input.css("background-color", '##1d1b1b');
                 info.css("display", "none");
+                input.removeClass('error');
+                this.invalid = false;    
             }
         },
         checkForm: function() {
@@ -889,7 +890,11 @@ export default {
             Object.entries(data).map(item => {
                 if(item[0] == "background" || item[0] == "pocketItemCss" || item[0] == "pocketItemJs") {
                     let id = $(`[name=${item[0]}`).eq(0).attr('id');
-                    $(`#${id} + p`).text(item[1] );
+                    $(`#${id} + p`).text(item[1]);
+                }
+                else if(item[0] == "accessibility") {
+                    console.log("ACC")
+                    $('#accessibility').prop('checked', true);
                 }
                 else if(item[0] == "missions") {
                     this.missions = [];
@@ -898,8 +903,13 @@ export default {
                     }
                 }
                 else if(item[0] == "device") {
+                
                     for(let i = 0; i < this.devices.length; i++ ) {
-                        if(this.devices[i] == item[1]) { this.currentDevice = i; return 0; }
+                        if(this.devices[i] == item[1]) { 
+                            $("#infoDevice").text("Hai scelto il device: " + this.devices[i]);
+                            $("#infoDevice").css("display", "block");
+                            this.currentDevice = i; 
+                        }
                     }
                 }
                 else if(item[0] == "facilities") this.facilitiesList = item[1]

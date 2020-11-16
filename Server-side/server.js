@@ -185,9 +185,10 @@ function readFiles(dir, f) {
 				file.missions.map( x => {
 					missions.push(x.name);
 				})
+				
 				// fare attenzione qui!!
 				dirName = dir.substring(dir.lastIndexOf('\\') + 1);
-				obj[`${dirName}`].push({title:f,missionsList:missions});
+				obj[`${dirName}`].push({title:f,missionsList:missions, accessibility: file.accessibility});
 				succ(data);
 			}
 		})
@@ -197,12 +198,12 @@ function readFiles(dir, f) {
 async function addFiles(dir1, dir2,res) {
 	const files1 = await readDir(dir1);
 	await Promise.all(files1.map(async (f) => {
-		if(f!=='new story')
+		//if(f!=='new story')
 			await readFiles(dir1, f);
 	}))
 	const files2 = await readDir(dir2);
 	await Promise.all(files2.map(async (f) => {
-		if(f!=='new story')
+		//if(f!=='new story')
 		await readFiles(dir2, f);
 	}))
 	res.json(obj);

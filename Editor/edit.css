@@ -182,6 +182,7 @@ i.fas{
     cursor:grab;
 }
 
+
 #titleInfo {
     display: none;
 }
@@ -192,9 +193,10 @@ i.fas{
 
 .error {
     position: relative;
-    color:red;
+    border-color:red !important;
     animation: shake .1s linear;
     animation-iteration-count: 3;
+    color: red;
 }
 
 @keyframes shake {
