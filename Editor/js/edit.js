@@ -76,7 +76,6 @@ export default {
                         <div class="modal fade" id="graphModal" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                 <div class="modal-content">
-                                <span class="close">&times;</span>
                                     <svg></svg>
                                 </div>
                             </div>
@@ -921,6 +920,8 @@ export default {
         },
         show() {
             var modal = document.getElementById("graphModal");
+            $("svg").empty();
+
             this.drawGraph();
             var span = document.getElementsByClassName("close")[0];
             span.onclick = function() { 
@@ -930,27 +931,23 @@ export default {
         },
         drawGraph(){
             var colors = d3.scaleOrdinal(d3.schemeCategory10);
-            var svg = d3.select("svg"),
-                width = 900,
-                height = 600,
+            var svg = d3.select("svg").attr("width", 900).attr("height", 600),
                 node,
                 link;
 
-            var simulation = d3.forceSimulation()
-                .force("link", d3.forceLink().id(function (d) {return d.id;}).distance(function(d) {return d.distance}).strength(1))
-                .force("charge", d3.forceManyBody())
-           //     .force("collide", d3.forceCollide(30))
-                .force("center", d3.forceCenter(width / 2, height / 2));
-
-            
+            // compute current activities' graph
             var graph = {nodes:[],links:[]};
             let indAct = 0, totAct = 0;
             let indMiss = 0;
 
             graph.nodes.push({id: "start", name: "START", r: 10});
             graph.nodes.push({id: "end", name: "END", r: 10});
-            
 
+            this.missions.map(item =>{
+                totAct += item.activities.length
+            })
+
+            
             this.missions.map(item =>{
                 if(item.isActive) {
                     item.activities.map(act => {
@@ -958,35 +955,34 @@ export default {
                             graph.nodes.push({mission:item.name,activity:act.number+1,id: indMiss.toString()+indAct, r: 7, name: "(M"+(indMiss+1)+", A"+(act.number+1)+")"});
                             let correct = act.goTo.ifCorrect, incorrect = act.goTo.ifNotCorrect;
                             if(indMiss.toString()+indAct == "00") 
-                                graph.links.push({source: "start", target: "00", color: 'white', distance: 100});
+                                graph.links.push({source: "start", target: "00", color: 'white', x1:0, y1:0, x2:0, y2:0});
                             
                             if(correct.nextActivity !== '-' /*&& this.missions[correct.nextMission].activities[correct.nextActivity]*/) {
                                 if(correct.nextActivity == 'x') {
-                                    graph.links.push({source: indMiss.toString()+indAct,target: 'end', color: 'green', distance: 100});
+                                    graph.links.push({source: indMiss.toString()+indAct,target: 'end', color: 'green', x1:0, y1:0, x2:0, y2:0});
                                 }
                                 else {
-                                    graph.links.push({source: indMiss.toString()+indAct,target: correct.nextMission.toString()+ correct.nextActivity, color: 'green', distance: 100});
+                                    graph.links.push({source: indMiss.toString()+indAct,target: correct.nextMission.toString()+ correct.nextActivity, color: 'green', x1:0, y1:0, x2:0, y2:0});
                                 }
                             }
                             else {
                                 graph.nodes.push({name: "",id: indMiss.toString()+indAct+"-correct", r: 0.1});
-                                graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-correct", color: 'green', distance: 50});
+                                graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-correct", color: 'green', x1:0, y1:0, x2:0, y2:0});
                             }
                             if(incorrect.nextActivity !== '-' /*&& this.missions[incorrect.nextMission].activities[incorrect.nextActivity]*/) {
                                 if(incorrect.nextActivity == 'x'){
-                                    graph.links.push({source: indMiss.toString()+indAct,target: 'end', color: 'red', distance: 100});
+                                    graph.links.push({source: indMiss.toString()+indAct,target: 'end', color: 'red', x1:0, y1:0, x2:0, y2:0});
                                 }
                                 else {
-                                    graph.links.push({source: indMiss.toString()+indAct,target: incorrect.nextMission.toString()+ incorrect.nextActivity, color: 'red', distance: 100});
+                                    graph.links.push({source: indMiss.toString()+indAct,target: incorrect.nextMission.toString()+ incorrect.nextActivity, color: 'red', x1:0, y1:0, x2:0, y2:0});
                                 }
                             }
                             else {
                                 graph.nodes.push({name: "",id: indMiss.toString()+indAct+"-incorrect", r: 0.1});
-                                graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-incorrect", color: 'red', distance: 50});
+                                graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-incorrect", color: 'red', x1:0, y1:0, x2:0, y2:0});
                             }
 
                             indAct++;
-                            totAct++;
                         }
                     })
                 }
@@ -994,10 +990,10 @@ export default {
                 indAct = 0;
             })
          
-            /*
+       
             let range = 700/totAct;
-            console.log(range);
             let i = 0;
+
             graph.nodes.forEach(function(d){
                 if(d.id == "start") { d.x = 50; d.y = 300; }
                 else if(d.id == "end") { d.x = 750; d.y = 300}
@@ -1006,20 +1002,31 @@ export default {
                         d.x = Math.floor(Math.random()*range) + (range*i) + 50;
                         d.y = Math.floor(Math.random()*500) + 50;
                         i++;
-                        console.log(d.x, d.y)
+                    }
+                    else {
+                        d.x = 0; d.y = 0; 
                     }
                 }
-            })*/
-            /*
-            graph.links.forEach(function(d){
-                if(d.distance == 100) {
-                    console.log(d.source.x);
-                    d.distance = Math.sqrt(Math.pow(d.source.x - d.target.x, 2) + Math.pow(d.source.y - d.target.y, 2));
-                    console.log(d.distance);
-                } 
             })
-            */
-            //for making arrows
+
+            graph.links.forEach(function(d) {
+                if(d.name != "") {
+                        graph.nodes.forEach( n => {
+                            if(n.id == d.source) { d.x1 = n.x, d.y1 = n.y}
+                            if(n.id == d.target) {d.x2 = n.x; d.y2 = n.y}
+                        })
+
+                        if(d.target.split('-')[1] == "correct") {
+                            d.x2 = d.x1 + 50;
+                            d.y2 = d.y1 + 50;
+                        }
+                        if(d.target.split('-')[1] == "incorrect" ) {
+                            d.x2 = d.x1 + 50;
+                            d.y2 = d.y1 - 50;
+                        }
+                }
+            })
+            
             svg.append('svg:defs')
             .selectAll(".link")
             .data(graph.links)
@@ -1042,31 +1049,17 @@ export default {
             .style("fill", function(d){
                 return(d.color)
             })     
-            .style('stroke','none');
+            .style('stroke','none'); 
             
             update(graph.links, graph.nodes);
 
+          
             function update(links, nodes) {
-                link = svg.selectAll(".link")
-                    .data(links)
-                    .enter()
-                    .append("line")
-                    .attr("class", "link")
-                    .attr('marker-end',function(d){ return "url(#arrow" + d.color +')'})
-                    .style("stroke", function (l) {return l.color});
-
                 node = svg.selectAll(".node")
                     .data(nodes)
                     .enter()
                     .append("g")
-                    .attr("class", "node")
-                    
-                 /*   .call(d3.drag()
-                            .on("start", dragstarted)
-                            .on("drag", dragged)
-                            .on("end", dragended)
-                    )*/;
-                                
+                    .attr("class", "node");                                
 
                 node.append("circle")
                     .attr("r", function(d) {return d.r})
@@ -1076,43 +1069,22 @@ export default {
                     .attr("font-size", "1em")
                     .style("fill", "white")
                     .text(function (d) { return d.name; });
-
-                simulation
-                    .nodes(nodes)
-                    .on("tick", ticked);
-
-                simulation.force("link")
-                    .links(links); 
-            }
-
-            function ticked() {
+                    
+                node.attr("transform", function (d) { return "translate(" + d.x + ", " + d.y + ")";});
                 
-                link
-                    .attr("x1", function (d) {return d.source.x})
-                    .attr("y1", function (d) {return d.source.y})
-                    .attr("x2", function (d) {return d.target.x - 2})
-                    .attr("y2", function (d) {return d.target.y - 2});
-    
-                node
-                    .attr("transform", function (d) {return "translate(" + d.x + ", " + d.y + ")";});
-            }
-
-            function dragstarted(d) {
-                if (!d3.event.active) simulation.alphaTarget(0.3).restart()
-                d.fx = d.x;
-                d.fy = d.y;
-            }
-            function dragged(d) {
-                d.fx = d3.event.x;
-                d.fy = d3.event.y;
-            }
-            
-            //Dopo il drag riporta al centro tutti i nodi,inutile 
-            function dragended(d) {
-                if (!d3.event.active) simulation.alphaTarget(0);
-                d.fx = undefined;
-                d.fy = undefined;
-            } 
+                link = svg.selectAll(".link")
+                    .data(links)
+                    .enter()
+                    .append("line")
+                    .attr("class", "link")
+                    .attr('marker-end',function(d){ return "url(#arrow" + d.color +')'})
+                    .style("stroke", function (l) {return l.color})
+                    .attr("x1", function (d) { return d.x1 - 2 })
+                    .attr("y1", function (d) { return d.y1 - 2})
+                    .attr("x2", function (d) { return d.x2 - 2})
+                    .attr("y2", function (d) { return d.y2 - 2});
+                    
+                }
         }
     },
     computed: {

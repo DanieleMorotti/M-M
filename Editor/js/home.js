@@ -117,12 +117,14 @@ export default {
                         let parsed = JSON.stringify(data,null,2);
 
                         //remove all the brackets from the json
-                        parsed = parsed.replace(/("|\[\n|\]|\{|\}\n|\}|\[)/g,"");
+                        parsed = parsed.replace(/("|\[(\n\s*)\{|\[|\]|\{|\}\n|\}|\[|,|)/g,"");
+                        console.log(parsed)
                         //substitution of all the field name with the uppercase
                         parsed = parsed.split('\n').map((line)=>{
                             if(line){
-                                if(line.split(':')[1])
+                                if(line.split(':')[1]) 
                                     return line.split(':')[0].toUpperCase() + ": "+ line.split(':')[1];
+                                
                                 //return the old string as it was
                                 else return line.split(':')[0];
                             }

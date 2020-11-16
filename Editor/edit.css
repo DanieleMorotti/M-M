@@ -245,15 +245,36 @@ i.fas{
 /* GRAPH MODAL */
 
 
-#graphModal .modal-dialog {
+#graphModal  {
     background-color: rgba(0,0,0,0.8);
     
 } 
 
 #graphModal  svg {
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgb(2 24 40);
     min-height: 600px;
 }
+
+#graphModal .modal-content{
+    overflow-x: scroll;
+}
+
+/* Track */
+#graphModal .modal-content::-webkit-scrollbar-track {
+  background: #212529; 
+}
+ 
+/* Handle */
+#graphModal .modal-content::-webkit-scrollbar-thumb {
+  background: rgb(24 63 92); 
+  border-radius: 8px;
+}
+
+/* width */
+#graphModal .modal-content::-webkit-scrollbar {
+    width: 10px;
+}
+  
 
 
 /* The Close Button */
