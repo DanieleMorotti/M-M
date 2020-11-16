@@ -10,8 +10,7 @@ export default {
             //saving here if i'm working on a story in private or public list
             currentList:"",
             privateStoriesList: [],
-            publicStoriesList: [],
-            parsedJSON: ""
+            publicStoriesList: []
         }
     },
     template: `
@@ -115,8 +114,20 @@ export default {
                     url: '/getStory?title='+title+'&group='+list,
                     type: 'GET',
                     success: (data) =>{
-                        //typeof val === 'object'
-                        let parsed = this.formatJSON(data);
+                        let parsed = JSON.stringify(data,null,2);
+
+                        //remove all the brackets from the json
+                        parsed = parsed.replace(/("|\[\n|\]|\{|\}\n|\}|\[)/g,"");
+                        //substitution of all the field name with the uppercase
+                        parsed = parsed.split('\n').map((line)=>{
+                            if(line){
+                                if(line.split(':')[1])
+                                    return line.split(':')[0].toUpperCase() + ": "+ line.split(':')[1];
+                                //return the old string as it was
+                                else return line.split(':')[0];
+                            }
+                        }).join('\n')
+                        
                         $(`#${current} div:eq(${index})`).html("<hr><pre>"+parsed+"</pre>");
                         $(`#${current} div:eq(${index})`).css("display", "block");
       
@@ -126,35 +137,6 @@ export default {
                     }
                 });
             }
-        },
-        formatJSON(obj){
-           
-            /*Ricorsiva su tutti gli oggetti ma non indentati bene e ci sono i numeri, perchè gli array hanno come chiave quelli
-            for (let key in obj) {
-                if (typeof obj[key] === "object") {
-                        this.parsed += `<h2>${key}: </h2>`;
-                        this.formatJSON(obj[key]);   
-                } else {
-                    this.parsed += `<h3>${key}: </h3>`;
-                    this.parsed+= '<p>  '+(obj[key])+'</p>';    
-                }
-            }
-            return this.parsed;*/
-            
-            for (let key of Object.keys(obj)) {
-                //to avoid 'undefined' print on first line
-                if(this.parsed){
-                    this.parsed += `<h3>${key.toUpperCase()}</h3>`;
-                    if(typeof obj[key] !== 'object')this.parsed += `<p>${obj[key]}</p>`;
-                    else{
-                        this.parsed += `<p>${JSON.stringify(obj[key],null,2)}</p>`;
-                    }
-                }
-                else{
-                    this.parsed = `<h3>${key.toUpperCase()}</h3><p>${obj[key]}</p>`;
-                }
-            }
-            return this.parsed;
         },
         newStory(){
             $('.content').css("display", "none");
