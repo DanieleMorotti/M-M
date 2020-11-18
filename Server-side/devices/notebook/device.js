@@ -1,4 +1,5 @@
 import render from '/Player/js/activities.js'
+import { bus } from '/Player/js/index.js';
 
 let storyItem;
 
@@ -32,7 +33,8 @@ export default {
 
 		next() {
 			if(this.over) {
-				$('#toEnd').click();
+				bus.$emit('over','true'); 
+				$('#toHome').click();
 			}
 			else {
 				if(!this.verify) {

@@ -1,9 +1,11 @@
+import { bus } from './index.js';
 var story ;
 
 export default {
     name: 'home',
     data() {
         return {
+            over: false
         }
     },
     template: `
@@ -19,13 +21,28 @@ export default {
             $('#btnDev').html(story.pocketItem);
             //simulate the click on the router-link that show the device
             $('#toDevice').click();
-        },
-        
+        }
     },
     activated() {
-        story = JSON.parse(localStorage.getItem("story"));
-        $('body').css('background-image', `url("/Server-side/stories/public/${story.title}/files/${story.background}")`);  
-        $('#description').html(story.description);
-        $('#startBtn').html("Inizia la storia");
+
+        if(this.over) {
+            $('#description').html(` <h1>Partita finita</h1>
+            <p>Grazie per aver giocato, speriamo tu ti sia divertito e possa ver imparato cose nuove!</p>`);
+            $('body').css('background-image', 'none');
+            $('body').css('background-color', 'black');
+            $('#startBtn').remove()
+        }
+        else {
+            story = JSON.parse(localStorage.getItem("story"));
+            $('body').css('background-image', `url("/Server-side/stories/public/${story.title}/files/${story.background}")`);  
+            $('#description').html(story.description);
+            $('#startBtn').html("Inizia la storia");
+        }
+        
+
+        bus.$on('over',(msg) => {
+            console.log('over');
+            this.over = true;
+        });
     }
 }

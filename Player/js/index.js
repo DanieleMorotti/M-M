@@ -1,5 +1,7 @@
 import Routes from './routes.js'
 
+export const bus = new Vue();
+
 let story = JSON.parse(localStorage.getItem("story"));
 
 const router = new VueRouter({
@@ -13,10 +15,6 @@ router.beforeEach((to, from, next) => {
     document.getElementById('stylesheetComp').href = `../../Server-side/devices/${story.device}/device.css`;
     document.getElementById('scriptComp').src = `../../Server-side/devices/${story.device}/device.js`;
   } 
-  else if(to.path === '/end') {
-    document.getElementById('stylesheetComp').href ='/Player/home.css';  
-    document.getElementById('scriptComp').src = './js/end.js';
-  }
   else {
     document.getElementById('stylesheetComp').href ='/Player/home.css';  
     document.getElementById('scriptComp').src = './js/home.js';
