@@ -526,7 +526,7 @@ app.get('/Play/getNewName',(req,res)=>{
 	else res.end();
 })
 
-//to rinitialize all the variables when the match is over
+//to reinitialize all the variables when the game is over
 function reinitializeVariables(){
 	//cookie management variables
 	cookieNum = 1;
@@ -667,6 +667,8 @@ io.on('connection', (sock) => {
 	sock.on('disconnect',() => {
 		myfunctions.removeUser(userName);
 		partecipants.splice(partecipants.findIndex(x => x.who === userName),1);
+		toEval.splice(toEval.findIndex(us => us.id === userName),1);
+		
 		io.of('/staff').emit('disc-user',userName);
 		console.log(userName + ' is disconnected');
 	}) 

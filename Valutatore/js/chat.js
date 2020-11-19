@@ -159,7 +159,11 @@ new Vue({
         })
 
         sock.on('refresh-page',(data)=>{
-            location.reload();
+            //reinitialize all the variables when a new story begin
+            this.users = [];
+            this.newMess = null;
+            this.blockUsers = [];
+            this.currRoom = 0;
         })
         this.servSent = new EventSource('/Valutatore/needRequests');
         
@@ -283,6 +287,12 @@ new Vue({
         this.servSent.onerror = function(err) {
             console.log("Server sent failed: /evaluationDone", err);
         };
+
+        sock.on('refresh-page',(data)=>{
+            //reinitialize all the variables when a new story begin
+            this.requests = [];
+            this.modalInfo = {id:"Nome utente",time:"1/1/2000, 00:00:00",type:"testo",content:"contenuto"};
+        })
     }
 })
 
@@ -401,6 +411,13 @@ new Vue({
         //i need only one message because all the players play the same story
         sock.once('current-story',(storyName)=>{
             this.storyName = storyName;
+        })
+
+        sock.on('refresh-page',(data)=>{
+            //reinitialize all the variables when a new story begin
+            this.users= [];
+            this.usWin= [];
+            this.storyName= null;
         })
     }
 })
