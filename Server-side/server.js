@@ -447,6 +447,7 @@ app.post('/Play/updatePlayerPosition',(req,res) => {
 	res.end();
 })
 
+//player ask for help if he doesn't now how to go on
 app.post('/Play/askForHelp',(req,res) =>{
 	let name = req.cookies.userId.substring(0,5);
 	askingHelp.push({who:name,where:""});
@@ -493,6 +494,7 @@ app.post('/Play/toEvaluate', (req,res) =>{
 		});
 })
 
+//send the vote they get to the users who received a vote from the 'valutatore' app
 app.get('/Play/checkMark',(req,res)=>{
 	//set all headers for server-sent
 	res.setHeader('Cache-Control', 'no-cache');
@@ -526,6 +528,17 @@ app.get('/Play/getNewName',(req,res)=>{
 	else res.end();
 })
 
+
+//when the player has finished the story
+app.post('/Play/storyFinished',(req,res)=>{
+	let id = req.cookies.userId.substring(0,5) || "unknown";
+	let points = req.body.points;
+	//se riusciamo ad inviare anche il nome assegnato dal valutatore... let name = req.body.assignedName;
+	endPlayers.push({id:id,assignedName:name,points:points});
+	//scrivi giocatore nel json della partita corrente, se possibile in ordine di punteggio
+	res.end();
+})
+
 //to reinitialize all the variables when the game is over
 function reinitializeVariables(){
 	//cookie management variables
@@ -546,9 +559,11 @@ function reinitializeVariables(){
 }
 
 //send the page when a user is disconnected 
-app.get('/endGame',(req,res)=>{
+app.get('/finishedPage',(req,res)=>{
 	res.sendFile(path.join(__dirname,'../Player/endGame.html'));
 })
+
+
 
 //////////////////////////////////////////////////////////
 //VALUTATORE
@@ -578,7 +593,7 @@ app.get('/Valutatore/needRequests',(req,res) =>{
 	
     // If client closes connection, stop sending events
     res.on('close', () => {
-		console.log('client dropped server-sent');
+		console.log('valutatore dropped server-sent');
 		clearInterval(interv);
 		res.end();
     });
@@ -610,7 +625,11 @@ app.get('/Valutatore/whoFinished',(req,res)=>{
 	res.json(endPlayers);
 })
 
-
+//manually end the current game
+app.post('/Valutatore/endGame',(req,res)=>{
+	reinitializeVariables();
+	res.end();
+})
 
 /*CHAT SECTION*/
 const { usersList } = require('./function');
@@ -637,7 +656,7 @@ io.on('connection', (sock) => {
 	let userName;
 
 	if(!isStaff){
-		if(cookies.userId) userName = cookies.userId;
+		if(cookies && cookies.userId) userName = cookies.userId;
 		else{
 			userName = 'user'+(idNum);
 			idNum++;
@@ -646,7 +665,7 @@ io.on('connection', (sock) => {
 		myfunctions.userJoin(userName);
 	}
 	else{
-		if(cookies.staffId) userName = cookies.staffId;
+		if(cookies && cookies.staffId) userName = cookies.staffId;
 		else{
 			userName = 'staff'+ numStaff;
 			numStaff++;
