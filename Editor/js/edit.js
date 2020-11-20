@@ -657,7 +657,7 @@ export default {
             else{
                 $.ajax({
                     type: "POST",
-                    url: "/copyActivity?toStory="+toStory+"&toMiss="+this.missionWhereCopy,
+                    url: "/Editor/copyActivity?toStory="+toStory+"&toMiss="+this.missionWhereCopy,
                     data: obj,
                     cache: false,
                     success: (data) =>{
@@ -707,7 +707,7 @@ export default {
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
-                url: "/saveWidget?name="+widgetName,
+                url: "/Editor/saveWidget?name="+widgetName,
                 data: data,
                 processData: false,
                 contentType: false,
@@ -768,7 +768,7 @@ export default {
                 }
                 $.ajax({
                     type: "POST",
-                    url: "/copyMission?toStory="+toStory,
+                    url: "/Editor/copyMission?toStory="+toStory,
                     data: mission,
                     cache: false,
                     success: (data) =>{
@@ -865,7 +865,7 @@ export default {
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
-                url: "/saveStory?title="+$("#inpTitle").val()+"&originalTitle="+originTitle,
+                url: "/Editor/saveStory?title="+$("#inpTitle").val()+"&originalTitle="+originTitle,
                 data: data,
                 processData: false,
                 contentType: false,
@@ -1137,7 +1137,7 @@ export default {
                     type: "GET",
                     dataType: "json",
                     cache: false,
-                    url: "/getStory?title="+this.currentStory+"&group=private",
+                    url: "/Editor/getStory?title="+this.currentStory+"&group=private",
                     success: (data) =>{
                      // fill form with json's fields
                         this.showData(data);
@@ -1167,7 +1167,7 @@ export default {
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: "/getWidgets",
+            url: "/Editor/getWidgets",
             success: (data) =>{
                 this.widgets = data.widgets;
                 this.devices = data.devices;

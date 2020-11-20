@@ -146,8 +146,10 @@ new Vue({
         //when an user is disconnected i delete it from the list
         sock.on('disc-user',(id) =>{
            let toDel = this.users.findIndex(item => item.id === id);
-           this.users.splice(toDel,1);
+           if(toDel > 0)this.users.splice(toDel,1);
            bus.$emit('del-user', id);
+           //to avoid error in chat because i'm reading messages of null
+           if(id == this.currRoom)this.currRoom = 0;
         })
         
         sock.on('message',(data) => {

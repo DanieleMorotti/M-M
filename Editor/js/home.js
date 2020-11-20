@@ -111,7 +111,7 @@ export default {
                 $(`#${current} div:eq(${index})`).css("display", "none");
             else {
                 $.ajax({
-                    url: '/getStory?title='+title+'&group='+list,
+                    url: '/Editor/getStory?title='+title+'&group='+list,
                     type: 'GET',
                     success: (data) =>{
                         let parsed = JSON.stringify(data,null,2);
@@ -155,7 +155,7 @@ export default {
         loadStory(event, index) {
             event.stopPropagation();
                 $.ajax({
-                    url: '/publicStory/' + this.privateStoriesList[index].title,
+                    url: '/Editor/publicStory/' + this.privateStoriesList[index].title,
                     type: 'PUT',
                     success: (response) =>{
                        console.log("Storia resa pubblica");
@@ -171,7 +171,7 @@ export default {
         downloadStory(event,index) {
             event.stopPropagation();
             $.ajax({
-                url: '/privateStory/' + this.publicStoriesList[index].title,
+                url: '/Editor/privateStory/' + this.publicStoriesList[index].title,
                 type: 'PUT',
                 success: (response) =>{
                    console.log("Storia resa privata");
@@ -196,7 +196,7 @@ export default {
                 this.publicStoriesList.splice(index,1);
             }
             $.ajax({
-                url: '/deleteStory?title='+title+'&group='+this.currentList,
+                url: '/Editor/deleteStory?title='+title+'&group='+this.currentList,
                 type: 'DELETE',
                 success: () =>{
                     console.log('story deleted')
@@ -226,7 +226,7 @@ export default {
         duplicateStory(event, index) {
             event.stopPropagation();
             $.ajax({
-                url: '/copyStory/' + this.privateStoriesList[index].title,
+                url: '/Editor/copyStory/' + this.privateStoriesList[index].title,
                 type: 'PUT',
                 success: (response) =>{
                   this.privateStoriesList.push({title:response.title,missionsList:this.privateStoriesList[index].missionsList});
@@ -258,7 +258,7 @@ export default {
         }
     },
     mounted() {        
-        $.get( "/titles", (res) => {
+        $.get( "/Editor/titles", (res) => {
             for(let i=0; i < res.private.length;i++){
                 this.privateStoriesList.push(res.private[i]);
             }
