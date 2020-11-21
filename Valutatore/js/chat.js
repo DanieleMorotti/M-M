@@ -146,8 +146,10 @@ new Vue({
         //when an user is disconnected i delete it from the list
         sock.on('disc-user',(id) =>{
            let toDel = this.users.findIndex(item => item.id === id);
-           this.users.splice(toDel,1);
+           if(toDel > 0)this.users.splice(toDel,1);
            bus.$emit('del-user', id);
+           //to avoid error in chat because i'm reading messages of null
+           if(id == this.currRoom)this.currRoom = 0;
         })
         
         sock.on('message',(data) => {
@@ -159,7 +161,11 @@ new Vue({
         })
 
         sock.on('refresh-page',(data)=>{
-            location.reload();
+            //reinitialize all the variables when a new story begin
+            this.users = [];
+            this.newMess = null;
+            this.blockUsers = [];
+            this.currRoom = 0;
         })
         this.servSent = new EventSource('/Valutatore/needRequests');
         
@@ -283,6 +289,12 @@ new Vue({
         this.servSent.onerror = function(err) {
             console.log("Server sent failed: /evaluationDone", err);
         };
+
+        sock.on('refresh-page',(data)=>{
+            //reinitialize all the variables when a new story begin
+            this.requests = [];
+            this.modalInfo = {id:"Nome utente",time:"1/1/2000, 00:00:00",type:"testo",content:"contenuto"};
+        })
     }
 })
 
@@ -325,9 +337,34 @@ new Vue({
             <div class="container" id="printResults">
                 <h4>Stampa i risultati della partita, solamente i giocatori che hanno già terminato saranno presenti </h4>
                 <ul class="list-group" v-if="usWin.length != 0">
-                    <li class="list-group-item" v-for="us in usWin">{{us.name}}</li>
+                    <li class="list-group-item" v-for="us in usWin">{{us.id}} ha terminato la partita con {{us.points}} punti.</li>
                 </ul>
+                <p v-else>Nessun giocatore ha terminato per ora, premi il bottone per verificare </p>
                 <button @click="verifyWhoFinished">Verifica chi ha finito</button>
+                <button @click="printResults">STAMPA RISULTATI</button>
+                <button data-toggle="modal" data-target="#endGameModal" >Concludi partita</button>
+            </div>
+
+            <!--modale per chiedere conferma di chiusura della partita-->
+            <div class="modal fade" id="endGameModal" aria-hidden="true" role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Chiudi partita</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Vuoi scaricare il file dei giocatori che hanno già concluso la partita?</p>
+                            <a href='#' downloadable>Scarica qui il json!</a>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" @click="endGame">CHIUDI PARTITA</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     `,
@@ -376,6 +413,23 @@ new Vue({
                     console.log("error in whoFinished");
                 }
             });
+        },
+        printResults(){
+            /*lato server,ogni volta che un player finisce e lo comunica al server, viene aggiunto nel json della partita,qui
+            fare downloadare il file relativo alla partita corrente*/
+        },
+        endGame(){
+            $.ajax({
+                type: "POST",
+                url: "/Valutatore/endGame",
+                success: (data) =>{
+                    console.log("Partita conclusa correttamente");
+                    $('#endGameModal').modal('hide');
+                },
+                error: function (e) {
+                    console.log("error in endgame");
+                }
+            });
         }
     },
     created(){
@@ -401,6 +455,13 @@ new Vue({
         //i need only one message because all the players play the same story
         sock.once('current-story',(storyName)=>{
             this.storyName = storyName;
+        })
+
+        sock.on('refresh-page',(data)=>{
+            //reinitialize all the variables when a new story begin
+            this.users= [];
+            this.usWin= [];
+            this.storyName= null;
         })
     }
 })
