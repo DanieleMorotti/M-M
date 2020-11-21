@@ -434,7 +434,7 @@ export default {
                             <button v-for="(obj,index) in titles.privateList" :key="index" type="button" @click="storyWhereIcopy=obj.title" class="list-group-item list-group-item-action">
                                 {{obj.title}} 
                             </button>
-                            <button v-for="(obj,ind) in titles.privateList" :key="ind" type="button" v-if="isNewStory" @click='storyWhereIcopy="newstory"' class="list-group-item list-group-item-action">
+                            <button type="button" v-if="isNewStory" @click='storyWhereIcopy="newstory"' class="list-group-item list-group-item-action">
                                 In questa storia 
                             </button>
                         </div>
