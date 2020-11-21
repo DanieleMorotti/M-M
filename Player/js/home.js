@@ -39,9 +39,7 @@ export default {
             $('#startBtn').html("Inizia la storia");
         }
         
-
         bus.$on('over',(msg) => {
-            console.log('over');
             this.over = true;
         });
     }

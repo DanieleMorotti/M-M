@@ -13,6 +13,7 @@ export default {
 			currentActivity: 0,
 			verify: false,
 			obj: null,
+			over: false,
 			myName: null
         }
 	},
@@ -36,28 +37,34 @@ export default {
 	methods: {
 
 		next() {
-			if(!this.verify) {
-				this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
-				render.methods.visualize(this.type, this.currentMission, this.currentActivity);
-				this.verify = true;
+			if(this.over) {
+				bus.$emit('over','true'); 
+				$('#toHome').click();
 			}
 			else {
-				if(this.obj) {
-					if(this.obj[0] != 'x') {
-						this.currentActivity = this.obj[0]; this.currentMission = this.obj[1];
-						this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
-						render.methods.visualize(this.type, this.currentMission, this.currentActivity);
-					}
-					else {
-						$('#text').html("");
-						$('#text').append(storyItem.conclusion);
-						$('#text').append(`<br><br><p>Congratulazioni hai totalizzato ${this.obj[2]} punti!`)
-						$('#next').attr("disabled","disabled");
-					}
-					this.obj = null;
+				if(!this.verify) {
+					this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
+					render.methods.visualize(this.type, this.currentMission, this.currentActivity);
+					this.verify = true;
 				}
 				else {
-					this.obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
+					if(this.obj) {
+						if(this.obj[0] != 'x') {
+							this.currentActivity = this.obj[0]; this.currentMission = this.obj[1];
+							this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
+							render.methods.visualize(this.type, this.currentMission, this.currentActivity);
+						}
+						else {
+							$('#text').html("");
+							$('#text').append(storyItem.conclusion);
+							$('#text').append(`<br><br><p>Congratulazioni hai totalizzato ${this.obj[2]} punti!`)
+							this.over = true;
+						}
+						this.obj = null;
+					}
+					else {
+						this.obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
+					}
 				}
 			}
 		}
