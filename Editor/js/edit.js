@@ -40,7 +40,7 @@ export default {
                         <input type="checkbox" id="accessibility" name="accessibility" value="true">
                         <label for="accessibility">STORIA ACCESSIBILE</label><br>
                         <label for="chooseAge">Scegli il range di età: </label>
-                        <select name="age" id="chooseAge">
+                        <select name="age" id="chooseAge" class="selection">
                             <option>6-10</option>
                             <option>10-14</option>
                             <option>14-18</option>
@@ -162,7 +162,7 @@ export default {
                 <ul id="activitiesList">
                     <li>
                         <label for="chooseMission">Scegli in quale missione aggiungerla: </label>
-                        <select name="mission" id="chooseMission">
+                        <select name="mission" id="chooseMission" class="selection">
                             <option v-for="(mission,index) in missions" :key="index" :value="mission.name"> {{mission.name}}</option>
                         </select>
                         <h5 class="info">Scegli il tipo dell'attività : </h5>
@@ -287,11 +287,11 @@ export default {
                                 <li :id="'missionDiv'+index" v-for="(activity,ind) in mission.activities" :key="ind">
                                 <details>
                                     <summary>Attività {{parseInt(activity.number) + 1}}</summary>
-                                    <h5 class="info">Scegli l'attività successiva: </h5>
+                                    <p>Scegli l'attività successiva: </p>
                                     <ul>
                                     <li>
                                         <label :for="'rightAct'+index+'_'+ind"> in caso di risposta corretta</label><br>
-                                        <select :id="'rightAct'+index+'_'+ind" name="nextActivityCorrect" :disabled="missions.length == 1 && missions[0].activities.length == 0" @click="changeNextCorrect(index, ind)">
+                                        <select :id="'rightAct'+index+'_'+ind" class="selection" name="nextActivityCorrect"  @click="changeNextCorrect(index, ind)">
                                             <option value="-/-" > Missione -  Attività -  </option> 
                                             <template v-for="(mission, indMiss) in missions" :key="indMiss"> 
                                             <option v-for="activity in mission.activities" :value="indMiss+'/'+activity.number"> 
@@ -303,7 +303,7 @@ export default {
                                     </li>
                                     <li>
                                         <label :for="'wrongAct'+index+'_'+ind"> in caso di risposta errata</label><br>
-                                        <select :id="'wrongAct'+index+'_'+ind" name="nextActivityIncorrect" :disabled="missions.length == 1 && missions[0].activities.length == 0" @click="changeNextIncorrect(index, ind)">
+                                        <select :id="'wrongAct'+index+'_'+ind" class="selection" name="nextActivityIncorrect" @click="changeNextIncorrect(index, ind)">
                                             <option value="-/-" > Missione -  Attività -  </option> 
                                             <template v-for="(mission, indMiss) in missions" :key="indMiss"> 
                                             <option v-for="activity in mission.activities" :value="[indMiss]+'/'+[activity.number]"> 
@@ -559,6 +559,7 @@ export default {
             $(`#difficulty`).prop("value", "");
         },
         changeNextCorrect(missInd, actInd) {
+            $(`#rightAct${missInd}_${actInd} option[value='${missInd}/${actInd}']`).prop('disabled', true);
             /* capture next mission/activity selection*/
             let group = this.currentGroup;
             let currentAct =  this.missions[missInd].activities[actInd];
@@ -1032,7 +1033,7 @@ export default {
                             if(indMiss.toString()+indAct == "00") 
                                 graph.links.push({source: "start", target: "00", color: 'white', x1:0, y1:0, x2:0, y2:0});
                             
-                            if(correct.nextActivity[group] && correct.nextActivity[group]!== '-' /*&& this.missions[correct.nextMission[group]].activities[correct.nextActivity[group]]*/) {
+                            if(correct.nextActivity[group] && correct.nextActivity[group]!== '-' && this.missions[correct.nextMission[group]].activities[correct.nextActivity[group]].isActive) {
                                 if(correct.nextActivity[group] == 'x') {
                                     graph.links.push({source: indMiss.toString()+indAct,target: 'end', color: 'green', x1:0, y1:0, x2:0, y2:0});
                                 }
@@ -1044,7 +1045,7 @@ export default {
                                 graph.nodes.push({name: "",id: indMiss.toString()+indAct+"-correct", r: 0.1});
                                 graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-correct", color: 'green', x1:0, y1:0, x2:0, y2:0});
                             }
-                            if(incorrect.nextActivity[group] && incorrect.nextActivity[group]!== '-' /*&& this.missions[incorrect.nextMission[group]].activities[incorrect.nextActivity[group]]*/) {
+                            if(incorrect.nextActivity[group] && incorrect.nextActivity[group]!== '-' && this.missions[incorrect.nextMission[group]].activities[incorrect.nextActivity[group]].isActive) {
                                 if(incorrect.nextActivity[group] == 'x'){
                                     graph.links.push({source: indMiss.toString()+indAct,target: 'end', color: 'red', x1:0, y1:0, x2:0, y2:0});
                                 }

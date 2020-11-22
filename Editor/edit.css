@@ -81,8 +81,13 @@ li {
 
 label {
     margin-bottom: 0;
+    margin-top: 1.5rem;
+    margin-right: 1rem;
 }
 
+label[for='accessibility'] {
+    margin-left: 1rem;
+}
 
 input[type="text"], input[type="file"], textarea {
     display: inline-block;
@@ -117,7 +122,7 @@ button, #buttonGraph, input[type="button"] {
 
 
 #submitBtn {
-    padding: 0.7rem 0.7rem;
+    padding: 0.5rem 0.7rem;
     top: 0;
     right: 0;
     margin-top: 1rem;
@@ -127,8 +132,8 @@ button, #buttonGraph, input[type="button"] {
 }
 
 #buttonGraph {
-    width: 30%;
-    margin-left: 45%
+    background-color: #62d4e6ab;
+    margin-left: 2rem;
 }
 
 
@@ -208,8 +213,8 @@ i.fas{
     margin-top: 1rem;
 }
 
-#chooseMission {
-    background-color: #f5f5f5bf;
+.selection {
+    background-color: white;
     border-radius: 5px;
     margin-left: 1rem;
 }
@@ -299,4 +304,17 @@ i.fas{
 
  .modal-title {
      color: black
+ }
+
+ details {
+    width: 80vw;
+ }
+
+ details  * {
+     margin: 0
+ }
+
+ details p {
+     margin-left: 1rem;
+     font-size: 1.2rem;
  }
