@@ -10,9 +10,8 @@ player.get('/',(req,res) =>{
 	//verify if a different story is requested
 	if(sharedVar.oldStory && sharedVar.oldStory != sharedVar.story){
 		sharedFunc.reinitializeVariables();
-		sharedVar.oldStory = sharedVar.story;
 	}
-	else sharedVar.oldStory = sharedVar.story;
+	sharedVar.oldStory = sharedVar.story;
 
 	sharedVar.cookies = req.cookies;
 	//set the cookies for the users
@@ -26,10 +25,23 @@ player.get('/',(req,res) =>{
 		sharedVar.cookieNum++;
 	}
 
-	
 	res.sendFile(path.join(__dirname,"../Player/index.html"));
-})
 
+	//only if this is the first request for this story
+	if(sharedVar.firstRequest){
+		let resultsObj = {date:new Date().toString(),story:sharedVar.story,users:[]};
+		//name the file with the date and the name of the story
+		let date = new Date();
+		let stringDate =  date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()+'_'+date.getHours()+'_'+date.getMinutes()+'-';
+		sharedVar.jsonResName = stringDate + sharedVar.story+'.json';
+
+		//create the json file for the story
+		fs.writeFile('./valuta/results/'+sharedVar.jsonResName, JSON.stringify(resultsObj,null,2), 'utf-8', function (err) {
+			if (err) throw err;
+		});
+		sharedVar.firstRequest = false;
+	}
+})
 
 player.get('/getPlayableStory', (req,res) => {
 	fs.readFile('./stories/public/'+ sharedVar.story +'/file.json', 'utf8', (err, data) => {  
@@ -165,16 +177,39 @@ player.get('/getNewName',(req,res)=>{
 })
 
 
+//function to sort the array doing a ranking based on ratio between points gained and time spent
+const bestPlayers = (a, b) => {
+	if((a.points / a.time_minutes) >= (b.points / b.time_minutes))return a;
+	return b;
+};
 //when the player has finished the story
 player.post('/storyFinished',(req,res)=>{
 	let id = req.cookies.userId.substring(0,5) || "unknown";
 	let points = req.body.points;
-	//TODO:se riusciamo ad inviare anche il nome assegnato dal valutatore... let name = req.body.assignedName;
-	sharedVar.endPlayers.push({id:id,assignedName:name,points:points});
-	//TODO:scrivi giocatore nel json della partita corrente, se possibile in ordine di punteggio
+	let name = req.body.assignedName;
+
+	let now = new Date().getTime();
+	let started = new Date(req.body.whenStarted).getTime();
+	let timeSpent = (now - started) / 60000;
+	timeSpent = timeSpent.toFixed(1);
+	
+	let currentPlayer = {id:id,assignedName:name,points:points,time_minutes:timeSpent};
+	sharedVar.endPlayers.push(currentPlayer);
+	//add player to the json
+	fs.readFile('./valuta/results/'+ sharedVar.jsonResName, 'utf-8', function(err, data){
+		if (err) throw err;
+
+		let parsed = JSON.parse(data);
+		parsed.users.push(currentPlayer);
+		parsed.users.sort(bestPlayers);
+		
+		fs.writeFile('./valuta/results/'+sharedVar.jsonResName, JSON.stringify(parsed,null,2), 'utf-8', function (err) {
+			if (err) throw err;
+			console.log('file classifica aggiornato correttamente');
+		});
+	});
 	res.end();
 })
-
 
 
 //send the page when a user is disconnected 

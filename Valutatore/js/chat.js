@@ -305,7 +305,9 @@ new Vue({
         return{
             users: [],
             usWin: [],
-            storyName: null
+            storyName: null,
+            jsonName:null,
+            countTime:1
         }
     }, 
     template: `
@@ -335,14 +337,38 @@ new Vue({
                 <p v-else>Ancora nessun giocatore connesso</p>
             </div>
             <div class="container" id="printResults">
-                <h4>Stampa i risultati della partita, solamente i giocatori che hanno già terminato saranno presenti </h4>
-                <ul class="list-group" v-if="usWin.length != 0">
-                    <li class="list-group-item" v-for="us in usWin">{{us.id}} ha terminato la partita con {{us.points}} punti.</li>
-                </ul>
-                <p v-else>Nessun giocatore ha terminato per ora, premi il bottone per verificare </p>
-                <button @click="verifyWhoFinished">Verifica chi ha finito</button>
-                <button @click="printResults">STAMPA RISULTATI</button>
-                <button data-toggle="modal" data-target="#endGameModal" >Concludi partita</button>
+                <h4>Stampa i risultati della partita, solamente i giocatori che hanno già terminato saranno presenti. </h4>
+                <br><br>
+                <table class="table">
+                    <caption> CLASSIFICA </caption>
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Posizione</th>
+                            <th scope="col" >Id</th>
+                            <th scope="col" >Nome</th>
+                            <th scope="col" >Punti</th>
+                            <th scope="col" >Tempo impiegato</th>
+                        </tr>
+                    </thead>
+                    <tbody v-if="usWin.length != 0">
+                        <tr v-for="(us,ind) in usWin" v-bind:key="us.id">
+                            <td>{{ind+1}}</td>
+                            <td>{{us.id}}</td>
+                            <td>{{us.assignedName}}</td>
+                            <td>{{us.points}}</td>
+                            <td>{{us.time_minutes}} minuti</td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
+                        <tr>
+                            <th scope="row" colspan="4">Ancora nessun giocatore ha terminato, clicca per controllare.</th>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-info" @click="verifyWhoFinished">Verifica chi ha finito</button>
+                <a id="linkForPrint" class="btn btn-info" href="/Server-side/valuta/results/vuoto.txt" target="_blank" download>STAMPA RISULTATI</a>
+                <button class="btn btn-info" data-toggle="modal" data-target="#endGameModal" >Concludi partita</button>
             </div>
 
             <!--modale per chiedere conferma di chiusura della partita-->
@@ -357,7 +383,7 @@ new Vue({
                         </div>
                         <div class="modal-body">
                             <p>Vuoi scaricare il file dei giocatori che hanno già concluso la partita?</p>
-                            <a href='#' downloadable>Scarica qui il json!</a>
+                            <a href='/Server-side/valuta/results/vuoto.txt' target="_blank" download>Scarica qui il json!</a>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -404,8 +430,22 @@ new Vue({
                 type: "GET",
                 url: "/Valutatore/whoFinished",
                 success: (data) =>{
-                    if(data.length != 0){
-                        this.usWin = data.slice();
+                    let users = data.users;
+                    let pathJson = data.jsonName;
+                    if(users.length != 0){
+                        this.usWin = users.slice();
+                        //make a ranking of the players
+                        this.usWin.sort((el1,el2)=>{
+                            if((el1.points / el1.time_minutes) >= (el2.points / el2.time_minutes))return el1;
+	                        return el2;
+                        })
+                    }
+                    //change only the first time the attribute
+                    if(this.countTime > 0){
+                        this.jsonName = pathJson;
+                        $('.modal-body > a').attr('href',pathJson);
+                        $('#linkForPrint').attr('href',pathJson);
+                        this.countTime--;
                     }
                     console.log("get the list of players have finished");
                 },
@@ -413,10 +453,6 @@ new Vue({
                     console.log("error in whoFinished");
                 }
             });
-        },
-        printResults(){
-            /*lato server,ogni volta che un player finisce e lo comunica al server, viene aggiunto nel json della partita,qui
-            fare downloadare il file relativo alla partita corrente*/
         },
         endGame(){
             $.ajax({

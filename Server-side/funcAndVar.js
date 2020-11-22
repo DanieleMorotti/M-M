@@ -1,6 +1,5 @@
 const socketio = require('socket.io');
 
-
 let sharedVariables = {
     usersList :[],
     story:null,
@@ -20,9 +19,10 @@ let sharedVariables = {
     //players who finished the game,list of obj {name:,points:}
     endPlayers : [],
     toEval : [],
-    evaluated : []
+    evaluated : [],
+    firstRequest: true,
+    jsonResName: null
 }
-
 
 //functions for managing list of users for updating staff on first connection
 function userJoin(id){
@@ -32,7 +32,6 @@ function userJoin(id){
         return id;
     }
     return "undefined";
-    
 }
 
 function getCurrenUser(id){
@@ -45,6 +44,7 @@ function removeUser(id){
         if(index != -1) sharedVariables.usersList.splice(index,1);
     }
 }
+
 
 //to reinitialize all the variables when the game is over
 function reinitializeVariables(){
@@ -59,10 +59,11 @@ function reinitializeVariables(){
 	sharedVariables.listOfAssociatedNames = [];
 	sharedVariables.endPlayers = [];
 	sharedVariables.toEval = [];
-	sharedVariables.evaluated = [];
+    sharedVariables.evaluated = [];
+    sharedVariables.firstRequest = true;
 	//emit event to disconnect all users and to refresh 'valutatore' page
 	sharedVariables.io.of('/').emit('disconnect','now');
-	sharedVariables.io.of('/staff').emit('refresh-page','now');
+    sharedVariables.io.of('/staff').emit('refresh-page','now');
 }
 
 

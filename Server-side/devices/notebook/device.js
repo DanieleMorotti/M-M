@@ -15,7 +15,9 @@ export default {
 			verify: false,
 			obj: null,
 			over: false,
-			myName: null
+			myName: null,
+			points: null,
+			whenStarted: null
         }
 	},
 	template: ` 
@@ -34,7 +36,25 @@ export default {
 
 		next() {
 			if(this.over) {
-				bus.$emit('over','true'); 
+				bus.$emit('over','true');
+
+				//communicate to the server that i finished the story
+				$.ajax({
+					type: "POST",
+					url: '/Play/storyFinished',
+					data: {
+						whenStarted: this.whenStarted,
+						points: this.points,
+						assignedName: this.myName
+					},
+					success: (data) =>{
+						console.log("Comunicato che la partita è finita correttamente");
+					},
+					error: function (e) {
+						console.log("error in story finished",e);
+					}
+				})
+
 				$('#toHome').click();
 			}
 			else {
@@ -53,7 +73,8 @@ export default {
 						else {
 							$('#text').html("");
 							$('#text').append(storyItem.conclusion);
-							$('#text').append(`<br><br><p>Congratulazioni hai totalizzato ${this.obj[2]} punti!`)
+							$('#text').append(`<br><br><p>Congratulazioni hai totalizzato ${this.obj[2]} punti!`);
+							this.points = this.obj[2];
 							this.over = true;
 						}
 						this.obj = null;
@@ -85,5 +106,9 @@ export default {
 				console.log("error in get player name",e);
 			}
 		})
+	},
+	created(){
+		//saving the moment when i started
+		this.whenStarted = new Date();
 	}
 }
