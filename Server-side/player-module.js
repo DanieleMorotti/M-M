@@ -32,7 +32,7 @@ player.get('/',(req,res) =>{
 		let resultsObj = {date:new Date().toString(),story:sharedVar.story,users:[]};
 		//name the file with the date and the name of the story
 		let date = new Date();
-		let stringDate =  date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()+'_';
+		let stringDate =  date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()+'_'+date.getHours()+'_'+date.getMinutes()+'-';
 		sharedVar.jsonResName = stringDate + sharedVar.story+'.json';
 
 		//create the json file for the story
@@ -186,24 +186,24 @@ const bestPlayers = (a, b) => {
 player.post('/storyFinished',(req,res)=>{
 	let id = req.cookies.userId.substring(0,5) || "unknown";
 	let points = req.body.points;
-	let name = sharedVar.listOfAssociatedNames.some(el => el[id])?sharedVar.listOfAssociatedNames[id]:id;
+	let name = req.body.assignedName;
 
 	let now = new Date().getTime();
-	let started = req.body.whenStarted.getTime();
+	let started = new Date(req.body.whenStarted).getTime();
 	let timeSpent = (now - started) / 60000;
-	timeSpent.toFixed(1);
+	timeSpent = timeSpent.toFixed(1);
 	
 	let currentPlayer = {id:id,assignedName:name,points:points,time_minutes:timeSpent};
-
+	sharedVar.endPlayers.push(currentPlayer);
 	//add player to the json
-	fs.readFile('./valuta/results/current_story.json', 'utf-8', function(err, data){
+	fs.readFile('./valuta/results/'+ sharedVar.jsonResName, 'utf-8', function(err, data){
 		if (err) throw err;
 
 		let parsed = JSON.parse(data);
 		parsed.users.push(currentPlayer);
 		parsed.users.sort(bestPlayers);
 		
-		fs.writeFile('./valuta/results/current_story.json', JSON.stringify(parsed,null,2), 'utf-8', function (err) {
+		fs.writeFile('./valuta/results/'+sharedVar.jsonResName, JSON.stringify(parsed,null,2), 'utf-8', function (err) {
 			if (err) throw err;
 			console.log('file classifica aggiornato correttamente');
 		});

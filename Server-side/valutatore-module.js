@@ -56,9 +56,10 @@ valutatore.post('/changeName',(req,res)=>{
 
 })
 
-//verify the players that ended the game
+//verify the players that ended the game,@endPlayers has id,assignedName,points,time_minutes fields
 valutatore.get('/whoFinished',(req,res)=>{
-	res.json(sharedVar.endPlayers);
+	let obj = {users:sharedVar.endPlayers,jsonName:'/Server-side/valuta/results/'+sharedVar.jsonResName}
+	res.json(obj);
 })
 
 //manually end the current game

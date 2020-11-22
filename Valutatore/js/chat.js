@@ -305,7 +305,9 @@ new Vue({
         return{
             users: [],
             usWin: [],
-            storyName: null
+            storyName: null,
+            jsonName:null,
+            countTime:1
         }
     }, 
     template: `
@@ -357,7 +359,7 @@ new Vue({
                         </div>
                         <div class="modal-body">
                             <p>Vuoi scaricare il file dei giocatori che hanno già concluso la partita?</p>
-                            <a href='#' downloadable>Scarica qui il json!</a>
+                            <a href='#' target="_blank" download>Scarica qui il json!</a>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -404,8 +406,16 @@ new Vue({
                 type: "GET",
                 url: "/Valutatore/whoFinished",
                 success: (data) =>{
-                    if(data.length != 0){
-                        this.usWin = data.slice();
+                    let users = data.users;
+                    let pathJson = data.jsonName;
+                    if(users.length != 0){
+                        this.usWin = users.slice();
+                    }
+                    //change only the first time the attribute
+                    if(this.countTime > 0){
+                        this.jsonName = pathJson;
+                        $('.modal-body > a').attr('href',pathJson);
+                        this.countTime--;
                     }
                     console.log("get the list of players have finished");
                 },
