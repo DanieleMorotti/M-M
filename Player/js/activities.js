@@ -21,6 +21,7 @@ export default {
             activity: 0,
             servSent: null,
             data: null,
+            groupNum: 0
         }
     },
     methods: {
@@ -137,15 +138,14 @@ export default {
                     this.usedFacilities.push(this.currentF);
 
                     /* select next activity */
-                    this.nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity;
-                    this.nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission;
+                    this.nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity[this.groupNum];
+                    this.nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission[this.groupNum];
 
                     if(type == 'valutabile') 
                         this.score = this.score + this.missions[mission].activities[activity].score*this.data[0].mark/10;
                     else 
                         this.score = this.score + this.missions[mission].activities[activity].score;
                      
-                    console.log(this.score)
                     if (type == "figurativa") {
                         $('#widget').remove();
                         $('#container').css('background-image', 'none');
@@ -168,8 +168,8 @@ export default {
                 $("#text").html(this.story.difficulties[this.currentD]);
                 this.usedDifficulties.push(this.currentD);
 
-                this.nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity; 
-                this.nextMiss = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextMission;
+                this.nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity[this.groupNum]; 
+                this.nextMiss = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextMission[this.groupNum];
 
                 if (type == "figurativa") {
                     $('#widget').remove();
@@ -181,6 +181,7 @@ export default {
         }, 
         initialize() {
             let storyItem = JSON.parse(localStorage.getItem("story"));
+            this.groupNum = 0;
             this.story = storyItem;
             this.missions = storyItem.missions;
             this.nextMiss = 0;

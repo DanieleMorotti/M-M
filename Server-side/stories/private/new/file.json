@@ -1,5 +1,7 @@
 {
-  "title": "nuova",
+  "age": "6-10",
+  "groups": "1",
+  "title": "new",
   "setting": "",
   "description": "",
   "introduction": "",
@@ -13,7 +15,7 @@
   ],
   "facilities": [],
   "difficulties": [],
-  "originalTitle": "nuova",
+  "originalTitle": "",
   "background": "",
   "widgetCss": "",
   "widgetJs": ""

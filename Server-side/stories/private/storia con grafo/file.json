@@ -95,6 +95,10 @@
         }
       ],
       "isActive": true
+    },
+    {
+      "name": "Missione 2",
+      "isActive": "false"
     }
   ],
   "facilities": [],

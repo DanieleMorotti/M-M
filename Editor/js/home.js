@@ -144,7 +144,7 @@ export default {
             $('.content').css("display", "none");
             $('#toEditMenu').click(); 
             const promise = new Promise((succ, err) => {
-                bus.$on('over',(msg) => {
+                bus.$on('ready',(msg) => {
                     succ('ok');
                 });
             });

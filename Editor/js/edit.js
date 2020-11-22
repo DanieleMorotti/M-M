@@ -4,7 +4,10 @@ export default {
     name: 'editMenu',
     data() {
         return{
-            missions: [{name:"Missione 1",activities:[],isActive:false}],
+            groupNum: 1,
+            groups: ["Gruppo 1"],
+            currentGroup: 0,
+            missions: [{name: "Missione 1", activities:[], isActive:false}],
             isNewStory: false,
             currentActivity: 0,
             type: 'scelta multipla',
@@ -36,6 +39,15 @@ export default {
                     <li>
                         <input type="checkbox" id="accessibility" name="accessibility" value="true">
                         <label for="accessibility">STORIA ACCESSIBILE</label><br>
+                        <label for="chooseAge">Scegli il range di età: </label>
+                        <select name="age" id="chooseAge">
+                            <option>6-10</option>
+                            <option>10-14</option>
+                            <option>14-18</option>
+                        </select><br>
+                        <label for="groups" class="group">Numero di gruppi:</label>
+                        <input id="groups" type="range" min="1" max="5" step="1"  v-model="groupNum" name="groups" @click="changeGroups"/>
+                        <span v-text="groupNum"></span>
                     </li>
                     <li>
                         <label for="inpTitle">Inserisci il titolo: </label>
@@ -70,7 +82,7 @@ export default {
                     </li>
                     <li>    
                         <h3 style="display:inline-block">Missioni</h3>&nbsp;&nbsp;
-                        <input type="button" id="buttonGraph" data-toggle="modal" data-target="#graphModal" value="Grafo attività"/>
+                      <!--  <input type="button" id="buttonGraph" data-toggle="modal" data-target="#graphModal" value="Grafo attività"/>
                             
 
                         <div class="modal fade" id="graphModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -79,7 +91,7 @@ export default {
                                     <svg></svg>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <ul id="missionSaved">
                             <li v-for="(mission,index) in missions" :key="index">
                                 <input type="checkbox" name="isActive" :checked="mission.isActive" @click="mission.isActive = !mission.isActive" />&emsp;
@@ -109,6 +121,10 @@ export default {
                         <span style="font-size:30px;cursor:pointer"  @click="addMission"><i class="fas fa-chess-bishop"></i>&nbsp;&nbsp;Aggiungi missione</span><br>
                         <span style="font-size:30px;cursor:pointer" @click="openNav('activity')"><i class="fas fa-chess-pawn"></i>&nbsp;&nbsp;Aggiungi attività</span><br>
                         <span style="font-size:30px;cursor:pointer" @click="openNav('widget')"><i class="fas fa-chess-rook"></i>&nbsp;&nbsp;Aggiungi widget</span>
+                    </li>
+                    <li>
+                        <h3>Percorsi</h3>
+                        <p v-for="(group,ind) in groups" :key="ind" style="font-size:30px;cursor:pointer" @click="openNav('percorsi', ind)"><i class="fas fa-map-signs"></i>&nbsp;{{group}}</p>
                     </li>
                     <li>
                         <h3>Facilitazioni</h3>
@@ -207,37 +223,8 @@ export default {
 
                             <label for="score" class="info">Inserisci un punteggio da assegnare:</label><br>
                             <input id="score" type="range" min="10" max="100" step="5"  v-model="value" name="score"/>
-                            <span v-text="total" id="scoreValue"></span>
+                            <span v-text="value" id="scoreValue"></span>
 
-                            <div>
-                                <h5 class="info">Scegli l'attività successiva: </h5>
-                                <ul>
-                                <li>
-                                    <label for="nextActvityCorrect"> in caso di risposta corretta</label><br>
-                                    <select id="nextActivityCorrect" name="nextActivityCorrect" :disabled="missions.length == 1 && missions[0].activities.length == 0">
-                                        <option value="-/-" > Missione -  Attività -  </option> 
-                                        <template v-for="(mission, indMiss) in missions" :key="indMiss"> 
-                                        <option v-for="activity in mission.activities" :value="indMiss+'/'+activity.number"> 
-                                        {{mission.name}} Attività {{activity.number + 1}}
-                                        </option>
-                                        </template>
-                                        <option value="x/x" > Conclusione </option> 
-                                    </select>
-                                </li>
-                                <li>
-                                    <label for="nextActvityIncorrect"> in caso di risposta errata</label><br>
-                                    <select id="nextActivityIncorrect" name="nextActivityIncorrect" :disabled="missions.length == 1 && missions[0].activities.length == 0">
-                                        <option value="-/-" > Missione -  Attività -  </option> 
-                                        <template v-for="(mission, indMiss) in missions" :key="indMiss"> 
-                                        <option v-for="activity in mission.activities" :value="[indMiss]+'/'+[activity.number]"> 
-                                        {{mission.name}} Attività {{activity.number + 1}}
-                                        </option>
-                                        </template>
-                                        <option value="x/x" > Conclusione </option> 
-                                    </select>
-                                </li>
-                                </ul>
-                            </div>
                         </div>
                         
                 
@@ -279,6 +266,62 @@ export default {
                 </div>
             </div>
 
+            <div class="modal fade" id="graphModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <svg></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- menu for paths -->
+
+            <div id="pathNav" class="overlay">
+                <a href="javascript:void(0)" class="closebtn" @click="closeNav('path')">&times;</a>
+                <div class="overlay-content">
+                    <input type="button" id="buttonGraph" data-toggle="modal" data-target="#graphModal" value="Grafo attività"/>
+                    <ul id="missionsList">
+                        <li v-for="(mission,index) in missions" :key="index">
+                            {{mission.name}}&emsp;
+                            <ul id="activitiesList" v-if="mission.activities.length != 0">
+                                <li :id="'missionDiv'+index" v-for="(activity,ind) in mission.activities" :key="ind">
+                                <details>
+                                    <summary>Attività {{parseInt(activity.number) + 1}}</summary>
+                                    <h5 class="info">Scegli l'attività successiva: </h5>
+                                    <ul>
+                                    <li>
+                                        <label :for="'rightAct'+index+'_'+ind"> in caso di risposta corretta</label><br>
+                                        <select :id="'rightAct'+index+'_'+ind" name="nextActivityCorrect" :disabled="missions.length == 1 && missions[0].activities.length == 0" @click="changeNextCorrect(index, ind)">
+                                            <option value="-/-" > Missione -  Attività -  </option> 
+                                            <template v-for="(mission, indMiss) in missions" :key="indMiss"> 
+                                            <option v-for="activity in mission.activities" :value="indMiss+'/'+activity.number"> 
+                                            {{mission.name}} Attività {{activity.number + 1}}
+                                            </option>
+                                            </template>
+                                            <option value="x/x" > Conclusione </option> 
+                                        </select>
+                                    </li>
+                                    <li>
+                                        <label :for="'wrongAct'+index+'_'+ind"> in caso di risposta errata</label><br>
+                                        <select :id="'wrongAct'+index+'_'+ind" name="nextActivityIncorrect" :disabled="missions.length == 1 && missions[0].activities.length == 0" @click="changeNextIncorrect(index, ind)">
+                                            <option value="-/-" > Missione -  Attività -  </option> 
+                                            <template v-for="(mission, indMiss) in missions" :key="indMiss"> 
+                                            <option v-for="activity in mission.activities" :value="[indMiss]+'/'+[activity.number]"> 
+                                            {{mission.name}} Attività {{activity.number + 1}}
+                                            </option>
+                                            </template>
+                                            <option value="x/x" > Conclusione </option> 
+                                        </select>
+                                    </li>
+                                    </ul>
+                                </details>
+                                </li>
+                            </ul>
+                            <p v-else>Nessuna attività per questa missione </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
             <!-- Modals for copy or move an activity -->
             <div class="modal fade" id="moveActivityModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -452,18 +495,52 @@ export default {
         
     `,
     methods: {
-        openNav(navValue) {
+        openNav(navValue, index) {
             if(navValue == 'activity')
                 document.getElementById("activitiesNav").style.width = "100%";
-            else
+            else if(navValue == 'widget')
                 document.getElementById("widgetNav").style.width = "100%";
+            else {
+                document.getElementById("pathNav").style.width = "100%";
+                this.currentGroup = index;
+                
+                // resume activity's next tasks
+                for(let i=0; i < this.missions.length; i++) {
+                    for(let j=0; j < this.missions[i].activities.length; j++) {
+                        let activity = this.missions[i].activities[j];
+                        let missNum1 = activity.goTo.ifCorrect.nextMission[index];
+                        let actNum1 = activity.goTo.ifCorrect.nextActivity[index];
+                        if(missNum1) 
+                            $(`#rightAct${i}_${j} option[value='${missNum1}/${actNum1}']`).prop('selected', true);
+                        else 
+                            $(`#rightAct${i}_${j} option[value='-/-']`).prop('selected', true);
+
+                        let missNum2 = activity.goTo.ifNotCorrect.nextMission[index];
+                        let actNum2 = activity.goTo.ifNotCorrect.nextActivity[index];
+                        if(missNum2) 
+                            $(`#wrongAct${i}_${j} option[value='${missNum2}/${actNum2}']`).prop('selected', true);
+                        else 
+                            $(`#wrongAct${i}_${j} option[value='-/-']`).prop('selected', true);
+                    }
+                }
+                
+            }
         },
         
         closeNav(navValue) {
             if(navValue == 'activity')
                 document.getElementById("activitiesNav").style.width = "0%";
-            else
+            else if(navValue == 'widget')
                 document.getElementById("widgetNav").style.width = "0%";
+            else
+                document.getElementById("pathNav").style.width = "0%";
+        },
+        /* change groups' number */
+        changeGroups() {
+            this.groups = [];
+            for(let i = 0; i < this.groupNum; i++) {
+                this.groups.push('Gruppo '+(i+1));
+            }
         },
         /*  ACTIVITIES MANAGEMENT   */
         addAnswer(e) {
@@ -481,12 +558,22 @@ export default {
             this.difficultiesList.push($(`#difficulty`).val().trim());
             $(`#difficulty`).prop("value", "");
         },
+        changeNextCorrect(missInd, actInd) {
+            /* capture next mission/activity selection*/
+            let group = this.currentGroup;
+            let currentAct =  this.missions[missInd].activities[actInd];
+            currentAct.goTo.ifCorrect.nextMission[group] = $(`#rightAct${missInd}_${actInd}`).val().substring(0,1);
+            currentAct.goTo.ifCorrect.nextActivity[group] = $(`#rightAct${missInd}_${actInd}`).val().substring(2,3);
+        },
+        changeNextIncorrect(missInd, actInd) {
+            let group = this.currentGroup;
+            let currentAct =  this.missions[missInd].activities[actInd];
+            currentAct.goTo.ifNotCorrect.nextMission[group] = $(`#wrongAct${missInd}_${actInd}`).val().substring(0,1);
+            currentAct.goTo.ifNotCorrect.nextActivity[group] = $(`#wrongAct${missInd}_${actInd}`).val().substring(2,3);
+        },
         addActivity(e) {   
             e.preventDefault();
             this.closeNav('activity');
-
-            $(`#nextActivityCorrect option`).prop('disabled', false);
-            $(`#nextActivityIncorrect option`).prop('disabled', false);
 
             if($('#saveActivity').val() == "Salva modifiche"){
                 let widgetValue = "";
@@ -512,10 +599,10 @@ export default {
                 }
                 
                 this.missions[this.currentMission].activities[this.currentActivity].score = this.value;
-                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect.nextMission = $("#nextActivityCorrect").val().substring(0,1);
+              /*  this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect.nextMission = $("#nextActivityCorrect").val().substring(0,1);
                 this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect.nextActivity = $("#nextActivityCorrect").val().substring(2,3);
                 this.missions[this.currentMission].activities[this.currentActivity].goTo.ifNotCorrect.nextMission = $("#nextActivityIncorrect").val().substring(0,1);
-                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifNotCorrect.nextActivity = $("#nextActivityIncorrect").val().substring(2,3);
+                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifNotCorrect.nextActivity = $("#nextActivityIncorrect").val().substring(2,3); */
 
                 $('#activitiesForm h2').text(`Nuova attività`)
                 $('#saveActivity').prop("value", "Salva attività");
@@ -557,20 +644,21 @@ export default {
                     waitMsg: message,
                     goTo: {
                         ifCorrect: {
-                            nextMission: $("#nextActivityCorrect").val().substring(0,1),
-                            nextActivity: $("#nextActivityCorrect").val().substring(2,3)
+                            nextMission: [],
+                            nextActivity: []
                         },
                         ifNotCorrect: {
-                            nextMission: $("#nextActivityIncorrect").val().substring(0,1),
-                            nextActivity: $("#nextActivityCorrect").val().substring(2,3)
+                            nextMission: [],
+                            nextActivity: []
                         }
                     }
                 }
+
                 this.missions[missionIndex].activities.push(activity);
                 this.currentWidget = -1;
                 this.value = 50;
-            }     
-
+            } 
+            
             $('#activitiesForm')[0].reset();
             $("#buttonWidget").prop("value","Scegli");
             $("#infoWidget").text("");
@@ -583,12 +671,10 @@ export default {
                 this.answerList = [];
                 this.currentMission = misInd;
                 this.currentActivity = index;
-                $(`#nextActivityCorrect option[value='-/-']`).prop('selected', true);
+         /*       $(`#nextActivityCorrect option[value='-/-']`).prop('selected', true);
                 $(`#nextActivityIncorrect option[value='-/-']`).prop('selected', true);
                 $(`#nextActivityCorrect option`).prop('disabled', false);
-                $(`#nextActivityIncorrect option`).prop('disabled', false);
-                $(`#nextActivityCorrect option[value='${misInd}/${index}']`).prop('disabled', true);
-                $(`#nextActivityIncorrect option[value='${misInd}/${index}']`).prop('disabled', true);
+                $(`#nextActivityIncorrect option`).prop('disabled', false); */
 
                 //prevent the user to change the activity mission from this form
                 $('#chooseMission').hide();
@@ -616,18 +702,6 @@ export default {
                 }
                 //resume activity's score
                 this.value = this.missions[misInd].activities[index].score;
-
-                // resume activity's next tasks
-                let missNum1 = this.missions[misInd].activities[index].goTo.ifCorrect.nextMission;
-                let actNum1 = this.missions[misInd].activities[index].goTo.ifCorrect.nextActivity;
-
-                if(missNum1 !== "-") 
-                    $(`#nextActivityCorrect option[value='${missNum1}/${actNum1}']`).prop('selected', true);
-                
-                let missNum2 = this.missions[misInd].activities[index].goTo.ifNotCorrect.nextMission;
-                let actNum2 = this.missions[misInd].activities[index].goTo.ifNotCorrect.nextActivity;
-                if(missNum2 !== "-") 
-                    $(`#nextActivityIncorrect option[value='${missNum2}/${actNum2}']`).prop('selected', true);
                  
                 if(this.missions[misInd].activities[index].widget) {
                     $("#buttonWidget").prop("value","Cambia");
@@ -939,6 +1013,7 @@ export default {
             var graph = {nodes:[],links:[]};
             let indAct = 0, totAct = 0;
             let indMiss = 0;
+            let group = this.currentGroup;
 
             graph.nodes.push({id: "start", name: "START", r: 10});
             graph.nodes.push({id: "end", name: "END", r: 10});
@@ -957,24 +1032,32 @@ export default {
                             if(indMiss.toString()+indAct == "00") 
                                 graph.links.push({source: "start", target: "00", color: 'white', x1:0, y1:0, x2:0, y2:0});
                             
-                            if(correct.nextActivity !== '-' /*&& this.missions[correct.nextMission].activities[correct.nextActivity]*/) {
-                                if(correct.nextActivity == 'x') {
+                            if(correct.nextActivity[group] && correct.nextActivity[group]!== '-' /*&& this.missions[correct.nextMission[group]].activities[correct.nextActivity[group]]*/) {
+                                if(correct.nextActivity[group] == 'x') {
                                     graph.links.push({source: indMiss.toString()+indAct,target: 'end', color: 'green', x1:0, y1:0, x2:0, y2:0});
                                 }
                                 else {
-                                    graph.links.push({source: indMiss.toString()+indAct,target: correct.nextMission.toString()+ correct.nextActivity, color: 'green', x1:0, y1:0, x2:0, y2:0});
+                                    graph.links.push({source: indMiss.toString()+indAct,target: correct.nextMission[group].toString()+ correct.nextActivity[group], color: 'green', x1:0, y1:0, x2:0, y2:0});
                                 }
                             }
                             else {
                                 graph.nodes.push({name: "",id: indMiss.toString()+indAct+"-correct", r: 0.1});
                                 graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-correct", color: 'green', x1:0, y1:0, x2:0, y2:0});
                             }
-                            if(incorrect.nextActivity !== '-' /*&& this.missions[incorrect.nextMission].activities[incorrect.nextActivity]*/) {
-                                if(incorrect.nextActivity == 'x'){
+                            if(incorrect.nextActivity[group] && incorrect.nextActivity[group]!== '-' /*&& this.missions[incorrect.nextMission[group]].activities[incorrect.nextActivity[group]]*/) {
+                                if(incorrect.nextActivity[group] == 'x'){
                                     graph.links.push({source: indMiss.toString()+indAct,target: 'end', color: 'red', x1:0, y1:0, x2:0, y2:0});
                                 }
                                 else {
-                                    graph.links.push({source: indMiss.toString()+indAct,target: incorrect.nextMission.toString()+ incorrect.nextActivity, color: 'red', x1:0, y1:0, x2:0, y2:0});
+                                    let exists = false;
+                                    graph.links.forEach(function(d){
+                                        if(d.source == indMiss.toString()+indAct && d.target == incorrect.nextMission[group].toString()+ incorrect.nextActivity[group]) {
+                                            d.color = 'white';
+                                            exists = true;
+                                        }
+                                    })
+                                    if(!exists)
+                                    graph.links.push({source: indMiss.toString()+indAct,target: incorrect.nextMission[group].toString()+ incorrect.nextActivity[group], color: 'red', x1:0, y1:0, x2:0, y2:0});
                                 }
                             }
                             else {
@@ -1087,11 +1170,7 @@ export default {
                 }
         }
     },
-    computed: {
-        total: function () {
-        return this.value 
-      }
-    },
+    
     activated() {
         $('#editStoryForm')[0].reset();
         $('#activitiesForm')[0].reset();

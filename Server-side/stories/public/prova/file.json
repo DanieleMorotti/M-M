@@ -1,0 +1,59 @@
+{
+  "age": "6-10",
+  "groups": "2",
+  "title": "prova",
+  "setting": "ambientazione",
+  "description": "descrizione iniziale",
+  "introduction": "introduzione",
+  "conclusion": "conclusione",
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "ambientazione",
+          "instructions": "svolgimento",
+          "question": "domanda",
+          "answers": [
+            "risposta1",
+            "risposta2"
+          ],
+          "correctAns": "risposta2",
+          "inputType": "",
+          "score": 50,
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [
+                "x"
+              ],
+              "nextActivity": [
+                "x"
+              ]
+            },
+            "ifNotCorrect": {
+              "nextMission": [
+                "x"
+              ],
+              "nextActivity": [
+                "x"
+              ]
+            }
+          }
+        }
+      ],
+      "isActive": true
+    }
+  ],
+  "facilities": [],
+  "difficulties": [],
+  "originalTitle": "",
+  "device": "smartphone",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}

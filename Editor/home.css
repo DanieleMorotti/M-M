@@ -23,12 +23,12 @@ body p, span {
 }
 
 #public-list > button {
-    background-color: #8a6336;
+    background-color: #cc8f48;
     color: white
 }
 
 #private-list > button{
-    background-color:#1d5861;
+    background-color:  #2d8896;
     color: white
 }
 
