@@ -1,4 +1,5 @@
 import render from '/Player/js/activities.js'
+import { bus } from '/Player/js/index.js';
 
 let storyItem;
 

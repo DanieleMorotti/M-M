@@ -187,6 +187,8 @@ export default {
         },
         deleteStory(event, index){
             event.stopPropagation();
+            $('.content').css("display", "none");
+
             let title;
             //console.log(this.currentList);
             if(this.currentList === "private"){

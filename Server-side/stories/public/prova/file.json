@@ -1,6 +1,6 @@
 {
   "age": "6-10",
-  "groups": "2",
+  "groups": "1",
   "title": "prova",
   "setting": "ambientazione",
   "description": "descrizione iniziale",
@@ -49,10 +49,16 @@
       "isActive": true
     }
   ],
-  "facilities": [],
-  "difficulties": [],
-  "originalTitle": "",
-  "device": "smartphone",
+  "facilities": [
+    "facilitazione1",
+    "fiacilitazione2"
+  ],
+  "difficulties": [
+    "difficolta1",
+    "difficolta2"
+  ],
+  "originalTitle": "prova",
+  "device": "notebook",
   "background": "",
   "widgetCss": "",
   "widgetJs": ""
