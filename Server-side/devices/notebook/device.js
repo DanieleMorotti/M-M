@@ -21,19 +21,27 @@ export default {
         }
 	},
 	template: ` 
+	<div>
         <div class="notebook">
             <div class="note">
                 <div id="text"> </div>
-				<div class="post-it">
-					<div id="container" class="sticky taped">
-					</div>
-				</div>
                 <button id="next" @click="next"> &rarr; </button>
             </div>
-        </div>
+		</div>
+		
+		<div id="widgetNav" class="overlay">
+		<a href="javascript:void(0)" class="closebtn" @click="closeNav">&times;</a>
+		<div id="widget" class="overlay-content"></div>
+		</div>
+	</div>
     `,
 	methods: {
-
+		openNav() {
+			document.getElementById("widgetNav").style.height = "100%";
+		},
+		closeNav() {
+			document.getElementById("widgetNav").style.height = "0%";
+		},
 		next() {
 			if(this.over) {
 				bus.$emit('over','true');
