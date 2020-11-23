@@ -4,12 +4,11 @@ const fs = require('fs-extra');
 const path = require('path');
 
 editor.get('/',(req,res) =>{
-	res.status(200);
-	res.sendFile(path.join(__dirname,"../Editor/index.html"));
+	res.status(200).sendFile(path.join(__dirname,"../Editor/index.html"));
 })
 
 /* save a new story */
-editor.post('/saveStory', (req, res) => {
+editor.post('/saveStory', (req, res, next) => {
 	var form = new formidable.IncomingForm();
 	var jsonFile = {};
 	var jsonTitle = req.query.title;
@@ -19,18 +18,25 @@ editor.post('/saveStory', (req, res) => {
 	//if the originalTitle is empty the story doesn't exist
 	if(jsonOriginTitle === ""){
 		fs.mkdir( __dirname + '/stories/private/' + jsonTitle, (err) => { 
-			if (err) throw err;
+			if (err){
+				next(err);
+				return;
+			} 
 			console.log('Directory created successfully!'); 
 		}); 
 		fs.mkdir( __dirname + '/stories/private/' + jsonTitle +'/files', (err) => { 
-			if (err) console.log(err);
+			if (err){
+				next(err);
+				return;
+			} 
 			console.log('Directory \"files\" created successfully!'); 
 		}); 
 	}
 	else if(jsonTitle !== jsonOriginTitle){
 		fs.rename(__dirname + '/stories/private/' + jsonOriginTitle, __dirname + '/stories/private/' + jsonTitle, function(err) {
 			if (err) {
-			  console.log(err);
+			  next(err);
+			  return;
 			} else {
 			  console.log("Successfully renamed the directory.");
 			}
@@ -63,14 +69,18 @@ editor.post('/saveStory', (req, res) => {
 		})
 		.on('error', (err) => {
 			console.error('Error', err);
-			throw err;
+			next(err);
+			return;
 		})
 		.on('end',() => {
 			let json = JSON.stringify(jsonFile,null,2);
 
 			//save the new json file	
 			fs.writeFile('./stories/private/'+ jsonTitle +'/file.json', json, function (err) {
-				if (err) throw err;
+				if (err){
+					next(err);
+					return;
+				} 
 				console.log('Saved!');
 			});
 			res.status(200).end();
@@ -79,13 +89,16 @@ editor.post('/saveStory', (req, res) => {
 
 
 /* require a story which already exists */ 
-editor.get('/getStory',(req, res) => {
+editor.get('/getStory',(req, res,next) => {
 	fs.readFile('./stories/'+req.query.group+'/'+req.query.title+'/file.json', 'utf8', (err, data) => {  
 		//device = JSON.parse(data).device;
 		//console.log('caricamento storia' +device);
+		if(err){
+			next(err);
+			return;
+		}
 		res.set('Content-Type', 'application/json');
-		res.send(data)
-		res.status(200);
+		res.status(200).send(data)
 	})
 })
 
@@ -99,25 +112,30 @@ app.get('/getDeviceJs',(req, res) => {
 */
 
 /* require widgets names */
-editor.get('/getWidgets',(req, res) => {
+editor.get('/getWidgets',(req, res, next) => {
 	let names = { widgets: [], devices: []};
 	fs.readdir('./widgets', (err, files) => {
-		if(err) throw err;
+		if (err){
+			next(err);
+			return;
+		} 
 		else {
 			// add control to verify if file is a directory !!!
 			files.map(function(f) {
 				names.widgets.push(f);
 			});
 			fs.readdir('./devices', (err, files) => {
-				if(err) throw err;
+				if (err){
+					next(err);
+					return;
+				} 
 				else {
 					// add control to verify if file is a directory !!!
 					files.map(function(f) {
 						names.devices.push(f);
 					});
 					
-					res.status(200);
-					res.json(names);
+					res.status(200).json(names);
 				}	
 			});
 		}	
@@ -125,11 +143,14 @@ editor.get('/getWidgets',(req, res) => {
 })
 
 /* create a new directory widget */
-editor.post('/saveWidget', (req, res) => {
+editor.post('/saveWidget', (req, res, next) => {
 	var widgetName = req.query.name;
 	let dirName =  __dirname + '/widgets/' + widgetName;
 	fs.mkdir(dirName, (err) => { 
-		if (err) throw err;
+		if (err){
+			next(err);
+			return;
+		} 
 		console.log('Directory created successfully!'); 
 	}); 
 	var form = new formidable.IncomingForm();
@@ -139,7 +160,8 @@ editor.post('/saveWidget', (req, res) => {
 		})
 		.on('error', (err) => {
 			console.error('Error', err);
-			throw err;
+			next(err);
+			return;
 		})
 		.on('end',() => {			
 			res.status(200).end();
@@ -152,8 +174,8 @@ var obj = { private: [], public: []} ;
 function readDir(path) {
 	return new Promise( (succ, err) => {
 		fs.readdir(path, (err, files) => {
-			if(err) throw err;
-				succ(files);
+			if (err) throw err;
+			succ(files);
 		})
 	})
 }
@@ -163,7 +185,7 @@ function readDir(path) {
 function readFiles(dir, f) {
 	return new Promise((succ, err) => {
 		fs.readFile(dir + '/'+ f + '/file.json', 'utf8', (err, data) => {  
-			if (err) throw err;
+			if (err)throw err;
 			else {
 				let file = JSON.parse(data);
 				let missions = [];
@@ -171,7 +193,7 @@ function readFiles(dir, f) {
 					missions.push(x.name);
 				})
 				
-				// fare attenzione qui!!
+				// fare attenzione qui per linux dove \\ non è consentito!!
 				dirName = dir.substring(dir.lastIndexOf('\\') + 1);
 				obj[`${dirName}`].push({title:f,missionsList:missions, accessibility: file.accessibility});
 				succ(data);
@@ -207,20 +229,26 @@ editor.get('/titles',(req, res) => {
 /*************************** FINE  */
 
 /* copy an activity i received to a story */
-editor.post('/copyActivity',(req,res) => {
+editor.post('/copyActivity',(req,res,next) => {
 	let toStory = req.query.toStory;
 	let toMiss = req.query.toMiss;
 	let path = './stories/private';
 	let activity = req.body;	
 
 	fs.readFile(path + '/'+toStory + '/file.json', 'utf8', (err, data) => {  
-		if (err) throw err;
+		if (err){
+			next(err);
+			return;
+		} 
 		let story = JSON.parse(data);
 		//set the new activity number to the last old activity +1
 		activity.number = (story.missions[toMiss].activities.length != 0)?story.missions[toMiss].activities.length : 0;
 		story.missions[toMiss].activities.push(activity);
 		fs.writeFile(path + '/'+toStory + '/file.json', JSON.stringify(story,null,2), function (err) {
-			if (err) throw err;
+			if (err){
+				next(err);
+				return;
+			} 
 			console.log('Added a new activity to '+ toStory);
 			res.status(200).end();
 		});
@@ -229,19 +257,25 @@ editor.post('/copyActivity',(req,res) => {
 })
 
 /* copy a mission to a story*/
-editor.post('/copyMission',(req,res) => {
+editor.post('/copyMission',(req,res,next) => {
 	let toStory = req.query.toStory;
 	let path = './stories/private';
 	let mission = req.body;	
 
 	fs.readFile(path + '/'+toStory + '/file.json', 'utf8', (err, data) => {  
-		if (err) throw err;
+		if (err){
+			next(err);
+			return;
+		} 
 		let story = JSON.parse(data);
 		//set the new mission number to the last mission +1
 		mission.name = "Missione " + ((story.missions.length != 0)?story.missions.length+1 : 1);
 		story.missions.push(mission);
 		fs.writeFile(path + '/'+toStory + '/file.json', JSON.stringify(story,null,2), function (err) {
-			if (err) throw err;
+			if (err){
+				next(err);
+				return;
+			} 
 			console.log('Added a new activity to '+ toStory);
 			res.status(200).end();
 		});
@@ -250,13 +284,14 @@ editor.post('/copyMission',(req,res) => {
 })
 
 /* delete a story */
-editor.delete('/deleteStory', (req, res) => {
+editor.delete('/deleteStory', (req, res,next) => {
 	let where = req.query.group;
 	let dir = './stories/'+where+'/'+ req.query.title ;
 	console.log(dir);
 	fs.rmdir(dir, { recursive: true }, (err) => {
 		if (err) {
-			throw err;
+			next(err);
+			return;
 		}
 	
 		console.log(`${dir} is deleted!`);
@@ -265,12 +300,15 @@ editor.delete('/deleteStory', (req, res) => {
 })
 
 /* duplicate a story */
-editor.put('/copyStory/:title', (req, res) => {
+editor.put('/copyStory/:title', (req, res,next) => {
 	let dir = './stories/private/'+ req.params.title ;
 	var names = [] ;
 
 	fs.readdir('./stories/private/', (err, files) => {
-		if(err) throw err;
+		if (err){
+			next(err);
+			return;
+		} 
 		else {
 			// add control to verify if file is a directory !!!
 			files.map(function(f) {
@@ -288,52 +326,60 @@ editor.put('/copyStory/:title', (req, res) => {
 				title += '('+(i)+')';
 			}
 			fs.copy(dir, copy , err =>{
-				if(err) return console.error(err);
+				if (err){
+					next(err);
+					return;
+				} 
 				console.log('success!');
 				fs.readFile(copy + '/file.json', 'utf8', (err, data) => {  
-					if (err) throw err;
+					if (err){
+						next(err);
+						return;
+					} 
 					let story = JSON.parse(data);
 					story.title = title;
 					story.originalTitle = title;
 					fs.writeFile(copy + '/file.json', JSON.stringify(story,null,2), function (err) {
-						if (err) throw err;
+						if (err){
+							next(err);
+							return;
+						} 
 						console.log('Saved!');
 					});
 				})
 			});
 			
-			res.send({title: title});
-			res.status(200);
+			res.status(200).send({title: title});
 		}	
 	});
 
 })
 
 /* make a story public */
-editor.put('/publicStory/:title', (req, res) => {
+editor.put('/publicStory/:title', (req, res,next) => {
 	let dir = './stories/private/'+ req.params.title ;
 	let toDir = './stories/public/'+ req.params.title;
 	fs.rename(dir, toDir, err => {
 		if (err) {
-		  throw err;
+		  next(err);
+		  return;
 		}
 	});
-	res.status(200);
-	res.send({title: req.params.title});
+	res.status(200).send({title: req.params.title});
 
 });
 
 /* make a story private */
-editor.put('/privateStory/:title', (req, res) => {
+editor.put('/privateStory/:title', (req, res,next) => {
 	let dir = './stories/public/'+req.params.title;
 	let toDir = './stories/private/'+ req.params.title;
 	fs.rename(dir, toDir, err => {
 		if (err) {
-		  throw err;
+		  next(err);
+		  return;
 		}
 	});
-	res.status(200);
-	res.send({title: req.params.title});
+	res.status(200).send({title: req.params.title});
 });
 
 
