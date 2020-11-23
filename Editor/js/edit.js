@@ -266,15 +266,17 @@ export default {
                 </div>
             </div>
 
-            <div class="modal fade" id="graphModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content">
-                        <svg></svg>
-                    </div>
-                </div>
-            </div>
 
             <!-- menu for paths -->
+                
+                <!-- graph modal --> 
+                <div class="modal fade" id="graphModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content">
+                            <svg></svg>
+                        </div>
+                    </div>
+                </div>
 
             <div id="pathNav" class="overlay">
                 <a href="javascript:void(0)" class="closebtn" @click="closeNav('path')">&times;</a>

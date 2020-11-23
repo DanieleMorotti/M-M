@@ -29,17 +29,25 @@
           "goTo": {
             "ifCorrect": {
               "nextMission": [
+                "x",
+                "x",
                 "x"
               ],
               "nextActivity": [
+                "x",
+                "x",
                 "x"
               ]
             },
             "ifNotCorrect": {
               "nextMission": [
+                "x",
+                "x",
                 "x"
               ],
               "nextActivity": [
+                "x",
+                "x",
                 "x"
               ]
             }
@@ -58,7 +66,7 @@
     "difficolta2"
   ],
   "originalTitle": "prova",
-  "device": "notebook",
+  "device": "smartphone",
   "background": "",
   "widgetCss": "",
   "widgetJs": ""

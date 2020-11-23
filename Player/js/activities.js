@@ -61,6 +61,7 @@ export default {
                 }
             });
         },
+        /* function for activities' visualization */
         visualize(type, mission, activity) {
             if(type == "scelta multipla") {
                 $("#text").html(this.missions[mission].activities[activity].question);
@@ -90,19 +91,20 @@ export default {
                 this.mission = mission;
                 this.activity = activity;
             }
-            else {  //tipe figurative 
+            else {  //type figurative 
                 $('#text').html("");
                 $('#text').append(this.missions[mission].activities[activity].instructions);
+                $('#text').append(`<br><button id="widgetBtn">Widget</button>`);
                 let widget = this.missions[mission].activities[activity].widget;
-
+                
                 $.ajax({
                     url: `/Server-side/widgets/${widget}/${widget}.jpg`,
                     type: 'GET',
                     success: function(data){ 
-                        $('#container').css('background-image', `url("/Server-side/widgets/${widget}/${widget}.jpg")`);     
+                        $('#widgetNav').css('background-image', `url("/Server-side/widgets/${widget}/${widget}.jpg")`);     
                     },
                     error: function(){
-                        $('#container').css('background-color', 'black');     
+                        $('#widgetNav').css('background-image', 'none');     
                     }
                 })
          
@@ -111,17 +113,16 @@ export default {
 
                 async function load() {
                     widgetComp = await import(`/Server-side/widgets/${widget}/${widget}.js`);
-                    $('#container').append(`<div id="widget"></div>`)
+                    console.log(widgetComp.default.template)
                     $('#widget').append(widgetComp.default.template);
                     widgetComp.default.methods.render(question, correctAns)
                 }
                 
                 load();
+
             }  
         },
-        verify(type, mission, activity) {
-        //    $("#info").html("");
-            
+        verify(type, mission, activity) {            
             /* if response is correct */
             if((type == 'scelta multipla' && $('input[name="answer"]:checked').val() == this.missions[mission].activities[activity].correctAns) ||
             (type == "domanda aperta"  && ($("#answer").val() == this.missions[mission].activities[activity].correctAns)) ||
@@ -145,16 +146,14 @@ export default {
                         this.score = this.score + this.missions[mission].activities[activity].score*this.data[0].mark/10;
                     else 
                         this.score = this.score + this.missions[mission].activities[activity].score;
-                     
-                    if (type == "figurativa") {
-                        $('#widget').remove();
-                        $('#container').css('background-image', 'none');
-                    }
+ 
+                    if (type == "figurativa") 
+                        $('#widget').html("");
+                        
                     return([this.nextAct, this.nextMiss, this.score]);
             }
             /* if user didn't answered */
             else if(type == "domanda aperta" && $("#answer").val() == "") {
-               // $("#info").html("Inserisci una risposta!");
                $('#text').append('<p>Inserisci una risposta!</p>')
                     return(false)
             }
@@ -171,10 +170,10 @@ export default {
                 this.nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity[this.groupNum]; 
                 this.nextMiss = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextMission[this.groupNum];
 
-                if (type == "figurativa") {
-                    $('#widget').remove();
-                    $('#container').css('background-image', 'none');
-                }
+                
+                if (type == "figurativa") 
+                    $('#widget').html("");
+        
                 return([this.nextAct, this.nextMiss, this.score]);
             }
             
@@ -199,6 +198,9 @@ export default {
                 }
             });
 
+            $(document).on('click','#widgetBtn', (e) =>{
+                    document.getElementById("widgetNav").style.height = "100%";
+            });
             //to update the server about my current position
             setInterval(() => {                
                 $.ajax({

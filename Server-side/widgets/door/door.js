@@ -40,6 +40,7 @@ export default {
                             $("<p id='x'>"+risp+"</p>").insertBefore("#word");
                             $("#x").delay(2000).css('color', '#0f0').fadeIn(function(){
                                 $('#paper').draggable( "destroy" )
+                                document.getElementById("widgetNav").style.height = "0%";
                                 risposta = true;
                             });
                         }

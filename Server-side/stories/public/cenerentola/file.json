@@ -1,4 +1,6 @@
 {
+  "age": "6-10",
+  "groups": "1",
   "title": "cenerentola",
   "setting": "castello",
   "description": "descrizione storia",
@@ -114,7 +116,7 @@
     "difficolta4"
   ],
   "originalTitle": "cenerentola",
-  "device": "notebook",
+  "device": "smartphone",
   "background": "IMG_3969.JPG",
   "widgetCss": "",
   "widgetJs": ""

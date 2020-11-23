@@ -7,32 +7,30 @@ export default {
             <link rel="stylesheet" href="/Server-side/widgets/lock/lock.css">
             <div id="question"></div>
             <div class="lockContainer">
-            <div id="zero" class="lockDigitContainer digit0">
-                <div class="lockDigit lockDigitPrev">9</div>
-                <div class="lockDigit lockDigitCur">0</div>
-                <div class="lockDigit lockDigitNext">1</div>
-            </div>
-            <div id="one" class="lockDigitContainer digit1">
-                <div class="lockDigit lockDigitPrev">9</div>
-                <div class="lockDigit lockDigitCur">0</div>
-                <div class="lockDigit lockDigitNext">1</div>
-            </div>
-            <div id="two" class="lockDigitContainer digit2">
-                <div class="lockDigit lockDigitPrev">9</div>
-                <div class="lockDigit lockDigitCur">0</div>
-                <div class="lockDigit lockDigitNext">1</div>
-            </div>
-            <div id="three" class="lockDigitContainer digit3">
-                <div class="lockDigit lockDigitPrev">9</div>
-                <div class="lockDigit lockDigitCur">0</div>
-                <div class="lockDigit lockDigitNext">1</div>
-            </div>
+                <div id="zero" class="lockDigitContainer digit0">
+                    <div class="lockDigit lockDigitPrev">9</div>
+                    <div class="lockDigit lockDigitCur">0</div>
+                    <div class="lockDigit lockDigitNext">1</div>
+                </div>
+                <div id="one" class="lockDigitContainer digit1">
+                    <div class="lockDigit lockDigitPrev">9</div>
+                    <div class="lockDigit lockDigitCur">0</div>
+                    <div class="lockDigit lockDigitNext">1</div>
+                </div>
+                <div id="two" class="lockDigitContainer digit2">
+                    <div class="lockDigit lockDigitPrev">9</div>
+                    <div class="lockDigit lockDigitCur">0</div>
+                    <div class="lockDigit lockDigitNext">1</div>
+                </div>
+                <div id="three" class="lockDigitContainer digit3">
+                    <div class="lockDigit lockDigitPrev">9</div>
+                    <div class="lockDigit lockDigitCur">0</div>
+                    <div class="lockDigit lockDigitNext">1</div>
+                </div>
             </div>
     `,
     methods: {
         render(question, answer) {
-
-                console.log(answer)
                 let combination = []
                 let start = [0,0,0,0]
 
@@ -100,6 +98,7 @@ export default {
 
                 if(start.toString() == combination.toString()) {
                     $('.lockDigitCur').addClass( "correct" );
+                    document.getElementById("widgetNav").style.height = "0%";
                     risposta = true;
                 }
     

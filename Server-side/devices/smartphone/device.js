@@ -15,10 +15,12 @@ export default {
 			verify: false,
 			obj: null,
 			over: false,
-			myName: null
+			myName: null,
+			whenStarted: null
         }
 	},
 	template: `
+	<div>
 	<div class="device">
         <div id="dettaglio">
             <div id="sensore"></div>
@@ -34,9 +36,21 @@ export default {
 		</div>
 		<div id="bottone"></div>
 	</div>
+
+	
+	<div id="widgetNav" class="overlay">
+		<a href="javascript:void(0)" class="closebtn" @click="closeNav">&times;</a>
+		<div id="widget" class="overlay-content"></div>
+	</div>
+	</div>
 `,
 	methods: {
-
+		openNav() {
+			document.getElementById("widgetNav").style.height = "100%";
+		},
+		closeNav() {
+			document.getElementById("widgetNav").style.height = "0%";
+		},
 		next() {
 			if(this.over) {
 				bus.$emit('over','true'); 
@@ -89,5 +103,9 @@ export default {
 				console.log("error in get player name",e);
 			}
 		})
+	},
+	created(){
+		//saving the moment when i started
+		this.whenStarted = new Date();
 	}
 }

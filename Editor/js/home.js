@@ -24,7 +24,7 @@ export default {
                     <button v-for="(obj,index) in publicStoriesList" :key="index" type="button" class="list-group-item list-group-item-action" @click="changeActive(index,'public')">
                         {{obj.title}} 
                         <span class="icon-group">
-                            <i v-if="obj.accessibility" class="fas fa-universal-access" title="accessibility" style="transform: scale(1.1); color: #2aaa3f;"></i>&nbsp;&nbsp;
+                            <i v-if="obj.accessibility" class="fas fa-universal-access" title="accessibility" style="transform: scale(1.15); color: #0a5b17;"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-file-download" @click="downloadStory(event,index)" title="download"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-qrcode" @click="createQRCode(event, index)" title="qrcode"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-trash-alt" data-toggle="modal" data-target="#deleteModal" title="delete"></i>
@@ -42,7 +42,7 @@ export default {
                     <button v-for="(story,index) in privateStoriesList" :key="index" type="button" class="list-group-item list-group-item-action " @click="changeActive(index,'private')">
                         {{story.title}} 
                         <span class="icon-group">
-                            <i v-if="story.accessibility" class="fas fa-universal-access" title="accessibility" style="transform: scale(1.1); color: #2aaa3f;"></i>&nbsp;&nbsp;
+                            <i v-if="story.accessibility" class="fas fa-universal-access" title="accessibility" style="transform: scale(1.15); color: #0a5b17;"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-edit" @click="editStory(event, index)" title="edit"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-copy"  @click="duplicateStory(event,index)" title="copy"></i>&nbsp;&nbsp;
                             <i tabindex="0" class="fas fa-file-upload" @click="loadStory(event,index)" title="upload"></i>&nbsp;&nbsp;
@@ -117,8 +117,8 @@ export default {
                         let parsed = JSON.stringify(data,null,2);
 
                         //remove all the brackets from the json
-                        parsed = parsed.replace(/("|\[(\n\s*)\{|\[|\]|\{|\}\n|\}|\[|,|)/g,"");
-                        console.log(parsed)
+                        parsed = parsed.replace(/("|\[(\n\s*)\{|\[|\]|\{|\}\n|\}|,|)/g,"");
+                        
                         //substitution of all the field name with the uppercase
                         parsed = parsed.split('\n').map((line)=>{
                             if(line){
