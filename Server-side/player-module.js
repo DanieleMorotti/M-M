@@ -5,7 +5,7 @@ const fs = require('fs-extra');
 const sharedVar = require('./funcAndVar').sharedVariables;
 const sharedFunc = require('./funcAndVar').sharedFunctions;
 
-player.get('/',(req,res) =>{
+player.get('/',(req,res,next) =>{
 	sharedVar.story = req.query.story;
 	//verify if a different story is requested
 	if(sharedVar.oldStory && sharedVar.oldStory != sharedVar.story){
@@ -37,18 +37,24 @@ player.get('/',(req,res) =>{
 
 		//create the json file for the story
 		fs.writeFile('./valuta/results/'+sharedVar.jsonResName, JSON.stringify(resultsObj,null,2), 'utf-8', function (err) {
-			if (err) throw err;
+			if (err){
+				next(err);
+				return;
+			}
 		});
 		sharedVar.firstRequest = false;
 	}
 })
 
-player.get('/getPlayableStory', (req,res) => {
+player.get('/getPlayableStory', (req,res,next) => {
 	fs.readFile('./stories/public/'+ sharedVar.story +'/file.json', 'utf8', (err, data) => {  
+		if(err){
+			next(err);
+			return;
+		}
 		sharedVar.device = JSON.parse(data).device;
 		res.set('Content-Type', 'application/json');
-		res.send(data)
-		res.status(200);
+		res.status(200).send(data)
 	})
 })
 
@@ -63,7 +69,9 @@ player.get('/getPlayableStory', (req,res) => {
 player.post('/updatePlayerPosition',(req,res) => {
 	//pos is an object with currMiss and currAct
 	let pos = req.body;
-	let usName = req.cookies.userId.substring(0,5);
+	let usName = req.cookies.userId;
+	if(usName)usName = usName.substring(0,5);
+	else usName = 'undef';
 	let index;
 
 	//to avoid access at field 'id' if array has no object
@@ -93,7 +101,10 @@ player.post('/updatePlayerPosition',(req,res) => {
 
 //player ask for help if he doesn't now how to go on
 player.post('/askForHelp',(req,res) =>{
-	let name = req.cookies.userId.substring(0,5);
+	let name = req.cookies.userId;
+	if(name)name = name.substring(0,5);
+	else name = 'undef';
+
 	sharedVar.askingHelp.push({who:name,where:""});
 	res.end();
 })
@@ -102,10 +113,13 @@ player.post('/askForHelp',(req,res) =>{
 const formidable_eval = require('formidable');
 
 //route to receive the users responses to evaluate
-player.post('/toEvaluate', (req,res) =>{
+player.post('/toEvaluate', (req,res,next) =>{
 	var form = new formidable_eval.IncomingForm();//per server unibo{uploadDir: __dirname + '/tmp',keepExtensions:true});
 
-	let id = req.cookies.userId.substring(0,5);
+	let id = req.cookies.userId;
+	if(id)id = id.substring(0,5);
+	else id = 'undef';
+
 	var time = new Date().toLocaleString();
 	let reqEval = {id: id,time:time};
 	form.parse(req);
@@ -126,8 +140,8 @@ player.post('/toEvaluate', (req,res) =>{
 			reqEval['type'] = "immagine";
 		})
 		.on('error', (err) => {
-			console.error('Error', err);
-			throw err;
+			next(err);
+			return;
 		})
 		.on('end',() => {
 			console.log(JSON.stringify(reqEval,null,2));
@@ -144,7 +158,10 @@ player.get('/checkMark',(req,res)=>{
 	res.setHeader('Access-Control-Allow-Origin','*');
 	res.flushHeaders();
 
-	let userName = req.cookies.userId.substring(0,5);
+	let userName = req.cookies.userId;
+	if(userName)userName = userName.substring(0,5);
+	else userName = 'undef';
+	
 	let interv = setInterval(()=>{
 		let ind = sharedVar.evaluated.findIndex(x => x.id === userName);
 		if(ind < 0) ;
@@ -162,7 +179,10 @@ player.get('/checkMark',(req,res)=>{
 
 //get the name if valutatore give me one
 player.get('/getNewName',(req,res)=>{
-	let id = req.cookies.userId.substring(0,5);
+	let id = req.cookies.userId;
+	if(id)id = id.substring(0,5);
+	else id = 'undef';
+
 	if(sharedVar.listOfAssociatedNames.some(el => el[id])){
 		let i = sharedVar.listOfAssociatedNames.findIndex(obj => Object.keys(obj)[0] === id);
 		res.send(sharedVar.listOfAssociatedNames[i][id]);
@@ -177,8 +197,11 @@ const bestPlayers = (a, b) => {
 	return b;
 };
 //when the player has finished the story
-player.post('/storyFinished',(req,res)=>{
-	let id = req.cookies.userId.substring(0,5) || "unknown";
+player.post('/storyFinished',(req,res,next)=>{
+	let id = req.cookies.userId;
+	if(id)id = id.substring(0,5);
+	else id = 'undef';
+
 	let points = req.body.points;
 	let name = req.body.assignedName;
 
@@ -191,14 +214,20 @@ player.post('/storyFinished',(req,res)=>{
 	sharedVar.endPlayers.push(currentPlayer);
 	//add player to the json
 	fs.readFile('./valuta/results/'+ sharedVar.jsonResName, 'utf-8', function(err, data){
-		if (err) throw err;
+		if(err) {
+			next(err);
+			return;
+		}
 
 		let parsed = JSON.parse(data);
 		parsed.users.push(currentPlayer);
 		parsed.users.sort(bestPlayers);
 		
 		fs.writeFile('./valuta/results/'+sharedVar.jsonResName, JSON.stringify(parsed,null,2), 'utf-8', function (err) {
-			if (err) throw err;
+			if (err){
+				next(err);
+				return;
+			}
 			console.log('file classifica aggiornato correttamente');
 		});
 	});
