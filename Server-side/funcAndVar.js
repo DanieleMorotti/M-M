@@ -62,7 +62,7 @@ function reinitializeVariables(){
     sharedVariables.evaluated = [];
     sharedVariables.firstRequest = true;
 	//emit event to disconnect all users and to refresh 'valutatore' page
-	sharedVariables.io.of('/').emit('disconnect','now');
+	sharedVariables.io.of('/').emit('force-disconnect','now');
     sharedVariables.io.of('/staff').emit('refresh-page','now');
 }
 
