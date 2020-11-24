@@ -1,11 +1,11 @@
 {
-  "age": "6-10",
-  "groups": "1",
+  "age": "10-14",
+  "groups": "3",
   "title": "prova",
-  "setting": "",
-  "description": "",
-  "introduction": "",
-  "conclusion": "",
+  "setting": "ambientazione",
+  "description": "descrizione iniziale",
+  "introduction": "introduzione storia",
+  "conclusion": "conclusione",
   "firstActivity": {
     "mission": [
       "0"
@@ -21,10 +21,13 @@
         {
           "number": 0,
           "type": "scelta multipla",
-          "setting": "",
-          "instructions": "",
-          "question": "",
-          "answers": [],
+          "setting": "ambientazione1",
+          "instructions": "svolgimento1",
+          "question": "domanda1",
+          "answers": [
+            "risposta1",
+            "risposta2"
+          ],
           "inputType": "",
           "score": 50,
           "isActive": true,
@@ -47,15 +50,16 @@
                 "x"
               ]
             }
-          }
+          },
+          "correctAns": "risposta2"
         },
         {
           "number": 1,
-          "type": "scelta multipla",
-          "setting": "",
-          "instructions": "",
-          "question": "",
-          "answers": [],
+          "type": "domanda aperta",
+          "setting": "ambientazione2",
+          "instructions": "svolgimento2",
+          "question": "domanda2",
+          "answers": "",
           "inputType": "",
           "score": 50,
           "isActive": true,
@@ -78,7 +82,8 @@
                 "x"
               ]
             }
-          }
+          },
+          "correctAns": "risposta2"
         }
       ],
       "isActive": true
@@ -86,8 +91,9 @@
   ],
   "facilities": [],
   "difficulties": [],
-  "originalTitle": "prova2",
-  "background": "",
+  "originalTitle": "prova",
+  "device": "smartphone",
+  "background": "google_search_console_cosa_e.jpg",
   "widgetCss": "",
   "widgetJs": ""
 }

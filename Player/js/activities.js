@@ -180,11 +180,11 @@ export default {
         }, 
         initialize() {
             let storyItem = JSON.parse(localStorage.getItem("story"));
-            this.groupNum = 0;
+            this.groupNum = 0 //Math.floor(Math.random() * storyItem.groups);
             this.story = storyItem;
             this.missions = storyItem.missions;
-            this.nextMiss = 0;
-            this.nextAct = 0;
+            this.nextMiss = storyItem.firstActivity.missions;
+            this.nextAct = storyItem.firstActivity.missions;
             this.score = 0;
             this.usedFacilities = []
             this.usedDifficulties = []

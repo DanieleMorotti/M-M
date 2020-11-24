@@ -40,8 +40,8 @@ export default {
                     <li>
                         <input type="checkbox" id="accessibility" name="accessibility" value="true">
                         <label for="accessibility">STORIA ACCESSIBILE</label><br>
-                        <label for="chooseAge">Scegli il range di età: </label>
-                        <select name="age" id="chooseAge" class="selection">
+                        <label for="age">Scegli il range di età: </label>
+                        <select name="age" id="age" class="selection">
                             <option>6-10</option>
                             <option>10-14</option>
                             <option>14-18</option>
@@ -987,8 +987,14 @@ export default {
                     $(`#${id} + p`).text(item[1]);
                 }
                 else if(item[0] == "accessibility") {
-                    console.log("ACC")
                     $('#accessibility').prop('checked', true);
+                }
+                else if(item[0] == "groups") {
+                    this.groupNum = item[1];
+                }
+                else if(item[0] == "firstActivity") {
+                    this.first.mission = item[1].mission;
+                    this.first.activity = item[1].activity;
                 }
                 else if(item[0] == "missions") {
                     this.missions = [];
