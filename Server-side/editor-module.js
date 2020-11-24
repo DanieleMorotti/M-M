@@ -49,7 +49,7 @@ editor.post('/saveStory', (req, res, next) => {
 	form.parse(req);
 	form.on('field', (name, field) => {
 			//because activities field is already a json,so i need to convert it to a js object to push into jsonfile
-			if(name === "missions" || name === "originalTitle" || name === "device" || name === "facilities" || name === "difficulties"){
+			if(name === "firstActivity" || name === "missions" || name === "originalTitle" || name === "device" || name === "facilities" || name === "difficulties"){
 				let tempObj = JSON.parse(field);
 				jsonFile[name] = tempObj;
 			}

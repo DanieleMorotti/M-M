@@ -1,0 +1,93 @@
+{
+  "age": "6-10",
+  "groups": "1",
+  "title": "prova",
+  "setting": "",
+  "description": "",
+  "introduction": "",
+  "conclusion": "",
+  "firstActivity": {
+    "mission": [
+      "0"
+    ],
+    "activity": [
+      "0"
+    ]
+  },
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "",
+          "instructions": "",
+          "question": "",
+          "answers": [],
+          "inputType": "",
+          "score": 50,
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "1"
+              ]
+            },
+            "ifNotCorrect": {
+              "nextMission": [
+                "x"
+              ],
+              "nextActivity": [
+                "x"
+              ]
+            }
+          }
+        },
+        {
+          "number": 1,
+          "type": "scelta multipla",
+          "setting": "",
+          "instructions": "",
+          "question": "",
+          "answers": [],
+          "inputType": "",
+          "score": 50,
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [
+                "x"
+              ],
+              "nextActivity": [
+                "x"
+              ]
+            },
+            "ifNotCorrect": {
+              "nextMission": [
+                "x"
+              ],
+              "nextActivity": [
+                "x"
+              ]
+            }
+          }
+        }
+      ],
+      "isActive": true
+    }
+  ],
+  "facilities": [],
+  "difficulties": [],
+  "originalTitle": "prova2",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}

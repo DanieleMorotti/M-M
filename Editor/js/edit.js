@@ -7,6 +7,7 @@ export default {
             groupNum: 1,
             groups: ["Gruppo 1"],
             currentGroup: 0,
+            first: { mission: [], activity: []},
             missions: [{name: "Missione 1", activities:[], isActive:false}],
             isNewStory: false,
             currentActivity: 0,
@@ -283,6 +284,18 @@ export default {
                 <div class="overlay-content">
                     <input type="button" id="buttonGraph" data-toggle="modal" data-target="#graphModal" value="Grafo attività"/>
                     <ul id="missionsList">
+                        <li>
+                            <p>Scegli l'attività da cui partire: </p>
+                            <select id="firstAct" class="selection" name="firstAct"  @click="changeFirstAct()">
+                                <option value="-/-" > Missione -  Attività -  </option> 
+                                <template v-for="(mission, indMiss) in missions" :key="indMiss"> 
+                                    <option v-for="activity in mission.activities" :value="indMiss+'/'+activity.number"> 
+                                    {{mission.name}} Attività {{activity.number + 1}}
+                                    </option>
+                                </template>
+                                <option value="x/x" > Conclusione </option> 
+                            </select>
+                        </li>
                         <li v-for="(mission,index) in missions" :key="index">
                             {{mission.name}}&emsp;
                             <ul id="activitiesList" v-if="mission.activities.length != 0">
@@ -510,6 +523,14 @@ export default {
                 for(let i=0; i < this.missions.length; i++) {
                     for(let j=0; j < this.missions[i].activities.length; j++) {
                         let activity = this.missions[i].activities[j];
+
+                        let firstMiss = this.first.mission[index];
+                        let firstAct = this.first.activity[index];
+                        if(firstMiss) 
+                            $(`#firstAct option[value='${firstMiss}/${firstAct}']`).prop('selected', true);
+                        else 
+                            $(`#firstAct option[value='-/-']`).prop('selected', true);
+
                         let missNum1 = activity.goTo.ifCorrect.nextMission[index];
                         let actNum1 = activity.goTo.ifCorrect.nextActivity[index];
                         if(missNum1) 
@@ -528,7 +549,6 @@ export default {
                 
             }
         },
-        
         closeNav(navValue) {
             if(navValue == 'activity')
                 document.getElementById("activitiesNav").style.width = "0%";
@@ -559,6 +579,11 @@ export default {
             e.preventDefault();
             this.difficultiesList.push($(`#difficulty`).val().trim());
             $(`#difficulty`).prop("value", "");
+        },
+        changeFirstAct() {
+            let group = this.currentGroup;
+            this.first.mission[group] = $('#firstAct').val().substring(0,1);
+            this.first.activity[group] = $('#firstAct').val().substring(2,3);
         },
         changeNextCorrect(missInd, actInd) {
             $(`#rightAct${missInd}_${actInd} option[value='${missInd}/${actInd}']`).prop('disabled', true);
@@ -602,11 +627,7 @@ export default {
                 }
                 
                 this.missions[this.currentMission].activities[this.currentActivity].score = this.value;
-              /*  this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect.nextMission = $("#nextActivityCorrect").val().substring(0,1);
-                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifCorrect.nextActivity = $("#nextActivityCorrect").val().substring(2,3);
-                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifNotCorrect.nextMission = $("#nextActivityIncorrect").val().substring(0,1);
-                this.missions[this.currentMission].activities[this.currentActivity].goTo.ifNotCorrect.nextActivity = $("#nextActivityIncorrect").val().substring(2,3); */
-
+             
                 $('#activitiesForm h2').text(`Nuova attività`)
                 $('#saveActivity').prop("value", "Salva attività");
                 $('#chooseMission').show();
@@ -674,10 +695,6 @@ export default {
                 this.answerList = [];
                 this.currentMission = misInd;
                 this.currentActivity = index;
-         /*       $(`#nextActivityCorrect option[value='-/-']`).prop('selected', true);
-                $(`#nextActivityIncorrect option[value='-/-']`).prop('selected', true);
-                $(`#nextActivityCorrect option`).prop('disabled', false);
-                $(`#nextActivityIncorrect option`).prop('disabled', false); */
 
                 //prevent the user to change the activity mission from this form
                 $('#chooseMission').hide();
@@ -920,6 +937,7 @@ export default {
             var verifyInput = $('input[type=file]');
             var titleChanged = ($("#inpTitle").val() != originTitle && (originTitle != '')) ? true : false;
 
+            data.append('firstActivity',JSON.stringify(this.first,null,2)); 
             data.append('missions',JSON.stringify(this.missions,null,2)); 
 
             data.append('facilities',JSON.stringify(this.facilitiesList));  
@@ -996,7 +1014,6 @@ export default {
             })
         },
         show() {
-            var modal = document.getElementById("graphModal");
             $("svg").empty();
 
             this.drawGraph();
@@ -1025,21 +1042,27 @@ export default {
                 totAct += item.activities.length
             })
 
+            let firstId ;
+            if(this.first.mission) 
+                firstId = this.first.mission.toString() + this.first.activity
             
             this.missions.map(item =>{
                 if(item.isActive) {
                     item.activities.map(act => {
                         if(act.isActive) {
                             graph.nodes.push({mission:item.name,activity:act.number+1,id: indMiss.toString()+indAct, r: 7, name: "(M"+(indMiss+1)+", A"+(act.number+1)+")"});
-                            let correct = act.goTo.ifCorrect, incorrect = act.goTo.ifNotCorrect;
-                            if(indMiss.toString()+indAct == "00") 
-                                graph.links.push({source: "start", target: "00", color: 'white', x1:0, y1:0, x2:0, y2:0});
-                            
-                            if(correct.nextActivity[group] && correct.nextActivity[group]!== '-' && this.missions[correct.nextMission[group]].activities[correct.nextActivity[group]].isActive) {
+                            let correct =  Object.assign({},act.goTo.ifCorrect), incorrect =  Object.assign({},act.goTo.ifNotCorrect);
+                          
+                            if(indMiss.toString()+indAct == firstId) 
+                                graph.links.push({source: "start", target: firstId, color: 'white', x1:0, y1:0, x2:0, y2:0});
+
+                            console.log(correct.nextMission[group],this.missions[correct.nextMission[group]]);
+                            if(correct.nextActivity[group] && correct.nextActivity[group]!== '-' ) {
                                 if(correct.nextActivity[group] == 'x') {
                                     graph.links.push({source: indMiss.toString()+indAct,target: 'end', color: 'green', x1:0, y1:0, x2:0, y2:0});
                                 }
                                 else {
+                                    if(this.missions[correct.nextMission[group]].activities[correct.nextActivity[group]].isActive)
                                     graph.links.push({source: indMiss.toString()+indAct,target: correct.nextMission[group].toString()+ correct.nextActivity[group], color: 'green', x1:0, y1:0, x2:0, y2:0});
                                 }
                             }
@@ -1047,11 +1070,19 @@ export default {
                                 graph.nodes.push({name: "",id: indMiss.toString()+indAct+"-correct", r: 0.1});
                                 graph.links.push({source: indMiss.toString()+indAct, target: indMiss.toString()+indAct+"-correct", color: 'green', x1:0, y1:0, x2:0, y2:0});
                             }
-                            if(incorrect.nextActivity[group] && incorrect.nextActivity[group]!== '-' && this.missions[incorrect.nextMission[group]].activities[incorrect.nextActivity[group]].isActive) {
+                            if(incorrect.nextActivity[group] && incorrect.nextActivity[group]!== '-') {
                                 if(incorrect.nextActivity[group] == 'x'){
+                                    let exists = false;
+                                    graph.links.forEach(function(d){
+                                        if(d.source == indMiss.toString()+indAct && d.target == 'end') {
+                                            d.color = 'white';
+                                            exists = true;
+                                        }
+                                    })
+                                    if(!exists)
                                     graph.links.push({source: indMiss.toString()+indAct,target: 'end', color: 'red', x1:0, y1:0, x2:0, y2:0});
                                 }
-                                else {
+                                else if(this.missions[incorrect.nextMission[group]].activities[incorrect.nextActivity[group]].isActive) {
                                     let exists = false;
                                     graph.links.forEach(function(d){
                                         if(d.source == indMiss.toString()+indAct && d.target == incorrect.nextMission[group].toString()+ incorrect.nextActivity[group]) {

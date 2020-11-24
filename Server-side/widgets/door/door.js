@@ -14,8 +14,7 @@ export default {
         render(question, answer) {
              $('#word').attr("placeholder", question);
             var pos = $("#paper").position();
-
-            pos.left = 25;
+            pos.left = 50;
 
             $('#word').click(function() {
                 $(this).focus();

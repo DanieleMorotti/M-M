@@ -52,16 +52,10 @@ player.get('/getPlayableStory', (req,res) => {
 	})
 })
 
-/*
-app.get('/getWidget',(req,res) =>{
-	res.status(200);
-	res.sendFile(path.join(__dirname,"/widgets/"+req.query.name+"/door.js"));
-})*/
-
 
 /*
 
-        SEZIONE AGGIUNTA PER APP VALUTATORE
+    SEZIONE AGGIUNTA PER APP VALUTATORE
         
 */
 

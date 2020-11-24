@@ -207,8 +207,8 @@ export default {
                     type: "POST",
                     url: '/Play/updatePlayerPosition',
                     data: {
-                        currMission: parseInt(this.nextMiss)+1,
-                        currAct: parseInt(this.nextAct)+1
+                        currMission: parseInt(this.nextMiss),
+                        currAct: parseInt(this.nextAct)
                     },
                     success: (data) =>{
                         console.log("Update posizione avvenuto");
