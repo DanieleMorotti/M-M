@@ -20,18 +20,15 @@
       "activities": [
         {
           "number": 0,
-          "type": "scelta multipla",
+          "type": "figurativa",
           "setting": "ambientazione1",
           "instructions": "svolgimento1",
           "question": "domanda1",
-          "answers": [
-            "risposta1",
-            "risposta2"
-          ],
+          "answers": "",
           "inputType": "",
           "score": 50,
           "isActive": true,
-          "widget": "",
+          "widget": "door",
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
@@ -44,18 +41,18 @@
             },
             "ifNotCorrect": {
               "nextMission": [
-                "x"
+                "0"
               ],
               "nextActivity": [
-                "x"
+                "1"
               ]
             }
           },
-          "correctAns": "risposta2"
+          "correctAns": "risposta1"
         },
         {
           "number": 1,
-          "type": "domanda aperta",
+          "type": "figurativa",
           "setting": "ambientazione2",
           "instructions": "svolgimento2",
           "question": "domanda2",
@@ -63,7 +60,7 @@
           "inputType": "",
           "score": 50,
           "isActive": true,
-          "widget": "",
+          "widget": "lock",
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
@@ -83,7 +80,7 @@
               ]
             }
           },
-          "correctAns": "risposta2"
+          "correctAns": "9999"
         }
       ],
       "isActive": true

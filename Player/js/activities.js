@@ -9,8 +9,8 @@ export default {
         return{
             story: null,
             missions: [],
-            usedFacilities: [],
-            usedDifficulties: [],
+            usedFacilities: 0,
+            usedDifficulties: 0,
             currentF: null,
             currentD: null,
             nextAct: null,
@@ -130,13 +130,15 @@ export default {
             (type == "figurativa" && widgetComp.default.methods.check())) {
 
                     // compute next facility
-                    while(this.usedFacilities.includes(this.currentF)) {
-                        if(this.currentF < this.story.facilities.length - 1) this.currentF++;
-                        else this.currentF--;
+                    if(this.currentF < this.story.facilities.length) {
+                     /*   while(this.usedFacilities.includes(this.currentF)) {
+                            if(this.currentF < this.story.facilities.length - 1) this.currentF++;
+                            else this.currentF--;
+                        }*/
+                        $("#text").html(this.story.facilities[this.currentF]);
+                        this.currentF++;
                     }
-
-                    $("#text").html(this.story.facilities[this.currentF]);
-                    this.usedFacilities.push(this.currentF);
+                    else $("#text").html("Tutto tranquillo");
 
                     /* select next activity */
                     this.nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity[this.groupNum];
@@ -160,12 +162,11 @@ export default {
             /* if answer is incorrect */
             else {
                 // compute next difficulty
-                while(this.usedFacilities.includes(this.currentD)) {
-                    if(this.currentD < this.story.difficulties.length - 1) this.currentD++;
-                    else this.currentD--;
+                if(this.currentD < this.story.difficulties.length) {
+                    $("#text").html(this.story.difficulties[this.currentD]);
+                    this.currentD++;
                 }
-                $("#text").html(this.story.difficulties[this.currentD]);
-                this.usedDifficulties.push(this.currentD);
+                else $("#text").html("Fai attenzione!");
 
                 this.nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity[this.groupNum]; 
                 this.nextMiss = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextMission[this.groupNum];
@@ -186,10 +187,9 @@ export default {
             this.nextMiss = storyItem.firstActivity.missions;
             this.nextAct = storyItem.firstActivity.missions;
             this.score = 0;
-            this.usedFacilities = []
-            this.usedDifficulties = []
-            this.currentF = Math.floor(Math.random() * this.story.facilities.length); 
-            this.currentD = Math.floor(Math.random() * this.story.difficulties.length);
+
+            this.currentF = 0 ;//Math.floor(Math.random() * this.story.facilities.length); 
+            this.currentD = 0 ;//Math.floor(Math.random() * this.story.difficulties.length);
 
             $(document).on('keydown','#answer', (e) =>{
                 if (e.keyCode == 13) {

@@ -69,23 +69,27 @@ h3, h2 {
     font-family: Gill Sans Nova Light, Tahoma, sans-serif;
 }
 
-
-li {
-    list-style:none;
-    margin-top: 2rem;
+#editStoryForm li {
+    list-style: none;
 }
 
 #facilities li, #difficulties li {
     list-style-type: disc;
     margin-top: 0.5rem;
-
 }
 
-#inputObject li, #activitiesSaved li {
+#inputObject li, #activitiesSaved li, #missionsList li {
     margin-top: 0;
+    list-style:none;
 }
 
-label {
+#activitiesSaved li, #missionsList li {
+    margin-top: 2rem;
+}
+
+
+
+.mainLabel {
     margin-bottom: 0;
     margin-top: 1.5rem;
     margin-right: 1rem;
@@ -95,10 +99,11 @@ label[for='accessibility'] {
     margin-left: 1rem;
 }
 
+
 input[type="text"], input[type="file"], textarea {
     display: inline-block;
     border-style: none;
-    border: 0.5px solid #117a8b;;
+    border: 0.5px solid #117a8b;
     border-bottom: 2.5px solid  #117a8b;
     border-radius: 9px;
     box-sizing: border-box;
@@ -109,12 +114,16 @@ input[type="text"], input[type="file"], textarea {
     color: white;
 }
 
+input[type="text"]:disabled, textarea:disabled {
+    border-color: #5f6264;
+}
+
 input[type='range'] {
     margin-top: 1rem;
 }
 
 
-button, #buttonGraph, input[type="button"] {
+button, #buttonGraph, input[type="button"],input[type="submit"] {
     background-color: #ffffff;
     color: black;
     font-size: 1rem;
@@ -124,6 +133,11 @@ button, #buttonGraph, input[type="button"] {
     border-radius: 5px;
     text-align: center;
     text-transform: uppercase;
+}
+
+#saveActivity, #saveWidget {
+    margin-top: 2rem;
+    background-color: #bd6d12;
 }
 
 
@@ -234,10 +248,6 @@ i.fas{
     margin-top: 2rem;
 }
 
-#saveActivity, #saveWidget {
-    margin-top: 2rem;
-}
-
 #buttonWidget, #buttonDevice {
     margin-top: 2rem;
     margin-left: 1rem;
@@ -285,8 +295,10 @@ i.fas{
 #graphModal .modal-content::-webkit-scrollbar {
     width: 10px;
 }
-  
 
+#questionDiv p {
+    margin-top: 1rem;
+}
 
 /* The Close Button */
 .close {
@@ -324,3 +336,4 @@ i.fas{
      margin-left: 1rem;
      font-size: 1.2rem;
  }
+

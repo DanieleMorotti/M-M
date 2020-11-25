@@ -39,52 +39,50 @@ export default {
                 <ul>
                     <li>
                         <input type="checkbox" id="accessibility" name="accessibility" value="true">
-                        <label for="accessibility">STORIA ACCESSIBILE</label><br>
-                        <label for="age">Scegli il range di età: </label>
+                        <label for="accessibility" class="mainLabel">STORIA ACCESSIBILE</label><br>
+                        <label for="age" class="mainLabel">Scegli il range di età: </label>
                         <select name="age" id="age" class="selection">
                             <option>6-10</option>
                             <option>10-14</option>
                             <option>14-18</option>
                         </select><br>
-                        <label for="groups" class="group">Numero di gruppi:</label>
+                        <label for="groups" class="mainLabel group">Numero di gruppi:</label>
                         <input id="groups" type="range" min="1" max="5" step="1"  v-model="groupNum" name="groups" @click="changeGroups"/>
                         <span v-text="groupNum"></span>
                     </li>
                     <li>
-                        <label for="inpTitle">Inserisci il titolo: </label>
+                        <label for="inpTitle" class="mainLabel">Inserisci il titolo: </label>
                         <input type="text" name="title" id="inpTitle" v-on:keyup="checkName('title')" required/>
-                        <p id="titleInfo"> Una storia con questo titolo esiste già</p>
+                        <br><p id="titleInfo"> Una storia con questo titolo esiste già</p>
                     </li>
                     <li>
-                        <label for="inpSett">Inserisci l'ambientazione:</label>
+                        <label for="inpSett" class="mainLabel">Inserisci l'ambientazione:</label>
                         <input type="text" name="setting" id="inpSett" />
                     </li>
                     <li>
-                        <label for="inpBack">Inserisci lo sfondo:</label>
+                        <label for="inpBack" class="mainLabel">Inserisci lo sfondo:</label>
                         <input  type="file" name="background" id="inpBack" accept="image/*" />
                         <p class="infoForFile"></p>
                     </li>
                     <li>
-                        <label for="inpDescr">Inserisci una breve descrizione iniziale alla storia:</label><br>
+                        <label for="inpDescr" class="mainLabel">Inserisci una breve descrizione iniziale alla storia:</label><br>
                         <textarea id="inpDescr" name="description" rows="3" cols="40"></textarea>
                     </li>
                     <li>
-                        <label for="buttonDevice">Scegli il dispositivo che il cellulare rappresenterà:</label>
+                        <label for="buttonDevice" class="mainLabel">Scegli il dispositivo che il cellulare rappresenterà:</label>
                         <input type="button" id="buttonDevice" data-toggle="modal" data-target="#deviceModal" value="Scegli"/>
                         <p id="infoDevice" style="display:none"> </p>
                     </li>
                     <li>
-                        <label for="inpIntr">Inserisci l'introduzione della tua storia:</label><br>
+                        <label for="inpIntr" class="mainLabel">Inserisci l'introduzione della tua storia:</label><br>
                         <textarea id="inpIntr" name="introduction" rows="3" cols="40"></textarea>
                     </li>
                     <li>
-                        <label for="inpConcl">Inserisci la conclusione della tua storia:</label><br>
+                        <label for="inpConcl" class="mainLabel">Inserisci la conclusione della tua storia:</label><br>
                         <textarea id="inpConcl" name="conclusion" rows="3" cols="40"></textarea>
                     </li>
                     <li>    
-                        <h3 style="display:inline-block">Missioni</h3>&nbsp;&nbsp;
-                      <!--  <input type="button" id="buttonGraph" data-toggle="modal" data-target="#graphModal" value="Grafo attività"/>
-                            
+                        <h3 style="display:inline-block">Missioni</h3>&nbsp;&nbsp;                            
 
                         <div class="modal fade" id="graphModal" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -92,7 +90,7 @@ export default {
                                     <svg></svg>
                                 </div>
                             </div>
-                        </div> -->
+                        </div> 
                         <ul id="missionSaved">
                             <li v-for="(mission,index) in missions" :key="index">
                                 <input type="checkbox" name="isActive" :checked="mission.isActive" @click="mission.isActive = !mission.isActive" />&emsp;
@@ -129,7 +127,7 @@ export default {
                     </li>
                     <li>
                         <h3>Facilitazioni</h3>
-                        <label for="facility">Inserisci una facilitazione:</label><br>                 
+                        <label for="facility" class="mainLabel">Inserisci una facilitazione:</label><br>                 
                         <input id="facility" type="text" name="facility" @keyup.enter="addFacility(event)"/>
                         <button id="insertFacility" @click="addFacility(event)">Aggiungi</button>
                         <ul id="facilities">
@@ -141,7 +139,7 @@ export default {
                     </li>
                     <li>
                         <h3>Difficoltà</h3>
-                        <label for="difficulty">Inserisci una difficoltà:</label><br>                 
+                        <label for="difficulty" class="mainLabel">Inserisci una difficoltà:</label><br>                 
                         <input id="difficulty" type="text" name="difficulty" @keyup.enter="addDifficulty(event)"/>
                         <button id="insertDifficulty" @click="addDifficulty(event)">Aggiungi</button>
                         <ul id="difficulties">
@@ -162,19 +160,19 @@ export default {
                 <h2>Nuova attività</h2>
                 <ul id="activitiesList">
                     <li>
-                        <label for="chooseMission">Scegli in quale missione aggiungerla: </label>
+                        <label for="chooseMission" class="mainLabel">Scegli in quale missione aggiungerla: </label>
                         <select name="mission" id="chooseMission" class="selection">
                             <option v-for="(mission,index) in missions" :key="index" :value="mission.name"> {{mission.name}}</option>
                         </select>
                         <h5 class="info">Scegli il tipo dell'attività : </h5>
                         <input id="multipleChoice" type="radio" v-model="type" value="scelta multipla" name="activityTypeGroup" checked/>
-                        <label for="multipleChoice">Scelta multipla</label><br>
+                        <label for="multipleChoice" class="mainLabel">Scelta multipla</label><br>
                         <input id="openQuest" type="radio" v-model="type" value="domanda aperta" name="activityTypeGroup" />
-                        <label for="openQuest">Domanda aperta</label><br>
+                        <label for="openQuest" class="mainLabel">Domanda aperta</label><br>
                         <input id="figur" type="radio" v-model="type" value="figurativa" name="activityTypeGroup" />
-                        <label for="figur">Figurativa</label><br>
+                        <label for="figur" class="mainLabel">Figurativa</label><br>
                         <input id="valutabile" type="radio" v-model="type" value="valutabile" name="activityTypeGroup"  />
-                        <label for="valutabile">Valutabile</label>
+                        <label for="valutabile" class="mainLabel">Valutabile</label>
 
                         <h5 class="info">Dove si svolge l'attività?(ambientazione)</h5>
                         <input type="text" name="where" />
@@ -183,11 +181,11 @@ export default {
                         <textarea name="instructions" rows="3" cols="40"></textarea>
 
                         <div id="questionDiv">
-                            <label for="question">Inserisci la domanda:</label><br>
+                            <label for="question" class="mainLabel">Inserisci la domanda:</label><br>
                             <input id="question" type="text" name="question" /><br>
                     
                             <div v-if="type=='scelta multipla'">
-                                <label for="answer">Inserisci una risposta:</label><br>
+                                <label for="answer" class="mainLabel">Inserisci una risposta:</label><br>
                                 <input id="answer" type="text" name="answer" @keyup.enter="addAnswer(event)"/>
                                 <button id="insertAnswer" @click="addAnswer(event)">Aggiungi risposta</button>
                                 <p v-if="answerList.length">Seleziona la risposta corretta</p>
@@ -201,7 +199,7 @@ export default {
                                 </ul>
                             </div>
                             <div v-else-if="type=='domanda aperta' || type=='figurativa'">
-                                <label for="answer">Inserisci una risposta:</label><br>
+                                <label for="answer" class="mainLabel">Inserisci una risposta:</label><br>
                                 <input id="answer" type="text" name="answer"/>
                             </div>
                             <div>
@@ -550,8 +548,20 @@ export default {
             }
         },
         closeNav(navValue) {
-            if(navValue == 'activity')
+            if(navValue == 'activity') {
+                $('#activitiesForm')[0].reset();
+                $('#activitiesForm h2').text(`Nuova attività`)
+                $('#saveActivity').prop("value", "Salva attività");
+                $('#chooseMission').show();
+                $('label[for="chooseMission"]').show();
+                $('#activitiesForm')[0].reset();
+                $("#buttonWidget").prop("value","Scegli");
+                $("#infoWidget").text("");
+                $("#infoWidget").css("display", "none");
+                this.type = 'scelta multipla';
+                this.answerList = [];
                 document.getElementById("activitiesNav").style.width = "0%";
+            }
             else if(navValue == 'widget')
                 document.getElementById("widgetNav").style.width = "0%";
             else
@@ -567,17 +577,20 @@ export default {
         /*  ACTIVITIES MANAGEMENT   */
         addAnswer(e) {
             e.preventDefault();
-            this.answerList.push($("#answer").val());
+            if($("#answer").val())
+                this.answerList.push($("#answer").val().trim());
             $("#answer").prop("value", "");
         },
         addFacility(e) {
             e.preventDefault();
-            this.facilitiesList.push($(`#facility`).val().trim());
+            if($(`#facility`).val().trim())
+                this.facilitiesList.push($(`#facility`).val().trim());
             $(`#facility`).prop("value", "");
         },
         addDifficulty(e) {
             e.preventDefault();
-            this.difficultiesList.push($(`#difficulty`).val().trim());
+            if($(`#difficulty`).val().trim())
+                this.difficultiesList.push($(`#difficulty`).val().trim());
             $(`#difficulty`).prop("value", "");
         },
         changeFirstAct() {
@@ -601,8 +614,6 @@ export default {
         },
         addActivity(e) {   
             e.preventDefault();
-            this.closeNav('activity');
-
             if($('#saveActivity').val() == "Salva modifiche"){
                 let widgetValue = "";
 
@@ -628,10 +639,10 @@ export default {
                 
                 this.missions[this.currentMission].activities[this.currentActivity].score = this.value;
              
-                $('#activitiesForm h2').text(`Nuova attività`)
+             /*   $('#activitiesForm h2').text(`Nuova attività`)
                 $('#saveActivity').prop("value", "Salva attività");
                 $('#chooseMission').show();
-                $('label[for="chooseMission"]').show();
+                $('label[for="chooseMission"]').show(); */
             }
             else {
                 let widgetValue = "";
@@ -682,13 +693,15 @@ export default {
                 this.currentWidget = -1;
                 this.value = 50;
             } 
-            
+           
+            /*
             $('#activitiesForm')[0].reset();
             $("#buttonWidget").prop("value","Scegli");
             $("#infoWidget").text("");
             $("#infoWidget").css("display", "none");
             this.type = 'scelta multipla';
-            this.answerList = [];
+            this.answerList = []; */
+            this.closeNav('activity');
         },
         editActivity(index,misInd){
                 this.openNav('activity')
@@ -895,7 +908,7 @@ export default {
             if(type == 'widget') {
                 list = this.widgets;
                 input = $("#inpWidgetName");
-                value = $("#inpWidgetName").val();
+                value = $("#inpWidgetName").val().trim();
                 info =  $("#widgetInfo");
             } 
             else if(type == 'title') {
@@ -908,7 +921,7 @@ export default {
                 })
 
                 input = $("#inpTitle");
-                value = $("#inpTitle").val();
+                value = $("#inpTitle").val().trim();
                 info =  $("#titleInfo");
             }
 
@@ -926,7 +939,6 @@ export default {
         checkForm: function() {
             if(this.invalid) return;
             else if(!this.missions.some(el => el.isActive)){
-                console.log("Sono entrato");
                 $('#selMissErr').show();
                 $('#selMissErr').removeClass('error').addClass('error');
                 return;
@@ -1114,12 +1126,12 @@ export default {
             })
          
        
-            let range = 700/totAct;
+            let range = 800/totAct;
             let i = 0;
 
             graph.nodes.forEach(function(d){
                 if(d.id == "start") { d.x = 50; d.y = 300; }
-                else if(d.id == "end") { d.x = 750; d.y = 300}
+                else if(d.id == "end") { d.x = 850; d.y = 300}
                 else {
                     if(d.name){
                         d.x = Math.floor(Math.random()*range) + (range*i) + 50;
