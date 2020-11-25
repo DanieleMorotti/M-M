@@ -2,7 +2,7 @@
 body {
     height: 100%;
     font-family: 'Ubuntu', sans-serif;
-    background-color: #6b1a39;
+    background-color: #022433;
     background-image: none !important;
 }
   
@@ -78,7 +78,7 @@ body {
     margin: auto;
     width: 90%;
     height: 95%;
-    background-color: rgb(51, 61, 63);
+    background-color: rgb(75 86 89);
     box-shadow: 0 0 0 1px    rgba(0,0,0,0.1)inset;
     overflow: hidden;
     position: relative;

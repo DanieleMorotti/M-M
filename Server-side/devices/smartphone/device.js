@@ -12,6 +12,8 @@ export default {
 			performedMissions: [],
 			currentMission: 0,
 			currentActivity: 0,
+			instruction: true,
+			question: false,
 			verify: false,
 			obj: null,
 			over: false,
@@ -57,17 +59,10 @@ export default {
 				$('#toHome').click();
 			}
 			else {
-				if(!this.verify) {
-					this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
-					render.methods.visualize(this.type, this.currentMission, this.currentActivity);
-					this.verify = true;
-				}
-				else {
+				if(this.instruction) {
 					if(this.obj) {
 						if(this.obj[0] != 'x') {
 							this.currentActivity = this.obj[0]; this.currentMission = this.obj[1];
-							this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
-							render.methods.visualize(this.type, this.currentMission, this.currentActivity);
 						}
 						else {
 							$('#text').html("");
@@ -77,9 +72,24 @@ export default {
 						}
 						this.obj = null;
 					}
-					else {
-						this.obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
+					if(!this.over) {
+						$('#text').html("");
+						$('#text').append(this.missions[this.currentMission].activities[this.currentActivity].setting);
+						$('#text').append('<br>'+this.missions[this.currentMission].activities[this.currentActivity].instructions);				
+						this.question = true;
+						this.instruction = false;
 					}
+				}
+				else if(this.question) {
+					this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
+					render.methods.visualize(this.type, this.currentMission, this.currentActivity);
+					this.verify = true;
+					this.question = false;
+				}
+				else if(this.verify) {
+					this.obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
+					this.instruction = true;
+					this.verify = false;
 				}
 			}
 		}
@@ -96,7 +106,7 @@ export default {
 			url: '/Play/getNewName',
 			success: (data) =>{
 				if(data)this.myName = data;
-				$('#text').text('ciao '+this.myName+'\n'+storyItem.introduction);
+				$('#text').html(`<p>Ciao ${this.myName}, <br>${storyItem.introduction}<p>`);
 
 			},
 			error: function (e) {

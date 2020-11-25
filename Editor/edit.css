@@ -83,11 +83,13 @@ h3, h2 {
     list-style:none;
 }
 
-#activitiesSaved li, #missionsList li {
+#missionsList li, .addIcons {
     margin-top: 2rem;
 }
 
-
+#missionSaved > li {
+    margin-top: 1rem;
+}
 
 .mainLabel {
     margin-bottom: 0;

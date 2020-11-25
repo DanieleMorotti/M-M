@@ -93,7 +93,7 @@ export default {
             }
             else {  //type figurative 
                 $('#text').html("");
-                $('#text').append(this.missions[mission].activities[activity].instructions);
+             //   $('#text').append(this.missions[mission].activities[activity].instructions);
                 $('#text').append(`<br><button id="widgetBtn">Widget</button>`);
                 let widget = this.missions[mission].activities[activity].widget;
                 
@@ -113,9 +113,9 @@ export default {
 
                 async function load() {
                     widgetComp = await import(`/Server-side/widgets/${widget}/${widget}.js`);
-                    console.log(widgetComp.default.template)
                     $('#widget').append(widgetComp.default.template);
-                    widgetComp.default.methods.render(question, correctAns)
+                    widgetComp.default.methods.render(question, correctAns);
+                    document.getElementById("widgetNav").style.height = "100%";
                 }
                 
                 load();
@@ -124,17 +124,13 @@ export default {
         },
         verify(type, mission, activity) {            
             /* if response is correct */
-            if((type == 'scelta multipla' && $('input[name="answer"]:checked').val() == this.missions[mission].activities[activity].correctAns) ||
+            if((type == "scelta multipla" && $('input[name="answer"]:checked').val() == this.missions[mission].activities[activity].correctAns) ||
             (type == "domanda aperta"  && ($("#answer").val() == this.missions[mission].activities[activity].correctAns)) ||
-            (type == 'valutabile' && this.data[0].mark > 5) ||
+            (type == "valutabile" && this.data[0].mark > 5) ||
             (type == "figurativa" && widgetComp.default.methods.check())) {
 
                     // compute next facility
                     if(this.currentF < this.story.facilities.length) {
-                     /*   while(this.usedFacilities.includes(this.currentF)) {
-                            if(this.currentF < this.story.facilities.length - 1) this.currentF++;
-                            else this.currentF--;
-                        }*/
                         $("#text").html(this.story.facilities[this.currentF]);
                         this.currentF++;
                     }
@@ -181,15 +177,15 @@ export default {
         }, 
         initialize() {
             let storyItem = JSON.parse(localStorage.getItem("story"));
-            this.groupNum = 0 //Math.floor(Math.random() * storyItem.groups);
+            this.groupNum = 0;
             this.story = storyItem;
             this.missions = storyItem.missions;
             this.nextMiss = storyItem.firstActivity.missions;
             this.nextAct = storyItem.firstActivity.missions;
             this.score = 0;
 
-            this.currentF = 0 ;//Math.floor(Math.random() * this.story.facilities.length); 
-            this.currentD = 0 ;//Math.floor(Math.random() * this.story.difficulties.length);
+            this.currentF = 0 ;
+            this.currentD = 0 ;
 
             $(document).on('keydown','#answer', (e) =>{
                 if (e.keyCode == 13) {

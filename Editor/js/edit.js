@@ -116,7 +116,7 @@ export default {
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li class="addIcons">
                         <span style="font-size:30px;cursor:pointer"  @click="addMission"><i class="fas fa-chess-bishop"></i>&nbsp;&nbsp;Aggiungi missione</span><br>
                         <span style="font-size:30px;cursor:pointer" @click="openNav('activity')"><i class="fas fa-chess-pawn"></i>&nbsp;&nbsp;Aggiungi attività</span><br>
                         <span style="font-size:30px;cursor:pointer" @click="openNav('widget')"><i class="fas fa-chess-rook"></i>&nbsp;&nbsp;Aggiungi widget</span>
@@ -308,7 +308,7 @@ export default {
                                             <option value="-/-" > Missione -  Attività -  </option> 
                                             <template v-for="(mission, indMiss) in missions" :key="indMiss"> 
                                             <option v-for="activity in mission.activities" :value="indMiss+'/'+activity.number"> 
-                                            {{mission.name}} Attività {{activity.number + 1}}
+                                            {{mission.name}} Attività {{(activity.number + 1)}}
                                             </option>
                                             </template>
                                             <option value="x/x" > Conclusione </option> 
