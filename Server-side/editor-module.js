@@ -1,7 +1,14 @@
 const editor = require('express').Router();
+const { rejects } = require('assert');
 const formidable = require('formidable');
 const fs = require('fs-extra');
 const path = require('path');
+
+
+/*In questa maniera ogni errore non gestito viene gestito qui, brutto
+process.on('uncaughtException', function (err) {
+	console.log('Caught exception: ' + err);
+});*/
 
 editor.get('/',(req,res) =>{
 	res.status(200).sendFile(path.join(__dirname,"../Editor/index.html"));
@@ -172,20 +179,20 @@ editor.post('/saveWidget', (req, res, next) => {
 var obj = { private: [], public: []} ;
 
 function readDir(path) {
-	return new Promise( (succ, err) => {
+	return new Promise( (succ, rej) => {
 		fs.readdir(path, (err, files) => {
-			if (err) throw err;
-			succ(files);
+			if (err) rej(err);
+			else succ(files);
 		})
-	})
+	}).catch((err)=>{console.log(err);})
 }
 
 
 
 function readFiles(dir, f) {
-	return new Promise((succ, err) => {
+	return new Promise((succ, rej) => {
 		fs.readFile(dir + '/'+ f + '/file.json', 'utf8', (err, data) => {  
-			if (err)throw err;
+			if (err) rej(err);
 			else {
 				let file = JSON.parse(data);
 				let missions = [];
@@ -198,8 +205,8 @@ function readFiles(dir, f) {
 				obj[`${dirName}`].push({title:f,missionsList:missions, accessibility: file.accessibility});
 				succ(data);
 			}
-		})
-	})
+		})		
+	}).catch((err)=>{console.log(err);})
 }
 
 async function addFiles(dir1, dir2,res) {
@@ -213,6 +220,7 @@ async function addFiles(dir1, dir2,res) {
 		//if(f!=='new story')
 		await readFiles(dir2, f);
 	}))
+	
 	res.json(obj);
 	obj.private = [];
 	obj.public = [];
