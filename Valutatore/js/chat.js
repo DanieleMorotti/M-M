@@ -146,7 +146,7 @@ new Vue({
         //when an user is disconnected i delete it from the list
         sock.on('disc-user',(id) =>{
            let toDel = this.users.findIndex(item => item.id === id);
-           if(toDel > 0)this.users.splice(toDel,1);
+           if(toDel >= 0)this.users.splice(toDel,1);
            bus.$emit('del-user', id);
            //to avoid error in chat because i'm reading messages of null
            if(id == this.currRoom)this.currRoom = 0;
@@ -307,14 +307,15 @@ new Vue({
             usWin: [],
             storyName: null,
             jsonName:null,
-            countTime:1
+            countTime:1,
+            numToDeact:0
         }
     }, 
     template: `
         <div class="container-fluid">
             <div class="container" id="changeNameMenu">
                 <div class="container"  v-if="users.length != 0">
-                    <h3>Cambia come preferisci i nomi dei giocatori che stanno giocando a "{{storyName}}"</h3>
+                    <p>Cambia come preferisci i nomi dei giocatori che stanno giocando a "{{storyName}}". Solamente prima che i giocatori inizino la partita sarà possibile cambiare.</p>
                     <table class="table">
                         <thead class="thead-dark">
                             <tr>
@@ -395,7 +396,7 @@ new Vue({
         </div>
     `,
     methods: {
-        
+        //enable the contenteditable attribute
         editName(index){
             $('.editableName > span').eq(index).attr('contenteditable','true');
             $('.editableName > i').eq(index).hide();
@@ -466,20 +467,32 @@ new Vue({
                     console.log("error in endgame");
                 }
             });
+        },
+        //disable the icon to change the name of the player after 15 seconds he entered the game
+        deactivateChange(ind){
+            setTimeout(()=>{
+				$(`.editableName > span:eq(${ind})`).attr('contenteditable','false');
+                $(`.editableName > i:eq(${ind})`).hide();
+                $(`.editableName > button:eq(${ind})`).hide();
+			},15000);
         }
     },
     created(){
         //get the list of users on first connection
         bus.$on('first-upd-us', (arr) => { 
             arr.forEach(us => {
-                let index = this.users.push({[us]:us});
+                this.users.push({[us]:us});
+                this.deactivateChange(this.numToDeact);
+                this.numToDeact++;
             });
         });
     },
     mounted(){
         //update users list when a new player join the game; [name] computed property names es6
         bus.$on('upd-us', (name) => { 
-            let index = this.users.push({[name]:name})
+            this.users.push({[name]:name})
+            this.deactivateChange(this.numToDeact);
+            this.numToDeact++;
         });
 
         //delete user from the list when it's disconnected
@@ -498,6 +511,7 @@ new Vue({
             this.users= [];
             this.usWin= [];
             this.storyName= null;
+            this.numToDeact = 0;
         })
     }
 })
