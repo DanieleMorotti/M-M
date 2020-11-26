@@ -25,7 +25,8 @@ export default {
         <div class="notebook">
             <div class="note">
                 <div id="text"> </div>
-                <button id="next" @click="next"> &rarr; </button>
+				<!--<button id="next" @click="next"> &rarr; </button> -->
+				<a href="#" id="toNext"><div id="next" @click="next" class="button-text">&rarr;</div></a>
             </div>
 		</div>
 		
