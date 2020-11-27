@@ -13,14 +13,15 @@
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/Valutatore/js/vue-chat-scroll.min.js"></script>
 		<link rel="stylesheet" id="stylesheetDyn" href="/Valutatore/chat.css">
+		<link rel="stylesheet" id="stylesheetDyn" href="/Valutatore/valutatore.css">
 	</head>
 
 	<body>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-			<button class="btn btn-dark mr-1" onclick="toggleMenu(1)">Chat</button>
-			<button class="btn btn-dark mr-1" onclick="toggleMenu(2)">Valuta</button>
-			<div class="dropdown">
-				<button class="btn btn-dark mr-1 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+		<nav id="navbar">
+			<button class="navBtn" onclick="toggleMenu(1)">Chat</button>
+			<button class="navBtn" onclick="toggleMenu(2)">Valuta</button>
+			<div class="dropdown navBtn">
+				<button class=" dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
 				 aria-expanded="false">Impostazioni</button>
 				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 				  <a class="dropdown-item" href="#" onclick="toggleMenu(3,1)">Cambia i nomi</a>

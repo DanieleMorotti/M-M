@@ -1,0 +1,70 @@
+html,body{
+    height: 100%;
+}
+
+body {
+    font-family: "Helvetica Neue", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(29, 27, 27);
+}
+
+
+/** navbar **/
+#navbar {
+    background-color: #084448;
+  }
+  
+  .navBtn {
+    background-color: transparent;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+    outline: none;
+    border: none;
+    color: white
+  }
+
+  .dropdown {
+    display: inline;
+  }
+  .dropdown-toggle {
+    color: white;
+    background-color: transparent;
+    outline: none;
+    border: none
+  }
+  
+  .chatContainer {
+    background-color: #94b4b5;
+    width: 60%;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 5px;
+    border: 1px solid white;
+  }
+
+
+  @media (max-width: 575.98px) { 
+    
+    #chat {
+      width: 90%;
+      margin: 0;
+      margin: auto;
+      margin-top: 2rem;
+    }
+    
+    .chatContainer {
+        width: 100%;
+    }
+
+    #users {
+        width: 100%;
+    }
+
+    #chatView {
+        display: none;
+        width:100%;
+    }
+    
+
+  }

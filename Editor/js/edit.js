@@ -33,7 +33,8 @@ export default {
     }, 
     template: `
         <div id="editMenu" class="container">
-            <p id="title">Inserisci i dati per creare la tua nuova storia </p>
+            <h1 id="title"> Editor </h1>
+            <p>Inserisci i dati per creare/modificare la tua storia </p>
             <button id="submitBtn" @click="checkForm">FINITO</button><span id="selMissErr">Nessuna missione è stata attivata</span>
             <form id="editStoryForm">
                 <ul>
@@ -93,12 +94,13 @@ export default {
                         </div> 
                         <ul id="missionSaved">
                             <li v-for="(mission,index) in missions" :key="index">
-                                <input type="checkbox" name="isActive" :checked="mission.isActive" @click="mission.isActive = !mission.isActive" />&emsp;
+                                <label for="isActive" style="display:none">Seleziona l'attività se intendi renderla attiva</label>
+                                <input type="checkbox" id="isActive" name="isActive" :checked="mission.isActive" @click="mission.isActive = !mission.isActive" />&emsp;
                                 {{mission.name}}&emsp;
                                 <span class="icon-group">
                                     <i class="fas fa-cut" @click="currentMission = index" data-toggle="modal" data-target="#moveMissionModal" v-if="index != 0"></i>&nbsp;&nbsp;
                                     <i class="fas fa-clone"  @click="currentMission = index" data-toggle="modal" data-target="#copyMissionModal"></i>&nbsp;&nbsp;
-                                    <i  class="fas fa-trash-alt" @click="deleteMission(index)" v-if="index != 0"></i>
+                                    <i class="fas fa-trash-alt" @click="deleteMission(index)" v-if="index != 0"></i>
                                 </span>
                                 <ul id="activitiesSaved" v-if="mission.activities.length != 0">
                                     <li v-for="(activity,ind) in mission.activities" :key="ind">
@@ -174,11 +176,11 @@ export default {
                         <input id="valutabile" type="radio" v-model="type" value="valutabile" name="activityTypeGroup"  />
                         <label for="valutabile" class="mainLabel">Valutabile</label>
 
-                        <h5 class="info">Dove si svolge l'attività?(ambientazione)</h5>
-                        <input type="text" name="where" />
+                        <label for="where" class="info">Dove si svolge l'attività?(ambientazione)</label>
+                        <input type="text" id="where" name="where" />
 
-                        <h5 class="info">Spiegazione per lo svolgimento dell'attività:</h5>
-                        <textarea name="instructions" rows="3" cols="40"></textarea>
+                        <label for="instructions" class="info">Spiegazione per lo svolgimento dell'attività:</label><br>
+                        <textarea id="instructions" name="instructions" rows="3" cols="40"></textarea>
 
                         <div id="questionDiv">
                             <label for="question" class="mainLabel">Inserisci la domanda:</label><br>
@@ -204,16 +206,12 @@ export default {
                             </div>
                             <div>
                                 <h5 class="info">Scegli il tipo di oggetto da inserire: </h5>
-                                <ul id="inputObject">
-                                    <li>
-                                        <input id="text" type="radio" value="text" name="inputObjectGroup" :disabled="type!=='valutabile'" checked />
-                                        <label for="text">Campo di testo</label>
-                                    </li>
-                                    <li>
-                                        <input id="file" type="radio" value="file" name="inputObjectGroup" :disabled="type!=='valutabile'" />
-                                        <label for="file">Scelta file</label>
-                                    </li>
-                                </ul>
+                                <div id="inputObject">
+                                    <input id="text" type="radio" value="text" name="inputObjectGroup" :disabled="type!=='valutabile'" checked />
+                                    <label for="text">Campo di testo</label>
+                                    <input id="file" type="radio" value="file" name="inputObjectGroup" :disabled="type!=='valutabile'" />
+                                    <label for="file">Scelta file</label>
+                                </div>
                                 <h5 class="info">Inserisci un messaggio da visualizzare nel momento in cui l'utente attende che la sua risposta venga valutata: </h5>
                                 <input id="waitMsg" type="text" name="inputObjectGroup" :disabled="type!=='valutabile'" />
                                 <label for="waitMsg" style="display:none">Messaggio</label>
@@ -244,22 +242,18 @@ export default {
                 <div class="overlay-content">
                 <form id="widgetsForm" @submit="addWidget">
                     <h2>Nuovo widget</h2>
-                    <ul>
-                        <li>
-                            <h5 >Crea un nuovo widget: </h5>
-                            <label for="inpWidgetName">Nome del widget:</label>
-                            <input type="text" id="inpWidgetName" name="name" v-on:keyup="checkName('widget')" required/>
-                            <p id="widgetInfo"> Un widget con questo nome esiste già</p>
-                        </li>
-                        <li>
-                            <label for="inpWidgetCss">Aggiungi un file CSS</label>
-                            <input type="file" name="widgetCss" id="inpWidgetCss" accept="text/css" required/>
-                        </li>
-                        <li>
-                            <label for="inpWidgetJs">Aggiungi un file JS</label>
-                            <input type="file" name="widgetJs" id="inpWidgetJs" accept=".js" required/>
-                        </li>
-                    </ul>
+
+                    <h5 >Crea un nuovo widget: </h5>
+                    <label for="inpWidgetName">Nome del widget:</label>
+                    <input type="text" id="inpWidgetName" name="name" v-on:keyup="checkName('widget')" required/>
+                    <p id="widgetInfo"> Un widget con questo nome esiste già</p>
+
+                    <label for="inpWidgetCss">Aggiungi un file CSS</label>
+                    <input type="file" name="widgetCss" id="inpWidgetCss" accept="text/css" required/>
+                        
+                    <label for="inpWidgetJs">Aggiungi un file JS</label>
+                    <input type="file" name="widgetJs" id="inpWidgetJs" accept=".js" required/>
+                        
                     <input id="saveWidget" type="submit" value="Salva widget" />
                 </form>
                 </div>

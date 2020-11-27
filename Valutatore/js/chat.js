@@ -16,17 +16,17 @@ new Vue({
     }, 
     template: `
     <div id="chatNotif">
-        <div class="container py-4 px-4 ml-4 d-inline-block" style="height:80% !important">
-            <div class="row rounded-lg overflow-hidden shadow" style="height:100% !important;width:100% !important;">
+        <div class="chatContainer d-inline-block" style="height:80% !important">
+            <div class="row rounded-lg overflow-hidden shadow" style="height:100% !important;width:100% !important; margin: auto">
                 <!-- Users box-->
-                <div class="col-5 px-0">
-                    <div class="bg-white" v-if="users.length != 0">
+                <div id="users" class="px-0">
+                    <div v-if="users.length != 0">
                         <div class="messages-box" v-for="user in users" v-bind:key="user.id" @click="enterChat(user.id)">
                             <div class="list-group rounded-0">
-                                <a class="list-group-item list-group-item-action rounded-0">
+                                <a class="list-group-item list-group-item-action rounded-0" @click="displayChat">
                                     <div class="media">
-                                        <img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
-                                        <div class="media-body ml-4">
+                                      <i class="fas fa-user-circle"></i>
+                                      <div class="media-body ml-4">
                                             <div class="d-flex align-items-center justify-content-between mb-1">
                                             <h6 class="mb-0">{{user.id}}</h6>
                                             <span class="badge badge-danger"></span>
@@ -39,14 +39,14 @@ new Vue({
                     </div>
                 </div>
                 <!-- Chat Box-->
-                <div class="col-7 px-0">
-                    <div class="container-fluid" style="overflow: auto;height:85% !important" v-chat-scroll>
-                        <span class="defaultMes">Staff member</span>
-                        <div class="px-4 py-5 chat-box bg-white">
+                <div id="chatView" class="px-0">
+                    <div class="container-fluid" style="overflow: auto;height:87% !important" v-chat-scroll>
+                        <button id="back" @click="displayUsers"> &larr; </button>
+                        <div class="chat-box">
                             <!-- Messages-->
                             <div class="media mb-3" id="events" v-if="users.length != 0">
                                 <div class="media-body " v-if="users[currRoom].messages" >
-                                    <div class="bg-light rounded py-2 px-3 mb-2" v-for="message in users[currRoom].messages" v-bind:key="message.id" 
+                                    <div class="rounded py-2 px-3 mb-2" v-for="message in users[currRoom].messages" v-bind:key="message.id" 
                                     v-bind:class="{'myMes': message.type == 0,'otherMes': message.type == 1}">
                                         <p class="text-small mb-0">{{message.mess}}</p>
                                     </div>
@@ -55,11 +55,11 @@ new Vue({
                         </div>
                     </div>
                     <!-- Typing area -->
-                    <form @submit.prevent="onChatSubmitted" class="bg-light">
+                    <form @submit.prevent="onChatSubmitted" class="sendInput">
                         <div class="input-group">
-                            <input type="text" placeholder="Type a message"  class="form-control rounded-0 border-0 py-4 bg-light" v-model="newMess" title="chat" required>
+                            <input type="text" placeholder="Type a message"  class="form-control rounded-0 border-0 py-4" v-model="newMess" title="chat" style="background-color: transparent" required>
                             <div class="input-group-append">
-                                <button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
+                                <button id="button-addon2" type="submit"> <i class="fa fa-paper-plane"></i></button>
                             </div>
                         </div>
                     </form>
@@ -84,6 +84,19 @@ new Vue({
     </div>
     `,
     methods: {
+        //display users if you are on mobile 
+        displayUsers() {
+            if ( $('#users').css('display') == 'none' ) {
+                $('#users').css("display","block")
+                $('#chatView').css("display","none")
+            }
+        },
+        displayChat() {
+            if ( $('#chatView').css('display') == 'none' ) {
+                $('#users').css("display","none")
+                $('#chatView').css("display","block")
+            }
+        },
         //save the messages of the staff and send them to the server
         onChatSubmitted(){
             //i can't send message if there isn't any player
@@ -101,7 +114,9 @@ new Vue({
                 $('#onlyNot > ul > li').eq(i).css('text-decoration','line-through');
             }
             let index = this.users.findIndex(item => item.id === id);
+            $(`#users .messages-box:nth-child(${this.currRoom+1}) a`).removeClass("activeLink");
             this.currRoom = index;
+            $(`#users .messages-box:nth-child(${index+1}) a`).addClass("activeLink");
             $('.media .badge').eq(index).text('');
         },
         sortRecent(ind){
@@ -204,7 +219,7 @@ new Vue({
                     </div>
                 </div>
             </div>
-            <p v-else>Ancora nessuna risposta da valutare </p>
+            <p class="info-para" v-else>Ancora nessuna risposta da valutare </p>
 
             <!-- Modale per la valutazione -->
             <div class="modal fade" id="valutaModal" aria-hidden="true" role="dialog" tabindex="-1">
