@@ -180,8 +180,8 @@ export default {
             this.groupNum = 0;
             this.story = storyItem;
             this.missions = storyItem.missions;
-            this.nextMiss = storyItem.firstActivity.missions;
-            this.nextAct = storyItem.firstActivity.missions;
+            this.nextMiss = storyItem.firstActivity.mission;
+            this.nextAct = storyItem.firstActivity.activity;
             this.score = 0;
 
             this.currentF = 0 ;

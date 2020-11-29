@@ -42,14 +42,6 @@ body p, span {
     cursor: grab;
 }
 
-#qrcodeMenu{
-    display: none;
-    width: 50%;
-    margin-left: 5rem;
-    padding: 1rem;
-    border: 1px solid lightskyblue;
-}
-
 #qrcode{
     cursor: pointer;
     width:24%;

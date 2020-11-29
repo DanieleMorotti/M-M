@@ -16,7 +16,7 @@ new Vue({
     }, 
     template: `
     <div id="chatNotif">
-        <div class="chatContainer d-inline-block" style="height:80% !important">
+        <div class="chatContainer d-inline-block" >
             <div class="row rounded-lg overflow-hidden shadow" style="height:100% !important;width:100% !important; margin: auto">
                 <!-- Users box-->
                 <div id="users" class="px-0">
@@ -67,23 +67,34 @@ new Vue({
                 
             </div>
         </div>
-        <div id="notMenu" class="d-inline-block">
-            <div class="h-100" v-if="blockUsers.length != 0">
-                <span id="notMenuTitle">Notifiche utenti</span>
-                <nav id="onlyNot" v-chat-scroll> 
+        <div id="alertMenu" class="overlay">
+            <a href="javascript:void(0)" class="closebtn" @click="closeNav">&times;</a>
+            <div class="overlay-content" v-if="blockUsers.length != 0">
+                <span id="alertMenuTitle">Notifiche utenti</span>
+                <nav id="notifNav" v-chat-scroll> 
                     <ul class="list-group" >
-                        <li class="list-group-item" v-for="(user,i) in blockUsers" v-bind:key="user.id" @click="enterChat(user.who,i)">
-                            <span v-if="user.where">{{user.who}} ha bisogno nella missione {{user.where.currMission}}, attività {{user.where.currAct}}</span>
-                            <span v-else>{{user.who}} ha richiesto aiuto</span>
+                        <li class="list-group-item list-notifications" v-for="(user,i) in blockUsers" v-bind:key="user.id" @click="enterChat(user.who,i)">
+                            <p v-if="user.where">{{user.who}} ha bisogno nella missione {{user.where.currMission}}, attività {{user.where.currAct}}</p>
+                            <p v-else>{{user.who}} ha richiesto aiuto</p>
                         </li>
                     </ul>
                 </nav>
             </div>
-            <span v-else>Nessuna notifica </span>
+            <div v-else class="overlay-content"><span>Nessuna notifica</span></div>
         </div>
+        <button id="alertBtn" @click="openNav"><i class="fas fa-exclamation-circle"></i></button>
     </div>
     `,
     methods: {
+        /* open/close sidenav to show notifications on mobile */
+        openNav() {
+            document.getElementById("alertMenu").style.width = "100%";
+            document.getElementById("alertMenu").style.display = "block";
+        },
+        closeNav() {
+            document.getElementById("alertMenu").style.width = "0%";
+            document.getElementById("alertMenu").style.display = "none";
+        },
         //display users if you are on mobile 
         displayUsers() {
             if ( $('#users').css('display') == 'none' ) {
@@ -109,9 +120,18 @@ new Vue({
         },
         //change the current chat to the 'id' chat 
         enterChat(id,i){
+            /* if sidenav opened */
+            if(  document.getElementById("alertMenu").style.width == '100%') {
+                console.log('qui')
+                this.closeNav();
+                /* hide users display chat */
+
+                $('#users').css("display","none")
+                $('#chatView').css("display","block")
+            }
             //the i parameters is inserted only in the notify menu
             if(Number.isInteger(i)){
-                $('#onlyNot > ul > li').eq(i).css('text-decoration','line-through');
+                $('#notifNav > ul > li').eq(i).css('text-decoration','line-through');
             }
             let index = this.users.findIndex(item => item.id === id);
             $(`#users .messages-box:nth-child(${this.currRoom+1}) a`).removeClass("activeLink");
@@ -327,11 +347,11 @@ new Vue({
     }, 
     template: `
         <div class="container-fluid">
-            <div class="container" id="changeNameMenu">
-                <div class="container"  v-if="users.length != 0">
+            <div id="changeNameMenu">
+                <div  v-if="users.length != 0">
                     <h3>Cambia come preferisci i nomi dei giocatori che stanno giocando a "{{storyName}}"</h3>
-                    <table class="table">
-                        <thead class="thead-dark">
+                    <table>
+                        <thead>
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">ID</th>
@@ -349,14 +369,13 @@ new Vue({
                         </tbody>
                     </table>
                 </div>
-                <p v-else>Ancora nessun giocatore connesso</p>
+                <div v-else>Ancora nessun giocatore connesso</div>
             </div>
-            <div class="container" id="printResults">
-                <h4>Stampa i risultati della partita, solamente i giocatori che hanno già terminato saranno presenti. </h4>
-                <br><br>
-                <table class="table">
+            <div id="printResults">
+                <h3>Stampa i risultati della partita, solamente i giocatori che hanno già terminato saranno presenti. </h3>
+                <table>
                     <caption> CLASSIFICA </caption>
-                    <thead class="thead-dark">
+                    <thead>
                         <tr>
                             <th>Posizione</th>
                             <th scope="col" >Id</th>
@@ -380,10 +399,11 @@ new Vue({
                         </tr>
                     </tbody>
                 </table>
-                
-                <button class="btn btn-info" @click="verifyWhoFinished">Verifica chi ha finito</button>
-                <a id="linkForPrint" class="btn btn-info" href="/Server-side/valuta/results/vuoto.txt" target="_blank" download>STAMPA RISULTATI</a>
-                <button class="btn btn-info" data-toggle="modal" data-target="#endGameModal" >Concludi partita</button>
+                <div id="settButtonDiv">
+                    <button class="settingsBtn" @click="verifyWhoFinished">Verifica chi ha finito</button>
+                    <button class="settingsBtn" data-toggle="modal" data-target="#endGameModal" >Concludi partita</button>
+                    <button class="settingsBtn" ><a id="linkForPrint" href="/Server-side/valuta/results/vuoto.txt" target="_blank" download>STAMPA RISULTATI</a></button>
+                </div>
             </div>
 
             <!--modale per chiedere conferma di chiusura della partita-->

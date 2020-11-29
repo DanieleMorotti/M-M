@@ -34,37 +34,5 @@ body {
     border: none
   }
   
-  .chatContainer {
-    background-color: #94b4b5;
-    width: 60%;
-    margin-right: auto;
-    margin-left: auto;
-    border-radius: 5px;
-    border: 1px solid white;
-  }
-
-
-  @media (max-width: 575.98px) { 
-    
-    #chat {
-      width: 90%;
-      margin: 0;
-      margin: auto;
-      margin-top: 2rem;
-    }
-    
-    .chatContainer {
-        width: 100%;
-    }
-
-    #users {
-        width: 100%;
-    }
-
-    #chatView {
-        display: none;
-        width:100%;
-    }
-    
-
-  }
+  /**/
+  

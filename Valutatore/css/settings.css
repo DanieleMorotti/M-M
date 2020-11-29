@@ -1,0 +1,55 @@
+caption{
+    caption-side: top;
+    text-align: center;
+    font-size:1.2rem;
+}
+
+#changeNameMenu {
+    color: white;
+}
+
+p, h3, caption {
+    color: white;
+}
+
+h3 {
+    margin: 2rem;
+    font-size: 1rem;
+}
+table {
+    width: 90%;
+    margin: 2rem;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+thead {
+    color: white;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+}
+
+table th {
+    padding: 0.5rem;
+}
+
+#settButtonDiv {
+    margin: 2rem;
+}
+
+.settingsBtn {
+    background-color: #86b0b3;
+    color: black;
+    padding: 0.5rem;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    margin: 0.5rem;
+    border: 2px solid #084448;
+    min-width: 160px;
+}
+
+#linkForPrint {
+    text-decoration: none;
+    color: black;
+}
