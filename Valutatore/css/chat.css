@@ -23,15 +23,16 @@
   .list-group a{
     background-color: #507f87;
     overflow: hidden;
-    color: white
+    color: white;
+    cursor: pointer;
   }
 
   .list-group a:hover{
-    background-color:#dd9fd4;
+    background-color:#e9af68;
   }
 
   .list-group .activeLink {
-    background-color:#b781ae;
+    background-color:#d38627;
   }
 
   /*CHAT SECTION*/
@@ -67,6 +68,8 @@
     border: 1px solid white;
     border-radius: 3px;
   }
+
+  
 
   .sendInput input[type="text"]:focus {
       outline: none;

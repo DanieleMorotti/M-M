@@ -175,7 +175,7 @@ export default {
                         <label for="figur" class="mainLabel">Figurativa</label><br>
                         <input id="valutabile" type="radio" v-model="type" value="valutabile" name="activityTypeGroup"  />
                         <label for="valutabile" class="mainLabel">Valutabile</label>
-
+                        <br>
                         <label for="where" class="info">Dove si svolge l'attività?(ambientazione)</label>
                         <input type="text" id="where" name="where" />
 
@@ -207,10 +207,16 @@ export default {
                             <div>
                                 <h5 class="info">Scegli il tipo di oggetto da inserire: </h5>
                                 <div id="inputObject">
-                                    <input id="text" type="radio" value="text" name="inputObjectGroup" :disabled="type!=='valutabile'" checked />
-                                    <label for="text">Campo di testo</label>
-                                    <input id="file" type="radio" value="file" name="inputObjectGroup" :disabled="type!=='valutabile'" />
-                                    <label for="file">Scelta file</label>
+                                    <ul>
+                                        <li>
+                                            <input id="text" type="radio" value="text" name="inputObjectGroup" :disabled="type!=='valutabile'" checked />
+                                            <label for="text">Campo di testo</label>
+                                        <li>
+                                        <li>
+                                            <input id="file" type="radio" value="file" name="inputObjectGroup" :disabled="type!=='valutabile'" />
+                                            <label for="file">Scelta file</label>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <h5 class="info">Inserisci un messaggio da visualizzare nel momento in cui l'utente attende che la sua risposta venga valutata: </h5>
                                 <input id="waitMsg" type="text" name="inputObjectGroup" :disabled="type!=='valutabile'" />
@@ -227,7 +233,7 @@ export default {
                 
                         <h5 class="info" style="display:inline">Scegli un widget per questa attività: </h5>
                         <input type="button" id="buttonWidget" data-toggle="modal" data-target="#widgetModal" value="Seleziona"/>
-                        <p id="infoWidget" style="display:none"> </p>
+                        <br><p id="infoWidget" style="display:none"> </p>
                     </li>
                 </ul>
                 <input id="saveActivity" type="submit" value="Salva attività" />

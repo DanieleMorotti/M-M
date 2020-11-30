@@ -21,7 +21,7 @@ player.get('/',(req,res,next) =>{
 	}else{
 		console.log("non ho cookies sono appena entrato");
 		//set the cookie for the client
-		res.cookie('userId','user'+sharedVar.cookieNum,{path:'/Play'});
+		res.cookie('userId','user'+sharedVar.cookieNum,{path:'/Play', secure: true});
 		sharedVar.cookieNum++;
 	}
 

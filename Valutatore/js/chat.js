@@ -23,7 +23,7 @@ new Vue({
                     <div v-if="users.length != 0">
                         <div class="messages-box" v-for="user in users" v-bind:key="user.id" @click="enterChat(user.id)">
                             <div class="list-group rounded-0">
-                                <a class="list-group-item list-group-item-action rounded-0" @click="displayChat(user.id)" style="border:0">
+                                <a class="list-group-item list-group-item-action rounded-0" style="border:0">
                                     <div class="media">
                                       <i class="fas fa-user-circle"></i>
                                       <div class="media-body ml-4">
@@ -57,7 +57,7 @@ new Vue({
                     <!-- Typing area -->
                     <form @submit.prevent="onChatSubmitted" class="sendInput">
                         <div class="input-group">
-                            <input type="text" placeholder="Type a message"  class="form-control rounded-0 border-0 py-4" v-model="newMess" title="chat" style="background-color: transparent" required>
+                            <input type="text" placeholder="Type a message"  class="form-control rounded-0 border-0 py-4" v-model="newMess" title="chat" style="background-color:transparent" required disabled>
                             <div class="input-group-append">
                                 <button id="button-addon2" type="submit"> <i class="fa fa-paper-plane"></i></button>
                             </div>
@@ -121,9 +121,14 @@ new Vue({
         },
         //change the current chat to the 'id' chat 
         enterChat(id,i){
+            /* enable input */
+            $(".sendInput input[type='text']").attr('disabled', false)
+
+            /* on mobile devices */
+            this.displayChat(id);
+
             /* if sidenav opened */
-            if(  document.getElementById("alertMenu").style.width == '100%') {
-                console.log('qui')
+            if(document.getElementById("alertMenu").style.width == '100%') {
                 this.closeNav();
                 /* hide users display chat */
 
