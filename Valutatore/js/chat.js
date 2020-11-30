@@ -23,7 +23,7 @@ new Vue({
                     <div v-if="users.length != 0">
                         <div class="messages-box" v-for="user in users" v-bind:key="user.id" @click="enterChat(user.id)">
                             <div class="list-group rounded-0">
-                                <a class="list-group-item list-group-item-action rounded-0" @click="displayChat">
+                                <a class="list-group-item list-group-item-action rounded-0" @click="displayChat(user.id)" style="border:0">
                                     <div class="media">
                                       <i class="fas fa-user-circle"></i>
                                       <div class="media-body ml-4">
@@ -40,8 +40,8 @@ new Vue({
                 </div>
                 <!-- Chat Box-->
                 <div id="chatView" class="px-0">
-                    <div class="container-fluid" style="overflow: auto;height:87% !important" v-chat-scroll>
-                        <button id="back" @click="displayUsers"> &larr; </button>
+                    <div id="name"><button id="back" @click="displayUsers"> &larr;</button><span>user</span></div>
+                    <div class="container-fluid" style="overflow: auto;height:78% !important" v-chat-scroll>
                         <div class="chat-box">
                             <!-- Messages-->
                             <div class="media mb-3" id="events" v-if="users.length != 0">
@@ -102,7 +102,8 @@ new Vue({
                 $('#chatView').css("display","none")
             }
         },
-        displayChat() {
+        displayChat(user) {
+            $('#name span').text(user);
             if ( $('#chatView').css('display') == 'none' ) {
                 $('#users').css("display","none")
                 $('#chatView').css("display","block")
@@ -235,7 +236,7 @@ new Vue({
                     <div class="card-body">
                         <p class="card-text">Inviato: {{user.time}}</p>
                         <p>Tipo: {{user.type}}</p>
-                        <a href="#" type="button" class="btn btn-primary" data-toggle="modal" data-target="#valutaModal" @click="updateQuest(user)">VALUTA</a>
+                        <a href="#" type="button" class="cardBtn" data-toggle="modal" data-target="#valutaModal" @click="updateQuest(user)">VALUTA</a>
                     </div>
                 </div>
             </div>

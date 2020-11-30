@@ -20,16 +20,16 @@
       "activities": [
         {
           "number": 0,
-          "type": "figurativa",
+          "type": "valutabile",
           "setting": "ambientazione1",
           "instructions": "svolgimento1",
           "question": "domanda1",
           "answers": "",
-          "inputType": "",
+          "inputType": "text",
           "score": 50,
           "isActive": true,
           "widget": "door",
-          "waitMsg": "",
+          "waitMsg": "waiting",
           "goTo": {
             "ifCorrect": {
               "nextMission": [
@@ -47,8 +47,7 @@
                 "1"
               ]
             }
-          },
-          "correctAns": "risposta1"
+          }
         },
         {
           "number": 1,

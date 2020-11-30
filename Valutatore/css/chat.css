@@ -1,13 +1,6 @@
 
   /**/ 
 
-  #back {
-    background-color: transparent;
-    outline: none;
-    border: none;
-    font-size: 2rem;
-  }
-
   input {
     outline: none;
     font-size: 1.0rem;
@@ -181,6 +174,22 @@
     display: none;
   }
 
+  #name {
+    background-color: #81a5a6;
+    width: 100%;
+    text-align: left;
+    font-size: 1.5rem;
+    padding: 0.5rem
+  }
+
+  #back {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    font-size: 2rem;
+    display: none;
+  }
+
   /* mobile */
 
   @media (max-width: 700px) { 
@@ -198,6 +207,14 @@
 
     #users {
         width: 100%;
+    }
+
+    #back {
+      display: inline;
+      font-weight: 900;
+    }
+    #name {
+      padding: 0;
     }
 
     #chatView {

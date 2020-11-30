@@ -11,3 +11,29 @@
     color: white;
     margin: 2rem;
 }
+
+.card {
+    background-color: #c990b1;
+    color: #5d1039;
+    min-width: 250px;
+}
+
+.cardBtn {
+    background-color: #ffffffb0;
+    padding: 0.5rem;
+    border-radius: 5px;
+    color: #8c5d78;
+}
+
+#valutaModal {
+    background-color: black;
+    color: white;
+}
+
+.modal-header, .modal-footer {
+    border-color: #224161;
+}
+
+.modal-header button {
+    color: white
+}

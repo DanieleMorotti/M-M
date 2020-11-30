@@ -9,10 +9,10 @@ const router = new VueRouter({
 //function that is executed before every routing change
 router.beforeEach((to, from, next) => {
   if(to.path === '/editMenu') {
-    $('#stylesheetComp').attr('href','./edit.css');
+    $('#stylesheetComp').attr('href','./css/edit.css');
     //document.getElementById('scriptComp').src = 'js/edit.js';
   }else {
-    $('#stylesheetComp').attr('href','./home.css');  
+    $('#stylesheetComp').attr('href','./css/home.css');  
     //document.getElementById('scriptComp').src = 'js/home.js';
   }
 
