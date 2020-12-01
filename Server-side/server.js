@@ -2,7 +2,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser')
-const path = require('path');
 var http = require('http');
 
 const app = express();
