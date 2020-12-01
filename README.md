@@ -1,6 +1,6 @@
 # M-M(Mistero al museo)
 ## Progetto per il corso di Tecnologie Web dell'università di Bologna,A.A.2019-2020.
-![myimage](link)
+![](img_readme/m-m.jpg)
 Un'applicazione web inizialmente pensata per essere utilizzata nei musei, ma a seguito dell'emergenza sanitaria dovuta al COVID-19 la consegna è variata,sarà possibile utilizzare l'applicazione eventualmente da casa. L'intero progetto è stato scritto in Html, CSS, JavaScript, con l'ausilio dei framework: Bootstrap 4.3, VueJS e JQuery.
 
 ### OBIETTIVI
@@ -12,6 +12,7 @@ Il progetto è diviso in 3 applicazioni web:
 - l'[Editor](#editor);
 - il [Valutatore](#valutatore).
 È possibile trovare le applicazioni all'indirizzo http://site192001.tw.cs.unibo.it, rispettivamente accedendo alla route /Play?story=xxx, /Editor, /Valutatore.
+
 ## Player
 Questa è l'applicazione tramite la quale i ragazzi potranno leggere le storie create apposta per la visita, e sottomettere risposte alle varie missioni per avanzare nella storia. Le attività presenti sono di 3 tipi: *scelta multipla, domanda aperta, figurativa e valutabile*. Per tutta la durata del gioco la schermata mostrerà il device scelto appositamente per l'ambientazione della storia, tramite il quale il giocatore compirà le azioni elencate in precedenza. Sono inoltre presenti un bottone per aprire una chat testuale real-time con lo staff del museo per chiedere chiarimenti in caso di difficoltà, e un altro per notificare semplicemente al valutatore la necessità di aiuto. 
 
