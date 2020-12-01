@@ -1,0 +1,197 @@
+{
+  "accessibility": "true",
+  "age": "6-10",
+  "groups": "1",
+  "title": "MM - Mummie e Misteri",
+  "setting": "Deserto fuori da Città del Cairo",
+  "description": "Sei un archeologo che svolge delle ricerche per conto della società XXXX. Sei stato mandato ad esplorare un zona appena fuori da città del Cairo, dove si stanno svolgendo  degli scavi e si pensa ci siano stati alcuni furti. \r\nNello svolgimento delle indagini potresti incontrare delle difficoltà, ricordati che nessuno deve sapere che stai investigando, per cui cerca di passare inosservato.\r\nBuon lavoro!",
+  "introduction": "Devi muoverti nei dintorni e fare attenzione a tutto quello vedi, ad ogni movimento sospetto e ad ogni cosa fuori posto.",
+  "conclusion": "Complimenti! Hai portato a termine la missione e impedito che i reperti fossero trafugati.",
+  "firstActivity": {
+    "mission": [],
+    "activity": []
+  },
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "Piano 1 - Sala 1",
+          "instructions": "Questa attività dovrebbe risultare molto semplice per un esperto del tuo calibro.",
+          "question": "Quale solido geometrico puoi direttamente ricollegare al periodo che storico di cui ti occupi?",
+          "answers": [
+            "Cubo",
+            "Piramide a base quadrata",
+            "Cilindro",
+            "Parallelepipedo"
+          ],
+          "correctAns": "Piramide a base quadrata",
+          "inputType": "",
+          "score": "35",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 1,
+          "type": "scelta multipla",
+          "setting": "Piano 2 - Stanza chimica dei colori",
+          "instructions": "E' importante che tu sappia riconoscere quali pigmenti venivano utilizzati nell'antico Egitto, per poter riconoscere eventuali casi di contraffazione.",
+          "question": "Quale di questi colori non è associabile ad alcun pigmento presente?",
+          "answers": [
+            "Blu egizio",
+            "Ocra rossa",
+            "Verde smeraldo",
+            "Nero carbone"
+          ],
+          "correctAns": "Verde smeraldo",
+          "inputType": "",
+          "score": "50",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 2,
+          "type": "valutabile",
+          "setting": "Piano 2 - Sala 8",
+          "instructions": "Tutta la missione verte sulla protezione di due reperti in particolare.",
+          "question": "Due mummie sono state ritrovate completamente intatte e costituiscono una scoperta importantissima, quali sono?",
+          "answers": [],
+          "inputType": "text",
+          "score": "75",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "La tua risposta deve essere valutata per poter verificare il tuo grado di esperienza e procedere al completamento della missione.",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 3,
+          "type": "scelta multipla",
+          "setting": "Piano 2 - Sala: come sono fatte le bende?",
+          "instructions": "Riconoscere cosa si cela sotto il bendaggio di una mummia è ciò che ti riesce meglio.",
+          "question": "Di quale dei seguenti animali puoi trovare un esempio di mummificazione tra i reperti?",
+          "answers": [
+            "Cane",
+            "Ippopotamo",
+            "Giraffa",
+            "Pipistrello"
+          ],
+          "correctAns": "Cane",
+          "inputType": "",
+          "score": "40",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        }
+      ],
+      "isActive": true
+    },
+    {
+      "name": "Missione 2",
+      "activities": [
+        {
+          "number": 0,
+          "type": "domanda aperta",
+          "setting": "Piano 3 - Sala 1",
+          "instructions": "Ti viene sottoposta l'analisi di alcuni gioielli.",
+          "question": "A quale periodo della storia egizia sono riconducibili?",
+          "answers": [],
+          "correctAns": "nuovo regno",
+          "inputType": "",
+          "score": "75",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 1,
+          "type": "valutabile",
+          "setting": "Piano 2 - Sala 4",
+          "instructions": "\nCi sono cose che non sono come sembrano.. ",
+          "question": "Trova una finta mummia e fotografala",
+          "answers": [],
+          "inputType": "text",
+          "score": "85",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "Il reperto viene sottoposto ad un'attenta analisi per verificare che si tratti di un reperto autentico.",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        }
+      ],
+      "isActive": true
+    }
+  ],
+  "facilities": [
+    "Hai sventato un tentativo di furbo, bravo! Ora cerca di non attirare troppo i sospetti."
+  ],
+  "difficulties": [
+    "Qualcuno si sta facendo delle domande vendendoti ficcanasare in giro, fai attenzione!",
+    "Noti qualcosa di strano su un reperto, forse una possibile contraffazione, fermati ad osservare meglio."
+  ],
+  "originalTitle": "MM - Mummie e Misteri",
+  "device": "notebook",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}
