@@ -276,10 +276,10 @@ export default {
             var current = JSON.parse(story);
             if(!current.changed) {
                 if(!this.privateStoriesList.some(obj => obj.title === current.titleMission.title))
-                    this.privateStoriesList.push({title:current.titleMission.title, missionsList: current.titleMission.missionsList});
+                    this.privateStoriesList.push({title:current.titleMission.title, missionsList: current.titleMission.missions});
                 else{
                     let ind = this.privateStoriesList.findIndex(x => x.title === current.titleMission.title);
-                    this.privateStoriesList[ind] = {title:current.titleMission.title, missionsList: current.titleMission.missionsList};
+                    this.privateStoriesList[ind] = {title:current.titleMission.title, missionsList: current.titleMission.missions};
                 }
             }
             else {
