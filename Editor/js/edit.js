@@ -934,6 +934,7 @@ export default {
         },
         checkForm: function() {
             if(this.invalid) return;
+            //if no mission is active
             else if(!this.missions.some(el => el.isActive)){
                 $('#selMissErr').show();
                 $('#selMissErr').removeClass('error').addClass('error');
@@ -1238,7 +1239,7 @@ export default {
                     cache: false,
                     url: "/Editor/getStory?title="+this.currentStory+"&group=private",
                     success: (data) =>{
-                     // fill form with json's fields
+                        // fill form with json's fields
                         this.showData(data);
                     },
                     error: function (e) {

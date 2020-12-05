@@ -1,0 +1,133 @@
+{
+  "age": "14-18",
+  "groups": "1",
+  "title": "Spie al museo",
+  "setting": "Parigi",
+  "description": "Sei un agente della CIA in missione, sai che alcuni criminali si dovranno incontrare nel museo per organizzare un furto di opere d'arte. Il tuo obiettivo è quello di capire chi sono e di avvertire le autorità. In bocca al lupo e fai attenzione.",
+  "introduction": "Sei appena entrato al museo, non hai idea di dove possano essere, inizia la tua visita come se fossi un turista qualunque, non dare nell'occhio.",
+  "conclusion": "Ce l'hai fatta, sei riuscito a catturare i criminali e hai salvato numerose opere, la Francia e tutti noi te ne siamo grati!",
+  "firstActivity": {
+    "mission": [],
+    "activity": []
+  },
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "Ala Denon, piano terra, stanza 703",
+          "instructions": "Dobbiamo controllare che la comunicazione sia pulita e che non ti stiano tracciando, rispondi alla domanda in base a quello che senti nell'audio guida.",
+          "question": "Quale poeta nominò la Nike dicendo che preferisce il fascino dell'automobile alla bellezza ellenistica?",
+          "answers": [
+            "Filippo Tommaso Marinetti",
+            "Giuseppe Ungaretti",
+            "Gabriele D'Annunzio"
+          ],
+          "correctAns": "Filippo Tommaso Marinetti",
+          "inputType": "",
+          "score": "20",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 1,
+          "type": "domanda aperta",
+          "setting": "Ala Richelieu, primo piano, sala 4",
+          "instructions": "Sappiamo dalle nostre fonti che i criminali sono arrivati tutti, mantieni la calma e continua a cercarli. Se hai problemi, non esitare a contattarci con la chat presente nel tuo smartphone.",
+          "question": "Di chi era figlio Cupido?",
+          "answers": [],
+          "correctAns": "Venere",
+          "inputType": "",
+          "score": "30",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        }
+      ],
+      "isActive": true
+    },
+    {
+      "name": "Missione 2",
+      "activities": [
+        {
+          "number": 0,
+          "type": "valutabile",
+          "setting": "Ala Richelieu, piano terra, stanza 227",
+          "instructions": "Ti si avvicina una persona per chiedere informazioni, stai attento potrebbero averti scoperto, oppure è semplicemente un turista che ha bisogno...",
+          "question": "Di quale principio fa ampiamente uso il codice di Hammurabi?",
+          "answers": [],
+          "inputType": "text",
+          "score": "35",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "Era solo un turista inglese per fortuna! Puoi continuare la missione",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 1,
+          "type": "domanda aperta",
+          "setting": "Ala Denon, primo piano, stanza 702",
+          "instructions": "Sono stati rilevati movimenti sospetti nella sezione egizia, vai a controllare. Ti guido: passa per il padiglione francese, vai nell'ala Denon e sali le scale.",
+          "question": "Cosa guardano tutti i presenti nell' \"Incoronazione di Napoleone\"?",
+          "answers": [],
+          "correctAns": "Corona",
+          "inputType": "",
+          "score": "40",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        }
+      ],
+      "isActive": true
+    }
+  ],
+  "facilities": [],
+  "difficulties": [],
+  "originalTitle": "Spie al museo",
+  "device": "smartphone",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}
