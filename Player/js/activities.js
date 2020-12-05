@@ -68,8 +68,12 @@ export default {
                 $("#text").append(`<div id="answers"></div>`)
                 let i = 1;
                 this.missions[mission].activities[activity].answers.forEach(element => {
-                    $("#answers").append(`<br><input type="radio" id="answer${i}" name="answer" value="${element}" checked>
-                    <label for="answer${i}">${element}</label>`);
+                    $("#answers").append(`
+                    <br>
+                    <label for="answer${i}" class="container">
+                     ${element}
+                    <input type="radio" id="answer${i}" name="answer" value="${element}">
+                    <span class="checkmark"></span></label>`);
                     i++;
                 });
             }
@@ -82,11 +86,11 @@ export default {
                 $("#text").html(this.missions[mission].activities[activity].question);         
                 $("#text").append(`<br><form id="evaluableForm">
                     <label for="answer" style="display:none">Invia risposta:</label>
-                    <input type="text" id="answer"  placeholder="Scrivi qui"/><br>
+                    <input type="${this.missions[mission].activities[activity].inputType}" id="answer"  placeholder="Scrivi qui"/><br>
                     <button id="sendBtn">Invia</button>
                     </form>`); 
                 $('#evaluableForm').show();
-                    $('#next').attr("disabled","disabled");
+                    $('#next').attr("disabled","true");
                 
                 this.mission = mission;
                 this.activity = activity;
@@ -140,10 +144,11 @@ export default {
                     this.nextAct = this.missions[mission].activities[activity].goTo.ifCorrect.nextActivity[this.groupNum];
                     this.nextMiss = this.missions[mission].activities[activity].goTo.ifCorrect.nextMission[this.groupNum];
 
+                   
                     if(type == 'valutabile') 
-                        this.score = this.score + this.missions[mission].activities[activity].score*this.data[0].mark/10;
+                        this.score = parseInt(this.score) + parseInt(this.missions[mission].activities[activity].score*(this.data[0].mark/10));
                     else 
-                        this.score = this.score + this.missions[mission].activities[activity].score;
+                        this.score = parseInt(this.score) + parseInt(this.missions[mission].activities[activity].score);
  
                     if (type == "figurativa") 
                         $('#widget').html("");
@@ -152,7 +157,7 @@ export default {
             }
             /* if user didn't answered */
             else if(type == "domanda aperta" && $("#answer").val() == "") {
-               $('#text').append('<p>Inserisci una risposta!</p>')
+               $('#text').append('<p style="margin-top:1rem">Inserisci una risposta!</p>')
                     return(false)
             }
             /* if answer is incorrect */
@@ -171,6 +176,7 @@ export default {
                 if (type == "figurativa") 
                     $('#widget').html("");
         
+                console.log(this.score)
                 return([this.nextAct, this.nextMiss, this.score]);
             }
             

@@ -2,13 +2,13 @@
 var risposta = false;
 
 export default {
-    name: 'lock',
+    name: 'hireoglyph',
     template: `
             <link rel="stylesheet" href="/Server-side/widgets/lock/lock.css">
             <div id="question"></div>
             <div class="lockContainer">
                 <div id="zero" class="lockDigitContainer digit0">
-                    <div class="lockDigit lockDigitPrev">9</div>
+                    <div class="lockDigit lockDigitPrev">\u13402 </div>
                     <div class="lockDigit lockDigitCur">0</div>
                     <div class="lockDigit lockDigitNext">1</div>
                 </div>

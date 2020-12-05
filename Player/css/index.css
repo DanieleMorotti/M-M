@@ -1,3 +1,13 @@
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 #bottomBtn {
     position:absolute;
     bottom: 2%;
@@ -8,12 +18,8 @@
    display: none;
 }
 
-#app {
-    margin-top: 5vh
-}
 
 .chatButton {
-    background-color: powderblue;
     color: rgb(51, 51, 51);
     font-size: 1rem;
     padding: 0.7rem 0.7rem;
@@ -25,7 +31,7 @@
 }
 
 
-/**/
+
 .overlay {
     height: 0%;
     width: 100%;
@@ -74,24 +80,24 @@
     right: 35px;
     }
   }
-  /**/
 
   #widgetNav {
-    /*  background-size: contain; */
     background-size:     cover;                    
     background-repeat:   no-repeat;
     background-position: center center;
-}
+  }
 
 
-#widgetBtn {
-  background-color: #adb5bd;
-  color: black;
-  font-size: 1rem;
-  padding: 0.4rem 0.4rem;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  text-align: center;
-  text-transform: uppercase;
-}
+  #widgetBtn {
+    background-color: #adb5bd;
+    color: black;
+    font-size: 1rem;
+    padding: 0.4rem 0.4rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  

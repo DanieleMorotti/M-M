@@ -8,8 +8,12 @@
   "introduction": "Devi muoverti nei dintorni e fare attenzione a tutto quello vedi, ad ogni movimento sospetto e ad ogni cosa fuori posto.",
   "conclusion": "Complimenti! Hai portato a termine la missione e impedito che i reperti fossero trafugati.",
   "firstActivity": {
-    "mission": [],
-    "activity": []
+    "mission": [
+      "0"
+    ],
+    "activity": [
+      "0"
+    ]
   },
   "missions": [
     {
@@ -35,12 +39,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "2"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "1"
+              ]
             }
           }
         },
@@ -64,12 +76,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "3"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "2"
+              ]
             }
           }
         },
@@ -79,7 +99,7 @@
           "setting": "Piano 2 - Sala 8",
           "instructions": "Tutta la missione verte sulla protezione di due reperti in particolare.",
           "question": "Due mummie sono state ritrovate completamente intatte e costituiscono una scoperta importantissima, quali sono?",
-          "answers": [],
+          "answers": "",
           "inputType": "text",
           "score": "75",
           "isActive": true,
@@ -87,12 +107,20 @@
           "waitMsg": "La tua risposta deve essere valutata per poter verificare il tuo grado di esperienza e procedere al completamento della missione.",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "3"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "3"
+              ]
             }
           }
         },
@@ -116,12 +144,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "0"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "0"
+              ]
             }
           }
         }
@@ -146,12 +182,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "1"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "1"
+              ]
             }
           }
         },
@@ -159,22 +203,30 @@
           "number": 1,
           "type": "valutabile",
           "setting": "Piano 2 - Sala 4",
-          "instructions": "\nCi sono cose che non sono come sembrano.. ",
+          "instructions": "Ci sono cose che non sono come sembrano.. ",
           "question": "Trova una finta mummia e fotografala",
-          "answers": [],
-          "inputType": "text",
+          "answers": "",
+          "inputType": "file",
           "score": "85",
           "isActive": true,
           "widget": "",
           "waitMsg": "Il reperto viene sottoposto ad un'attenta analisi per verificare che si tratti di un reperto autentico.",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "x"
+              ],
+              "nextActivity": [
+                "x"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "x"
+              ],
+              "nextActivity": [
+                "x"
+              ]
             }
           }
         }
@@ -183,7 +235,7 @@
     }
   ],
   "facilities": [
-    "Hai sventato un tentativo di furbo, bravo! Ora cerca di non attirare troppo i sospetti."
+    "Hai sventato un tentativo di furto, bravo! Ora cerca di non attirare troppo i sospetti."
   ],
   "difficulties": [
     "Qualcuno si sta facendo delle domande vendendoti ficcanasare in giro, fai attenzione!",
@@ -191,7 +243,7 @@
   ],
   "originalTitle": "MM - Mummie e Misteri",
   "device": "notebook",
-  "background": "",
+  "background": "pyramids.png",
   "widgetCss": "",
   "widgetJs": ""
 }

@@ -94,8 +94,8 @@ export default {
                         </div> 
                         <ul id="missionSaved">
                             <li v-for="(mission,index) in missions" :key="index">
-                                <label for="isActive" style="display:none">Seleziona l'attività se intendi renderla attiva</label>
-                                <input type="checkbox" id="isActive" name="isActive" :checked="mission.isActive" @click="mission.isActive = !mission.isActive" />&emsp;
+                                <label for="missActive" style="display:none">Seleziona l'attività se intendi renderla attiva</label>
+                                <input type="checkbox" id="missActive" name="missActive" :checked="mission.isActive" @click="mission.isActive = !mission.isActive" />&emsp;
                                 {{mission.name}}&emsp;
                                 <span class="icon-group">
                                     <i class="fas fa-cut" @click="currentMission = index" data-toggle="modal" data-target="#moveMissionModal" v-if="index != 0"></i>&nbsp;&nbsp;
@@ -104,7 +104,7 @@ export default {
                                 </span>
                                 <ul id="activitiesSaved" v-if="mission.activities.length != 0">
                                     <li v-for="(activity,ind) in mission.activities" :key="ind">
-                                        <input type="checkbox" name="isActive" :checked="activity.isActive" @click="activity.isActive = !activity.isActive" />&emsp;
+                                        <input type="checkbox" id="actActive" name="actActive" :checked="activity.isActive" @click="activity.isActive = !activity.isActive" />&emsp;
                                         Attività {{parseInt(activity.number) + 1}}&emsp;
                                         <span class="icon-group">
                                             <i class="fas fa-edit" @click="editActivity(ind,index)"></i>&nbsp;&nbsp;
@@ -638,11 +638,7 @@ export default {
                 }
                 
                 this.missions[this.currentMission].activities[this.currentActivity].score = this.value;
-             
-             /*   $('#activitiesForm h2').text(`Nuova attività`)
-                $('#saveActivity').prop("value", "Salva attività");
-                $('#chooseMission').show();
-                $('label[for="chooseMission"]').show(); */
+    
             }
             else {
                 let widgetValue = "";

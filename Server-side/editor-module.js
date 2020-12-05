@@ -4,7 +4,7 @@ const fs = require('fs-extra');
 const path = require('path');
 
 
-/*In questa maniera ogni errore non gestito viene gestito qui, brutto
+/* In questa maniera ogni errore non gestito viene gestito qui, brutto
 process.on('uncaughtException', function (err) {
 	console.log('Caught exception: ' + err);
 });*/

@@ -25,15 +25,3 @@
     color: #8c5d78;
 }
 
-#valutaModal {
-    background-color: black;
-    color: white;
-}
-
-.modal-header, .modal-footer {
-    border-color: #224161;
-}
-
-.modal-header button {
-    color: white
-}

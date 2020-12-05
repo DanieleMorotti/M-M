@@ -1,0 +1,52 @@
+{
+  "age": "6-10",
+  "groups": "1",
+  "title": "new",
+  "setting": "",
+  "description": "",
+  "introduction": "",
+  "conclusion": "",
+  "firstActivity": {
+    "mission": [],
+    "activity": []
+  },
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "figurativa",
+          "setting": "",
+          "instructions": "",
+          "question": "",
+          "answers": [],
+          "correctAns": "",
+          "inputType": "",
+          "score": 50,
+          "isActive": true,
+          "widget": "hieroglyph",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        }
+      ],
+      "isActive": true
+    }
+  ],
+  "facilities": [],
+  "difficulties": [],
+  "originalTitle": "",
+  "device": "notebook",
+  "background": "",
+  "widgetCss": "",
+  "widgetJs": ""
+}

@@ -45,9 +45,7 @@ export default {
                         }
                         else 
                             $("<p style='text-decoration: line-through'>"+risp+"</p>").insertBefore("#word");
-                    }
-                    
-                    
+                    }             
                 } 
             }) 
         },

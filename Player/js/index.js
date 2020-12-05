@@ -16,7 +16,7 @@ router.beforeEach((to, from, next) => {
     document.getElementById('scriptComp').src = `../../Server-side/devices/${story.device}/device.js`;
   } 
   else {
-    document.getElementById('stylesheetComp').href ='/Player/home.css';  
+    document.getElementById('stylesheetComp').href ='/Player/css/home.css';  
     document.getElementById('scriptComp').src = './js/home.js';
   }
 

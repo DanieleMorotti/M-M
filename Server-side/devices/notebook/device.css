@@ -1,15 +1,22 @@
+/* page corner flip: credits to Frankie Bushell on*/
+@font-face {
+    font-family: 'Ink';
+    src: url('../../fonts/inkfree.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 body {
     height: 100%;
-    font-family: 'Ubuntu', sans-serif;
     background-color: #6b1a39;
     background-image: none !important;
-    font-family: 'Ink Free', 'Tahoma', serif;
+    font-family: 'Ink',Georgia, 'Times New Roman', Times, serif;
 }
   
 .notebook{
     display: block;
     position: relative;
-    width: 60%;
     height: 80vh;
     width: 400px;
     background-color: #FFFFCC;
@@ -41,7 +48,8 @@ body {
     background-image: repeating-linear-gradient(#FFAB00 0px, #FFAB00 0px, transparent 1px, transparent 30px);
     background-repeat: repeat-y, no-repeat;
     outline: none;
-    padding-left: 20px;
+    padding: 20px;
+    font-weight: 700;
 }
 
 #info {
@@ -64,31 +72,9 @@ body {
     box-shadow: none !important;
 }
 
-#evaluableForm button {
-    background-color: transparent;
-    border-radius: 2px;
+#next:disabled {
+    color: grey;
 }
-
-#evaluableForm * {
-    margin-top: 2rem;
-}
-
-input {
-    background-color:transparent;
-    border: 1px solid transparent;
-    border-radius: 5px;
-    color: black;
-    width: 100%;
-}
-
-input, input:focus {
-    outline: none !important;
-}
-
-#answer {
-    margin-top: 2rem;
-}
-
 
 
 
@@ -133,4 +119,71 @@ input, input:focus {
 
 #toNext:hover {
     box-shadow: 10px 10px 12px rgba(31, 31, 31, 0.4);
+}
+
+
+
+/* css risposta multipla */
+.container {
+    cursor: pointer;
+}
+  
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark {
+    margin-left: 1rem;
+    position: absolute;
+    height: 1.5rem;
+    width: 1.5rem;
+    background-color:transparent;
+    border: 2px solid black;
+}
+  
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+  
+.checkmark:after {
+    top: 5px;
+    left: -4px;
+    width: 30px;
+    height: 5px;
+    border-radius: 30%;
+    background: black;
+    transform: rotate(-45deg);
+}
+
+/** /
+
+
+/* css risposta aperta */
+
+
+#evaluableForm button {
+    background-color: transparent;
+    border-radius: 2px;
+}
+
+#evaluableForm * {
+    margin-top: 2rem;
+}
+
+
+#answer {
+    margin-top: 2rem;
+    background-color:transparent;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: black;
 }

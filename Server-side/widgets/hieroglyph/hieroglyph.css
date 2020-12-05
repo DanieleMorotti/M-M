@@ -1,0 +1,17 @@
+table {
+    color: white;
+    margin: auto;
+    border-collapse: unset;
+}
+
+table td {
+    font-size: 5rem;
+}
+
+#answers td {
+    background-color: transparent;
+    padding: 3rem;
+    border: 1px solid white;
+    margin: 1rem;
+    border-radius: 1rem;
+}

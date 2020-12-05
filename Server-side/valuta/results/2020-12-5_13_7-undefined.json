@@ -1,0 +1,11 @@
+{
+  "date": "Sat Dec 05 2020 13:07:06 GMT+0100 (Central European Standard Time)",
+  "users": [
+    {
+      "id": "user1",
+      "assignedName": "user1",
+      "points": "457551",
+      "time_minutes": "4.2"
+    }
+  ]
+}

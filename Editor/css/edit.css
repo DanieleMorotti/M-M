@@ -118,6 +118,7 @@ input[type="text"], input[type="file"], textarea {
     overflow: auto;
     margin-top:1rem;
     color: white;
+    overflow: hidden;
 }
 
 input[type="text"]:disabled, textarea:disabled {

@@ -1,6 +1,10 @@
+#description{
+    color: black !important;
+}
 
 #storyDiv p {
-    margin-top: 10rem;
+    margin: 5%;
+    margin-top: 5rem;
     color: white;
 }
 
