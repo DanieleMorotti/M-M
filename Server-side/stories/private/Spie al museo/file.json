@@ -6,6 +6,8 @@
   "description": "Sei un agente della CIA in missione, sai che alcuni criminali si dovranno incontrare nel museo per organizzare un furto di opere d'arte. Il tuo obiettivo è quello di capire chi sono e di avvertire le autorità. In bocca al lupo e fai attenzione.",
   "introduction": "Sei appena entrato al museo, non hai idea di dove possano essere, inizia la tua visita come se fossi un turista qualunque, non dare nell'occhio.",
   "conclusion": "Ce l'hai fatta, sei riuscito a catturare i criminali e hai salvato numerose opere, la Francia e tutti noi te ne siamo grati!",
+  "missActive": "on",
+  "actActive": "on",
   "firstActivity": {
     "mission": [],
     "activity": []
@@ -107,6 +109,117 @@
           "score": "40",
           "isActive": true,
           "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 2,
+          "type": "valutabile",
+          "setting": "Ala Sully, piano terra, stanza 318",
+          "instructions": "Cerca una persona con i lineamenti caucasici, è la mente dietro all'organizzazione. Sicuramente sarà sorvegliato a distanza quindi dovresti riuscire ad identificarlo.",
+          "question": "Invia la foto di un animale sacro per gli egiziani presente nella stanza",
+          "answers": [],
+          "inputType": "file",
+          "score": "25",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "Bene, non ce n'era solo uno, ma hai scelto il mio preferito!",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        }
+      ],
+      "isActive": true
+    },
+    {
+      "name": "Missione 3",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "Ala Richelieu, piano terra, galleria \"grandi uomini\"",
+          "instructions": "Sei riuscito a vedere in lontananza l'uomo ma si sono accorti che qualcuno li sta seguendo, si sono divisi. Intanto i nostri tecnici sono riusciti ad intercettare una comunicazione, il luogo dell'incontro è la stanza 711.",
+          "question": "Quale grande illuminista francese è stato sepolto al Pantheon nel 1791?",
+          "answers": [
+            "Voltaire",
+            "Montesquieu",
+            "Rousseau"
+          ],
+          "correctAns": "Voltaire",
+          "inputType": "",
+          "score": 50,
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 1,
+          "type": "figurativa",
+          "setting": "Ala Sully, secondo piano, stanza 916",
+          "instructions": "Hai preso un cappellino e ti fingi una guida turistica per avvicinarti al punto d'incontro senza farti notare. Sei però rallentato dai turisti che ti chiedono informazioni perchè pensano che tu lo sia veramente...",
+          "question": "Il numero ordinale di Luigi XIV rappresentato in numeri romani. Ma lo zero è di troppo...",
+          "answers": [],
+          "correctAns": "115",
+          "inputType": "",
+          "score": 50,
+          "isActive": true,
+          "widget": "lock",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        }
+      ],
+      "isActive": true
+    },
+    {
+      "name": "Missione 4",
+      "activities": [
+        {
+          "number": 0,
+          "type": "domanda aperta",
+          "setting": "",
+          "instructions": "Sei riuscito a mettere K.O. alcuni criminali con dei dardi soporiferi, abbiamo contattato la polizia, sta arrivando al museo. Non abbassare la guardia perchè il loro capo potrebbe cercare di scappare.",
+          "question": "Cosa impersonifica la donna nel quadro \"La libertà guida il popolo\" di Delacroix?",
+          "answers": [],
+          "correctAns": "Libertà",
+          "inputType": "",
+          "score": "40",
+          "isActive": true,
+          "widget": "lock",
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
