@@ -1,0 +1,60 @@
+html,body{
+    height: 100%;
+    background-color: rgb(29, 27, 27);
+}
+
+body p, span {
+    color: white
+}
+
+
+#menu {
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    border-radius: .25rem;
+    margin: 5%;
+    margin-top: 5rem;
+    padding: 2rem;
+}
+
+#menu button {
+    margin: 0.5rem;
+    height: 5rem;
+    border-radius: 1rem;
+    border: 1px solid white;
+    font-size: 1.5rem;
+    box-shadow: 0px 0px 6px white;
+}
+
+#editor {
+    background-color: #ecae29;
+}
+
+#player {
+    background-color: #38809a;
+}
+
+#evaluator {
+    background-color: #19946b;
+}
+
+.icon-group{
+    transform: scale(2);
+    margin-right: 1em;
+    color: black;
+    pointer-events:none;
+}
+
+.icon-group:focus{
+    outline: none;
+    border: none
+}
+
+.icon-group i.fas{
+    cursor: grab;
+}
+
+
+
+

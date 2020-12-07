@@ -1,0 +1,229 @@
+{
+  "age": "10-14",
+  "groups": "2",
+  "title": "Il nome della rosa",
+  "setting": "Monastero medievale",
+  "description": "È la fine di novembre del 1327. Vi trovate in un antico monastero medievale per indagare su alcune morti avvenute in circostanze sospette. Il vostro compito è prestare attenzione a tutto ciò che udite o vedete e portare a termine le indagini prima che si verifichino altri \"incidenti\". Buona fortuna!",
+  "introduction": "Muovetevi con attenzione per il monastero, potreste incontrare diversi ostacoli ed avversità da superare.",
+  "conclusion": "Complimenti! Avete superato tutte le sfide e risolto il mistero che si celava tra queste mura.",
+  "firstActivity": {
+    "mission": [],
+    "activity": []
+  },
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "Siete all'ingresso del monastero.",
+          "instructions": "Inizialmente il motivo della vostro arrivo era quello di partecipare ad un convegno con i delegati della curia papale di Papa Giovanni XXII.",
+          "question": "Siete stati incaricati di sostenere le tesi pauperistiche dall'imperatore...",
+          "answers": [
+            "Carlo Magno",
+            "Ludovico IV",
+            "Ludovico II",
+            "Enrico VII"
+          ],
+          "correctAns": "Enrico VII",
+          "inputType": "",
+          "score": "30",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 1,
+          "type": "valutabile",
+          "setting": "Vi trovate in uno dei corridoi del monastero.",
+          "instructions": "Rinvenite un pezzo di pergamena con su scritta la seguente frase: \"Secretum finis Africae manus supra idolum age primum et septimum de quatuor\"",
+          "question": "Traducetela per riuscire ad entrare nella biblioteca.",
+          "answers": [],
+          "inputType": "text",
+          "score": "95",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "Se la vostra traduzione risulterà corretta, dovreste riuscire ad accedere..",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 2,
+          "type": "domanda aperta",
+          "setting": "Chiostro del monastero.",
+          "instructions": "Cercate di adottare un principio teorizzato dal teologo Guglielmo da Ockham, vostro contemporaneo, potrebbe aiutarvi con le indagini.",
+          "question": "Di che principio si tratta?",
+          "answers": [],
+          "correctAns": "rasoio di ockham",
+          "inputType": "",
+          "score": "75",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 3,
+          "type": "figurativa",
+          "setting": "Ala nord della biblioteca.",
+          "instructions": "Improvvisamente la porta si chiude alle vostre spalle, non dovreste trovarvi qui a ficcanasare in giro. Per lasciarvi uscire il bibliotecario vi sottopone un enigma.",
+          "question": "In girum imus nocte et consumimur igni",
+          "answers": [],
+          "correctAns": "fiaccole",
+          "inputType": "",
+          "score": "90",
+          "isActive": true,
+          "widget": "door",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        }
+      ],
+      "isActive": true
+    },
+    {
+      "name": "Missione 2",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "",
+          "instructions": "L'ordine al quale appartenete non è benvisto da alcuni.",
+          "question": "Quale ordine religioso si tratta?",
+          "answers": [
+            "Domenicano",
+            "Francescano",
+            "Dolciniano",
+            "Benedettino"
+          ],
+          "correctAns": "Benedettino",
+          "inputType": "",
+          "score": 50,
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 1,
+          "type": "scelta multipla",
+          "setting": "Vi trovate nell'ala est della biblioteca.",
+          "instructions": "Cercate disperatamente un libro dalla copertina rossa di cui vi hanno parlato e che potrebbe contenere informazioni importanti sul monastero e sui suoi passaggi segreti.",
+          "question": "Trovatelo e traducete l'ultima parola alla pagina 65.",
+          "answers": [],
+          "inputType": "",
+          "score": 50,
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 2,
+          "type": "scelta multipla",
+          "setting": "Vi trovate nell'infermeria.",
+          "instructions": "Notate l'assenza di diverse sostanze che ieri erano presenti, probabilmente contenti veleno. L'esame di alcuni cadaveri conferma, infatti, l'ipotesi di avvelenamento.",
+          "question": "Citate un famoso veleno di cui ha fatto uso anche Socrate",
+          "answers": [
+            "Arsenico",
+            "Cicuta",
+            "Stricnina",
+            "Cianuro"
+          ],
+          "correctAns": "Cianuro",
+          "inputType": "",
+          "score": "35",
+          "isActive": true,
+          "widget": "door",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        }
+      ],
+      "isActive": true
+    }
+  ],
+  "facilities": [
+    "L'abate del monastero vi informa dei fatti fornendovi molti indizi utili.",
+    "Finalmente scoprite una pista utile, seguitela!",
+    "L'erborista collabora con voi aiutandovi ad accertare le cause delle morti avvenute.",
+    "Finalmente avete libertà di movimento all'interno dell'abbazia.",
+    "Riuscite a decifrare l'enigma del labirinto."
+  ],
+  "difficulties": [
+    "Sembrate non è essere i benvenuti in questo luogo, fate attenzione!",
+    "Un altro omicidio è stato commesso... potrebbe non essere l'ultimo.",
+    "Nessuno vuole collaborare con voi.",
+    "Intraprendete una discussione su questioni teologiche, ma intanto il tempo scorre..",
+    "Vi vengono sottratte le lenti che utilizzate per leggere.. fate più attenzione!",
+    "Vi perdete nel labirinto... cercate di trovare un'uscita!",
+    "Un altro frate è sparito, nella sua cella viene trovato solo un panno sporco di sangue."
+  ],
+  "originalTitle": "Il nome della rosa",
+  "device": "notebook",
+  "background": "monastero.jpg",
+  "widgetCss": "",
+  "widgetJs": ""
+}

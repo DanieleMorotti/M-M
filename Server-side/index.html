@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="it">
+	<head>
+		<title>Home</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+        <link rel="stylesheet" href="/Server-side/index.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+        crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+        <script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
+        
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>	
+
+        <script type="text/javascript">
+            var publicStories = [];
+            $(document).ready(function() {
+               $.get( "/Editor/titles", (res) => {
+                    for(let i=0; i < res.public.length;i++){
+                        publicStories.push(res.public[i]);
+                    }
+                });
+           }); 
+
+            function load(url){
+                window.open(url);
+            }
+
+            function openMenu() {
+                console.log(publicStories)
+                $("#storiesContent").html("");
+                for(i = 0; i < publicStories.length; i++) {
+                    $("#storiesContent").append(`<a href="/Play?story=${publicStories[i].title}" target="_blank">${publicStories[i].title}</a><br>`);
+                }
+            }
+
+        </script>
+	</head>
+
+	<body>
+		<div id="menu">
+            <button id="editor" class="menuBtn" onclick="load('/Editor')">
+                Editor
+                <span class="icon-group">
+                    <i tabindex="0" class="fas fa-pen-fancy" title="Editor"></i>
+                </span>
+            </button>
+            <button type="button" id="player" class="menuBtn collapsible" data-toggle="modal" data-target="#storiesModal">
+                Player
+                <span class="icon-group dropbtn">
+                    <i tabindex="0" class="fas fa-gamepad" title="Player"></i>
+                </span>
+            </button>
+            <div class="content"></div>
+            <button id="evaluator" class="menuBtn" onclick="load('/Valutatore')">
+                Evaluator
+                <span class="icon-group">
+                    <i tabindex="0" class="fas fa-clipboard" title="Evaluator"></i>
+                </span>
+            </button>
+        </div>
+
+
+        <div class="modal fade" id="storiesModal" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div id="storiesContent"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+        <script>
+            $(document).on('click','#player', () =>{
+                openMenu();
+            });
+        </script>
+	</body>
+</html>

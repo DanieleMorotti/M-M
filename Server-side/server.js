@@ -1,5 +1,6 @@
 
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser')
 var http = require('http');
@@ -23,6 +24,11 @@ app.use('/Editor',editor);
 app.use('/Play',player);
 app.use('/Valutatore',valutatore);
 
+
+app.get('/',(req,res) =>{
+	res.status(200);
+	res.sendFile(path.join(__dirname,"index.html"));
+});
 
 server.on('error', (err) => {
   console.error(err);
