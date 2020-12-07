@@ -193,7 +193,7 @@ export default {
                                 <p v-if="answerList.length">Seleziona la risposta corretta</p>
                                 <ul id="answers">
                                     <li v-for="(answer,index) in answerList" :key="index">
-                                    <input type="radio" :id="index" name="answer" :value="answer" checked required>
+                                    <input type="radio" :id="index" name="answer" :value="answer" required :checked="missions[currentMission].activities[currentActivity].correctAns===answer">
                                     <label :for="index"> {{answer}} </label>
                                     &nbsp;&nbsp;
                                     <i class="fas fa-trash-alt" @click="answerList.splice(index,1)"></i>
@@ -721,9 +721,12 @@ export default {
                 // resume activity's type and answers list
                 this.type = this.missions[misInd].activities[index].type;
                 $('#answer').prop("value", "");
-                if(this.type == 'scelta multipla') this.answerList = this.missions[misInd].activities[index].answers;
+                if(this.type == 'scelta multipla') {
+                    console.log(this.missions[misInd].activities[index].correctAns)
+                    this.answerList = this.missions[misInd].activities[index].answers;
+                }
                 else $('#answer').prop("value", this.missions[misInd].activities[index].correctAns);
-
+                
                 if(this.type == 'valutabile') {
                     let val = this.missions[misInd].activities[index].inputType;
                     $(`#inputObject li input[value='${val}']`).prop("checked", true);
@@ -731,7 +734,7 @@ export default {
                 }
                 //resume activity's score
                 this.value = this.missions[misInd].activities[index].score;
-                 
+
                 if(this.missions[misInd].activities[index].widget) {
                     $("#buttonWidget").prop("value","Cambia");
                     $("#infoWidget").text("Hai scelto il widget: " + this.missions[misInd].activities[index].widget);
