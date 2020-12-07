@@ -3,11 +3,9 @@
   "groups": "1",
   "title": "Spie al museo",
   "setting": "Parigi",
-  "description": "Sei un agente della CIA in missione, sai che alcuni criminali si dovranno incontrare nel museo per organizzare un furto di opere d'arte. Il tuo obiettivo è quello di capire chi sono e di avvertire le autorità. In bocca al lupo e fai attenzione.",
-  "introduction": "Sei appena entrato al museo, non hai idea di dove possano essere, inizia la tua visita come se fossi un turista qualunque, non dare nell'occhio.",
+  "description": "Sei un agente della CIA in missione, sai che alcuni criminali si dovranno incontrare nel museo per organizzare un furto di opere d'arte. Il tuo obiettivo è quello di trovarli e di avvertire le autorità. In bocca al lupo e fai attenzione.",
+  "introduction": "Uno dei criminali si è pentito e ci darà informazioni sulla sala da raggiungere solamente se saprai rispondere ad alcuni quesiti, altrimenti ci impiegheremo un po' di più a trovarli.",
   "conclusion": "Ce l'hai fatta, sei riuscito a catturare i criminali e hai salvato numerose opere, la Francia e tutti noi te ne siamo grati!",
-  "missActive": "on",
-  "actActive": "on",
   "firstActivity": {
     "mission": [],
     "activity": []
@@ -125,9 +123,9 @@
           "number": 2,
           "type": "valutabile",
           "setting": "Ala Sully, piano terra, stanza 318",
-          "instructions": "Cerca una persona con i lineamenti caucasici, è la mente dietro all'organizzazione. Sicuramente sarà sorvegliato a distanza quindi dovresti riuscire ad identificarlo.",
+          "instructions": "Il nostro aggancio ha detto di cercare una persona con i lineamenti caucasici, è la mente dietro all'organizzazione. Sarà sicuramente protetto, quindi dovresti notare alcune guardie intorno a lui.",
           "question": "Invia la foto di un animale sacro per gli egiziani presente nella stanza",
-          "answers": [],
+          "answers": "",
           "inputType": "file",
           "score": "25",
           "isActive": true,
@@ -154,7 +152,7 @@
           "number": 0,
           "type": "scelta multipla",
           "setting": "Ala Richelieu, piano terra, galleria \"grandi uomini\"",
-          "instructions": "Sei riuscito a vedere in lontananza l'uomo ma si sono accorti che qualcuno li sta seguendo, si sono divisi. Intanto i nostri tecnici sono riusciti ad intercettare una comunicazione, il luogo dell'incontro è la stanza 711.",
+          "instructions": "Sei riuscito a vedere in lontananza l'uomo ma si sono accorti che qualcuno li sta seguendo, si sono divisi. Il criminale che ci aiuta è soddisfatto delle risposte che gli sono state fornite. Ci ha detto la stanza: 711.",
           "question": "Quale grande illuminista francese è stato sepolto al Pantheon nel 1791?",
           "answers": [
             "Voltaire",
@@ -182,9 +180,9 @@
           "number": 1,
           "type": "figurativa",
           "setting": "Ala Sully, secondo piano, stanza 916",
-          "instructions": "Hai preso un cappellino e ti fingi una guida turistica per avvicinarti al punto d'incontro senza farti notare. Sei però rallentato dai turisti che ti chiedono informazioni perchè pensano che tu lo sia veramente...",
+          "instructions": "Nonostante tu sappia già la stanza, continuerà a porti domande per verificare che la situazione sia sotto controllo. Intanto prendi un cappellino e ti fingi una guida turistica per avvicinarti al punto d'incontro senza farti notare.",
           "question": "Il numero ordinale di Luigi XIV rappresentato in numeri romani. Ma lo zero è di troppo...",
-          "answers": [],
+          "answers": "",
           "correctAns": "115",
           "inputType": "",
           "score": 50,
@@ -211,10 +209,10 @@
         {
           "number": 0,
           "type": "domanda aperta",
-          "setting": "",
+          "setting": "Ala Sully, primo piano, stanza 340",
           "instructions": "Sei riuscito a mettere K.O. alcuni criminali con dei dardi soporiferi, abbiamo contattato la polizia, sta arrivando al museo. Non abbassare la guardia perchè il loro capo potrebbe cercare di scappare.",
           "question": "Cosa impersonifica la donna nel quadro \"La libertà guida il popolo\" di Delacroix?",
-          "answers": [],
+          "answers": "",
           "correctAns": "Libertà",
           "inputType": "",
           "score": "40",
@@ -231,15 +229,74 @@
               "nextActivity": []
             }
           }
+        },
+        {
+          "number": 1,
+          "type": "scelta multipla",
+          "setting": "Ala Denon, primo piano, stanza 420",
+          "instructions": "Ci siamo, sei riuscito a rintracciare il capo dei criminali, abbiamo allertato le autorità locali e stanno già arrivando al museo. Controllalo a distanza e nel caso in cui cerchi di scappare fermalo.",
+          "question": "Per cosa era usato dagli etruschi il 'kline' presente nella scultura 'Il sarcofago degli sposi'?",
+          "answers": [
+            "Dormire, cenare e come letto di morte",
+            "Per dormire e come mobile",
+            "Come tavolo per mangiare"
+          ],
+          "correctAns": "Dormire, cenare e come letto di morte",
+          "inputType": "",
+          "score": "40",
+          "isActive": true,
+          "widget": "lock",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 2,
+          "type": "domanda aperta",
+          "setting": "Ala Denon, primo piano, stanza 711",
+          "instructions": "Finalmente sono arrivate le autorità e hanno catturato i criminali, hai fatto un grande lavoro. Il nostro contatto ovviamente si è dileguato, ma ha voluto lasciarti un ultimo quesito per salutarti.",
+          "question": "Che tecnica è stata usata per dipingere il sorriso della donna nella Gioconda?",
+          "answers": [],
+          "correctAns": "Sfumato",
+          "inputType": "",
+          "score": 50,
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
         }
       ],
       "isActive": true
     }
   ],
-  "facilities": [],
-  "difficulties": [],
+  "facilities": [
+    "Grazie alla tua bravura, il contatto ci sta fornendo informazioni importanti",
+    "Viste le numerose risposte positive, arriveremo in un batter d'occhio ai criminali",
+    "Sappiamo che la sala è libera, puoi continuare la tua ricerca senza problemi"
+  ],
+  "difficulties": [
+    "Il contatto ci ha fornito la stanza sbagliata perchè la tua risposta non l'ha soddisfatto",
+    "Devi cambiare stanza perchè la scorta dell'organizzazione ha iniziato a cercarti",
+    "Una comitiva di turisti italiani ti sta ostacolando il passaggio, questo ti farà perdere un po' di tempo"
+  ],
   "originalTitle": "Spie al museo",
-  "device": "smartphone",
   "background": "",
   "widgetCss": "",
   "widgetJs": ""
