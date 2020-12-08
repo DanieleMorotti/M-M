@@ -5,6 +5,7 @@ export default {
     name: 'door',
     template: `
             <link rel="stylesheet" href="/Server-side/widgets/door/door.css">
+            <p id="infoPara"> Trascina il foglio verso l'alto per passarlo sotto la porta. </p>
             <div id="paper">
                 <input type="text" id="word" />
                 <br>
@@ -12,7 +13,8 @@ export default {
     `,
     methods: {
         render(question, answer) {
-             $('#word').attr("placeholder", question);
+            $('#infoPara').prepend(question + "<br>");
+             $('#word').attr("placeholder", "Inserisci risposta");
             var pos = $("#paper").position();
             pos.left = 50;
 

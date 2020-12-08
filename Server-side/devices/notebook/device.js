@@ -9,14 +9,14 @@ export default {
         return{
 			storyItem: null,
 			missions: [],
-			performedMissions: [],
 			currentMission: 0,
 			currentActivity: 0,
+			instruction: true,
+			question: false,
 			verify: false,
 			obj: null,
 			over: false,
 			myName: null,
-			points: null,
 			whenStarted: null
         }
 	},
@@ -45,55 +45,43 @@ export default {
 		},
 		next() {
 			if(this.over) {
-				bus.$emit('over','true');
-
-				//communicate to the server that i finished the story
-				$.ajax({
-					type: "POST",
-					url: '/Play/storyFinished',
-					data: {
-						whenStarted: this.whenStarted,
-						points: this.points,
-						assignedName: this.myName
-					},
-					success: (data) =>{
-						console.log("Comunicato che la partita è finita correttamente");
-					},
-					error: function (e) {
-						console.log("error in story finished",e);
-					}
-				})
-
+				bus.$emit('over','true'); 
 				$('#toHome').click();
 			}
 			else {
-				if(!this.verify) {
-					this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
-					render.methods.visualize(this.type, this.currentMission, this.currentActivity);
-					this.verify = true;
-				}
-				else {
+				if(this.instruction) {
 					if(this.obj) {
 						if(this.obj[0] != 'x') {
 							this.currentActivity = this.obj[0]; this.currentMission = this.obj[1];
-							this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
-							render.methods.visualize(this.type, this.currentMission, this.currentActivity);
 						}
 						else {
 							$('#text').html("");
 							$('#text').append(storyItem.conclusion);
-							$('#text').append(`<br><br><p>Congratulazioni hai totalizzato ${this.obj[2]} punti!`);
-							this.points = this.obj[2];
+							$('#text').append(`<br><br><p>Congratulazioni hai totalizzato ${this.obj[2]} punti!`)
 							this.over = true;
 						}
 						this.obj = null;
 					}
-					else {
-						this.obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
+					if(!this.over) {
+						$('#text').html("");
+						$('#text').append(this.missions[this.currentMission].activities[this.currentActivity].setting);
+						$('#text').append('<br>'+this.missions[this.currentMission].activities[this.currentActivity].instructions);				
+						this.question = true;
+						this.instruction = false;
 					}
 				}
+				else if(this.question) {
+					this.type = this.missions[this.currentMission].activities[this.currentActivity].type;
+					render.methods.visualize(this.type, this.currentMission, this.currentActivity);
+					this.verify = true;
+					this.question = false;
+				}
+				else if(this.verify) {
+					this.obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
+					this.instruction = true;
+					this.verify = false;
+				}
 			}
-			
 		}
 	},
 	activated() {
@@ -108,7 +96,7 @@ export default {
 			url: '/Play/getNewName',
 			success: (data) =>{
 				if(data)this.myName = data;
-				$('#text').text('ciao '+this.myName+'\n'+storyItem.introduction);
+				$('#text').html('<p>Ciao '+ this.myName +',<br>'+storyItem.introduction+'</p>');
 
 			},
 			error: function (e) {

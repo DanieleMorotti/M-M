@@ -49,7 +49,6 @@ export default {
                 success: (data) =>{
                     let interval = setInterval(()=>{
                         if(this.data) {
-                            console.log(this.data);
                             $('#next').attr("disabled",false);
                             clearInterval(interval);
                         }

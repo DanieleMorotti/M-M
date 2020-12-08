@@ -9,7 +9,6 @@ export default {
         return{
 			storyItem: null,
 			missions: [],
-			performedMissions: [],
 			currentMission: 0,
 			currentActivity: 0,
 			instruction: true,

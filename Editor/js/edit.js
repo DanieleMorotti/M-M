@@ -516,18 +516,19 @@ export default {
             else {
                 document.getElementById("pathNav").style.width = "100%";
                 this.currentGroup = index;
-                
+
+                console.log('first',this.first)
+                let firstMiss = this.first.mission[index];
+                let firstAct = this.first.activity[index];
+                if(firstMiss) 
+                    $(`#firstAct option[value='${firstMiss}/${firstAct}']`).prop('selected', true);
+                else 
+                    $(`#firstAct option[value='-/-']`).prop('selected', true);
+
                 // resume activity's next tasks
                 for(let i=0; i < this.missions.length; i++) {
                     for(let j=0; j < this.missions[i].activities.length; j++) {
                         let activity = this.missions[i].activities[j];
-
-                        let firstMiss = this.first.mission[index];
-                        let firstAct = this.first.activity[index];
-                        if(firstMiss) 
-                            $(`#firstAct option[value='${firstMiss}/${firstAct}']`).prop('selected', true);
-                        else 
-                            $(`#firstAct option[value='-/-']`).prop('selected', true);
 
                         let missNum1 = activity.goTo.ifCorrect.nextMission[index];
                         let actNum1 = activity.goTo.ifCorrect.nextActivity[index];
@@ -1003,6 +1004,9 @@ export default {
                 }
                 else if(item[0] == "groups") {
                     this.groupNum = item[1];
+                    for(let i = 1; i < this.groupNum; i++) {
+                        this.groups.push('Gruppo ' + (i+1))
+                    }
                 }
                 else if(item[0] == "firstActivity") {
                     this.first.mission = item[1].mission;
@@ -1062,8 +1066,9 @@ export default {
 
             let firstId ;
             if(this.first.mission) 
-                firstId = this.first.mission.toString() + this.first.activity
+                firstId = this.first.mission[group].toString() + this.first.activity[group];
             
+            console.log('group', group, 'first', firstId)
             this.missions.map(item =>{
                 if(item.isActive) {
                     item.activities.map(act => {
@@ -1074,7 +1079,6 @@ export default {
                             if(indMiss.toString()+indAct == firstId) 
                                 graph.links.push({source: "start", target: firstId, color: 'white', x1:0, y1:0, x2:0, y2:0});
 
-                            console.log(correct.nextMission[group],this.missions[correct.nextMission[group]]);
                             if(correct.nextActivity[group] && correct.nextActivity[group]!== '-' ) {
                                 if(correct.nextActivity[group] == 'x') {
                                     graph.links.push({source: indMiss.toString()+indAct,target: 'end', color: 'green', x1:0, y1:0, x2:0, y2:0});

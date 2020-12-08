@@ -7,8 +7,14 @@
   "introduction": "Muovetevi con attenzione per il monastero, potreste incontrare diversi ostacoli ed avversità da superare.",
   "conclusion": "Complimenti! Avete superato tutte le sfide e risolto il mistero che si celava tra queste mura.",
   "firstActivity": {
-    "mission": [],
-    "activity": []
+    "mission": [
+      "0",
+      "0"
+    ],
+    "activity": [
+      "0",
+      "1"
+    ]
   },
   "missions": [
     {
@@ -34,12 +40,24 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0",
+                "0"
+              ],
+              "nextActivity": [
+                "2",
+                "2"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0",
+                "0"
+              ],
+              "nextActivity": [
+                "1",
+                "2"
+              ]
             }
           }
         },
@@ -57,12 +75,24 @@
           "waitMsg": "Se la vostra traduzione risulterà corretta, dovreste riuscire ad accedere..",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0",
+                "0"
+              ],
+              "nextActivity": [
+                "2",
+                "2"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0",
+                "0"
+              ],
+              "nextActivity": [
+                "2",
+                "0"
+              ]
             }
           }
         },
@@ -81,12 +111,24 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0",
+                "0"
+              ],
+              "nextActivity": [
+                "3",
+                "3"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0",
+                "0"
+              ],
+              "nextActivity": [
+                "3",
+                "3"
+              ]
             }
           }
         },
@@ -105,12 +147,24 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1",
+                "1"
+              ],
+              "nextActivity": [
+                "1",
+                "1"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1",
+                "1"
+              ],
+              "nextActivity": [
+                "0",
+                "0"
+              ]
             }
           }
         }
@@ -132,45 +186,70 @@
             "Dolciniano",
             "Benedettino"
           ],
-          "correctAns": "Benedettino",
+          "correctAns": "Francescano",
           "inputType": "",
           "score": 50,
           "isActive": true,
-          "widget": "",
+          "widget": "door",
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1",
+                "1"
+              ],
+              "nextActivity": [
+                "1",
+                "1"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1",
+                "1"
+              ],
+              "nextActivity": [
+                "1",
+                "1"
+              ]
             }
           }
         },
         {
           "number": 1,
-          "type": "scelta multipla",
+          "type": "domanda aperta",
           "setting": "Vi trovate nell'ala est della biblioteca.",
           "instructions": "Cercate disperatamente un libro dalla copertina rossa di cui vi hanno parlato e che potrebbe contenere informazioni importanti sul monastero e sui suoi passaggi segreti.",
-          "question": "Trovatelo e traducete l'ultima parola alla pagina 65.",
-          "answers": [],
+          "question": "Alla pagina 120 è citato un libro di un famoso matematico arabo, qual è il suo nome?",
+          "answers": "",
           "inputType": "",
           "score": 50,
           "isActive": true,
-          "widget": "",
+          "widget": "door",
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1",
+                "1"
+              ],
+              "nextActivity": [
+                "2",
+                "2"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1",
+                "1"
+              ],
+              "nextActivity": [
+                "2",
+                "2"
+              ]
             }
-          }
+          },
+          "correctAns": " al khwarizmi"
         },
         {
           "number": 2,
@@ -184,7 +263,7 @@
             "Stricnina",
             "Cianuro"
           ],
-          "correctAns": "Cianuro",
+          "correctAns": "Cicuta",
           "inputType": "",
           "score": "35",
           "isActive": true,
@@ -192,12 +271,24 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "x",
+                "x"
+              ],
+              "nextActivity": [
+                "x",
+                "x"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "x",
+                "x"
+              ],
+              "nextActivity": [
+                "x",
+                "x"
+              ]
             }
           }
         }

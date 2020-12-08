@@ -89,11 +89,11 @@ body {
 
 
   #widgetBtn {
-    background-color: #adb5bd;
+    background-color: transparent;
+    border-radius: 2px;
     color: black;
     font-size: 1rem;
     padding: 0.4rem 0.4rem;
-    border: none;
     cursor: pointer;
     border-radius: 5px;
     text-align: center;
