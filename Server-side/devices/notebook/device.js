@@ -17,7 +17,8 @@ export default {
 			obj: null,
 			over: false,
 			myName: null,
-			whenStarted: null
+			whenStarted: null,
+			points: 0
         }
 	},
 	template: ` 
@@ -45,6 +46,22 @@ export default {
 		},
 		next() {
 			if(this.over) {
+				//communicate to the server that i finished the story
+				$.ajax({
+						type: "POST",
+						url: '/Play/storyFinished',
+						data: {
+							whenStarted: this.whenStarted,
+							points: this.points,
+							assignedName: this.myName
+						},
+						success: (data) =>{
+							console.log("Comunicato che la partita è finita correttamente");
+						},
+						error: function (e) {
+							console.log("error in story finished",e);
+						}
+				})
 				bus.$emit('over','true'); 
 				$('#toHome').click();
 			}
@@ -58,6 +75,7 @@ export default {
 							$('#text').html("");
 							$('#text').append(storyItem.conclusion);
 							$('#text').append(`<br><br><p>Congratulazioni hai totalizzato ${this.obj[2]} punti!`)
+							this.points = this.obj[2];
 							this.over = true;
 						}
 						this.obj = null;
