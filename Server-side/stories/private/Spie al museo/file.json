@@ -7,8 +7,12 @@
   "introduction": "Uno dei criminali si è pentito e ci darà informazioni sulla sala da raggiungere solamente se saprai rispondere ad alcuni quesiti, altrimenti ci impiegheremo un po' di più a trovarli.",
   "conclusion": "Ce l'hai fatta, sei riuscito a catturare i criminali e hai salvato numerose opere, la Francia e tutti noi te ne siamo grati!",
   "firstActivity": {
-    "mission": [],
-    "activity": []
+    "mission": [
+      "0"
+    ],
+    "activity": [
+      "0"
+    ]
   },
   "missions": [
     {
@@ -33,12 +37,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "1"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "0"
+              ]
             }
           }
         },
@@ -57,12 +69,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "0"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "1"
+              ]
             }
           }
         }
@@ -86,12 +106,20 @@
           "waitMsg": "Era solo un turista inglese per fortuna! Puoi continuare la missione",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "1"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "2"
+              ]
             }
           }
         },
@@ -110,12 +138,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "2"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "2"
+              ],
+              "nextActivity": [
+                "0"
+              ]
             }
           }
         },
@@ -133,12 +169,20 @@
           "waitMsg": "Bene, non ce n'era solo uno, ma hai scelto il mio preferito!",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "2"
+              ],
+              "nextActivity": [
+                "0"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "1"
+              ]
             }
           }
         }
@@ -167,12 +211,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "2"
+              ],
+              "nextActivity": [
+                "1"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "3"
+              ],
+              "nextActivity": [
+                "0"
+              ]
             }
           }
         },
@@ -191,12 +243,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "3"
+              ],
+              "nextActivity": [
+                "0"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "3"
+              ],
+              "nextActivity": [
+                "1"
+              ]
             }
           }
         }
@@ -221,12 +281,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "3"
+              ],
+              "nextActivity": [
+                "1"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "2"
+              ],
+              "nextActivity": [
+                "1"
+              ]
             }
           }
         },
@@ -249,12 +317,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "3"
+              ],
+              "nextActivity": [
+                "2"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "3"
+              ],
+              "nextActivity": [
+                "2"
+              ]
             }
           }
         },
@@ -273,12 +349,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "x"
+              ],
+              "nextActivity": [
+                "x"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "x"
+              ],
+              "nextActivity": [
+                "x"
+              ]
             }
           }
         }
