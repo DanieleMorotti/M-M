@@ -1,0 +1,12 @@
+{
+  "date": "Wed Dec 09 2020 18:49:13 GMT+0100 (Central European Standard Time)",
+  "story": "Spie al museo",
+  "users": [
+    {
+      "id": "user1",
+      "assignedName": "user1",
+      "points": "36",
+      "time_minutes": "3.3"
+    }
+  ]
+}
