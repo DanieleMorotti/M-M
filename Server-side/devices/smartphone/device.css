@@ -136,9 +136,10 @@ body {
 
 /* css risposta aperta */
 
-#evaluableForm input {
-    background-color:rgb(51, 61, 63);   
-    border: 1px solid rgb(255, 225, 160);
+#evaluableForm input, #answer {
+    margin-top: 1rem;
+    background-color: transparent;
+    border: 1px solid rgb(255, 225, 255,0.6);
     border-radius: 5px;
     color: white;
 }
@@ -150,14 +151,6 @@ body {
 }
 
 #evaluableForm * {
-    margin-top: 1rem;
-}
-
-#answer {
-    background-color: transparent;
-    border: 1px solid rgb(255, 225, 255,0.6);
-    border-radius: 5px;
-    color: white;
     margin-top: 1rem;
 }
 

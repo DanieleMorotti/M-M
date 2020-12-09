@@ -22,7 +22,7 @@ export default {
         }
 	},
 	template: `
-	<div>
+	<div style="margin-top: 2rem;">
 	<div class="device">
         <div id="dettaglio">
             <div id="sensore"></div>
@@ -105,8 +105,10 @@ export default {
 				}
 				else if(this.verify) {
 					this.obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
-					this.instruction = true;
-					this.verify = false;
+					if(this.obj) {
+						this.instruction = true;
+						this.verify = false;
+					}
 				}
 			}
 		}
