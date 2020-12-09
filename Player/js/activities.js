@@ -21,7 +21,8 @@ export default {
             activity: 0,
             servSent: null,
             data: null,
-            groupNum: 0
+            groupNum: 0,
+            idInterval: null
         }
     },
     methods: {
@@ -96,21 +97,10 @@ export default {
             }
             else {  //type figurative 
                 $('#text').html("");
-             //   $('#text').append(this.missions[mission].activities[activity].instructions);
+
                 $('#text').append(`<br><button id="widgetBtn">Widget</button>`);
                 let widget = this.missions[mission].activities[activity].widget;
-                
-                $.ajax({
-                    url: `/Server-side/widgets/${widget}/${widget}.jpg`,
-                    type: 'GET',
-                    success: function(data){ 
-                        $('#widgetNav').css('background-image', `url("/Server-side/widgets/${widget}/${widget}.jpg")`);     
-                    },
-                    error: function(){
-                        $('#widgetNav').css('background-image', 'none');     
-                    }
-                })
-         
+                        
                 let question = this.missions[mission].activities[activity].question;
                 let correctAns = this.missions[mission].activities[activity].correctAns;
 
@@ -156,8 +146,8 @@ export default {
             }
             /* if user didn't answered */
             else if(type == "domanda aperta" && $("#answer").val() == "") {
-                $('#text').html("");
-                $('#text').append('<p style="margin-top:1rem">Inserisci una risposta!</p>')
+                if($("#text > p").text().indexOf('Inserisci'))
+                    $('#text').append('<p style="margin-top:1rem">Inserisci una risposta!</p>')
                 return(false)
             }
             /* if answer is incorrect */
@@ -176,11 +166,14 @@ export default {
                 if (type == "figurativa") 
                     $('#widget').html("");
         
-                console.log(this.score)
                 return([this.nextAct, this.nextMiss, this.score]);
             }
             
         }, 
+
+        stopUpdatePosition() {
+            clearInterval(this.idInterval);
+        },
         initialize() {
             let storyItem = JSON.parse(localStorage.getItem("story"));
             this.groupNum = 0;
@@ -204,7 +197,7 @@ export default {
                     document.getElementById("widgetNav").style.height = "100%";
             });
             //to update the server about my current position
-            setInterval(() => {                
+            this.idInterval = setInterval(() => {                
                 $.ajax({
                     type: "POST",
                     url: '/Play/updatePlayerPosition',

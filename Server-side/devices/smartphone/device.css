@@ -6,6 +6,7 @@ body {
     background-image: none !important;
 }
   
+/* css dispositivo */
 .device {
     margin-left:auto;
     margin-right:auto;
@@ -119,25 +120,21 @@ body {
     height: 60px;
 }
 
-#answers label {
-    cursor:pointer;
+/**/
+
+/* css risposta multipla */
+.answer-label {
+    cursor: pointer;
+}
+  
+.answer-label input {
+    float: left;
+    padding-top: 1rem;
+    margin: 5px;
 }
 
-#answers input {
-    display:none;
-}
 
-#answers label {
-    width: 100%;
-    position:relative;
-    border-radius: 4px;
-    background-color: transparent;
-}
-
-#answers input:checked + label {
-    background-color: #f3c93f;
-}
-
+/* css risposta aperta */
 
 #evaluableForm input {
     background-color:rgb(51, 61, 63);   
@@ -157,8 +154,8 @@ body {
 }
 
 #answer {
-    background-color:rgb(51, 61, 63);
-    border: 1px solid rgb(255, 225, 160);
+    background-color: transparent;
+    border: 1px solid rgb(255, 225, 255,0.6);
     border-radius: 5px;
     color: white;
     margin-top: 1rem;

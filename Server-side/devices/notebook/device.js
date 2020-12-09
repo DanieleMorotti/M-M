@@ -25,9 +25,8 @@ export default {
 	<div>
         <div class="notebook">
             <div class="note">
-                <div id="text"> </div>
-				<!--<button id="next" @click="next"> &rarr; </button> -->
-				<a href="#" id="toNext"><button id="next" @click="next" class="button-text">&rarr;</button></a>
+                <div id="text"></div>
+				<a id="toNext"><button id="next" @click="next" class="button-text">&rarr;</button></a>
             </div>
 		</div>
 		
@@ -46,6 +45,7 @@ export default {
 		},
 		next() {
 			if(this.over) {
+				render.methods.stopUpdatePosition();
 				//communicate to the server that i finished the story
 				$.ajax({
 						type: "POST",

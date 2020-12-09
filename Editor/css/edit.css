@@ -151,6 +151,10 @@ button, #buttonGraph, input[type="button"],input[type="submit"] {
     background-color: #bd6d12;
 }
 
+#buttonWidget:disabled {
+    background-color: grey;
+}
+
 
 #submitBtn {
     padding: 0.5rem 0.7rem;

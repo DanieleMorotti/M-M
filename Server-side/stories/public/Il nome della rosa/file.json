@@ -167,6 +167,30 @@
               ]
             }
           }
+        },
+        {
+          "number": 4,
+          "type": "domanda aperta",
+          "setting": "Siete in biblioteca.",
+          "instructions": "Siete arrivati quasi in fondo, ora sapete la causa di tutte queste morti, resta solo da scoprire il colpevole.",
+          "question": "A causa di quale libro di Aristotele sono stati commessi gli omicidi?",
+          "answers": [],
+          "correctAns": "poetica",
+          "inputType": "",
+          "score": "90",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
         }
       ],
       "isActive": true
@@ -294,6 +318,36 @@
         }
       ],
       "isActive": true
+    },
+    {
+      "name": "Missione 3",
+      "activities": [
+        {
+          "number": 0,
+          "type": "domanda aperta",
+          "setting": "Vi trovate nel refettorio.",
+          "instructions": "Durante il pranzo, qualcuno vi interroga sulla vostra passata attività di inquisitori.",
+          "question": "A partire da che anno vengono stabiliti dei veri e propri tribunali inquisitori?",
+          "answers": [],
+          "correctAns": "1231",
+          "inputType": "",
+          "score": "80",
+          "isActive": true,
+          "widget": "lock",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        }
+      ],
+      "isActive": true
     }
   ],
   "facilities": [
@@ -301,7 +355,8 @@
     "Finalmente scoprite una pista utile, seguitela!",
     "L'erborista collabora con voi aiutandovi ad accertare le cause delle morti avvenute.",
     "Finalmente avete libertà di movimento all'interno dell'abbazia.",
-    "Riuscite a decifrare l'enigma del labirinto."
+    "Riuscite a decifrare l'enigma del labirinto.",
+    "Trovate il catalogo dei libri contenuti nella biblioteca, attenti a non perderlo!"
   ],
   "difficulties": [
     "Sembrate non è essere i benvenuti in questo luogo, fate attenzione!",

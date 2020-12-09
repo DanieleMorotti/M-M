@@ -13,9 +13,14 @@
 }
 
 .card {
-    background-color: #c990b1;
+    background-color: #ffc107;
     color: #5d1039;
     min-width: 250px;
+    font-weight: 600;
+}
+
+.card-body a {
+    text-decoration: none;
 }
 
 .cardBtn {

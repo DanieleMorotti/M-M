@@ -155,7 +155,7 @@ button {
 }
 
 
-.container input:checked ~ .checkmark:after {
+.answer-label input:checked ~ .checkmark:after {
     display: block;
 }
   

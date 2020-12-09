@@ -294,7 +294,7 @@
           "inputType": "",
           "score": 50,
           "isActive": true,
-          "widget": "lock",
+          "widget": "",
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
@@ -318,7 +318,7 @@
           "inputType": "",
           "score": "60",
           "isActive": true,
-          "widget": "lock",
+          "widget": "",
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
@@ -336,12 +336,15 @@
     }
   ],
   "facilities": [
-    "Hai sventato un tentativo di furto, bravo! Ora cerca di non attirare troppo i sospetti."
+    "Hai sventato un tentativo di furto, bravo! Ora cerca di non attirare troppo i sospetti.",
+    "Le tue abilità si stanno rivelando incredibilmente utili.",
+    "Ti sei guadagnato la fiducia di alcuni beduini che ti aiutano negli spostamenti."
   ],
   "difficulties": [
     "Qualcuno si sta facendo delle domande vendendoti ficcanasare in giro, fai attenzione!",
     "Noti qualcosa di strano su un reperto, forse una possibile contraffazione, fermati ad osservare meglio.",
-    "Qualcuno ti sta seguendo, fai molta attenzione!"
+    "Qualcuno ti sta seguendo, fai molta attenzione!",
+    "Noti degli strani individui aggirarsi nei pressi degli scavi, non perderli d'occhio."
   ],
   "originalTitle": "MM - Mummie e Misteri",
   "device": "notebook",

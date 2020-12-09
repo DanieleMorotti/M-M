@@ -269,7 +269,7 @@ new Vue({
                                 <span v-else>{{modalInfo.content}}</span>
                             </div>
                         </div>
-                        <div style="border:2px solid black;padding:1rem">
+                        <div style="padding:1rem">
                             <label for="points">Punti assegnati: </label>
                             <input type="range" id="points" value="6" min="1" max="10" v-model="evaluation">&nbsp;&nbsp;
                             <span v-text="realtimeNumber"></span>

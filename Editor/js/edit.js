@@ -225,7 +225,7 @@ export default {
                         
                 
                         <h5 class="info" style="display:inline">Scegli un widget per questa attività: </h5>
-                        <input type="button" id="buttonWidget" data-toggle="modal" data-target="#widgetModal" value="Seleziona" :disabled="type!=='valutabile'" required/>
+                        <input type="button" id="buttonWidget" data-toggle="modal" data-target="#widgetModal" value="Seleziona" :disabled="type!=='figurativa'" required/>
                         <br><p id="infoWidget" style="display:none"> </p>
                     </li>
                 </ul>
