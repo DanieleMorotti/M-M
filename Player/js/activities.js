@@ -69,7 +69,7 @@ export default {
                 this.missions[mission].activities[activity].answers.forEach(element => {
                     $("#answers").append(`
                     <br>
-                    <label for="answer${i}" class="container">
+                    <label for="answer${i}" class="answer-label">
                      ${element}
                     <input type="radio" id="answer${i}" name="answer" value="${element}">
                     <span class="checkmark"></span></label>`);

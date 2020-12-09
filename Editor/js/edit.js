@@ -225,7 +225,7 @@ export default {
                         
                 
                         <h5 class="info" style="display:inline">Scegli un widget per questa attività: </h5>
-                        <input type="button" id="buttonWidget" data-toggle="modal" data-target="#widgetModal" value="Seleziona"/>
+                        <input type="button" id="buttonWidget" data-toggle="modal" data-target="#widgetModal" value="Seleziona" :disabled="type!=='valutabile'" required/>
                         <br><p id="infoWidget" style="display:none"> </p>
                     </li>
                 </ul>
@@ -652,7 +652,10 @@ export default {
                     this.missions[this.currentMission].activities[this.currentActivity].inputType = $('#inputObject input:checked').val();
                     this.missions[this.currentMission].activities[this.currentActivity].waitMsg = $('#waitMsg').val();
                 }
-                
+                /* remove widget if type not figurative */
+                if(this.type !== 'figurativa') {
+                    this.missions[this.currentMission].activities[this.currentActivity].widget = "";
+                }
                 this.missions[this.currentMission].activities[this.currentActivity].score = this.value;
     
             }

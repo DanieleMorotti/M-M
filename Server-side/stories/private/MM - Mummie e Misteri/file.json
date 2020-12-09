@@ -160,6 +160,30 @@
               ]
             }
           }
+        },
+        {
+          "number": 4,
+          "type": "domanda aperta",
+          "setting": "Stanza della mummia di Merit",
+          "instructions": "Sulla mummia di Merit sono stati rinvenuti anche diversi gioielli; questi sono alcuni dei reperti ai quali devi prestare più attenzione. Di che materiale sono composti?",
+          "question": "Di che materiale sono composti i gioielli di Merit?",
+          "answers": "",
+          "correctAns": "oro",
+          "inputType": "",
+          "score": "45",
+          "isActive": true,
+          "widget": "lock",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
         }
       ],
       "isActive": true
@@ -229,6 +253,83 @@
               ]
             }
           }
+        },
+        {
+          "number": 2,
+          "type": "figurativa",
+          "setting": "Museo egizio ",
+          "instructions": "Hai trovato un deposito contente della refurtiva, tra il materiale è presente un baule chiudo da un lucchetto.",
+          "question": "Indovina la combinazione e porta via tutto prima di essere scoperto",
+          "answers": "",
+          "inputType": "",
+          "score": "95",
+          "isActive": true,
+          "widget": "lock",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          },
+          "correctAns": "1234"
+        },
+        {
+          "number": 3,
+          "type": "scelta multipla",
+          "setting": "Sala delle analisi multispettrali",
+          "instructions": "Alcuni vasi sono stati pervenuti nella tomba di Kha e stanno per essere esaminati.",
+          "question": "Identificane il materiale",
+          "answers": [
+            "Terracotta",
+            "Giada",
+            "Alabastro",
+            "Vetro"
+          ],
+          "correctAns": "Alabastro",
+          "inputType": "",
+          "score": 50,
+          "isActive": true,
+          "widget": "lock",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
+        },
+        {
+          "number": 4,
+          "type": "domanda aperta",
+          "setting": "Sala del restauro",
+          "instructions": "Ti viene chiesto di collaborare al restauro di alcuni papiri la cui comprensione potrebbe essere utile per nuove e importanti scoperte.",
+          "question": "Come si chiama la tecnica attualmente utilizzata per i restauri?",
+          "answers": "",
+          "correctAns": "patch-work",
+          "inputType": "",
+          "score": "60",
+          "isActive": true,
+          "widget": "lock",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            },
+            "ifNotCorrect": {
+              "nextMission": [],
+              "nextActivity": []
+            }
+          }
         }
       ],
       "isActive": true
@@ -239,7 +340,8 @@
   ],
   "difficulties": [
     "Qualcuno si sta facendo delle domande vendendoti ficcanasare in giro, fai attenzione!",
-    "Noti qualcosa di strano su un reperto, forse una possibile contraffazione, fermati ad osservare meglio."
+    "Noti qualcosa di strano su un reperto, forse una possibile contraffazione, fermati ad osservare meglio.",
+    "Qualcuno ti sta seguendo, fai molta attenzione!"
   ],
   "originalTitle": "MM - Mummie e Misteri",
   "device": "notebook",

@@ -77,7 +77,7 @@ h3, h2 {
     list-style: none;
 }
 
-#editStoryForm li:last-child {
+#editStoryForm > ul > li:last-child {
     padding-bottom: 3rem;
 }
 
