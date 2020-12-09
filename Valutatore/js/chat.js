@@ -11,7 +11,8 @@ new Vue({
             blockUsers:[],
             //for default the chat of the first user is shown
             currRoom: 0,
-            servSent: null
+            servSent: null,
+            opened: false
         }
     }, 
     template: `
@@ -45,7 +46,7 @@ new Vue({
                         <div class="chat-box">
                             <!-- Messages-->
                             <div class="media mb-3" id="events" v-if="users.length != 0">
-                                <div class="media-body " v-if="users[currRoom].messages" >
+                                <div class="media-body " v-if="users[currRoom].messages && opened" >
                                     <div class="rounded py-2 px-3 mb-2" v-for="message in users[currRoom].messages" v-bind:key="message.id" 
                                     v-bind:class="{'myMes': message.type == 0,'otherMes': message.type == 1}">
                                         <p class="text-small mb-0">{{message.mess}}</p>
@@ -121,6 +122,9 @@ new Vue({
         },
         //change the current chat to the 'id' chat 
         enterChat(id,i){
+            /* variable is true if chat has been opened at least one time */
+            this.opened = true;
+
             /* enable input */
             $(".sendInput input[type='text']").attr('disabled', false)
 

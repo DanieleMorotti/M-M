@@ -24,12 +24,21 @@ body p, span {
 
 #public-list > button {
     background-color: #a9671b;
-    color: white
+    color: white;
 }
 
 #private-list > button{
     background-color:  #2d8896;
-    color: white
+    color: white;
+}
+
+@media (max-width: 700px) {
+    .info{
+        font-size: 1rem;
+    }
+    #public-list > button , #private-list > button{
+        font-size: 1rem;
+    }
 }
 
 .icon-group{

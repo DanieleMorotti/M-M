@@ -96,8 +96,10 @@ export default {
 				}
 				else if(this.verify) {
 					this.obj = render.methods.verify(this.type,this.currentMission, this.currentActivity);
-					this.instruction = true;
-					this.verify = false;
+					if(this.obj) {
+						this.instruction = true;
+						this.verify = false;
+					}
 				}
 			}
 		}

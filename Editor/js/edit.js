@@ -85,13 +85,6 @@ export default {
                     <li>    
                         <h3 style="display:inline-block">Missioni</h3>&nbsp;&nbsp;                            
 
-                        <div class="modal fade" id="graphModal" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                <div class="modal-content">
-                                    <svg></svg>
-                                </div>
-                            </div>
-                        </div> 
                         <ul id="missionSaved">
                             <li v-for="(mission,index) in missions" :key="index">
                                 <label for="missActive" style="display:none">Seleziona l'attività se intendi renderla attiva</label>
@@ -268,14 +261,30 @@ export default {
 
             <!-- menu for paths -->
                 
-                <!-- graph modal --> 
+                <!-- graph modal 
                 <div class="modal fade" id="graphModal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-dialog-centered modal-lg" role="document" style="margin:2rem">
+                        <button type="button" id="graphButton" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
                         <div class="modal-content">
                             <svg></svg>
                         </div>
                     </div>
+                </div> -->
+
+                <div class="modal fade" id="graphModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90%">
+                        <div class="modal-content">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="left: 1rem !important">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <svg></svg>
+                        </div>
+                    </div>
                 </div>
+
+                
 
             <div id="pathNav" class="overlay">
                 <a href="javascript:void(0)" class="closebtn" @click="closeNav('path')">&times;</a>
@@ -509,6 +518,9 @@ export default {
     `,
     methods: {
         openNav(navValue, index) {
+            /* this way underlying page does not scroll */
+            $('body').css("overflow", "hidden")
+            $('body').css("position", "fixed")
             if(navValue == 'activity')
                 document.getElementById("activitiesNav").style.width = "100%";
             else if(navValue == 'widget')
@@ -549,6 +561,9 @@ export default {
             }
         },
         closeNav(navValue) {
+            $('body').css("overflow", "visible")
+            $('body').css("position", "static")
+
             if(navValue == 'activity') {
                 $('#activitiesForm')[0].reset();
                 $('#activitiesForm h2').text(`Nuova attività`)
@@ -1047,7 +1062,7 @@ export default {
         },
         drawGraph(){
             var colors = d3.scaleOrdinal(d3.schemeCategory10);
-            var svg = d3.select("svg").attr("width", 900).attr("height", 600),
+            var svg = d3.select("svg").attr("width", $(window).width()/*900*/).attr("height", 600),
                 node,
                 link;
 
@@ -1130,15 +1145,15 @@ export default {
             })
          
        
-            let range = 800/totAct;
+            let range = ($(window).width() - 80)/totAct;
             let i = 0;
 
             graph.nodes.forEach(function(d){
-                if(d.id == "start") { d.x = 50; d.y = 300; }
-                else if(d.id == "end") { d.x = 850; d.y = 300}
+                if(d.id == "start") { d.x = 40; d.y = 300; }
+                else if(d.id == "end") { d.x = $(window).width() - 40; d.y = 300}
                 else {
                     if(d.name){
-                        d.x = Math.floor(Math.random()*range) + (range*i) + 50;
+                        d.x = Math.floor(Math.random()*range) + (range*i) + 40;
                         d.y = Math.floor(Math.random()*500) + 50;
                         i++;
                     }

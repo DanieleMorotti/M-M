@@ -85,12 +85,12 @@ export default {
                 $("#text").html(this.missions[mission].activities[activity].question);         
                 $("#text").append(`<br><form id="evaluableForm">
                     <label for="answer" style="display:none">Invia risposta:</label>
-                    <input type="${this.missions[mission].activities[activity].inputType}" id="answer"  placeholder="Scrivi qui"/><br>
+                    <input type="${this.missions[mission].activities[activity].inputType}" id="answer" placeholder="Scrivi qui"/><br>
                     <button id="sendBtn">Invia</button>
                     </form>`); 
                 $('#evaluableForm').show();
                     $('#next').attr("disabled","true");
-                
+               
                 this.mission = mission;
                 this.activity = activity;
             }
@@ -156,8 +156,9 @@ export default {
             }
             /* if user didn't answered */
             else if(type == "domanda aperta" && $("#answer").val() == "") {
-               $('#text').append('<p style="margin-top:1rem">Inserisci una risposta!</p>')
-                    return(false)
+                $('#text').html("");
+                $('#text').append('<p style="margin-top:1rem">Inserisci una risposta!</p>')
+                return(false)
             }
             /* if answer is incorrect */
             else {

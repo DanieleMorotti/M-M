@@ -67,7 +67,8 @@
 						<div class="input-group">
 							<input type="text" placeholder="Type a message"  class="form-control rounded-0 border-0 py-4 bg-light" v-model="newMess" title="chat" required>
 							<div class="input-group-append">
-								<button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
+								<button id="button-addon2" type="submit" class="btn btn-link" aria-labelledby="sendLabel"> <i class="fa fa-paper-plane"></i></button>
+								<span id="sendLabel" style="display: none;">Invia messaggio</span>
 							</div>
 						</div>
 					</form>

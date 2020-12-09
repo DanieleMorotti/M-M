@@ -1,24 +1,27 @@
 
   .myMes{
-    background-color: rgb(166, 226, 166) !important;
-   /* border: 1px solid black; */
+    background-color: #8dd2d9  !important;
+    border: 1px solid #595353;
     border-radius: 20px;
-    width:50%;
+    width:40%;
     overflow-wrap: break-word;
     margin-right:2px;
-    margin-left:50%;
+    margin-left:60%;
     margin-bottom:2%;
-  }
+    box-shadow: 2px 2px 5px grey;
 
-  .otherMes {
-    background-color: rgb(153, 206, 238) !important;
-   /* border: 1px solid black; */
+  }
+  .otherMes{
+    background-color: #f1f6f8  !important;
+    border: 1px solid #595353;
     border-radius: 20px;
-    width:50%;
-    margin-right:50%;
+    width:40%;
+    margin-right:52%;
     margin-left:2px;
     margin-bottom:2%;
+    box-shadow: 2px 2px 5px grey;
   }
+
 
   .defaultMes {
     font-size: smaller;
