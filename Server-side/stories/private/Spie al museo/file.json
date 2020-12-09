@@ -38,18 +38,18 @@
           "goTo": {
             "ifCorrect": {
               "nextMission": [
-                "0"
+                "1"
               ],
               "nextActivity": [
-                "1"
+                "0"
               ]
             },
             "ifNotCorrect": {
               "nextMission": [
-                "1"
+                "0"
               ],
               "nextActivity": [
-                "0"
+                "1"
               ]
             }
           }
@@ -78,10 +78,10 @@
             },
             "ifNotCorrect": {
               "nextMission": [
-                "0"
+                "1"
               ],
               "nextActivity": [
-                "1"
+                "0"
               ]
             }
           }
@@ -98,12 +98,12 @@
           "setting": "Ala Richelieu, piano terra, stanza 227",
           "instructions": "Ti si avvicina una persona per chiedere informazioni, stai attento potrebbero averti scoperto, oppure è semplicemente un turista che ha bisogno...",
           "question": "Di quale principio fa ampiamente uso il codice di Hammurabi?",
-          "answers": [],
+          "answers": "",
           "inputType": "text",
           "score": "35",
           "isActive": true,
           "widget": "",
-          "waitMsg": "Era solo un turista inglese per fortuna! Puoi continuare la missione",
+          "waitMsg": "Intanto che aspetti di procedere, rispondi alla turista che ti ha fatto una domanda",
           "goTo": {
             "ifCorrect": {
               "nextMission": [
@@ -118,7 +118,7 @@
                 "1"
               ],
               "nextActivity": [
-                "2"
+                "1"
               ]
             }
           }
@@ -147,10 +147,10 @@
             },
             "ifNotCorrect": {
               "nextMission": [
-                "2"
+                "1"
               ],
               "nextActivity": [
-                "0"
+                "2"
               ]
             }
           }
@@ -166,7 +166,7 @@
           "score": "25",
           "isActive": true,
           "widget": "",
-          "waitMsg": "Bene, non ce n'era solo uno, ma hai scelto il mio preferito!",
+          "waitMsg": "Ce ne sono più di uno, chissà se hai scelto quello che pensava il nostro contatto",
           "goTo": {
             "ifCorrect": {
               "nextMission": [
@@ -178,10 +178,10 @@
             },
             "ifNotCorrect": {
               "nextMission": [
-                "1"
+                "2"
               ],
               "nextActivity": [
-                "1"
+                "0"
               ]
             }
           }
@@ -220,10 +220,10 @@
             },
             "ifNotCorrect": {
               "nextMission": [
-                "3"
+                "2"
               ],
               "nextActivity": [
-                "0"
+                "1"
               ]
             }
           }
@@ -247,7 +247,7 @@
                 "3"
               ],
               "nextActivity": [
-                "0"
+                "1"
               ]
             },
             "ifNotCorrect": {
@@ -255,7 +255,7 @@
                 "3"
               ],
               "nextActivity": [
-                "1"
+                "0"
               ]
             }
           }
@@ -290,7 +290,7 @@
             },
             "ifNotCorrect": {
               "nextMission": [
-                "2"
+                "3"
               ],
               "nextActivity": [
                 "1"
@@ -373,15 +373,19 @@
   "facilities": [
     "Grazie alla tua bravura, il contatto ci sta fornendo informazioni importanti",
     "Viste le numerose risposte positive, arriveremo in un batter d'occhio ai criminali",
-    "Sappiamo che la sala è libera, puoi continuare la tua ricerca senza problemi"
+    "Sappiamo che la sala è libera, puoi continuare la tua ricerca senza problemi",
+    "Hai seminato un uomo che ti stava seguendo da un po'"
   ],
   "difficulties": [
     "Il contatto ci ha fornito la stanza sbagliata perchè la tua risposta non l'ha soddisfatto",
     "Devi cambiare stanza perchè la scorta dell'organizzazione ha iniziato a cercarti",
-    "Una comitiva di turisti italiani ti sta ostacolando il passaggio, questo ti farà perdere un po' di tempo"
+    "Una comitiva di turisti italiani ti sta ostacolando il passaggio, questo ti farà perdere un po' di tempo",
+    "Per rallentarti qualcuno ti ha segnalato come un pericolo alle guardie del museo",
+    "Una donna ha bisogno con il suo passeggino, aiutala"
   ],
   "originalTitle": "Spie al museo",
-  "background": "",
+  "device": "smartphone",
+  "background": "museo-louvre-parigi.jpg",
   "widgetCss": "",
   "widgetJs": ""
 }
