@@ -12,7 +12,6 @@ body {
     height: 100%;
     background-color: #6b1a39;
     background-image: none !important;
-    font-family: 'Ink',Georgia, 'Times New Roman', Times, serif;
 }
 
 button {
@@ -27,6 +26,7 @@ button {
     background-color: #FFFFCC;
     margin: 20px auto;
     box-shadow: 10px 13px 10px 4px rgba(0,0,0,0.2);
+    font-family: 'Ink',Georgia, 'Times New Roman', Times, serif;
 }
 
 .notebook::before{

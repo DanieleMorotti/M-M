@@ -4,7 +4,7 @@
   "groups": "1",
   "title": "MM - Mummie e Misteri",
   "setting": "Deserto fuori da Città del Cairo",
-  "description": "Sei un archeologo che svolge delle ricerche per conto della società XXXX. Sei stato mandato ad esplorare un zona appena fuori da città del Cairo, dove si stanno svolgendo  degli scavi e si pensa ci siano stati alcuni furti. \r\nNello svolgimento delle indagini potresti incontrare delle difficoltà, ricordati che nessuno deve sapere che stai investigando, per cui cerca di passare inosservato.\r\nBuon lavoro!",
+  "description": "Sei un archeologo che svolge delle ricerche per conto della società XXXX. Sei stato mandato ad esplorare un zona alla periferia del Cairo, dove si stanno svolgendo  degli scavi e si pensa ci siano stati alcuni furti. \r\nNello svolgimento delle indagini potresti incontrare delle difficoltà, ricordati che nessuno deve sapere che stai investigando, per cui cerca di passare inosservato.\r\nBuon lavoro!",
   "introduction": "Devi muoverti nei dintorni e fare attenzione a tutto quello vedi, ad ogni movimento sospetto e ad ogni cosa fuori posto.",
   "conclusion": "Complimenti! Hai portato a termine la missione e impedito che i reperti fossero trafugati.",
   "firstActivity": {
@@ -80,7 +80,7 @@
                 "0"
               ],
               "nextActivity": [
-                "3"
+                "2"
               ]
             },
             "ifNotCorrect": {
@@ -153,10 +153,10 @@
             },
             "ifNotCorrect": {
               "nextMission": [
-                "1"
+                "0"
               ],
               "nextActivity": [
-                "0"
+                "4"
               ]
             }
           }
@@ -176,12 +176,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "0"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "0"
+              ]
             }
           }
         }
@@ -238,18 +246,18 @@
           "goTo": {
             "ifCorrect": {
               "nextMission": [
-                "x"
+                "1"
               ],
               "nextActivity": [
-                "x"
+                "2"
               ]
             },
             "ifNotCorrect": {
               "nextMission": [
-                "x"
+                "1"
               ],
               "nextActivity": [
-                "x"
+                "2"
               ]
             }
           }
@@ -258,8 +266,8 @@
           "number": 2,
           "type": "figurativa",
           "setting": "Museo egizio ",
-          "instructions": "Hai trovato un deposito contente della refurtiva, tra il materiale è presente un baule chiudo da un lucchetto.",
-          "question": "Indovina la combinazione e porta via tutto prima di essere scoperto",
+          "instructions": "Hai trovato un deposito contente della refurtiva, tra il materiale è presente un baule chiuso da un lucchetto. Indovina la combinazione e porta via tutto, prima che qualcuno ti scopra.",
+          "question": "\"I 7 gatti di Ahmes\":  <br>Ci sono 7 case <br> In ogni casa ci sono 7 gatti <br>Ogni gatto acchiappa 7 topi <br>Ogni topo mangia 7 spighe <br> Quante cose ci sono in tutto in questa filastrocca? <br> (Papiro di Ahmes o di Rhind, 1650 a.C.)",
           "answers": "",
           "inputType": "",
           "score": "95",
@@ -268,15 +276,23 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "4"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "3"
+              ]
             }
           },
-          "correctAns": "1234"
+          "correctAns": "2401"
         },
         {
           "number": 3,
@@ -298,12 +314,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "4"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "4"
+              ]
             }
           }
         },
@@ -322,12 +346,20 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "x"
+              ],
+              "nextActivity": [
+                "x"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                "x"
+              ],
+              "nextActivity": [
+                "x"
+              ]
             }
           }
         }
@@ -338,13 +370,18 @@
   "facilities": [
     "Hai sventato un tentativo di furto, bravo! Ora cerca di non attirare troppo i sospetti.",
     "Le tue abilità si stanno rivelando incredibilmente utili.",
-    "Ti sei guadagnato la fiducia di alcuni beduini che ti aiutano negli spostamenti."
+    "Ti sei guadagnato la fiducia di alcuni beduini che ti aiutano negli spostamenti.",
+    "Agli scavi tutto procede come dovrebbe.",
+    "Contribuisci al ritrovamento di un sarcofago ligneo perfettamente conservato!",
+    "Il tuo lavoro nella traduzione dei papiri è impeccabile!"
   ],
   "difficulties": [
     "Qualcuno si sta facendo delle domande vendendoti ficcanasare in giro, fai attenzione!",
     "Noti qualcosa di strano su un reperto, forse una possibile contraffazione, fermati ad osservare meglio.",
     "Qualcuno ti sta seguendo, fai molta attenzione!",
-    "Noti degli strani individui aggirarsi nei pressi degli scavi, non perderli d'occhio."
+    "Noti degli strani individui aggirarsi nei pressi degli scavi, non perderli d'occhio.",
+    "Ti perdi per le strade del Cairo, qualcuno potrebbe approfittare della tua assenza..",
+    "Una signora del posto ti fornisce le indicazioni sbagliate, perdi un sacco di tempo a girare in tondo.."
   ],
   "originalTitle": "MM - Mummie e Misteri",
   "device": "notebook",

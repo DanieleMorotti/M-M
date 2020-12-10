@@ -86,8 +86,8 @@ export default {
                 $("#text").html(this.missions[mission].activities[activity].question);         
                 $("#text").append(`<br><form id="evaluableForm">
                     <label for="answer" style="display:none">Invia risposta:</label>
-                    <input type="${this.missions[mission].activities[activity].inputType}" id="answer" placeholder="Scrivi qui"/><br>
-                    <button id="sendBtn">Invia</button>
+                    <input type="${this.missions[mission].activities[activity].inputType}" id="answer" placeholder="Scrivi qui" required/><br>
+                    <input type="submit" id="sendBtn" value="Invia">
                     </form>`); 
                 $('#evaluableForm').show();
                     $('#next').attr("disabled","true");
@@ -109,6 +109,10 @@ export default {
                     $('#widget').append(widgetComp.default.template);
                     widgetComp.default.methods.render(question, correctAns);
                     document.getElementById("widgetNav").style.height = "100%";
+
+                    /* this way underlying page does not scroll */
+                    $('body').css("overflow", "hidden")
+                    $('body').css("position", "fixed")
                 }
                 
                 load();
@@ -193,9 +197,15 @@ export default {
                 }
             });
 
+
+            /* to open Widget */
             $(document).on('click','#widgetBtn', (e) =>{
                     document.getElementById("widgetNav").style.height = "100%";
+                    /* this way underlying page does not scroll */
+                    $('body').css("overflow", "hidden")
+                    $('body').css("position", "fixed")
             });
+
             //to update the server about my current position
             this.idInterval = setInterval(() => {                
                 $.ajax({

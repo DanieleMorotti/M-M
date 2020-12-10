@@ -7,6 +7,12 @@ body p, span {
     color: white
 }
 
+#title {
+    text-align: center;
+    color: white;
+    margin-bottom: 3rem;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
 
 #menu {
     display: flex;
@@ -24,6 +30,7 @@ body p, span {
     border-radius: 1rem;
     border: 1px solid white;
     font-size: 1.5rem;
+    font-weight: bold;
     box-shadow: 0px 0px 6px white;
 }
 
@@ -56,5 +63,16 @@ body p, span {
 }
 
 
+#storiesContent a {
+    display: block;
+    text-decoration: none;
+    color: black;
+    background-color: #d3eaff;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+}
 
-
+#storiesContent a:hover {
+    background-color: #88a8c7;
+}

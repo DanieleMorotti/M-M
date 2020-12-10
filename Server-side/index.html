@@ -35,7 +35,7 @@
                 console.log(publicStories)
                 $("#storiesContent").html("");
                 for(i = 0; i < publicStories.length; i++) {
-                    $("#storiesContent").append(`<a href="/Play?story=${publicStories[i].title}" target="_blank">${publicStories[i].title}</a><br>`);
+                    $("#storiesContent").append(`<a href="/Play?story=${publicStories[i].title}" target="_blank">${publicStories[i].title}</a>`);
                 }
             }
 
@@ -44,6 +44,7 @@
 
 	<body>
 		<div id="menu">
+            <h1 id="title">M&M - Mistero al Museo</h1>
             <button id="editor" class="menuBtn" onclick="load('/Editor')">
                 Editor
                 <span class="icon-group">

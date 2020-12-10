@@ -52,6 +52,8 @@ export default {
 		},
 		closeNav() {
 			document.getElementById("widgetNav").style.height = "0%";
+			$('body').css("overflow", "visible")
+            $('body').css("position", "static")
 		},
 		next() {
 			if(this.over) {

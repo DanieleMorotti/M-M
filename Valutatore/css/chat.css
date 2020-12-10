@@ -112,6 +112,7 @@
 
   #chatView {
     width: 65%;
+    height: 100%;
   }
 
   .chat-box {

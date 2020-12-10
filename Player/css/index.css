@@ -81,6 +81,9 @@ body {
     }
   }
 
+
+/* widget */
+
   #widgetNav {
     background-size:     cover;                    
     background-repeat:   no-repeat;
@@ -98,4 +101,9 @@ body {
     border-radius: 5px;
     text-align: center;
     text-transform: uppercase;
+  }
+
+  #widget #question {
+    color: white;
+    text-align: center;
   }
