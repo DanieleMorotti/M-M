@@ -709,13 +709,6 @@ export default {
                 this.value = 50;
             } 
            
-            /*
-            $('#activitiesForm')[0].reset();
-            $("#buttonWidget").prop("value","Scegli");
-            $("#infoWidget").text("");
-            $("#infoWidget").css("display", "none");
-            this.type = 'scelta multipla';
-            this.answerList = []; */
             this.closeNav('activity');
         },
         editActivity(index,misInd){
@@ -1022,7 +1015,8 @@ export default {
                 }
                 else if(item[0] == "groups") {
                     this.groupNum = item[1];
-                    for(let i = 1; i < this.groupNum; i++) {
+                    this.groups = [];
+                    for(let i = 0; i < this.groupNum; i++) {
                         this.groups.push('Gruppo ' + (i+1))
                     }
                 }

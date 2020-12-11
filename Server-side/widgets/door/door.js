@@ -24,7 +24,7 @@ export default {
 
             $( "#paper" ).draggable( {
                 cursor: "grabbing",
-            
+                containment: "window",
                 stop: function() {
                     // Show dropped position.
                     var Stop = $(this).position();

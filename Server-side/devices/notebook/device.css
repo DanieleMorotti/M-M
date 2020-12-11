@@ -21,12 +21,18 @@ button {
 .notebook{
     display: block;
     position: relative;
-    height: 80vh;
-    width: 400px;
+    height: 75vh;
+    width: 360px;
     background-color: #FFFFCC;
     margin: 20px auto;
     box-shadow: 10px 13px 10px 4px rgba(0,0,0,0.2);
     font-family: 'Ink',Georgia, 'Times New Roman', Times, serif;
+}
+
+@media (max-width: 350px) {
+    .notebook{
+        width: auto;
+    }
 }
 
 .notebook::before{
@@ -37,7 +43,7 @@ button {
     width: 8px;
     height: 8px;
     border-radius: 4px;
-    box-shadow: 20px 0 0px 0px #CCC, 50px 0 0 #CCC, 80px 0 0 #CCC, 110px 0 0 #CCC, 140px 0 0 #CCC, 170px 0 0 #CCC, 200px 0 0 #CCC, 230px 0 0 #CCC,  260px 0 0 #CCC,  290px 0 0 #CCC, 320px 0 0 #CCC, 350px 0 0 #CCC;
+    box-shadow: 20px 0 0px 0px #CCC, 50px 0 0 #CCC, 80px 0 0 #CCC, 110px 0 0 #CCC, 140px 0 0 #CCC, 170px 0 0 #CCC, 200px 0 0 #CCC, 230px 0 0 #CCC,  260px 0 0 #CCC,  290px 0 0 #CCC, 320px 0 0 #CCC;
 }
 
 #text{
@@ -80,8 +86,6 @@ button {
 #next:disabled {
     color: grey;
 }
-
-
 
 #toNext {
     position: absolute;

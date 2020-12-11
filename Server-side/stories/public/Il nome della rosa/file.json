@@ -3,7 +3,7 @@
   "groups": "2",
   "title": "Il nome della rosa",
   "setting": "Monastero medievale",
-  "description": "È la fine di novembre del 1327. Vi trovate in un antico monastero medievale per indagare su alcune morti avvenute in circostanze sospette. Il vostro compito è prestare attenzione a tutto ciò che udite o vedete e portare a termine le indagini prima che si verifichino altri \"incidenti\". Buona fortuna!",
+  "description": "È la fine di novembre del 1327. Vi trovate in un antico monastero medievale per indagare su alcune morti avvenute in circostanze sospette. Il vostro compito è prestare attenzione a tutto ciò che udite o vedete e portare a termine le indagini prima che si verifichino altri \"incidenti\". Buona fortuna! <br> (Questa storia è liberamente ispirata all'omonimo romanzo di Umberto Eco)",
   "introduction": "Muovetevi con attenzione per il monastero, potreste incontrare diversi ostacoli ed avversità da superare.",
   "conclusion": "Complimenti! Avete superato tutte le sfide e risolto il mistero che si celava tra queste mura.",
   "firstActivity": {
@@ -153,17 +153,17 @@
               ],
               "nextActivity": [
                 "1",
-                "1"
+                "0"
               ]
             },
             "ifNotCorrect": {
               "nextMission": [
                 "1",
-                "1"
+                "0"
               ],
               "nextActivity": [
                 "0",
-                "0"
+                "4"
               ]
             }
           }
@@ -183,12 +183,24 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                null,
+                "1"
+              ],
+              "nextActivity": [
+                null,
+                "0"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                null,
+                "1"
+              ],
+              "nextActivity": [
+                null,
+                "0"
+              ]
             }
           }
         }
@@ -255,11 +267,11 @@
             "ifCorrect": {
               "nextMission": [
                 "1",
-                "1"
+                "2"
               ],
               "nextActivity": [
                 "2",
-                "2"
+                "0"
               ]
             },
             "ifNotCorrect": {
@@ -297,21 +309,21 @@
             "ifCorrect": {
               "nextMission": [
                 "x",
-                "x"
+                "2"
               ],
               "nextActivity": [
                 "x",
-                "x"
+                "0"
               ]
             },
             "ifNotCorrect": {
               "nextMission": [
                 "x",
-                "x"
+                "2"
               ],
               "nextActivity": [
                 "x",
-                "x"
+                "0"
               ]
             }
           }
@@ -337,12 +349,24 @@
           "waitMsg": "",
           "goTo": {
             "ifCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                null,
+                "x"
+              ],
+              "nextActivity": [
+                null,
+                "x"
+              ]
             },
             "ifNotCorrect": {
-              "nextMission": [],
-              "nextActivity": []
+              "nextMission": [
+                null,
+                "x"
+              ],
+              "nextActivity": [
+                null,
+                "x"
+              ]
             }
           }
         }

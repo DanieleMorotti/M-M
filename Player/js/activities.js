@@ -1,5 +1,3 @@
-//import { runInThisContext } from "vm";
-
 var widgetComp = null;
 
 export default {
@@ -225,8 +223,8 @@ export default {
             }, 5000); 
 
             
-
             $(document).on('click','#sendBtn', (event) =>{
+                if($('#answer').val())
                 this.send(event, this.mission, this.activity);
             });
 
