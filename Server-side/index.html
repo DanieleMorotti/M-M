@@ -18,25 +18,30 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>	
 
         <script type="text/javascript">
-            var publicStories = [];
-            $(document).ready(function() {
-               $.get( "/Editor/titles", (res) => {
-                    for(let i=0; i < res.public.length;i++){
-                        publicStories.push(res.public[i]);
-                    }
-                });
-           }); 
 
             function load(url){
                 window.open(url);
             }
 
             function openMenu() {
-                console.log(publicStories)
-                $("#storiesContent").html("");
-                for(i = 0; i < publicStories.length; i++) {
-                    $("#storiesContent").append(`<a href="/Play?story=${publicStories[i].title}" target="_blank">${publicStories[i].title}</a>`);
-                }
+                $.ajax({
+                    type: "GET",
+                    url: "/Editor/titles",
+                    cache: false,
+                    success: (res) =>{
+                        var publicStories = [];
+                        for(let i=0; i < res.public.length;i++){
+                            publicStories.push(res.public[i]);
+                        }
+                        $("#storiesContent").html("");
+                        for(i = 0; i < publicStories.length; i++) {
+                            $("#storiesContent").append(`<a href="/Play?story=${publicStories[i].title}" target="_blank">${publicStories[i].title}</a>`);
+                        }
+                    },
+                    error: function (e) {
+                        console.log("error",e);
+                    }
+                });
             }
 
         </script>
