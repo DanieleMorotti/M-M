@@ -6,7 +6,7 @@ export default {
     template: `
             <link rel="stylesheet" href="/Server-side/widgets/door/door.css">
             <p id="question"> Trascina il foglio verso l'alto per passarlo sotto la porta. </p>
-            <div id="paper" v-chat-scroll>
+            <div id="paper">
                 <input type="text" id="word" />
                 <br>
             </div>
