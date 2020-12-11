@@ -6,7 +6,7 @@ export default {
     template: `
             <link rel="stylesheet" href="/Server-side/widgets/door/door.css">
             <p id="question"> Trascina il foglio verso l'alto per passarlo sotto la porta. </p>
-            <div id="paper">
+            <div id="paper" v-chat-scroll>
                 <input type="text" id="word" />
                 <br>
             </div>
@@ -18,7 +18,7 @@ export default {
             var pos = $("#paper").position();
             
 
-           $('#word').hover(function() {
+           $('#paper').hover(function() {
                $(this).focus();
            }) 
 
@@ -34,7 +34,8 @@ export default {
                         
                         var risp = document.getElementById("word").value;
                         setTimeout(function() {
-                            $("#paper").css({ position: "relative", top: pos.top, left: Stop.left});
+                            $("#paper").css({ position: "relative", top: 0, left: Stop.left});
+                            $("#paper").scrollTop($('#paper').height());
                         }, 1000);
                 
                         document.getElementById("word").value = "";

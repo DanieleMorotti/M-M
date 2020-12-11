@@ -177,11 +177,11 @@ export default {
         },
         initialize() {
             let storyItem = JSON.parse(localStorage.getItem("story"));
-            this.groupNum = 0;
+            this.groupNum = Math.floor(Math.random() * storyItem.groups);
             this.story = storyItem;
             this.missions = storyItem.missions;
-            this.nextMiss = storyItem.firstActivity.mission;
-            this.nextAct = storyItem.firstActivity.activity;
+            this.nextMiss = storyItem.firstActivity.mission[this.groupNum];
+            this.nextAct = storyItem.firstActivity.activity[this.groupNum];
             this.score = 0;
 
             this.currentF = 0 ;
@@ -231,6 +231,8 @@ export default {
             this.servSent.onmessage = (event) =>{
                 this.data = JSON.parse(event.data);
             }
+
+            return([this.nextMiss, this.nextAct])
         }
     }
     

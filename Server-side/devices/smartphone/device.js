@@ -118,7 +118,9 @@ export default {
 		this.myName = document.cookie.split('=')[1];
 		storyItem = JSON.parse(localStorage.getItem("story"));
 		this.missions = storyItem.missions;
-		render.methods.initialize();
+		let first = render.methods.initialize();
+		this.currentMission = first[0];
+		this.currentActivity = first[1];
 
 		//request for getting new name if exist
 		$.ajax({
