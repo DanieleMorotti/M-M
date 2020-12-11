@@ -110,7 +110,6 @@ export default {
 
                     /* this way underlying page does not scroll */
                     $('body').css("overflow", "hidden")
-                    $('body').css("position", "fixed")
                 }
                 
                 load();
@@ -201,7 +200,6 @@ export default {
                     document.getElementById("widgetNav").style.height = "100%";
                     /* this way underlying page does not scroll */
                     $('body').css("overflow", "hidden")
-                    $('body').css("position", "fixed")
             });
 
             //to update the server about my current position

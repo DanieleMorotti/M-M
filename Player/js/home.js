@@ -21,6 +21,7 @@ export default {
             $('#btnDev').html(story.pocketItem);
             //simulate the click on the router-link that show the device
             $('#toDevice').click();
+            $('#bottomBtn').css("display", "block");
         }
     },
     activated() {
@@ -30,7 +31,8 @@ export default {
             <p>Grazie per aver giocato, speriamo tu ti sia divertito e possa aver imparato cose nuove!</p>`);
             $('body').css('background-image', 'none');
             $('body').css('background-color', 'black');
-            $('#startBtn').remove()
+            $('#startBtn').remove();
+            $('#bottomBtn').remove();
         }
         else {
             story = JSON.parse(localStorage.getItem("story"));

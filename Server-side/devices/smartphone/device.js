@@ -53,7 +53,6 @@ export default {
 		closeNav() {
 			document.getElementById("widgetNav").style.height = "0%";
 			$('body').css("overflow", "visible")
-            $('body').css("position", "static")
 		},
 		next() {
 			if(this.over) {
@@ -85,7 +84,7 @@ export default {
 						else {
 							$('#text').html("");
 							$('#text').append(storyItem.conclusion);
-							$('#text').append(`<br><br><p>Congratulazioni hai totalizzato ${this.obj[2]} punti!`)
+							$('#text').append(`<br><br><p>Congratulazioni il punteggio totalizzato è di ${this.obj[2]} punti!`)
 							this.over = true;
 							this.points = this.obj[2];
 						}

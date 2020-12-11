@@ -196,3 +196,8 @@ button {
     border-radius: 5px;
     color: black;
 }
+
+
+#widgetBtn {
+    background-color: transparent;
+}

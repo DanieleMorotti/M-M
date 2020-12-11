@@ -13,25 +13,28 @@ export default {
     `,
     methods: {
         render(question, answer) {
-            $('#question').prepend(question + "<br>");
+            $('#question').prepend(`<span style="color: orange">${question}</span><br>`);
              $('#word').attr("placeholder", "Inserisci risposta");
             var pos = $("#paper").position();
-       
+            
 
-            $('#word').click(function() {
-                $(this).focus();
-            })
+           $('#word').hover(function() {
+               $(this).focus();
+           }) 
 
             $( "#paper" ).draggable( {
                 cursor: "grabbing",
                 containment: "window",
                 stop: function() {
+
                     // Show dropped position.
+                    
                     var Stop = $(this).position();
                     if(Stop.top < 0) {
+                        
                         var risp = document.getElementById("word").value;
                         setTimeout(function() {
-                            $("#paper").css({ position: "absolute", top: pos.top, left: Stop.left});
+                            $("#paper").css({ position: "relative", top: pos.top, left: Stop.left});
                         }, 1000);
                 
                         document.getElementById("word").value = "";
@@ -49,11 +52,11 @@ export default {
                     }             
                 } 
             }) 
+
         },
         check() {
             return(risposta)
         }
-      
     }
     
 }

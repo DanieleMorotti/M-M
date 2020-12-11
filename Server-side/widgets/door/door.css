@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'Ink';
+    src: url('../../fonts/inkfree.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
 #paper {
     background-color: white ;
@@ -8,6 +15,7 @@
     overflow-y: scroll;
     overflow-x: hidden; 
     margin: auto;
+    font-family: 'Ink';
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -41,6 +49,5 @@
 }
 
 #question {
-    color: white;
-    margin-left: 2rem;
+    color: rgba(255, 255, 255, 0.815);
 }
