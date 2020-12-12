@@ -42,28 +42,30 @@ new Vue({
                 <!-- Chat Box-->
                 <div id="chatView" class="px-0">
                     <div id="name"><button id="back" @click="displayUsers"> &larr;</button><span>user</span></div>
-                    <div class="container-fluid" style="overflow: auto;height:78% !important" v-chat-scroll>
-                        <div class="chat-box">
-                            <!-- Messages-->
-                            <div class="media mb-3" id="events" v-if="users.length != 0">
-                                <div class="media-body " v-if="users[currRoom].messages && opened" >
-                                    <div class="rounded py-2 px-3 mb-2" v-for="message in users[currRoom].messages" v-bind:key="message.id" 
-                                    v-bind:class="{'myMes': message.type == 0,'otherMes': message.type == 1}">
-                                        <p class="text-small mb-0">{{message.mess}}</p>
+                    <div class="mainContainer">
+                        <div class="container-fluid" style="overflow: auto;height:78% " v-chat-scroll>
+                            <div class="chat-box">
+                                <!-- Messages-->
+                                <div class="media mb-3" id="events" v-if="users.length != 0">
+                                    <div class="media-body " v-if="users[currRoom].messages && opened" >
+                                        <div class="rounded py-2 px-3 mb-2" v-for="message in users[currRoom].messages" v-bind:key="message.id" 
+                                        v-bind:class="{'myMes': message.type == 0,'otherMes': message.type == 1}">
+                                            <p class="text-small mb-0">{{message.mess}}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Typing area -->
-                    <form @submit.prevent="onChatSubmitted" class="sendInput">
-                        <div class="input-group">
-                            <input type="text" placeholder="Type a message"  class="form-control rounded-0 border-0 py-4" v-model="newMess" title="chat" style="background-color:transparent" required disabled>
-                            <div class="input-group-append">
-                                <button id="button-addon2" type="submit"> <i class="fa fa-paper-plane"></i></button>
+                        <!-- Typing area -->
+                        <form @submit.prevent="onChatSubmitted" class="sendInput">
+                            <div class="input-group">
+                                <input type="text" placeholder="Type a message"  class="form-control rounded-0 border-0 py-4" v-model="newMess" title="chat" style="background-color:transparent" required disabled>
+                                <div class="input-group-append">
+                                    <button id="button-addon2" type="submit"> <i class="fa fa-paper-plane"></i></button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
                 
             </div>

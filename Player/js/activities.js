@@ -24,6 +24,15 @@ export default {
         }
     },
     methods: {
+        openNav() {
+            /* close chat if opened */
+            $('#chat-user').css("display","none");
+			document.getElementById("widgetNav").style.height = "100%";
+		},
+		closeNav() {
+			document.getElementById("widgetNav").style.height = "0%";
+			$('body').css("overflow", "visible")
+		},
         send(event, mission, activity) {
             event.preventDefault();
             let data = new FormData();
@@ -106,6 +115,9 @@ export default {
                     widgetComp = await import(`/Server-side/widgets/${widget}/${widget}.js`);
                     $('#widget').append(widgetComp.default.template);
                     widgetComp.default.methods.render(question, correctAns);
+
+                    /* open nav */
+                    $('#chat-user').removeClass("show");
                     document.getElementById("widgetNav").style.height = "100%";
 
                     /* this way underlying page does not scroll */

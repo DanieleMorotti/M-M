@@ -18,9 +18,9 @@ export default {
             var pos = $("#paper").position();
             
 
-           $('#paper').hover(function() {
-               $(this).focus();
-           }) 
+            $('#word').click(function() {
+                $(this).focus();
+            }) 
 
             $( "#paper" ).draggable( {
                 cursor: "grabbing",
@@ -48,8 +48,13 @@ export default {
                                 risposta = true;
                             });
                         }
-                        else 
+                        else {
+                            
+                            $('#word').focus();
+                           
                             $("<p style='text-decoration: line-through'>"+risp+"</p>").insertBefore("#word");
+                        }
+                           
                     }             
                 } 
             }) 

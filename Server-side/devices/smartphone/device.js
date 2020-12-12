@@ -48,11 +48,10 @@ export default {
 `,
 	methods: {
 		openNav() {
-			document.getElementById("widgetNav").style.height = "100%";
+			render.methods.openNav();
 		},
 		closeNav() {
-			document.getElementById("widgetNav").style.height = "0%";
-			$('body').css("overflow", "visible")
+			render.methods.closeNav();
 		},
 		next() {
 			if(this.over) {
@@ -128,7 +127,7 @@ export default {
 			url: '/Play/getNewName',
 			success: (data) =>{
 				if(data)this.myName = data;
-				$('#text').html(`<p>Ciao ${this.myName}, <br>${storyItem.introduction}<p>`);
+				$('#text').html(`<p>Ciao ${this.myName}, <br>${storyItem.introduction}</p>`);
 
 			},
 			error: function (e) {

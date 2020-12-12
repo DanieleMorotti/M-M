@@ -18,6 +18,8 @@
     font-family: 'Ink';
 }
 
+
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 
 #paper::-webkit-scrollbar {
@@ -51,3 +53,4 @@
 #question {
     color: rgba(255, 255, 255, 0.815);
 }
+

@@ -38,11 +38,10 @@ export default {
     `,
 	methods: {
 		openNav() {
-			document.getElementById("widgetNav").style.height = "100%";
+			render.methods.openNav();
 		},
 		closeNav() {
-			document.getElementById("widgetNav").style.height = "0%";
-			$('body').css("overflow", "visible")
+			render.methods.closeNav();
 		},
 		next() {
 			if(this.over) {
