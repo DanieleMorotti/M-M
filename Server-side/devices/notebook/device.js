@@ -102,10 +102,20 @@ export default {
 					}
 				}
 			}
+		},
+		getNameByCookie(){
+			let cook_str = document.cookie;
+			let cook_list = cook_str.split(';');
+			let name = "";
+			cook_list.forEach(x =>{
+				x = x.trim();
+				if(x.startsWith('userId'))name = x.split('=')[1];
+			})
+			return name;
 		}
 	},
 	activated() {
-		this.myName = document.cookie.split('=')[1];
+		this.myName = this.getNameByCookie();
 		storyItem = JSON.parse(localStorage.getItem("story"));
 		this.missions = storyItem.missions;
 		let first = render.methods.initialize();
