@@ -31,6 +31,7 @@ export default {
             <p>Grazie per aver giocato, speriamo tu ti sia divertito e possa aver imparato cose nuove!</p>`);
             $('body').css('background-image', 'none');
             $('body').css('background-color', 'black');
+            $('#chat-user').removeClass("show");
             $('#startBtn').remove();
             $('#bottomBtn').remove();
         }

@@ -248,17 +248,13 @@ export default {
             //delete the current qr code
             $('#qrcode').html("");
             new QRCode('qrcode', {
-                text: "http://site192001.tw.cs.unibo.it/getStory?title="+story,
+                text: "http://site192001.tw.cs.unibo.it/Play?story="+story,
                 width: 128,
                 height: 128,
                 colorDark : "#000000",
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
             });
-            /*Magari serviranno per cose future quindi ho lasciato qui queste 2 funzioni
-            qrcode.clear(); // clear the code.
-            qrcode.makeCode("http://naver.com"); // make another code.
-            */
         }
     },
     mounted() {        
