@@ -156,3 +156,6 @@ body {
     margin-top: 1rem;
 }
 
+#bottomBtn {
+    display: block;
+}

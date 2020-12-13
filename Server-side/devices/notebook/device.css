@@ -201,3 +201,8 @@ button {
 #widgetBtn {
     background-color: transparent;
 }
+
+
+#bottomBtn {
+    display: block;
+}

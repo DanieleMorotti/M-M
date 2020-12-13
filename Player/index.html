@@ -46,8 +46,10 @@
 
 		<div class="row collapse py-1 px-4" id="chat-user">
 			<div class="col-12 rounded-lg overflow-hidden shadow card card-body">
+				<button type="button" id="closeChat" data-toggle="collapse" data-target="#chat-user" aria-expanded="false">X</button>
+				</button>
 				<!-- Chat Box-->
-				<div class="container px-0">
+				<div class="container onlineChat px-0">
 					<div class="container-fluid" style="overflow: auto;" v-chat-scroll>
 						<span class="defaultMes">You are online</span>
 						<div class=" py-3 chat-box bg-white">
