@@ -53,7 +53,7 @@ export default {
                     </li>
                     <li>
                         <label for="inpTitle" class="mainLabel">Inserisci il titolo: </label>
-                        <input type="text" name="title" id="inpTitle" v-on:keyup="checkName('title')" required/>
+                        <input type="text" name="title" id="inpTitle" v-on:keyup="checkName('title')" required />
                         <br><p id="titleInfo"> Una storia con questo titolo esiste già</p>
                     </li>
                     <li>
@@ -186,7 +186,7 @@ export default {
                                 <p v-if="answerList.length">Seleziona la risposta corretta</p>
                                 <ul id="answers">
                                     <li v-for="(answer,index) in answerList" :key="index">
-                                    <input type="radio" :id="index" name="answer" :value="answer" required :checked="missions[currentMission].activities[currentActivity].correctAns===answer">
+                                    <input type="radio" :id="index" name="answer" :value="answer" required :checked="missions[currentMission].activities[currentActivity] && missions[currentMission].activities[currentActivity].correctAns===answer">
                                     <label :for="index"> {{answer}} </label>
                                     &nbsp;&nbsp;
                                     <i class="fas fa-trash-alt" @click="answerList.splice(index,1)"></i>
@@ -345,7 +345,7 @@ export default {
                         </div>
                         <div class="modal-body">
                             <span>Scegli in quale storia e missione spostare l'attività </span>
-                            <div class="dropdown" v-for="(obj,index) in titles.privateList" :key="index" @click="storyWhereIcopy=obj.title">
+                            <div class="dropdown" v-for="(obj,index) in titles.privateList" :key="index" v-if="obj.title != currentStory" @click="storyWhereIcopy=obj.title">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
                                     {{obj.title}}
                                 </button>
@@ -354,6 +354,14 @@ export default {
                                 </div>
                             </div>
                             <div class="dropdown" v-if="isNewStory" @click='storyWhereIcopy="newstory"'>
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                    In questa storia
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button class="dropdown-item" v-for="(miss,i) in missions" :key="i" @click="missionWhereCopy=i">{{miss.name}}</a>
+                                </div>
+                            </div>
+                            <div class="dropdown" v-else @click='storyWhereIcopy=currentStory'>
                                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
                                     In questa storia
                                 </button>
@@ -381,7 +389,7 @@ export default {
                         </div>
                         <div class="modal-body">
                             <span>Scegli in quale storia e missione copiare l'attività </span>
-                            <div class="dropdown" v-for="(obj,index) in titles.privateList" :key="index" @click="storyWhereIcopy=obj.title">
+                            <div class="dropdown" v-for="(obj,index) in titles.privateList" :key="index" v-if="obj.title != currentStory" @click="storyWhereIcopy=obj.title">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
                                     {{obj.title}}
                                 </button>
@@ -390,6 +398,14 @@ export default {
                                 </div>
                             </div>
                             <div class="dropdown" v-if="isNewStory" @click='storyWhereIcopy="newstory"'>
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                    In questa storia
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button class="dropdown-item" v-for="(miss,i) in missions" :key="i" @click="missionWhereCopy=i">{{miss.name}}</a>
+                                </div>
+                            </div>
+                            <div class="dropdown" v-else @click='storyWhereIcopy=currentStory'>
                                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
                                     In questa storia
                                 </button>
@@ -461,7 +477,7 @@ export default {
                         </div>
                         <div class="modal-body">
                             <span>Scegli in quale storia spostare la missione </span>
-                            <button v-for="(obj,index) in titles.privateList" :key="index" v-if="obj.title !== $('#inpTitle').val()" type="button" @click="storyWhereIcopy=obj.title" class="list-group-item list-group-item-action">
+                            <button v-for="(obj,index) in titles.privateList" :key="index" v-if="obj.title !== currentStory" type="button" @click="storyWhereIcopy=obj.title" class="list-group-item list-group-item-action">
                                 {{obj.title}} 
                             </button>
                         </div>
@@ -484,10 +500,13 @@ export default {
                         </div>
                         <div class="modal-body">
                             <span>Scegli in quale storia copiare la missione </span>
-                            <button v-for="(obj,index) in titles.privateList" :key="index" type="button" @click="storyWhereIcopy=obj.title" class="list-group-item list-group-item-action">
+                            <button v-for="(obj,index) in titles.privateList" :key="index" type="button" v-if="obj.title != currentStory" @click="storyWhereIcopy=obj.title" class="list-group-item list-group-item-action">
                                 {{obj.title}} 
                             </button>
                             <button type="button" v-if="isNewStory" @click='storyWhereIcopy="newstory"' class="list-group-item list-group-item-action">
+                                In questa storia 
+                            </button>
+                            <button type="button" v-else @click='storyWhereIcopy=currentStory' class="list-group-item list-group-item-action">
                                 In questa storia 
                             </button>
                         </div>
