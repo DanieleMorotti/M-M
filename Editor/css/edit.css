@@ -366,4 +366,22 @@ i.fas{
      margin-left: 1rem;
      font-size: 1.2rem;
  }
+ 
+ /*Modals button*/
+ .modal .dropdown-toggle{
+    background-color: white;
+    color:black;
+    margin-top:0.5rem;
+    width:100%;
+    text-align:left;
+ }
 
+ .modal .dropdown-menu{
+     width:100%;
+     margin:0;
+ }
+
+ .modal .list-group-item{
+     margin-top:0.5rem;
+     border-color: black;
+ }
