@@ -1,0 +1,391 @@
+{
+  "accessibility": "true",
+  "age": "6-10",
+  "groups": "1",
+  "title": "MM - Mummie e Misteri - copy",
+  "setting": "Deserto fuori da Città del Cairo",
+  "description": "Sei un archeologo che svolge delle ricerche per conto della società XXXX. Sei stato mandato ad esplorare un zona alla periferia del Cairo, dove si stanno svolgendo  degli scavi e si pensa ci siano stati alcuni furti. \r\nNello svolgimento delle indagini potresti incontrare delle difficoltà, ricordati che nessuno deve sapere che stai investigando, per cui cerca di passare inosservato.\r\nBuon lavoro!",
+  "introduction": "Devi muoverti nei dintorni e fare attenzione a tutto quello vedi, ad ogni movimento sospetto e ad ogni cosa fuori posto.",
+  "conclusion": "Complimenti! Hai portato a termine la missione e impedito che i reperti fossero trafugati.",
+  "firstActivity": {
+    "mission": [
+      "0"
+    ],
+    "activity": [
+      "0"
+    ]
+  },
+  "missions": [
+    {
+      "name": "Missione 1",
+      "activities": [
+        {
+          "number": 0,
+          "type": "scelta multipla",
+          "setting": "Piano 1 - Sala 1",
+          "instructions": "Questa attività dovrebbe risultare molto semplice per un esperto del tuo calibro.",
+          "question": "Quale solido geometrico puoi direttamente ricollegare al periodo che storico di cui ti occupi?",
+          "answers": [
+            "Cubo",
+            "Piramide a base quadrata",
+            "Cilindro",
+            "Parallelepipedo"
+          ],
+          "correctAns": "Piramide a base quadrata",
+          "inputType": "",
+          "score": "35",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "2"
+              ]
+            },
+            "ifNotCorrect": {
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "number": 1,
+          "type": "scelta multipla",
+          "setting": "Piano 2 - Stanza chimica dei colori",
+          "instructions": "E' importante che tu sappia riconoscere quali pigmenti venivano utilizzati nell'antico Egitto, per poter riconoscere eventuali casi di contraffazione.",
+          "question": "Quale di questi colori non è associabile ad alcun pigmento presente?",
+          "answers": [
+            "Blu egizio",
+            "Ocra rossa",
+            "Verde smeraldo",
+            "Nero carbone"
+          ],
+          "correctAns": "Verde smeraldo",
+          "inputType": "",
+          "score": "50",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "2"
+              ]
+            },
+            "ifNotCorrect": {
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "2"
+              ]
+            }
+          }
+        },
+        {
+          "number": 2,
+          "type": "valutabile",
+          "setting": "Piano 2 - Sala 8",
+          "instructions": "Tutta la missione verte sulla protezione di due reperti in particolare.",
+          "question": "Due mummie sono state ritrovate completamente intatte e costituiscono una scoperta importantissima, quali sono?",
+          "answers": "",
+          "inputType": "text",
+          "score": "75",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "La tua risposta deve essere valutata per poter verificare il tuo grado di esperienza e procedere al completamento della missione.",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "3"
+              ]
+            },
+            "ifNotCorrect": {
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "3"
+              ]
+            }
+          }
+        },
+        {
+          "number": 3,
+          "type": "scelta multipla",
+          "setting": "Piano 2 - Sala: come sono fatte le bende?",
+          "instructions": "Riconoscere cosa si cela sotto il bendaggio di una mummia è ciò che ti riesce meglio.",
+          "question": "Di quale dei seguenti animali puoi trovare un esempio di mummificazione tra i reperti?",
+          "answers": [
+            "Cane",
+            "Ippopotamo",
+            "Giraffa",
+            "Pipistrello"
+          ],
+          "correctAns": "Cane",
+          "inputType": "",
+          "score": "40",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "0"
+              ]
+            },
+            "ifNotCorrect": {
+              "nextMission": [
+                "0"
+              ],
+              "nextActivity": [
+                "4"
+              ]
+            }
+          }
+        },
+        {
+          "number": 4,
+          "type": "domanda aperta",
+          "setting": "Stanza della mummia di Merit",
+          "instructions": "Sulla mummia di Merit sono stati rinvenuti anche diversi gioielli; questi sono alcuni dei reperti ai quali devi prestare più attenzione. Di che materiale sono composti?",
+          "question": "Di che materiale sono composti i gioielli di Merit?",
+          "answers": "",
+          "correctAns": "oro",
+          "inputType": "",
+          "score": "45",
+          "isActive": true,
+          "widget": "lock",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "0"
+              ]
+            },
+            "ifNotCorrect": {
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "0"
+              ]
+            }
+          }
+        }
+      ],
+      "isActive": true
+    },
+    {
+      "name": "Missione 2",
+      "activities": [
+        {
+          "number": 0,
+          "type": "domanda aperta",
+          "setting": "Piano 3 - Sala 1",
+          "instructions": "Ti viene sottoposta l'analisi di alcuni gioielli.",
+          "question": "A quale periodo della storia egizia sono riconducibili?",
+          "answers": [],
+          "correctAns": "nuovo regno",
+          "inputType": "",
+          "score": "75",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "1"
+              ]
+            },
+            "ifNotCorrect": {
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "number": 1,
+          "type": "valutabile",
+          "setting": "Piano 2 - Sala 4",
+          "instructions": "Ci sono cose che non sono come sembrano.. ",
+          "question": "Trova una finta mummia e fotografala",
+          "answers": "",
+          "inputType": "file",
+          "score": "85",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "Il reperto viene sottoposto ad un'attenta analisi per verificare che si tratti di un reperto autentico.",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "2"
+              ]
+            },
+            "ifNotCorrect": {
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "2"
+              ]
+            }
+          }
+        },
+        {
+          "number": 2,
+          "type": "figurativa",
+          "setting": "Museo egizio ",
+          "instructions": "Hai trovato un deposito contente della refurtiva, tra il materiale è presente un baule chiuso da un lucchetto. Indovina la combinazione e porta via tutto, prima che qualcuno ti scopra.",
+          "question": "\"I 7 gatti di Ahmes\":  <br>Ci sono 7 case <br> In ogni casa ci sono 7 gatti <br>Ogni gatto acchiappa 7 topi <br>Ogni topo mangia 7 spighe <br> Quante cose ci sono in tutto in questa filastrocca? <br> (Papiro di Ahmes o di Rhind, 1650 a.C.)",
+          "answers": "",
+          "inputType": "",
+          "score": "95",
+          "isActive": true,
+          "widget": "lock",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "4"
+              ]
+            },
+            "ifNotCorrect": {
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "3"
+              ]
+            }
+          },
+          "correctAns": "2401"
+        },
+        {
+          "number": 3,
+          "type": "scelta multipla",
+          "setting": "Sala delle analisi multispettrali",
+          "instructions": "Alcuni vasi sono stati pervenuti nella tomba di Kha e stanno per essere esaminati.",
+          "question": "Identificane il materiale",
+          "answers": [
+            "Terracotta",
+            "Giada",
+            "Alabastro",
+            "Vetro"
+          ],
+          "correctAns": "Alabastro",
+          "inputType": "",
+          "score": 50,
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "4"
+              ]
+            },
+            "ifNotCorrect": {
+              "nextMission": [
+                "1"
+              ],
+              "nextActivity": [
+                "4"
+              ]
+            }
+          }
+        },
+        {
+          "number": 4,
+          "type": "domanda aperta",
+          "setting": "Sala del restauro",
+          "instructions": "Ti viene chiesto di collaborare al restauro di alcuni papiri la cui comprensione potrebbe essere utile per nuove e importanti scoperte.",
+          "question": "Come si chiama la tecnica attualmente utilizzata per i restauri?",
+          "answers": "",
+          "correctAns": "patch-work",
+          "inputType": "",
+          "score": "60",
+          "isActive": true,
+          "widget": "",
+          "waitMsg": "",
+          "goTo": {
+            "ifCorrect": {
+              "nextMission": [
+                "x"
+              ],
+              "nextActivity": [
+                "x"
+              ]
+            },
+            "ifNotCorrect": {
+              "nextMission": [
+                "x"
+              ],
+              "nextActivity": [
+                "x"
+              ]
+            }
+          }
+        }
+      ],
+      "isActive": true
+    }
+  ],
+  "facilities": [
+    "Hai sventato un tentativo di furto, bravo! Ora cerca di non attirare troppo i sospetti.",
+    "Le tue abilità si stanno rivelando incredibilmente utili.",
+    "Ti sei guadagnato la fiducia di alcuni beduini che ti aiutano negli spostamenti.",
+    "Agli scavi tutto procede come dovrebbe.",
+    "Contribuisci al ritrovamento di un sarcofago ligneo perfettamente conservato!",
+    "Il tuo lavoro nella traduzione dei papiri è impeccabile!"
+  ],
+  "difficulties": [
+    "Qualcuno si sta facendo delle domande vendendoti ficcanasare in giro, fai attenzione!",
+    "Noti qualcosa di strano su un reperto, forse una possibile contraffazione, fermati ad osservare meglio.",
+    "Qualcuno ti sta seguendo, fai molta attenzione!",
+    "Noti degli strani individui aggirarsi nei pressi degli scavi, non perderli d'occhio.",
+    "Ti perdi per le strade del Cairo, qualcuno potrebbe approfittare della tua assenza..",
+    "Una signora del posto ti fornisce le indicazioni sbagliate, perdi un sacco di tempo a girare in tondo.."
+  ],
+  "originalTitle": "MM - Mummie e Misteri - copy",
+  "device": "notebook",
+  "background": "pyramids.png",
+  "widgetCss": "",
+  "widgetJs": ""
+}
