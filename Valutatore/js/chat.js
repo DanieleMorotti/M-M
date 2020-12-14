@@ -549,8 +549,9 @@ new Vue({
         });
 
         //i need only one message because all the players play the same story
-        sock.once('current-story',(storyName)=>{
-            this.storyName = storyName;
+        sock.on('current-story',(storyName)=>{
+            if(this.storyName === storyName) ;
+            else this.storyName = storyName;
         })
 
         sock.on('refresh-page',(data)=>{
