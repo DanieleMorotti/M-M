@@ -97,8 +97,7 @@ editor.post('/saveStory', (req, res, next) => {
 /* require a story which already exists */ 
 editor.get('/getStory',(req, res,next) => {
 	fs.readFile('./stories/'+req.query.group+'/'+req.query.title+'/file.json', 'utf8', (err, data) => {  
-		//device = JSON.parse(data).device;
-		//console.log('caricamento storia' +device);
+		
 		if(err){
 			next(err);
 			return;
@@ -108,14 +107,6 @@ editor.get('/getStory',(req, res,next) => {
 	})
 })
 
-/* require device's css 
-app.get('/getDeviceCss',(req, res) => {
-	res.sendFile(path.join(__dirname,".",'./devices/'+req.query.name+'/device.css'));
-})
-app.get('/getDeviceJs',(req, res) => {
-	res.sendFile(path.join(__dirname,".",'./devices/'+req.query.name+'/device.js'));
-})
-*/
 
 /* require widgets names */
 editor.get('/getWidgets',(req, res, next) => {
@@ -126,7 +117,7 @@ editor.get('/getWidgets',(req, res, next) => {
 			return;
 		} 
 		else {
-			// add control to verify if file is a directory !!!
+			//no directories here but control is necessary
 			files.map(function(f) {
 				names.widgets.push(f);
 			});
@@ -136,7 +127,7 @@ editor.get('/getWidgets',(req, res, next) => {
 					return;
 				} 
 				else {
-					// add control to verify if file is a directory !!!
+					//no directories here but control is necessary
 					files.map(function(f) {
 						names.devices.push(f);
 					});
@@ -157,7 +148,7 @@ editor.post('/saveWidget', (req, res, next) => {
 			next(err);
 			return;
 		} 
-		console.log('Directory created successfully!'); 
+		console.log('Widget directory created successfully!'); 
 	}); 
 	var form = new formidable.IncomingForm();
 	form.parse(req);
@@ -199,7 +190,7 @@ function readFiles(dir, f) {
 					missions.push(x.name);
 				})
 				
-				// fare attenzione qui per linux dove \\ non è consentito!!
+				// '\\' must change in linux to '/'
 				dirName = dir.substring(dir.lastIndexOf('\\') + 1);
 				obj[`${dirName}`].push({title:f,missionsList:missions, accessibility: file.accessibility});
 				succ(data);
@@ -211,12 +202,10 @@ function readFiles(dir, f) {
 async function addFiles(dir1, dir2,res) {
 	const files1 = await readDir(dir1);
 	await Promise.all(files1.map(async (f) => {
-		//if(f!=='new story')
 		await readFiles(dir1, f);
 	}))
 	const files2 = await readDir(dir2);
 	await Promise.all(files2.map(async (f) => {
-		//if(f!=='new story')
 		await readFiles(dir2, f);
 	}))
 	

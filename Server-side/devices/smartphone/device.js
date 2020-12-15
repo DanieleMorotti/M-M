@@ -78,7 +78,8 @@ export default {
 				if(this.instruction) {
 					if(this.obj) {
 						if(this.obj[0] != 'x') {
-							this.currentActivity = this.obj[0]; this.currentMission = this.obj[1];
+							this.currentActivity = this.obj[0]; 
+							this.currentMission = this.obj[1];
 						}
 						else {
 							$('#text').html("");

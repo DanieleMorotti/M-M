@@ -997,7 +997,7 @@ export default {
                 cache: false,
                 success: (data) =>{
                     let only_names = [];
-                    //emit event to update the home component stories list
+                    
                     this.missions.forEach(miss => {
                         only_names.push(miss.name);
                     });
