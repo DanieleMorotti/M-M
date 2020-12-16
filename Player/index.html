@@ -135,8 +135,8 @@
 				methods:{
 					//type 0 is for the message that i send to the staff, 1 for those the users receive
 					onChatSubmitted(){
-					this.messages.push({mess:this.newMess,type:0});
-					this.sock.emit('chat-message',this.newMess);
+						this.messages.push({mess:this.newMess,type:0});
+						this.sock.emit('chat-message',this.newMess);
 						this.newMess = null;
 					}
 				},

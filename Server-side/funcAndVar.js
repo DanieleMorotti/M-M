@@ -1,7 +1,7 @@
 const socketio = require('socket.io');
 
 let sharedVariables = {
-    usersList :[],
+    usersList:[],
     story:null,
     device:null,
     oldStory:null,

@@ -252,7 +252,7 @@ export default {
                         
                     <label for="inpWidgetJs">Aggiungi un file JS</label>
                     <input type="file" name="widgetJs" id="inpWidgetJs" accept=".js" required/>
-                        
+                    <br>
                     <input id="saveWidget" type="submit" value="Salva widget" />
                 </form>
                 </div>
@@ -837,7 +837,6 @@ export default {
                 contentType: false,
                 cache: false,
                 success: (data) =>{
-                    //emit event to update the home component stories list
                     $('#widgetsForm')[0].reset();
                     this.widgets.push(widgetName);
                 },

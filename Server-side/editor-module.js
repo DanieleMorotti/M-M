@@ -4,11 +4,6 @@ const fs = require('fs-extra');
 const path = require('path');
 
 
-/* In questa maniera ogni errore non gestito viene gestito qui, brutto
-process.on('uncaughtException', function (err) {
-	console.log('Caught exception: ' + err);
-});*/
-
 editor.get('/',(req,res) =>{
 	res.status(200).sendFile(path.join(__dirname,"../Editor/index.html"));
 })
@@ -97,8 +92,6 @@ editor.post('/saveStory', (req, res, next) => {
 /* require a story which already exists */ 
 editor.get('/getStory',(req, res,next) => {
 	fs.readFile('./stories/'+req.query.group+'/'+req.query.title+'/file.json', 'utf8', (err, data) => {  
-		//device = JSON.parse(data).device;
-		//console.log('caricamento storia' +device);
 		if(err){
 			next(err);
 			return;
@@ -108,14 +101,6 @@ editor.get('/getStory',(req, res,next) => {
 	})
 })
 
-/* require device's css 
-app.get('/getDeviceCss',(req, res) => {
-	res.sendFile(path.join(__dirname,".",'./devices/'+req.query.name+'/device.css'));
-})
-app.get('/getDeviceJs',(req, res) => {
-	res.sendFile(path.join(__dirname,".",'./devices/'+req.query.name+'/device.js'));
-})
-*/
 
 /* require widgets names */
 editor.get('/getWidgets',(req, res, next) => {
@@ -126,7 +111,6 @@ editor.get('/getWidgets',(req, res, next) => {
 			return;
 		} 
 		else {
-			// add control to verify if file is a directory !!!
 			files.map(function(f) {
 				names.widgets.push(f);
 			});
@@ -136,7 +120,6 @@ editor.get('/getWidgets',(req, res, next) => {
 					return;
 				} 
 				else {
-					// add control to verify if file is a directory !!!
 					files.map(function(f) {
 						names.devices.push(f);
 					});
@@ -211,12 +194,10 @@ function readFiles(dir, f) {
 async function addFiles(dir1, dir2,res) {
 	const files1 = await readDir(dir1);
 	await Promise.all(files1.map(async (f) => {
-		//if(f!=='new story')
 		await readFiles(dir1, f);
 	}))
 	const files2 = await readDir(dir2);
 	await Promise.all(files2.map(async (f) => {
-		//if(f!=='new story')
 		await readFiles(dir2, f);
 	}))
 	
@@ -230,7 +211,6 @@ editor.get('/titles',(req, res) => {
 	const private = path.join(__dirname,'/stories/private');
 	const public = path.join(__dirname,'/stories/public');
 	addFiles(private, public, res);
-	
 })
 
 /*************************** FINE  */

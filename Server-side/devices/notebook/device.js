@@ -74,7 +74,7 @@ export default {
 						else {
 							$('#text').html("");
 							$('#text').append(storyItem.conclusion);
-							$('#text').append(`<br><br><p>Congratulazioni il punteggio totalizzato è di ${this.obj[2]} punti!`)
+							$('#text').append(`<br><br><p>Congratulazioni il punteggio totalizzato è di ${this.obj[2]}/${this.obj[3]} punti!`)
 							this.points = this.obj[2];
 							this.over = true;
 						}
