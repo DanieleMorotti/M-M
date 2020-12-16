@@ -1,4 +1,4 @@
-# M-M(Mistero al museo)
+# M&M(Mistero al museo)
 ## Progetto per il corso di Tecnologie Web dell'università di Bologna,A.A.2019-2020.
 ![Logo progetto](img_readme/m-m.jpg)\
 Un'applicazione web inizialmente pensata per essere utilizzata nei musei, ma a seguito dell'emergenza sanitaria dovuta al COVID-19 la consegna è variata,sarà possibile utilizzare l'applicazione eventualmente da casa. L'intero progetto è stato scritto in Html, CSS, JavaScript, con l'ausilio dei framework: [Bootstrap 4.5](https://getbootstrap.com/docs/4.5/getting-started/download/), [VueJS](https://vuejs.org/) e [JQuery](https://jquery.com/). Per l'inserimento di alcune icone invece abbiamo utilizzato [Font Awesome](https://fontawesome.com/).
