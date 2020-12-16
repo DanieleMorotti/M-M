@@ -15,6 +15,7 @@ export default {
             nextMiss: null,
             widget: null,
             score: 0,
+            total: 0,
             mission: 0,
             activity: 0,
             servSent: null,
@@ -27,12 +28,14 @@ export default {
         openNav() {
             /* close chat if opened */
             $('#chat-user').css("display","none");
-			document.getElementById("widgetNav").style.height = "100%";
+            document.getElementById("widgetNav").style.height = "100%";
+            $('body').css("overflow", "hidden");
 		},
 		closeNav() {
 			document.getElementById("widgetNav").style.height = "0%";
 			$('body').css("overflow", "visible")
-		},
+        },
+        //get the data to send for being evaluated from the evaluator 
         send(event, mission, activity) {
             event.preventDefault();
             let data = new FormData();
@@ -55,6 +58,7 @@ export default {
                 contentType: false,
                 cache: false,
                 success: (data) =>{
+                    //check if the vote is arrived
                     let interval = setInterval(()=>{
                         if(this.data) {
                             $('#next').attr("disabled",false);
@@ -64,7 +68,7 @@ export default {
                     
                 },
                 error: function (e) {
-                    console.log("error");
+                    console.log("error in /toevaluate");
                 }
             });
         },
@@ -152,10 +156,12 @@ export default {
                     else 
                         this.score = parseInt(this.score) + parseInt(this.missions[mission].activities[activity].score);
  
+                    this.total = this.total + parseInt(this.missions[mission].activities[activity].score);
+
                     if (type == "figurativa") 
                         $('#widget').html("");
                         
-                    return([this.nextAct, this.nextMiss, this.score]);
+                    return([this.nextAct, this.nextMiss, this.score, this.total]);
             }
             /* if user didn't answered */
             else if(type == "domanda aperta" && $("#answer").val() == "") {
@@ -174,16 +180,16 @@ export default {
 
                 this.nextAct = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextActivity[this.groupNum]; 
                 this.nextMiss = this.missions[mission].activities[activity].goTo.ifNotCorrect.nextMission[this.groupNum];
-
+                
+                this.total = this.total + parseInt(this.missions[mission].activities[activity].score);
                 
                 if (type == "figurativa") 
                     $('#widget').html("");
         
-                return([this.nextAct, this.nextMiss, this.score]);
+                return([this.nextAct, this.nextMiss, this.score, this.total]);
             }
             
         }, 
-
         stopUpdatePosition() {
             clearInterval(this.idInterval);
         },
@@ -195,7 +201,8 @@ export default {
             this.nextMiss = storyItem.firstActivity.mission[this.groupNum];
             this.nextAct = storyItem.firstActivity.activity[this.groupNum];
             this.score = 0;
-
+            this.total = 0;
+        
             this.currentF = 0 ;
             this.currentD = 0 ;
 
@@ -209,9 +216,12 @@ export default {
 
             /* to open Widget */
             $(document).on('click','#widgetBtn', (e) =>{
-                    document.getElementById("widgetNav").style.height = "100%";
-                    /* this way underlying page does not scroll */
-                    $('body').css("overflow", "hidden")
+                   this.openNav();
+            });
+
+            $(document).on('click','#sendBtn', (event) =>{
+                if($('#answer').val())
+                this.send(event, this.mission, this.activity);
             });
 
             //to update the server about my current position
@@ -230,13 +240,7 @@ export default {
                         console.log("error in update player position",e);
                     }
                 })
-            }, 5000); 
-
-            
-            $(document).on('click','#sendBtn', (event) =>{
-                if($('#answer').val())
-                this.send(event, this.mission, this.activity);
-            });
+            }, 5000);  
 
             this.servSent = new EventSource('/Play/checkMark');
 

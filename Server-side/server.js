@@ -12,6 +12,7 @@ let socketio = require('./funcAndVar').socketio;
 
 shareObj.sharedVariables.io = socketio().listen(server,{cookie:false});
 
+//import the middleware to manage the request of the three different app
 var editor = require('./editor-module');
 var player = require('./player-module');
 var valutatore = require('./valutatore-module');

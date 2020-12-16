@@ -4,11 +4,6 @@ const fs = require('fs-extra');
 const path = require('path');
 
 
-/* In questa maniera ogni errore non gestito viene gestito qui, brutto
-process.on('uncaughtException', function (err) {
-	console.log('Caught exception: ' + err);
-});*/
-
 editor.get('/',(req,res) =>{
 	res.status(200).sendFile(path.join(__dirname,"../Editor/index.html"));
 })
@@ -165,7 +160,7 @@ editor.post('/saveWidget', (req, res, next) => {
 		});
 })
 
-/* CODICE TITLES */
+/* CODE TO GET THE TITLE OF THE STORIES ASYNCHRONOUSLY */
 var obj = { private: [], public: []} ;
 
 function readDir(path) {
@@ -219,12 +214,11 @@ editor.get('/titles',(req, res) => {
 	const private = path.join(__dirname,'/stories/private');
 	const public = path.join(__dirname,'/stories/public');
 	addFiles(private, public, res);
-	
 })
 
-/*************************** FINE  */
+/*************************** END  */
 
-/* copy an activity i received to a story */
+/* copy an activity i received, to a story */
 editor.post('/copyActivity',(req,res,next) => {
 	let toStory = req.query.toStory;
 	let toMiss = req.query.toMiss;
@@ -306,7 +300,7 @@ editor.put('/copyStory/:title', (req, res,next) => {
 			return;
 		} 
 		else {
-			// add control to verify if file is a directory !!!
+			// add control to verify if file is a directory 
 			files.map(function(f) {
 				names.push(f);
 			});

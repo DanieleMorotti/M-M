@@ -43,6 +43,7 @@ export default {
 		closeNav() {
 			render.methods.closeNav();
 		},
+		//whenever the arrow to proceed has been clicked i have to verify the case the user is in
 		next() {
 			if(this.over) {
 				render.methods.stopUpdatePosition();
@@ -56,7 +57,7 @@ export default {
 							assignedName: this.myName
 						},
 						success: (data) =>{
-							console.log("Comunicato che la partita è finita correttamente");
+							console.log("Partita finita");
 						},
 						error: function (e) {
 							console.log("error in story finished",e);
@@ -74,7 +75,7 @@ export default {
 						else {
 							$('#text').html("");
 							$('#text').append(storyItem.conclusion);
-							$('#text').append(`<br><br><p>Congratulazioni il punteggio totalizzato è di ${this.obj[2]} punti!`)
+							$('#text').append(`<br><br><p>Congratulazioni il punteggio totalizzato è di ${this.obj[2]}/${this.obj[3]} punti!`)
 							this.points = this.obj[2];
 							this.over = true;
 						}
@@ -103,6 +104,7 @@ export default {
 				}
 			}
 		},
+		//function to get the name of the user from the cookie
 		getNameByCookie(){
 			let cook_str = document.cookie;
 			let cook_list = cook_str.split(';');

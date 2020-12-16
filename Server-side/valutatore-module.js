@@ -36,9 +36,11 @@ valutatore.get('/needRequests',(req,res) =>{
 	
 })
 
+//when the evaluator has sent his vote
 valutatore.post('/evaluationDone',(req,res)=>{
 	let mark = req.body.mark;
 	let userName = req.body.id;
+	//remove the request from the array and add in the other to be caught from the player
 	sharedVar.toEval.splice(sharedVar.toEval.findIndex(us => us.id === userName),1);
 	sharedVar.evaluated.push({id:userName,mark:mark});
 	console.log("Rimozione dall'array di valutazione");
@@ -46,7 +48,7 @@ valutatore.post('/evaluationDone',(req,res)=>{
 })
 
 
-//listOfAssociatedNames is defined as the list of pair id-name
+//listOfAssociatedNames is defined as the list of pair id-name, i save in this array the new name i assigned
 valutatore.post('/changeName',(req,res)=>{
 	let data = req.body;
 	
@@ -73,7 +75,7 @@ valutatore.post('/endGame',(req,res)=>{
         CHAT SECTION
 */
 valutatore.get('/', function(req,res){
-	//pericoloso, perchè se accedono contemporaneamente 1 dello staff e uno no, diventano tutte dello staff
+	//warning, it may failed in case of concurrent access
 	sharedVar.isStaff = true;
 	sharedVar.cookies = req.cookies;
 

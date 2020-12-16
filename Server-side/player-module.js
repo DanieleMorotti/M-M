@@ -46,6 +46,7 @@ player.get('/',(req,res,next) =>{
 	}
 })
 
+//to get the json of the story the user will play
 player.get('/getPlayableStory', (req,res,next) => {
 	fs.readFile('./stories/public/'+ sharedVar.story +'/file.json', 'utf8', (err, data) => {  
 		if(err){
@@ -61,7 +62,7 @@ player.get('/getPlayableStory', (req,res,next) => {
 
 /*
 
-    SEZIONE AGGIUNTA PER APP VALUTATORE
+    SECTION FOR THE EVALUATOR APP
         
 */
 
@@ -99,7 +100,7 @@ player.post('/updatePlayerPosition',(req,res) => {
 	res.end();
 })
 
-//player ask for help if he doesn't now how to go on
+//player ask for help if he doesn't know how to go on
 player.post('/askForHelp',(req,res) =>{
 	let name = req.cookies.userId;
 	if(name)name = name.substring(0,5);
@@ -109,12 +110,12 @@ player.post('/askForHelp',(req,res) =>{
 	res.end();
 })
 
-//@formidable_eval new instance for managing requests to evaluate,@toEval array of the requests to evaluate,@evaluated:requests evaluated
+//@formidable_eval new instance for managing requests to evaluate
 const formidable_eval = require('formidable');
 
 //route to receive the users responses to evaluate
 player.post('/toEvaluate', (req,res,next) =>{
-	var form = new formidable_eval.IncomingForm();//per server unibo{uploadDir: __dirname + '/tmp',keepExtensions:true});
+	var form = new formidable_eval.IncomingForm();
 
 	let id = req.cookies.userId;
 	if(id)id = id.substring(0,5);
@@ -150,7 +151,7 @@ player.post('/toEvaluate', (req,res,next) =>{
 		});
 })
 
-//send the vote they get to the users who received a vote from the 'valutatore' app
+//send the vote they get to the users who received a vote from the 'evaluator' app
 player.get('/checkMark',(req,res)=>{
 	//set all headers for server-sent
 	res.setHeader('Cache-Control', 'no-cache');
@@ -177,7 +178,7 @@ player.get('/checkMark',(req,res)=>{
 	})
 })
 
-//get the name if valutatore give me one
+//get the name if evaluator give me one
 player.get('/getNewName',(req,res)=>{
 	let id = req.cookies.userId;
 	if(id)id = id.substring(0,5);
