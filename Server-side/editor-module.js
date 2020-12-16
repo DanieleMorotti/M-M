@@ -92,6 +92,7 @@ editor.post('/saveStory', (req, res, next) => {
 /* require a story which already exists */ 
 editor.get('/getStory',(req, res,next) => {
 	fs.readFile('./stories/'+req.query.group+'/'+req.query.title+'/file.json', 'utf8', (err, data) => {  
+		
 		if(err){
 			next(err);
 			return;
@@ -111,6 +112,7 @@ editor.get('/getWidgets',(req, res, next) => {
 			return;
 		} 
 		else {
+			//no directories here but control is necessary
 			files.map(function(f) {
 				names.widgets.push(f);
 			});
@@ -120,6 +122,7 @@ editor.get('/getWidgets',(req, res, next) => {
 					return;
 				} 
 				else {
+					//no directories here but control is necessary
 					files.map(function(f) {
 						names.devices.push(f);
 					});
@@ -140,7 +143,7 @@ editor.post('/saveWidget', (req, res, next) => {
 			next(err);
 			return;
 		} 
-		console.log('Directory created successfully!'); 
+		console.log('Widget directory created successfully!'); 
 	}); 
 	var form = new formidable.IncomingForm();
 	form.parse(req);
@@ -182,7 +185,7 @@ function readFiles(dir, f) {
 					missions.push(x.name);
 				})
 				
-				// fare attenzione qui per linux dove \\ non è consentito!!
+				// '\\' must change in linux to '/'
 				dirName = dir.substring(dir.lastIndexOf('\\') + 1);
 				obj[`${dirName}`].push({title:f,missionsList:missions, accessibility: file.accessibility});
 				succ(data);

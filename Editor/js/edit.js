@@ -350,7 +350,7 @@ export default {
                                     {{obj.title}}
                                 </button>
                                 <div class="dropdown-menu">
-                                    <button class="dropdown-item" v-for="(miss,ind) in obj.missionsList" :key="ind" @click="missionWhereCopy=ind">{{miss}}</a>
+                                    <button class="dropdown-item" v-for="(miss,ind) in obj.missionsList" :key="ind" @click="missionWhereCopy=ind">{{miss}}</button>
                                 </div>
                             </div>
                             <div class="dropdown" v-if="isNewStory" @click='storyWhereIcopy="newstory"'>
@@ -358,7 +358,7 @@ export default {
                                     In questa storia
                                 </button>
                                 <div class="dropdown-menu">
-                                    <button class="dropdown-item" v-for="(miss,i) in missions" :key="i" @click="missionWhereCopy=i">{{miss.name}}</a>
+                                    <button class="dropdown-item" v-for="(miss,i) in missions" :key="i" @click="missionWhereCopy=i">{{miss.name}}</button>
                                 </div>
                             </div>
                             <div class="dropdown" v-else @click='storyWhereIcopy=currentStory'>
@@ -366,7 +366,7 @@ export default {
                                     In questa storia
                                 </button>
                                 <div class="dropdown-menu">
-                                    <button class="dropdown-item" v-for="(miss,i) in missions" :key="i" @click="missionWhereCopy=i">{{miss.name}}</a>
+                                    <button class="dropdown-item" v-for="(miss,i) in missions" :key="i" @click="missionWhereCopy=i">{{miss.name}}</button>
                                 </div>
                             </div>
                         </div>
@@ -394,7 +394,7 @@ export default {
                                     {{obj.title}}
                                 </button>
                                 <div class="dropdown-menu">
-                                    <button class="dropdown-item" v-for="(miss,ind) in obj.missionsList" :key="ind" @click="missionWhereCopy=ind">{{miss}}</a>
+                                    <button class="dropdown-item" v-for="(miss,ind) in obj.missionsList" :key="ind" @click="missionWhereCopy=ind">{{miss}}</button>
                                 </div>
                             </div>
                             <div class="dropdown" v-if="isNewStory" @click='storyWhereIcopy="newstory"'>
@@ -402,7 +402,7 @@ export default {
                                     In questa storia
                                 </button>
                                 <div class="dropdown-menu">
-                                    <button class="dropdown-item" v-for="(miss,i) in missions" :key="i" @click="missionWhereCopy=i">{{miss.name}}</a>
+                                    <button class="dropdown-item" v-for="(miss,i) in missions" :key="i" @click="missionWhereCopy=i">{{miss.name}}</button>
                                 </div>
                             </div>
                             <div class="dropdown" v-else @click='storyWhereIcopy=currentStory'>
@@ -410,7 +410,7 @@ export default {
                                     In questa storia
                                 </button>
                                 <div class="dropdown-menu">
-                                    <button class="dropdown-item" v-for="(miss,i) in missions" :key="i" @click="missionWhereCopy=i">{{miss.name}}</a>
+                                    <button class="dropdown-item" v-for="(miss,i) in missions" :key="i" @click="missionWhereCopy=i">{{miss.name}}</button>
                                 </div>
                             </div>
                         </div>
@@ -874,7 +874,7 @@ export default {
                 mission.name = "Missione "+ ((this.missions.length != 0)?this.missions.length+1:1);
                 this.missions.push(mission);
                 if(val || this.isNewStory){
-                    console.log("Non devo inserire nell'array perchè sto spostando la storia/sto creando una nuova storia");
+                    console.log("Non devo inserire nell'array perchè sto spostando /sto creando una nuova storia");
                 }else{
                     storyIndex = this.titles.privateList.findIndex(n => n.title === this.currentStory);
                     this.titles.privateList[storyIndex].missionsList.push(mission.name);
@@ -883,7 +883,7 @@ export default {
             }
             else{
                 if(val){
-                    console.log("Non devo inserire nell'array perchè sto spostando la storia");
+                    console.log("Non devo inserire nell'array perchè sto spostando la missione");
                 }else{
                     //find the index of the story where i will copy the mission
                     storyIndex = this.titles.privateList.findIndex(n => n.title === this.storyWhereIcopy);
@@ -995,8 +995,12 @@ export default {
                 contentType: false,
                 cache: false,
                 success: (data) =>{
-                    //emit event to update the home component stories list
-                    var story = JSON.stringify({titleMission:{title: $('#inpTitle').val(),missions:this.missions}, original: originTitle, changed: titleChanged});
+                    let only_names = [];
+                    
+                    this.missions.forEach(miss => {
+                        only_names.push(miss.name);
+                    });
+                    var story = JSON.stringify({titleMission:{title: $('#inpTitle').val(),missions:only_names}, original: originTitle, changed: titleChanged});
                     this.$root.$emit('updateStories',story);
                     $('#editStoryForm')[0].reset();
                     $('#activitiesForm')[0].reset();
@@ -1273,7 +1277,10 @@ export default {
                 });
             }
         })
-        bus.$on('titles', (response) => { this.titles = response});
+        bus.$on('titles', (response) => { 
+            //update the list of titles and missions
+            this.titles = Object.assign({},response); 
+        });
 
 
         $('#activitiesForm, #editStoryForm, #insertFacility, #insertDifficulty').keydown(function (e) {
@@ -1301,5 +1308,6 @@ export default {
                 console.log("error in get widgets names",e);
             }
         });
+
     }
 }
