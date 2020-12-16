@@ -1,7 +1,7 @@
 # M-M(Mistero al museo)
 ## Progetto per il corso di Tecnologie Web dell'università di Bologna,A.A.2019-2020.
-![](img_readme/m-m.jpg)
-Un'applicazione web inizialmente pensata per essere utilizzata nei musei, ma a seguito dell'emergenza sanitaria dovuta al COVID-19 la consegna è variata,sarà possibile utilizzare l'applicazione eventualmente da casa. L'intero progetto è stato scritto in Html, CSS, JavaScript, con l'ausilio dei framework: Bootstrap 4.3, VueJS e JQuery.
+![Logo progetto](img_readme/m-m.jpg)\
+Un'applicazione web inizialmente pensata per essere utilizzata nei musei, ma a seguito dell'emergenza sanitaria dovuta al COVID-19 la consegna è variata,sarà possibile utilizzare l'applicazione eventualmente da casa. L'intero progetto è stato scritto in Html, CSS, JavaScript, con l'ausilio dei framework: [Bootstrap 4.5](https://getbootstrap.com/docs/4.5/getting-started/download/), [VueJS](https://vuejs.org/) e [JQuery](https://jquery.com/). Per l'inserimento di alcune icone invece abbiamo utilizzato [Font Awesome](https://fontawesome.com/).
 
 ### OBIETTIVI
 Lo scopo del progetto è quello di far imparare agli utenti(applicazione pensata per bambini e ragazzi delle scuole) determinati contenuti culturali e formativi, non facendo mancare però il divertimento, tramite il processo di [Gamification](https://it.wikipedia.org/wiki/Gamification). 
@@ -11,10 +11,15 @@ Il progetto è diviso in 3 applicazioni web:
 - il [Player](#player); 
 - l'[Editor](#editor);
 - il [Valutatore](#valutatore).
-È possibile trovare le applicazioni all'indirizzo http://site192001.tw.cs.unibo.it, rispettivamente accedendo alla route /Play?story=xxx, /Editor, /Valutatore.
+
+Un'immagine della homepage, dalla quale si può accedere a tutte le applicazioni. Cliccando su Player compariranno le storie attualmente pubbliche, e quindi giocabili.\
+![Homepage progetto](img_readme/schermata_home.png)\
 
 ## Player
-Questa è l'applicazione tramite la quale i ragazzi potranno leggere le storie create apposta per la visita, e sottomettere risposte alle varie missioni per avanzare nella storia. Le attività presenti sono di 3 tipi: *scelta multipla, domanda aperta, figurativa e valutabile*. Per tutta la durata del gioco la schermata mostrerà il device scelto appositamente per l'ambientazione della storia, tramite il quale il giocatore compirà le azioni elencate in precedenza. Sono inoltre presenti un bottone per aprire una chat testuale real-time con lo staff del museo per chiedere chiarimenti in caso di difficoltà, e un altro per notificare semplicemente al valutatore la necessità di aiuto. 
+Questa è l'applicazione tramite la quale i ragazzi potranno leggere le storie pubblicate, scritte dal direttore del museo o dai genitori se devono essere giocate in casa.
+
+
+E sottomettere risposte alle varie missioni per avanzare nella storia. Le attività presenti sono di 3 tipi: *scelta multipla, domanda aperta, figurativa e valutabile*. Per tutta la durata del gioco la schermata mostrerà il device scelto appositamente per l'ambientazione della storia, tramite il quale il giocatore compirà le azioni elencate in precedenza. Sono inoltre presenti un bottone per aprire una chat testuale real-time con lo staff del museo per chiedere chiarimenti in caso di difficoltà, e un altro per notificare semplicemente al valutatore la necessità di aiuto. 
 
 ## Editor
 Questa applicazione web è invece dedicata interamente alla creazione, modifica e pubblicazione delle storie. È possibile creare una nuova storia da 0, modificare, copiare o cancellare una esistente, e creare il QR code per stamparlo e fare accedere al [Player](#player) i ragazzi tramite quello. Una storia è composta da molteplici missionni, a loro volta suddivise in attività. Si possono copiare, tagliare e cancellare le singole attività o intere missioni, e allo stesso tempo è possibile spostarle tra le varie storie. È necessario specificare per ogni attività in caso di risposta corretta e non quale sarà la prossima da svolgere, e per essere sicuri di arrivare sempre alla conclusione si può consultare il grafo dei percorsi che viene creato automaticamente.
