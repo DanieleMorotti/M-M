@@ -16,7 +16,7 @@ The application is structured in three main components:
  - [Player](#player): play the stories
  - [Evaluator](#evaluator): evaluate the activities 
  
- <img src="./img_readme/schermata_home.png" style="width:800px;height:300px;">
+ <img src="./img_readme/schermata_home.png" style="width:800px">
  
 ## Usage
 
@@ -27,11 +27,27 @@ A story is composed of missions and each mission can be made of multiple activit
 Once missions and activities have been created the user can specify a path to be followed by each group, at any time you can also visualize each path by opening his graph. Finally, you can add facilities and difficulties to be shown depending on whether the answer given is correct or not. 
 Each story can be public or private, but only public stories can be played generating corresponding qrcode; on the other hand, stories can be modified only if they are in private space. Of course you can also edit, copy and delete your stories every time you want.
 
-<img src="./img_readme/editor_home.png" style="width:800px;height:300px;">
+
+<table>
+  <tr>
+    <td width="50%"><img src="./img_readme/editor_home.png"  alt="1"  height = 350px ></td>
+    <td width="50%"><img src="./img_readme/editor_graph.png" alt="2"  height = 350px></td>
+   </tr> 
+   <tr>
+      <td colspan="2"><img src="./img_readme/editor_edit.gif" alt="3" height = 400px></td>
+  </td>
+  </tr>
+</table>
+
+ 
+ 
+
 
 ### Player
  
 Choose the story you want to play and start your mission, everything you need to know will be displayed on your device, so be careful and enjoy the game. The player is also equipped with a chat to communicate with the evaluator and a button to request help every time he needs it. 
+
+<img src="./img_readme/player.gif" />
 
 ### Evaluator
 This application is used from the teacher or the parent who manages the game. It is composed by 3 components: Chat, Evaluate and Settings.
@@ -45,6 +61,17 @@ This application is used from the teacher or the parent who manages the game. It
 
  - #### Settings 
    Settings is divided into 2 sub-menu. In the first you can change the name of the players for the first 15 seconds. In the second it is possible to check which players have finished the game and print a JSON with the results. Furthermore, you can stop the game for every connected player and redirect all the player to a 404 page.
+
+<table>
+  <tr>
+    <td width="50%"><img src="./img_readme/valutatore_chat.png"  alt="1"  height = 350px ></td>
+    <td width="50%"><img src="./img_readme/valutatore_settings.png" alt="2"  height = 350px></td>
+   </tr> 
+   <tr>
+      <td colspan="2"><img src="./img_readme/valuta_valutatore.gif" alt="3" height = 400px></td>
+  </td>
+  </tr>
+</table>
 
 ## Remarks
 
