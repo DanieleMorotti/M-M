@@ -160,7 +160,7 @@ editor.post('/saveWidget', (req, res, next) => {
 		});
 })
 
-/* CODICE TITLES */
+/* CODE TO GET THE TITLE OF THE STORIES ASYNCHRONOUSLY */
 var obj = { private: [], public: []} ;
 
 function readDir(path) {
@@ -216,9 +216,9 @@ editor.get('/titles',(req, res) => {
 	addFiles(private, public, res);
 })
 
-/*************************** FINE  */
+/*************************** END  */
 
-/* copy an activity i received to a story */
+/* copy an activity i received, to a story */
 editor.post('/copyActivity',(req,res,next) => {
 	let toStory = req.query.toStory;
 	let toMiss = req.query.toMiss;
@@ -300,7 +300,7 @@ editor.put('/copyStory/:title', (req, res,next) => {
 			return;
 		} 
 		else {
-			// add control to verify if file is a directory !!!
+			// add control to verify if file is a directory 
 			files.map(function(f) {
 				names.push(f);
 			});

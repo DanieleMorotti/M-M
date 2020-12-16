@@ -154,22 +154,24 @@ export default {
                 bus.$emit('titles', {privateList:this.privateStoriesList,publicList:this.publicStoriesList});
             }); 
         },
+        //move the story to the public section
         loadStory(event, index) {
             event.stopPropagation();
-                $.ajax({
-                    url: '/Editor/publicStory/' + this.privateStoriesList[index].title,
-                    type: 'PUT',
-                    success: (response) =>{
-                       console.log("Storia resa pubblica");
-                       this.publicStoriesList.push(this.privateStoriesList[index]);
-                       this.privateStoriesList.splice(index,1);
-                    },
-                    error: function (e) {
-                        console.log('error');
-                    }
-                 });        
+            $.ajax({
+                url: '/Editor/publicStory/' + this.privateStoriesList[index].title,
+                type: 'PUT',
+                success: (response) =>{
+                    console.log("Storia resa pubblica");
+                    this.publicStoriesList.push(this.privateStoriesList[index]);
+                    this.privateStoriesList.splice(index,1);
+                },
+                error: function (e) {
+                    console.log('error');
+                }
+            });        
             
         },
+        //move the story to the private section
         downloadStory(event,index) {
             event.stopPropagation();
             $.ajax({
@@ -190,7 +192,6 @@ export default {
             $('.content').css("display", "none");
 
             let title;
-            //console.log(this.currentList);
             if(this.currentList === "private"){
                 title= this.privateStoriesList[index].title;
                 this.privateStoriesList.splice(index,1);
@@ -248,7 +249,7 @@ export default {
             //delete the current qr code
             $('#qrcode').html("");
             new QRCode('qrcode', {
-                text: "http://site192001.tw.cs.unibo.it/Play?story="+story,
+                text: "localhost:8000/Play?story="+story,
                 width: 128,
                 height: 128,
                 colorDark : "#000000",
@@ -267,7 +268,7 @@ export default {
             }
         });
         
-        //listening for updateStories event
+        //listening for updateStories event, emit from edit component
 		this.$root.$on('updateStories',(story) => {
             var current = JSON.parse(story);
             if(!current.changed) {

@@ -34,10 +34,7 @@ function userJoin(id){
     return "undefined";
 }
 
-function getCurrenUser(id){
-    if(id)return sharedVariables.usersList.find(user => user === id);
-}
-
+//remove the user from the array if it is inside it
 function removeUser(id){
     if(id){
         let index= sharedVariables.usersList.indexOf(id);
@@ -53,7 +50,7 @@ function reinitializeVariables(){
 	sharedVariables.numStaff = 1;
 	sharedVariables.isStaff = false;
 	sharedVariables.idNum = 1;
-	//'valutatore' variables
+	//evaluator variables
 	sharedVariables.partecipants = [];
 	sharedVariables.askingHelp = [];
 	sharedVariables.listOfAssociatedNames = [];
@@ -61,7 +58,7 @@ function reinitializeVariables(){
 	sharedVariables.toEval = [];
     sharedVariables.evaluated = [];
     sharedVariables.firstRequest = true;
-	//emit event to disconnect all users and to refresh 'valutatore' page
+	//emit event to disconnect all users and to refresh evaluator page
 	sharedVariables.io.of('/').emit('force-disconnect','now');
     sharedVariables.io.of('/staff').emit('refresh-page','now');
 }
@@ -69,7 +66,6 @@ function reinitializeVariables(){
 
 let sharedFunctions = {
     userJoin : userJoin,
-    getCurrenUser: getCurrenUser,
     removeUser: removeUser,
     reinitializeVariables: reinitializeVariables
 }

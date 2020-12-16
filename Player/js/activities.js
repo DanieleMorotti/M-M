@@ -34,7 +34,8 @@ export default {
 		closeNav() {
 			document.getElementById("widgetNav").style.height = "0%";
 			$('body').css("overflow", "visible")
-		},
+        },
+        //get the data to send for being evaluated from the evaluator 
         send(event, mission, activity) {
             event.preventDefault();
             let data = new FormData();
@@ -57,6 +58,7 @@ export default {
                 contentType: false,
                 cache: false,
                 success: (data) =>{
+                    //check if the vote is arrived
                     let interval = setInterval(()=>{
                         if(this.data) {
                             $('#next').attr("disabled",false);
@@ -66,7 +68,7 @@ export default {
                     
                 },
                 error: function (e) {
-                    console.log("error");
+                    console.log("error in /toevaluate");
                 }
             });
         },
@@ -188,7 +190,6 @@ export default {
             }
             
         }, 
-
         stopUpdatePosition() {
             clearInterval(this.idInterval);
         },

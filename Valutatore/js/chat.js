@@ -9,7 +9,6 @@ new Vue({
             newMess: null,
             users: [],
             blockUsers:[],
-            //for default the chat of the first user is shown
             currRoom: 0,
             servSent: null,
             opened: false
@@ -151,6 +150,7 @@ new Vue({
             $(`#users .messages-box:nth-child(${index+1}) a`).addClass("activeLink");
             $('.media .badge').eq(index).text('');
         },
+        //put the user with the most recent notification to the top of the list
         sortRecent(ind){
             if(ind > 0){
                 //move the user who receive a message to the top position
@@ -218,6 +218,7 @@ new Vue({
         
     },
     mounted(){
+        //get the data when a new user is blocked
         this.servSent.onmessage = (event) => {
             let arr = JSON.parse(event.data);
             if(arr.needHelp)this.blockUsers = arr.needHelp.slice();
@@ -320,6 +321,7 @@ new Vue({
         this.servSent = new EventSource('/Valutatore/needRequests');
     },
     mounted(){
+        //if a user needs help i get the data
         this.servSent.onmessage = (event) => {
             let parsedData = JSON.parse(event.data);
             //only the array requested i'm interested in

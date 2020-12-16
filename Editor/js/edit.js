@@ -524,6 +524,7 @@ export default {
         
     `,
     methods: {
+        //open the nav selected from navValue parameter
         openNav(navValue, index) {
             /* this way underlying page does not scroll */
             $('body').css("overflow", "hidden")
@@ -536,7 +537,6 @@ export default {
                 document.getElementById("pathNav").style.width = "100%";
                 this.currentGroup = index;
 
-                console.log('first',this.first)
                 let firstMiss = this.first.mission[index];
                 let firstAct = this.first.activity[index];
                 if(firstMiss) 
@@ -768,7 +768,7 @@ export default {
             this.missions[this.currentMission].activities.splice(index,1);
         },
         copyActivity(index){
-            //copying all the data of the activity
+            //copying all the data of the activity to a new object
             var obj = Object.assign({}, this.missions[this.currentMission].activities[index]);
             
             let toStory = this.storyWhereIcopy;
@@ -859,6 +859,7 @@ export default {
 
             $('#moveMissionModal').modal('hide');
             this.missions.splice(index,1);
+            //if the story is already in the titles.privateList array i need to update it
             if(!this.isNewStory){
                 let storyIndex = this.titles.privateList.findIndex(x => x.title === this.currentStory);
                 this.titles.privateList[storyIndex].missionsList.splice(index,1);
@@ -920,6 +921,7 @@ export default {
              $("#infoWidget").css("display", "none");
         },
         /*  MENU MANAGEMENT   */
+        //check if the name typed is not already used
         checkName(type) {
             let list, value, input, info;
             if(type == 'widget') {
@@ -953,9 +955,10 @@ export default {
                 this.invalid = false;    
             }
         },
+        //get all the data from the form and send to the server to update/create the story
         checkForm: function() {
             if(this.invalid) return;
-            //if no mission is active
+            //if no mission is active we report it
             else if(!this.missions.some(el => el.isActive)){
                 $('#selMissErr').show();
                 $('#selMissErr').removeClass('error').addClass('error');
@@ -996,7 +999,7 @@ export default {
                 cache: false,
                 success: (data) =>{
                     let only_names = [];
-                    
+                    //get all the name of the missions, because is the only value i need in home.js
                     this.missions.forEach(miss => {
                         only_names.push(miss.name);
                     });
@@ -1014,6 +1017,7 @@ export default {
             });
             
         },
+        //fill the form with all the fields of the story selected
         showData(data) {
             Object.entries(data).map(item => {
                 if(item[0] == "background" || item[0] == "pocketItemCss" || item[0] == "pocketItemJs") {
@@ -1067,6 +1071,7 @@ export default {
                 d3.selectAll("svg > *").remove();
             }
         },
+        //draw the graph to show that the game always end(if the editor wrote it in the right way)
         drawGraph(){
             var colors = d3.scaleOrdinal(d3.schemeCategory10);
             var svg = d3.select("svg").attr("width", $(window).width()/*900*/).attr("height", 600),
@@ -1248,8 +1253,8 @@ export default {
                 }
         }
     },
-    
     activated() {
+        //initialize all the variables and fill them only if i'm in editing mode
         $('#editStoryForm')[0].reset();
         $('#activitiesForm')[0].reset();
         this.missions = [{name:"Missione 1",activities:[],isActive:false}];
