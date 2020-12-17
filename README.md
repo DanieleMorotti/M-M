@@ -10,13 +10,16 @@
 
 ---
 ## Description
-M&M is a web application which aims to build a software environment in which the user can write his own stories and make them playable by a classroom or kids at home. The evaluator role is played by teachers or parents depending on the circumstances as the stories can be adapted to a museum context as well as the domestic one. The aim of the project was to gamify the visit to a museum, this idea was then extended to the domestic context due to Covid-19 pandemic.
+M&M is a web application which aims to build a software environment in which the user can write his own stories and make them playable by a classroom or kids at home. 
+The evaluator role is played by teachers or parents depending on the circumstances as the stories can be adapted to a museum context as well as the domestic one. 
+The aim of the project was to gamify the visit to a museum, this idea was then extended to the domestic context due to Covid-19 pandemic.<br><br>
+<img src="./img_readme/schermata_home.png" align="right" height="250">
 The application is structured in three main components:
+
  - [Editor](#editor): write the stories
  - [Player](#player): play the stories
  - [Evaluator](#evaluator): evaluate the activities 
  
- <img src="./img_readme/schermata_home.png" style="width:800px">
  
 ## Usage
 
@@ -30,27 +33,28 @@ Each story can be public or private, but only public stories can be played gener
 
 <table>
   <tr>
-    <td width="50%"><img src="./img_readme/editor_home.png"  alt="1"  height = 350px ></td>
-    <td width="50%"><img src="./img_readme/editor_graph.png" alt="2"  height = 350px></td>
+    <td width="50%" border="none"><img src="./img_readme/editor_home.png"  alt="1"></td>
+    <td width="50%" border="none"><img src="./img_readme/editor_graph.png" alt="2"></td>
    </tr> 
    <tr>
-      <td colspan="2"><img src="./img_readme/editor_edit.gif" alt="3" height = 400px></td>
+      <td colspan="2" border="none"><img src="./img_readme/editor_edit.gif" alt="3"></td>
   </td>
   </tr>
 </table>
 
- 
- 
-
 
 ### Player
  
-Choose the story you want to play and start your mission, everything you need to know will be displayed on your device, so be careful and enjoy the game. The player is also equipped with a chat to communicate with the evaluator and a button to request help every time he needs it. 
+Choose the story you want to play and start your mission, everything you need to know will be displayed on your device, so be careful and enjoy the game. The player is also equipped with a chat to communicate with the evaluator and a button to request help every time you need it. 
 
-<img src="./img_readme/player.gif" />
+<img src="./img_readme/player.gif" align="left" width="68%">
+<img src="./img_readme/widget.jpg" width="25%" >
 
 ### Evaluator
-This application is used from the teacher or the parent who manages the game. It is composed by 3 components: Chat, Evaluate and Settings.
+
+<img src="./img_readme/valutatore_chat.png" align="right" width="60%"/>
+
+This application is used by the teacher or the parent who manages the game. It is composed by 3 components: Chat, Evaluate and Settings.
 
  - #### Chat 
    The chat component is meant for allowing the evaluator to communicate with the user if he needs it. There is also a section where requests for help are showing, so if users have some problems the evaluator can help them writing on the chat. 
@@ -62,16 +66,7 @@ This application is used from the teacher or the parent who manages the game. It
  - #### Settings 
    Settings is divided into 2 sub-menu. In the first you can change the name of the players for the first 15 seconds. In the second it is possible to check which players have finished the game and print a JSON with the results. Furthermore, you can stop the game for every connected player and redirect all the player to a 404 page.
 
-<table>
-  <tr>
-    <td width="50%"><img src="./img_readme/valutatore_chat.png"  alt="1"  height = 350px ></td>
-    <td width="50%"><img src="./img_readme/valutatore_settings.png" alt="2"  height = 350px></td>
-   </tr> 
-   <tr>
-      <td colspan="2"><img src="./img_readme/valuta_valutatore.gif" alt="3" height = 400px></td>
-  </td>
-  </tr>
-</table>
+![](./img_readme/valutatore.gif)
 
 ## Remarks
 
@@ -87,7 +82,7 @@ Server-side code has been written using [NodeJS](https://nodejs.org/it/) and Exp
 ```javascript
 
 //go to your project directory and prompt the following command
-npm install all
+npm install 
 
 ```
 The code has been splitted in three modules to manage different requests made by the components of the application. We used cookies to identify users during the game and save data about them in order to allow the execution of some necessary server-side funcionalities. 
@@ -100,7 +95,7 @@ all the code has been been written by: *Erika Lena*, *Daniele Morotti*.
 
 Contact details:
 - https://github.com/erikalena
-- https://github.com/DaniMoro
+- https://github.com/DanieleMorotti
 
 Please let us know if you have any further questions or any kind of issues.
 
